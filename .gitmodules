@@ -1,0 +1,12 @@
+[submodule "packages/gateway"]
+	path = packages/gateway
+	url = git@bitbucket.org:calmisland/kidsloop-sfu-gateway.git
+[submodule "packages/sfu"]
+	path = packages/sfu
+	url = git@bitbucket.org:calmisland/kidsloop-sfu.git
+[submodule "packages/frontend"]
+	path = packages/frontend
+	url = git@bitbucket.org:calmisland/kidsloop-live-frontend.git
+[submodule "packages/redis-server"]
+	path = packages/redis-server
+	url = git@bitbucket.org:calmisland/kidsloop-live-server.git
