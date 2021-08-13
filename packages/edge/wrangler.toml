@@ -1,0 +1,25 @@
+name = "kidsloop-live-edge-api"
+type = "javascript"
+workers_dev = false
+vars = { ENVIRONMENT = "unknown" }
+
+[env.dev]
+account_id = "a511cc00f4a8396e83a447e33044aaa4"
+route = 'live.kidsloop.dev/api/*'
+zone_id = '867a0bd8cc67b876b85a1571bc31620a'
+vars = { ENVIRONMENT = "dev" }
+
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "modules"
+main = "./index.mjs"
+
+[durable_objects]
+bindings = [
+    # Changes here must be mirrored in cloudflare-env.d.ts
+  { name = "activityStreams", class_name = "ActivityStream" },
+  { name = "rooms", class_name = "Room" },
+]
