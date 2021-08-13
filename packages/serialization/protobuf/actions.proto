@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+import "state.proto";
+
+message Action {
+    uint32 action_count = 0;
+    RoomAction actions = 1;
+
+}
+
+message RoomAction {
+    repeated UserAction teachers = 0;
+    repeated UserAction students = 1;
+    string host = 2;
+    Content content = 3;
+    uint32 endTimestamp = 4;
+}
+
+message UserAction {
+    string id = 0;
+    string name = 1;
+    
+    repeated DeviceAction devices = 2;
+    repeated string removeDeviceIDs = 3;
+    
+    repeated Trophy trophies = 4;
+    repeated ChatMessage chatMessages = 5;
+}
+
+message DeviceAction {
+    string id = 0; 
+
+    string activityId = 1;
+    string activityStreamId = 2;
+
+    repeated WebRTCStreamAction webRTCStreams = 3;
+    repeated string removeWebRTCStreamIDs = 4;
+
+}
+
+message WebRTCStreamAction {
+    string id = 0;
+    
+    string label = 1;
+
+    repeated WebRTCTrack tracks = 2;
+    repeated string removeTrackIDs = 3;
+
+}

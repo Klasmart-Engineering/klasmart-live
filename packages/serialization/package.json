@@ -1,0 +1,15 @@
+{
+  "name": "kidsloop-live-serialization",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/protobuf.js",
+  "scripts": {    
+    "build": "rollup -c",
+    "protobuf": "pbjs -w es6 -t static-module -o src/protobuf.js protobuf/*.proto; pbts -o src/protobuf.d.ts src/protobuf.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "protobufjs": "^6.11.2"
+  }
+}
