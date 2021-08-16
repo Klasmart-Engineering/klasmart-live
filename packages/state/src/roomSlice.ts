@@ -1,6 +1,8 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Map } from 'immutable';
-import { Message, Participant, ChatMessage } from './state';
+import {
+  Message, Participant, ChatMessage, TrophyMessage,
+} from './state';
 import { ID, ContextPayload, Context } from './store';
 
 export interface GetUserId {
@@ -18,8 +20,8 @@ function checkUserMatchesAuth(token: Context, toCheck: GetUserId): void {
 }
 
 interface RoomState {
-  teachers: { [id: string]: Participant };
-  students: { [id: string]: Participant };
+  participants: { [id: string]: Participant };
+  teachers: ID[];
   // teachers: Map<ID, Participant>;
   // students: Map<ID, Participant>;
   host?: ID;
@@ -27,8 +29,8 @@ interface RoomState {
 }
 
 const initialState: RoomState = {
-  teachers: {},
-  students: {},
+  participants: {},
+  teachers: [],
   // teachers: Map<ID, Participant>(),
   // students: Map<ID, Participant>(),
   host: undefined,
@@ -44,19 +46,19 @@ const userJoinReducer: CaseReducer<
   RoomState,
   PayloadAction<ContextPayload<UserPayload>>
 > = (state, action) => {
-  const { context: token, payload } = action.payload;
-  // checkUserMatchesAuth(token, payload);
+  const {
+    context: { isTeacher, userId },
+    payload,
+  } = action.payload;
 
-  const teachers = { ...state.teachers };
-  const students = { ...state.students };
+  const participants = { ...state.participants, [userId]: payload.participant };
+  const teachers = [...state.teachers];
 
-  if (token.isTeacher) {
-    teachers[payload.id] = payload.participant;
-  } else {
-    students[payload.id] = payload.participant;
+  if (isTeacher && !teachers.includes(userId)) {
+    teachers.push(userId);
   }
 
-  return { ...state, teachers, students };
+  return { ...state, participants, teachers };
 };
 
 const userLeaveReducer: CaseReducer<RoomState, PayloadAction<Context>> = (
@@ -65,16 +67,15 @@ const userLeaveReducer: CaseReducer<RoomState, PayloadAction<Context>> = (
 ) => {
   const { userId, isTeacher } = action.payload;
 
-  const teachers = { ...state.teachers };
-  const students = { ...state.students };
+  const participants = { ...state.participants };
+  delete participants[userId];
 
+  let { teachers } = state;
   if (isTeacher) {
-    delete teachers[userId];
-  } else {
-    delete students[userId];
+    teachers = teachers.filter((id) => id !== userId);
   }
 
-  return { ...state, teachers, students };
+  return { ...state, teachers, participants };
 };
 
 const sendChatMessageReducer: CaseReducer<
@@ -104,6 +105,25 @@ const setHostReducer: CaseReducer<
   return { ...state, host: userId };
 };
 
+const addTrophyReducer: CaseReducer<
+  RoomState,
+  PayloadAction<ContextPayload<TrophyMessage>>
+> = (state, action) => {
+  const { participants } = state;
+  const trophy = action.payload.payload;
+  if (trophy.user) {
+    participants[trophy.user].trophies.push(trophy);
+  } else {
+    Object.keys(participants).forEach((id) => {
+      const { trophies } = participants[id];
+      trophies.push(trophy);
+      participants[id].trophies = trophies;
+    });
+  }
+
+  return { ...state, students: participants };
+};
+
 export const roomSlice = createSlice({
   name: 'room',
   initialState,
@@ -112,6 +132,7 @@ export const roomSlice = createSlice({
     userLeave: userLeaveReducer,
     sendChatMessage: sendChatMessageReducer,
     setHost: setHostReducer,
+    addTrophy: addTrophyReducer,
   },
 });
 
@@ -120,6 +141,7 @@ export const {
   userLeave,
   sendChatMessage,
   setHost,
+  addTrophy,
 } = roomSlice.actions;
 
 export const roomReducer = roomSlice.reducer;

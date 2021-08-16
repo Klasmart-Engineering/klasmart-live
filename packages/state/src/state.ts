@@ -17,14 +17,24 @@ class Room {
 }
 
 export class Participant {
+  public id: ID;
+  public name: string;
+  public activityStreams: { [key: string]: ID };
+  public webRTCStreams: { [key: string]: WebRTCStream };
+  public trophies: TrophyMessage[];
+
   public constructor(
-    private id: ID,
-    private name: string,
-    private activityStreams: { [key: string]: ID } = {},
-    private webRTCStreams: { [key: string]: WebRTCStream } = {},
-    private trophy: TrophyMessage[] = []
+    id: ID,
+    name: string,
+    activityStreams: { [key: string]: ID } = {},
+    webRTCStreams: { [key: string]: WebRTCStream } = {},
+    trophies: TrophyMessage[] = []
   ) {
-    // makeAutoObservable(this);
+    this.id = id;
+    this.name = name;
+    this.activityStreams = activityStreams;
+    this.webRTCStreams = webRTCStreams;
+    this.trophies = trophies;
   }
 
   // getUserId(): ID {
@@ -56,14 +66,21 @@ export interface Message extends ChatMessage {
 //     private timestamp = Date.now()
 //   ) {}
 // }
+//
 
-export class TrophyMessage {
-  public constructor(
-    private tropy: ID,
-    private user?: ID,
-    private timestamp = Date.now()
-  ) {}
+export interface TrophyMessage {
+  trophy: ID;
+  timestamp: number;
+  user?: ID;
 }
+
+// export class TrophyMessage {
+//   public constructor(
+//     private trophy: ID,
+//     private user?: ID,
+//     private timestamp = Date.now()
+//   ) {}
+// }
 
 enum ContentType {
   Video,
