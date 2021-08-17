@@ -9,41 +9,34 @@ message Action {
 }
 
 message RoomAction {
-    repeated UserAction teachers = 0;
-    repeated UserAction students = 1;
+    map<string, User> teachers = 0;
+    map<string, User> students = 1;
     string host = 2;
     Content content = 3;
     uint32 endTimestamp = 4;
 }
 
 message UserAction {
-    string id = 0;
-    string name = 1;
+    string name = 0;
     
-    repeated DeviceAction devices = 2;
-    repeated string removeDeviceIDs = 3;
-    
-    repeated Trophy trophies = 4;
-    repeated ChatMessage chatMessages = 5;
+    map<string, Device> devices = 1;
+    repeated string removeDeviceIDs = 2;
+
+    repeated Trophy trophies = 3;
+    repeated ChatMessage chatMessages = 4;
 }
 
 message DeviceAction {
-    string id = 0; 
+    string activityId = 0;
+    string activityStreamId = 1;
 
-    string activityId = 1;
-    string activityStreamId = 2;
-
-    repeated WebRTCStreamAction webRTCStreams = 3;
-    repeated string removeWebRTCStreamIDs = 4;
-
+    map<string, WebRTCStreamAction> webRTCStreams = 2;
+    repeated string removeWebRTCStreamIDs = 3;
 }
 
 message WebRTCStreamAction {
-    string id = 0;
-    
-    string label = 1;
+    string label = 0;
 
-    repeated WebRTCTrack tracks = 2;
-    repeated string removeTrackIDs = 3;
-
+    map<string, WebRTCTrack> tracks = 1;
+    repeated string removeTrackIDs = 2;
 }

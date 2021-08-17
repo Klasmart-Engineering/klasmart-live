@@ -5,7 +5,9 @@
   "main": "src/protobuf.js",
   "scripts": {    
     "build": "rollup -c",
-    "protobuf": "pbjs -w es6 -t static-module -o src/protobuf.js protobuf/*.proto; pbts -o src/protobuf.d.ts src/protobuf.js"
+    "protobuf": "npm run protobuf-js; npm run protobuf-ts",
+    "protobuf-js": "pbjs -w es6 -t static-module -o src/protobuf.js protobuf/*.proto",
+    "protobuf-ts": "pbts -o src/protobuf.d.ts src/protobuf.js"
   },
   "author": "",
   "license": "ISC",

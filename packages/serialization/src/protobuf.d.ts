@@ -99,10 +99,10 @@ export class Action implements IAction {
 export interface IRoomAction {
 
     /** RoomAction teachers */
-    teachers?: (IUserAction[]|null);
+    teachers?: ({ [k: string]: IUser }|null);
 
     /** RoomAction students */
-    students?: (IUserAction[]|null);
+    students?: ({ [k: string]: IUser }|null);
 
     /** RoomAction host */
     host?: (string|null);
@@ -124,10 +124,10 @@ export class RoomAction implements IRoomAction {
     constructor(properties?: IRoomAction);
 
     /** RoomAction teachers. */
-    public teachers: IUserAction[];
+    public teachers: { [k: string]: IUser };
 
     /** RoomAction students. */
-    public students: IUserAction[];
+    public students: { [k: string]: IUser };
 
     /** RoomAction host. */
     public host: string;
@@ -212,14 +212,11 @@ export class RoomAction implements IRoomAction {
 /** Properties of a UserAction. */
 export interface IUserAction {
 
-    /** UserAction id */
-    id?: (string|null);
-
     /** UserAction name */
     name?: (string|null);
 
     /** UserAction devices */
-    devices?: (IDeviceAction[]|null);
+    devices?: ({ [k: string]: IDevice }|null);
 
     /** UserAction removeDeviceIDs */
     removeDeviceIDs?: (string[]|null);
@@ -240,14 +237,11 @@ export class UserAction implements IUserAction {
      */
     constructor(properties?: IUserAction);
 
-    /** UserAction id. */
-    public id: string;
-
     /** UserAction name. */
     public name: string;
 
     /** UserAction devices. */
-    public devices: IDeviceAction[];
+    public devices: { [k: string]: IDevice };
 
     /** UserAction removeDeviceIDs. */
     public removeDeviceIDs: string[];
@@ -332,9 +326,6 @@ export class UserAction implements IUserAction {
 /** Properties of a DeviceAction. */
 export interface IDeviceAction {
 
-    /** DeviceAction id */
-    id?: (string|null);
-
     /** DeviceAction activityId */
     activityId?: (string|null);
 
@@ -342,7 +333,7 @@ export interface IDeviceAction {
     activityStreamId?: (string|null);
 
     /** DeviceAction webRTCStreams */
-    webRTCStreams?: (IWebRTCStreamAction[]|null);
+    webRTCStreams?: ({ [k: string]: IWebRTCStreamAction }|null);
 
     /** DeviceAction removeWebRTCStreamIDs */
     removeWebRTCStreamIDs?: (string[]|null);
@@ -357,9 +348,6 @@ export class DeviceAction implements IDeviceAction {
      */
     constructor(properties?: IDeviceAction);
 
-    /** DeviceAction id. */
-    public id: string;
-
     /** DeviceAction activityId. */
     public activityId: string;
 
@@ -367,7 +355,7 @@ export class DeviceAction implements IDeviceAction {
     public activityStreamId: string;
 
     /** DeviceAction webRTCStreams. */
-    public webRTCStreams: IWebRTCStreamAction[];
+    public webRTCStreams: { [k: string]: IWebRTCStreamAction };
 
     /** DeviceAction removeWebRTCStreamIDs. */
     public removeWebRTCStreamIDs: string[];
@@ -446,14 +434,11 @@ export class DeviceAction implements IDeviceAction {
 /** Properties of a WebRTCStreamAction. */
 export interface IWebRTCStreamAction {
 
-    /** WebRTCStreamAction id */
-    id?: (string|null);
-
     /** WebRTCStreamAction label */
     label?: (string|null);
 
     /** WebRTCStreamAction tracks */
-    tracks?: (IWebRTCTrack[]|null);
+    tracks?: ({ [k: string]: IWebRTCTrack }|null);
 
     /** WebRTCStreamAction removeTrackIDs */
     removeTrackIDs?: (string[]|null);
@@ -468,14 +453,11 @@ export class WebRTCStreamAction implements IWebRTCStreamAction {
      */
     constructor(properties?: IWebRTCStreamAction);
 
-    /** WebRTCStreamAction id. */
-    public id: string;
-
     /** WebRTCStreamAction label. */
     public label: string;
 
     /** WebRTCStreamAction tracks. */
-    public tracks: IWebRTCTrack[];
+    public tracks: { [k: string]: IWebRTCTrack };
 
     /** WebRTCStreamAction removeTrackIDs. */
     public removeTrackIDs: string[];
@@ -651,10 +633,10 @@ export class State implements IState {
 export interface IRoom {
 
     /** Room teachers */
-    teachers?: (IUser[]|null);
+    teachers?: ({ [k: string]: IUser }|null);
 
     /** Room students */
-    students?: (IUser[]|null);
+    students?: ({ [k: string]: IUser }|null);
 
     /** Room host */
     host?: (string|null);
@@ -676,10 +658,10 @@ export class Room implements IRoom {
     constructor(properties?: IRoom);
 
     /** Room teachers. */
-    public teachers: IUser[];
+    public teachers: { [k: string]: IUser };
 
     /** Room students. */
-    public students: IUser[];
+    public students: { [k: string]: IUser };
 
     /** Room host. */
     public host: string;
@@ -764,14 +746,11 @@ export class Room implements IRoom {
 /** Properties of a User. */
 export interface IUser {
 
-    /** User id */
-    id?: (string|null);
-
     /** User name */
     name?: (string|null);
 
     /** User devices */
-    devices?: (IDevice[]|null);
+    devices?: ({ [k: string]: IDevice }|null);
 
     /** User trophies */
     trophies?: (ITrophy[]|null);
@@ -789,14 +768,11 @@ export class User implements IUser {
      */
     constructor(properties?: IUser);
 
-    /** User id. */
-    public id: string;
-
     /** User name. */
     public name: string;
 
     /** User devices. */
-    public devices: IDevice[];
+    public devices: { [k: string]: IDevice };
 
     /** User trophies. */
     public trophies: ITrophy[];
@@ -878,9 +854,6 @@ export class User implements IUser {
 /** Properties of a Device. */
 export interface IDevice {
 
-    /** Device id */
-    id?: (string|null);
-
     /** Device activityId */
     activityId?: (string|null);
 
@@ -888,7 +861,7 @@ export interface IDevice {
     activityStreamId?: (string|null);
 
     /** Device webRTCStreams */
-    webRTCStreams?: (IWebRTCStream[]|null);
+    webRTCStreams?: ({ [k: string]: IWebRTCStream }|null);
 }
 
 /** Represents a Device. */
@@ -900,9 +873,6 @@ export class Device implements IDevice {
      */
     constructor(properties?: IDevice);
 
-    /** Device id. */
-    public id: string;
-
     /** Device activityId. */
     public activityId: string;
 
@@ -910,7 +880,7 @@ export class Device implements IDevice {
     public activityStreamId: string;
 
     /** Device webRTCStreams. */
-    public webRTCStreams: IWebRTCStream[];
+    public webRTCStreams: { [k: string]: IWebRTCStream };
 
     /**
      * Creates a new Device instance using the specified properties.
@@ -986,14 +956,11 @@ export class Device implements IDevice {
 /** Properties of a WebRTCStream. */
 export interface IWebRTCStream {
 
-    /** WebRTCStream id */
-    id?: (string|null);
-
     /** WebRTCStream label */
     label?: (string|null);
 
     /** WebRTCStream tracks */
-    tracks?: (IWebRTCTrack[]|null);
+    tracks?: ({ [k: string]: IWebRTCTrack }|null);
 }
 
 /** Represents a WebRTCStream. */
@@ -1005,14 +972,11 @@ export class WebRTCStream implements IWebRTCStream {
      */
     constructor(properties?: IWebRTCStream);
 
-    /** WebRTCStream id. */
-    public id: string;
-
     /** WebRTCStream label. */
     public label: string;
 
     /** WebRTCStream tracks. */
-    public tracks: IWebRTCTrack[];
+    public tracks: { [k: string]: IWebRTCTrack };
 
     /**
      * Creates a new WebRTCStream instance using the specified properties.
@@ -1088,9 +1052,6 @@ export class WebRTCStream implements IWebRTCStream {
 /** Properties of a WebRTCTrack. */
 export interface IWebRTCTrack {
 
-    /** WebRTCTrack id */
-    id?: (string|null);
-
     /** WebRTCTrack sfu */
     sfu?: (string|null);
 }
@@ -1103,9 +1064,6 @@ export class WebRTCTrack implements IWebRTCTrack {
      * @param [properties] Properties to set
      */
     constructor(properties?: IWebRTCTrack);
-
-    /** WebRTCTrack id. */
-    public id: string;
 
     /** WebRTCTrack sfu. */
     public sfu: string;
@@ -1184,11 +1142,11 @@ export class WebRTCTrack implements IWebRTCTrack {
 /** Properties of a Trophy. */
 export interface ITrophy {
 
-    /** Trophy tropy */
-    tropy?: (string|null);
-
     /** Trophy timestamp */
     timestamp?: (number|null);
+
+    /** Trophy tropy */
+    tropy?: (string|null);
 }
 
 /** Represents a Trophy. */
@@ -1200,11 +1158,11 @@ export class Trophy implements ITrophy {
      */
     constructor(properties?: ITrophy);
 
-    /** Trophy tropy. */
-    public tropy: string;
-
     /** Trophy timestamp. */
     public timestamp: number;
+
+    /** Trophy tropy. */
+    public tropy: string;
 
     /**
      * Creates a new Trophy instance using the specified properties.
@@ -1280,11 +1238,11 @@ export class Trophy implements ITrophy {
 /** Properties of a ChatMessage. */
 export interface IChatMessage {
 
-    /** ChatMessage message */
-    message?: (string|null);
-
     /** ChatMessage timestamp */
     timestamp?: (number|null);
+
+    /** ChatMessage message */
+    message?: (string|null);
 }
 
 /** Represents a ChatMessage. */
@@ -1296,11 +1254,11 @@ export class ChatMessage implements IChatMessage {
      */
     constructor(properties?: IChatMessage);
 
-    /** ChatMessage message. */
-    public message: string;
-
     /** ChatMessage timestamp. */
     public timestamp: number;
+
+    /** ChatMessage message. */
+    public message: string;
 
     /**
      * Creates a new ChatMessage instance using the specified properties.

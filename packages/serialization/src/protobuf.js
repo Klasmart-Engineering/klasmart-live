@@ -228,8 +228,8 @@ export const RoomAction = $root.RoomAction = (() => {
      * Properties of a RoomAction.
      * @exports IRoomAction
      * @interface IRoomAction
-     * @property {Array.<IUserAction>|null} [teachers] RoomAction teachers
-     * @property {Array.<IUserAction>|null} [students] RoomAction students
+     * @property {Object.<string,IUser>|null} [teachers] RoomAction teachers
+     * @property {Object.<string,IUser>|null} [students] RoomAction students
      * @property {string|null} [host] RoomAction host
      * @property {IContent|null} [content] RoomAction content
      * @property {number|null} [endTimestamp] RoomAction endTimestamp
@@ -244,8 +244,8 @@ export const RoomAction = $root.RoomAction = (() => {
      * @param {IRoomAction=} [properties] Properties to set
      */
     function RoomAction(properties) {
-        this.teachers = [];
-        this.students = [];
+        this.teachers = {};
+        this.students = {};
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -254,19 +254,19 @@ export const RoomAction = $root.RoomAction = (() => {
 
     /**
      * RoomAction teachers.
-     * @member {Array.<IUserAction>} teachers
+     * @member {Object.<string,IUser>} teachers
      * @memberof RoomAction
      * @instance
      */
-    RoomAction.prototype.teachers = $util.emptyArray;
+    RoomAction.prototype.teachers = $util.emptyObject;
 
     /**
      * RoomAction students.
-     * @member {Array.<IUserAction>} students
+     * @member {Object.<string,IUser>} students
      * @memberof RoomAction
      * @instance
      */
-    RoomAction.prototype.students = $util.emptyArray;
+    RoomAction.prototype.students = $util.emptyObject;
 
     /**
      * RoomAction host.
@@ -316,12 +316,16 @@ export const RoomAction = $root.RoomAction = (() => {
     RoomAction.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.teachers != null && message.teachers.length)
-            for (let i = 0; i < message.teachers.length; ++i)
-                $root.UserAction.encode(message.teachers[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
-        if (message.students != null && message.students.length)
-            for (let i = 0; i < message.students.length; ++i)
-                $root.UserAction.encode(message.students[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.teachers != null && Object.hasOwnProperty.call(message, "teachers"))
+            for (let keys = Object.keys(message.teachers), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 0, wireType 2 =*/2).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.User.encode(message.teachers[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
+        if (message.students != null && Object.hasOwnProperty.call(message, "students"))
+            for (let keys = Object.keys(message.students), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.User.encode(message.students[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         if (message.host != null && Object.hasOwnProperty.call(message, "host"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.host);
         if (message.content != null && Object.hasOwnProperty.call(message, "content"))
@@ -358,20 +362,55 @@ export const RoomAction = $root.RoomAction = (() => {
     RoomAction.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.RoomAction();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.RoomAction(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                if (!(message.teachers && message.teachers.length))
-                    message.teachers = [];
-                message.teachers.push($root.UserAction.decode(reader, reader.uint32()));
+                if (message.teachers === $util.emptyObject)
+                    message.teachers = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.User.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.teachers[key] = value;
                 break;
-            case 1:
-                if (!(message.students && message.students.length))
-                    message.students = [];
-                message.students.push($root.UserAction.decode(reader, reader.uint32()));
+            case 1: {
+                if (message.students === $util.emptyObject)
+                    message.students = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.User.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.students[key] = value;
                 break;
+            }
             case 2:
                 message.host = reader.string();
                 break;
@@ -417,19 +456,21 @@ export const RoomAction = $root.RoomAction = (() => {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.teachers != null && message.hasOwnProperty("teachers")) {
-            if (!Array.isArray(message.teachers))
-                return "teachers: array expected";
-            for (let i = 0; i < message.teachers.length; ++i) {
-                let error = $root.UserAction.verify(message.teachers[i]);
+            if (!$util.isObject(message.teachers))
+                return "teachers: object expected";
+            let key = Object.keys(message.teachers);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.User.verify(message.teachers[key[i]]);
                 if (error)
                     return "teachers." + error;
             }
         }
         if (message.students != null && message.hasOwnProperty("students")) {
-            if (!Array.isArray(message.students))
-                return "students: array expected";
-            for (let i = 0; i < message.students.length; ++i) {
-                let error = $root.UserAction.verify(message.students[i]);
+            if (!$util.isObject(message.students))
+                return "students: object expected";
+            let key = Object.keys(message.students);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.User.verify(message.students[key[i]]);
                 if (error)
                     return "students." + error;
             }
@@ -461,23 +502,23 @@ export const RoomAction = $root.RoomAction = (() => {
             return object;
         let message = new $root.RoomAction();
         if (object.teachers) {
-            if (!Array.isArray(object.teachers))
-                throw TypeError(".RoomAction.teachers: array expected");
-            message.teachers = [];
-            for (let i = 0; i < object.teachers.length; ++i) {
-                if (typeof object.teachers[i] !== "object")
+            if (typeof object.teachers !== "object")
+                throw TypeError(".RoomAction.teachers: object expected");
+            message.teachers = {};
+            for (let keys = Object.keys(object.teachers), i = 0; i < keys.length; ++i) {
+                if (typeof object.teachers[keys[i]] !== "object")
                     throw TypeError(".RoomAction.teachers: object expected");
-                message.teachers[i] = $root.UserAction.fromObject(object.teachers[i]);
+                message.teachers[keys[i]] = $root.User.fromObject(object.teachers[keys[i]]);
             }
         }
         if (object.students) {
-            if (!Array.isArray(object.students))
-                throw TypeError(".RoomAction.students: array expected");
-            message.students = [];
-            for (let i = 0; i < object.students.length; ++i) {
-                if (typeof object.students[i] !== "object")
+            if (typeof object.students !== "object")
+                throw TypeError(".RoomAction.students: object expected");
+            message.students = {};
+            for (let keys = Object.keys(object.students), i = 0; i < keys.length; ++i) {
+                if (typeof object.students[keys[i]] !== "object")
                     throw TypeError(".RoomAction.students: object expected");
-                message.students[i] = $root.UserAction.fromObject(object.students[i]);
+                message.students[keys[i]] = $root.User.fromObject(object.students[keys[i]]);
             }
         }
         if (object.host != null)
@@ -505,24 +546,25 @@ export const RoomAction = $root.RoomAction = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults) {
-            object.teachers = [];
-            object.students = [];
+        if (options.objects || options.defaults) {
+            object.teachers = {};
+            object.students = {};
         }
         if (options.defaults) {
             object.host = "";
             object.content = null;
             object.endTimestamp = 0;
         }
-        if (message.teachers && message.teachers.length) {
-            object.teachers = [];
-            for (let j = 0; j < message.teachers.length; ++j)
-                object.teachers[j] = $root.UserAction.toObject(message.teachers[j], options);
+        let keys2;
+        if (message.teachers && (keys2 = Object.keys(message.teachers)).length) {
+            object.teachers = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.teachers[keys2[j]] = $root.User.toObject(message.teachers[keys2[j]], options);
         }
-        if (message.students && message.students.length) {
-            object.students = [];
-            for (let j = 0; j < message.students.length; ++j)
-                object.students[j] = $root.UserAction.toObject(message.students[j], options);
+        if (message.students && (keys2 = Object.keys(message.students)).length) {
+            object.students = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.students[keys2[j]] = $root.User.toObject(message.students[keys2[j]], options);
         }
         if (message.host != null && message.hasOwnProperty("host"))
             object.host = message.host;
@@ -553,9 +595,8 @@ export const UserAction = $root.UserAction = (() => {
      * Properties of a UserAction.
      * @exports IUserAction
      * @interface IUserAction
-     * @property {string|null} [id] UserAction id
      * @property {string|null} [name] UserAction name
-     * @property {Array.<IDeviceAction>|null} [devices] UserAction devices
+     * @property {Object.<string,IDevice>|null} [devices] UserAction devices
      * @property {Array.<string>|null} [removeDeviceIDs] UserAction removeDeviceIDs
      * @property {Array.<ITrophy>|null} [trophies] UserAction trophies
      * @property {Array.<IChatMessage>|null} [chatMessages] UserAction chatMessages
@@ -570,7 +611,7 @@ export const UserAction = $root.UserAction = (() => {
      * @param {IUserAction=} [properties] Properties to set
      */
     function UserAction(properties) {
-        this.devices = [];
+        this.devices = {};
         this.removeDeviceIDs = [];
         this.trophies = [];
         this.chatMessages = [];
@@ -579,14 +620,6 @@ export const UserAction = $root.UserAction = (() => {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * UserAction id.
-     * @member {string} id
-     * @memberof UserAction
-     * @instance
-     */
-    UserAction.prototype.id = "";
 
     /**
      * UserAction name.
@@ -598,11 +631,11 @@ export const UserAction = $root.UserAction = (() => {
 
     /**
      * UserAction devices.
-     * @member {Array.<IDeviceAction>} devices
+     * @member {Object.<string,IDevice>} devices
      * @memberof UserAction
      * @instance
      */
-    UserAction.prototype.devices = $util.emptyArray;
+    UserAction.prototype.devices = $util.emptyObject;
 
     /**
      * UserAction removeDeviceIDs.
@@ -652,22 +685,22 @@ export const UserAction = $root.UserAction = (() => {
     UserAction.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.devices != null && message.devices.length)
-            for (let i = 0; i < message.devices.length; ++i)
-                $root.DeviceAction.encode(message.devices[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.name);
+        if (message.devices != null && Object.hasOwnProperty.call(message, "devices"))
+            for (let keys = Object.keys(message.devices), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.Device.encode(message.devices[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         if (message.removeDeviceIDs != null && message.removeDeviceIDs.length)
             for (let i = 0; i < message.removeDeviceIDs.length; ++i)
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.removeDeviceIDs[i]);
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.removeDeviceIDs[i]);
         if (message.trophies != null && message.trophies.length)
             for (let i = 0; i < message.trophies.length; ++i)
-                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.chatMessages != null && message.chatMessages.length)
             for (let i = 0; i < message.chatMessages.length; ++i)
-                $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         return writer;
     };
 
@@ -698,32 +731,46 @@ export const UserAction = $root.UserAction = (() => {
     UserAction.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserAction();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserAction(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.name = reader.string();
                 break;
-            case 2:
-                if (!(message.devices && message.devices.length))
-                    message.devices = [];
-                message.devices.push($root.DeviceAction.decode(reader, reader.uint32()));
+            case 1:
+                if (message.devices === $util.emptyObject)
+                    message.devices = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.Device.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.devices[key] = value;
                 break;
-            case 3:
+            case 2:
                 if (!(message.removeDeviceIDs && message.removeDeviceIDs.length))
                     message.removeDeviceIDs = [];
                 message.removeDeviceIDs.push(reader.string());
                 break;
-            case 4:
+            case 3:
                 if (!(message.trophies && message.trophies.length))
                     message.trophies = [];
                 message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
                 break;
-            case 5:
+            case 4:
                 if (!(message.chatMessages && message.chatMessages.length))
                     message.chatMessages = [];
                 message.chatMessages.push($root.ChatMessage.decode(reader, reader.uint32()));
@@ -763,17 +810,15 @@ export const UserAction = $root.UserAction = (() => {
     UserAction.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
         if (message.devices != null && message.hasOwnProperty("devices")) {
-            if (!Array.isArray(message.devices))
-                return "devices: array expected";
-            for (let i = 0; i < message.devices.length; ++i) {
-                let error = $root.DeviceAction.verify(message.devices[i]);
+            if (!$util.isObject(message.devices))
+                return "devices: object expected";
+            let key = Object.keys(message.devices);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.Device.verify(message.devices[key[i]]);
                 if (error)
                     return "devices." + error;
             }
@@ -818,18 +863,16 @@ export const UserAction = $root.UserAction = (() => {
         if (object instanceof $root.UserAction)
             return object;
         let message = new $root.UserAction();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.name != null)
             message.name = String(object.name);
         if (object.devices) {
-            if (!Array.isArray(object.devices))
-                throw TypeError(".UserAction.devices: array expected");
-            message.devices = [];
-            for (let i = 0; i < object.devices.length; ++i) {
-                if (typeof object.devices[i] !== "object")
+            if (typeof object.devices !== "object")
+                throw TypeError(".UserAction.devices: object expected");
+            message.devices = {};
+            for (let keys = Object.keys(object.devices), i = 0; i < keys.length; ++i) {
+                if (typeof object.devices[keys[i]] !== "object")
                     throw TypeError(".UserAction.devices: object expected");
-                message.devices[i] = $root.DeviceAction.fromObject(object.devices[i]);
+                message.devices[keys[i]] = $root.Device.fromObject(object.devices[keys[i]]);
             }
         }
         if (object.removeDeviceIDs) {
@@ -876,23 +919,21 @@ export const UserAction = $root.UserAction = (() => {
             options = {};
         let object = {};
         if (options.arrays || options.defaults) {
-            object.devices = [];
             object.removeDeviceIDs = [];
             object.trophies = [];
             object.chatMessages = [];
         }
-        if (options.defaults) {
-            object.id = "";
+        if (options.objects || options.defaults)
+            object.devices = {};
+        if (options.defaults)
             object.name = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
-        if (message.devices && message.devices.length) {
-            object.devices = [];
-            for (let j = 0; j < message.devices.length; ++j)
-                object.devices[j] = $root.DeviceAction.toObject(message.devices[j], options);
+        let keys2;
+        if (message.devices && (keys2 = Object.keys(message.devices)).length) {
+            object.devices = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.devices[keys2[j]] = $root.Device.toObject(message.devices[keys2[j]], options);
         }
         if (message.removeDeviceIDs && message.removeDeviceIDs.length) {
             object.removeDeviceIDs = [];
@@ -932,10 +973,9 @@ export const DeviceAction = $root.DeviceAction = (() => {
      * Properties of a DeviceAction.
      * @exports IDeviceAction
      * @interface IDeviceAction
-     * @property {string|null} [id] DeviceAction id
      * @property {string|null} [activityId] DeviceAction activityId
      * @property {string|null} [activityStreamId] DeviceAction activityStreamId
-     * @property {Array.<IWebRTCStreamAction>|null} [webRTCStreams] DeviceAction webRTCStreams
+     * @property {Object.<string,IWebRTCStreamAction>|null} [webRTCStreams] DeviceAction webRTCStreams
      * @property {Array.<string>|null} [removeWebRTCStreamIDs] DeviceAction removeWebRTCStreamIDs
      */
 
@@ -948,21 +988,13 @@ export const DeviceAction = $root.DeviceAction = (() => {
      * @param {IDeviceAction=} [properties] Properties to set
      */
     function DeviceAction(properties) {
-        this.webRTCStreams = [];
+        this.webRTCStreams = {};
         this.removeWebRTCStreamIDs = [];
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * DeviceAction id.
-     * @member {string} id
-     * @memberof DeviceAction
-     * @instance
-     */
-    DeviceAction.prototype.id = "";
 
     /**
      * DeviceAction activityId.
@@ -982,11 +1014,11 @@ export const DeviceAction = $root.DeviceAction = (() => {
 
     /**
      * DeviceAction webRTCStreams.
-     * @member {Array.<IWebRTCStreamAction>} webRTCStreams
+     * @member {Object.<string,IWebRTCStreamAction>} webRTCStreams
      * @memberof DeviceAction
      * @instance
      */
-    DeviceAction.prototype.webRTCStreams = $util.emptyArray;
+    DeviceAction.prototype.webRTCStreams = $util.emptyObject;
 
     /**
      * DeviceAction removeWebRTCStreamIDs.
@@ -1020,18 +1052,18 @@ export const DeviceAction = $root.DeviceAction = (() => {
     DeviceAction.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.activityId != null && Object.hasOwnProperty.call(message, "activityId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.activityId);
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.activityId);
         if (message.activityStreamId != null && Object.hasOwnProperty.call(message, "activityStreamId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.activityStreamId);
-        if (message.webRTCStreams != null && message.webRTCStreams.length)
-            for (let i = 0; i < message.webRTCStreams.length; ++i)
-                $root.WebRTCStreamAction.encode(message.webRTCStreams[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.activityStreamId);
+        if (message.webRTCStreams != null && Object.hasOwnProperty.call(message, "webRTCStreams"))
+            for (let keys = Object.keys(message.webRTCStreams), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 2, wireType 2 =*/18).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.WebRTCStreamAction.encode(message.webRTCStreams[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         if (message.removeWebRTCStreamIDs != null && message.removeWebRTCStreamIDs.length)
             for (let i = 0; i < message.removeWebRTCStreamIDs.length; ++i)
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.removeWebRTCStreamIDs[i]);
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.removeWebRTCStreamIDs[i]);
         return writer;
     };
 
@@ -1062,25 +1094,39 @@ export const DeviceAction = $root.DeviceAction = (() => {
     DeviceAction.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.DeviceAction();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.DeviceAction(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.activityId = reader.string();
                 break;
-            case 2:
+            case 1:
                 message.activityStreamId = reader.string();
                 break;
-            case 3:
-                if (!(message.webRTCStreams && message.webRTCStreams.length))
-                    message.webRTCStreams = [];
-                message.webRTCStreams.push($root.WebRTCStreamAction.decode(reader, reader.uint32()));
+            case 2:
+                if (message.webRTCStreams === $util.emptyObject)
+                    message.webRTCStreams = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.WebRTCStreamAction.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.webRTCStreams[key] = value;
                 break;
-            case 4:
+            case 3:
                 if (!(message.removeWebRTCStreamIDs && message.removeWebRTCStreamIDs.length))
                     message.removeWebRTCStreamIDs = [];
                 message.removeWebRTCStreamIDs.push(reader.string());
@@ -1120,9 +1166,6 @@ export const DeviceAction = $root.DeviceAction = (() => {
     DeviceAction.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.activityId != null && message.hasOwnProperty("activityId"))
             if (!$util.isString(message.activityId))
                 return "activityId: string expected";
@@ -1130,10 +1173,11 @@ export const DeviceAction = $root.DeviceAction = (() => {
             if (!$util.isString(message.activityStreamId))
                 return "activityStreamId: string expected";
         if (message.webRTCStreams != null && message.hasOwnProperty("webRTCStreams")) {
-            if (!Array.isArray(message.webRTCStreams))
-                return "webRTCStreams: array expected";
-            for (let i = 0; i < message.webRTCStreams.length; ++i) {
-                let error = $root.WebRTCStreamAction.verify(message.webRTCStreams[i]);
+            if (!$util.isObject(message.webRTCStreams))
+                return "webRTCStreams: object expected";
+            let key = Object.keys(message.webRTCStreams);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.WebRTCStreamAction.verify(message.webRTCStreams[key[i]]);
                 if (error)
                     return "webRTCStreams." + error;
             }
@@ -1160,20 +1204,18 @@ export const DeviceAction = $root.DeviceAction = (() => {
         if (object instanceof $root.DeviceAction)
             return object;
         let message = new $root.DeviceAction();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.activityId != null)
             message.activityId = String(object.activityId);
         if (object.activityStreamId != null)
             message.activityStreamId = String(object.activityStreamId);
         if (object.webRTCStreams) {
-            if (!Array.isArray(object.webRTCStreams))
-                throw TypeError(".DeviceAction.webRTCStreams: array expected");
-            message.webRTCStreams = [];
-            for (let i = 0; i < object.webRTCStreams.length; ++i) {
-                if (typeof object.webRTCStreams[i] !== "object")
+            if (typeof object.webRTCStreams !== "object")
+                throw TypeError(".DeviceAction.webRTCStreams: object expected");
+            message.webRTCStreams = {};
+            for (let keys = Object.keys(object.webRTCStreams), i = 0; i < keys.length; ++i) {
+                if (typeof object.webRTCStreams[keys[i]] !== "object")
                     throw TypeError(".DeviceAction.webRTCStreams: object expected");
-                message.webRTCStreams[i] = $root.WebRTCStreamAction.fromObject(object.webRTCStreams[i]);
+                message.webRTCStreams[keys[i]] = $root.WebRTCStreamAction.fromObject(object.webRTCStreams[keys[i]]);
             }
         }
         if (object.removeWebRTCStreamIDs) {
@@ -1199,25 +1241,23 @@ export const DeviceAction = $root.DeviceAction = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults) {
-            object.webRTCStreams = [];
+        if (options.arrays || options.defaults)
             object.removeWebRTCStreamIDs = [];
-        }
+        if (options.objects || options.defaults)
+            object.webRTCStreams = {};
         if (options.defaults) {
-            object.id = "";
             object.activityId = "";
             object.activityStreamId = "";
         }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.activityId != null && message.hasOwnProperty("activityId"))
             object.activityId = message.activityId;
         if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
             object.activityStreamId = message.activityStreamId;
-        if (message.webRTCStreams && message.webRTCStreams.length) {
-            object.webRTCStreams = [];
-            for (let j = 0; j < message.webRTCStreams.length; ++j)
-                object.webRTCStreams[j] = $root.WebRTCStreamAction.toObject(message.webRTCStreams[j], options);
+        let keys2;
+        if (message.webRTCStreams && (keys2 = Object.keys(message.webRTCStreams)).length) {
+            object.webRTCStreams = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.webRTCStreams[keys2[j]] = $root.WebRTCStreamAction.toObject(message.webRTCStreams[keys2[j]], options);
         }
         if (message.removeWebRTCStreamIDs && message.removeWebRTCStreamIDs.length) {
             object.removeWebRTCStreamIDs = [];
@@ -1247,9 +1287,8 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
      * Properties of a WebRTCStreamAction.
      * @exports IWebRTCStreamAction
      * @interface IWebRTCStreamAction
-     * @property {string|null} [id] WebRTCStreamAction id
      * @property {string|null} [label] WebRTCStreamAction label
-     * @property {Array.<IWebRTCTrack>|null} [tracks] WebRTCStreamAction tracks
+     * @property {Object.<string,IWebRTCTrack>|null} [tracks] WebRTCStreamAction tracks
      * @property {Array.<string>|null} [removeTrackIDs] WebRTCStreamAction removeTrackIDs
      */
 
@@ -1262,21 +1301,13 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
      * @param {IWebRTCStreamAction=} [properties] Properties to set
      */
     function WebRTCStreamAction(properties) {
-        this.tracks = [];
+        this.tracks = {};
         this.removeTrackIDs = [];
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * WebRTCStreamAction id.
-     * @member {string} id
-     * @memberof WebRTCStreamAction
-     * @instance
-     */
-    WebRTCStreamAction.prototype.id = "";
 
     /**
      * WebRTCStreamAction label.
@@ -1288,11 +1319,11 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
 
     /**
      * WebRTCStreamAction tracks.
-     * @member {Array.<IWebRTCTrack>} tracks
+     * @member {Object.<string,IWebRTCTrack>} tracks
      * @memberof WebRTCStreamAction
      * @instance
      */
-    WebRTCStreamAction.prototype.tracks = $util.emptyArray;
+    WebRTCStreamAction.prototype.tracks = $util.emptyObject;
 
     /**
      * WebRTCStreamAction removeTrackIDs.
@@ -1326,16 +1357,16 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
     WebRTCStreamAction.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.label != null && Object.hasOwnProperty.call(message, "label"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.label);
-        if (message.tracks != null && message.tracks.length)
-            for (let i = 0; i < message.tracks.length; ++i)
-                $root.WebRTCTrack.encode(message.tracks[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.label);
+        if (message.tracks != null && Object.hasOwnProperty.call(message, "tracks"))
+            for (let keys = Object.keys(message.tracks), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.WebRTCTrack.encode(message.tracks[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         if (message.removeTrackIDs != null && message.removeTrackIDs.length)
             for (let i = 0; i < message.removeTrackIDs.length; ++i)
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.removeTrackIDs[i]);
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.removeTrackIDs[i]);
         return writer;
     };
 
@@ -1366,22 +1397,36 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
     WebRTCStreamAction.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.WebRTCStreamAction();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.WebRTCStreamAction(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.label = reader.string();
                 break;
-            case 2:
-                if (!(message.tracks && message.tracks.length))
-                    message.tracks = [];
-                message.tracks.push($root.WebRTCTrack.decode(reader, reader.uint32()));
+            case 1:
+                if (message.tracks === $util.emptyObject)
+                    message.tracks = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.WebRTCTrack.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.tracks[key] = value;
                 break;
-            case 3:
+            case 2:
                 if (!(message.removeTrackIDs && message.removeTrackIDs.length))
                     message.removeTrackIDs = [];
                 message.removeTrackIDs.push(reader.string());
@@ -1421,17 +1466,15 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
     WebRTCStreamAction.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.label != null && message.hasOwnProperty("label"))
             if (!$util.isString(message.label))
                 return "label: string expected";
         if (message.tracks != null && message.hasOwnProperty("tracks")) {
-            if (!Array.isArray(message.tracks))
-                return "tracks: array expected";
-            for (let i = 0; i < message.tracks.length; ++i) {
-                let error = $root.WebRTCTrack.verify(message.tracks[i]);
+            if (!$util.isObject(message.tracks))
+                return "tracks: object expected";
+            let key = Object.keys(message.tracks);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.WebRTCTrack.verify(message.tracks[key[i]]);
                 if (error)
                     return "tracks." + error;
             }
@@ -1458,18 +1501,16 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
         if (object instanceof $root.WebRTCStreamAction)
             return object;
         let message = new $root.WebRTCStreamAction();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.label != null)
             message.label = String(object.label);
         if (object.tracks) {
-            if (!Array.isArray(object.tracks))
-                throw TypeError(".WebRTCStreamAction.tracks: array expected");
-            message.tracks = [];
-            for (let i = 0; i < object.tracks.length; ++i) {
-                if (typeof object.tracks[i] !== "object")
+            if (typeof object.tracks !== "object")
+                throw TypeError(".WebRTCStreamAction.tracks: object expected");
+            message.tracks = {};
+            for (let keys = Object.keys(object.tracks), i = 0; i < keys.length; ++i) {
+                if (typeof object.tracks[keys[i]] !== "object")
                     throw TypeError(".WebRTCStreamAction.tracks: object expected");
-                message.tracks[i] = $root.WebRTCTrack.fromObject(object.tracks[i]);
+                message.tracks[keys[i]] = $root.WebRTCTrack.fromObject(object.tracks[keys[i]]);
             }
         }
         if (object.removeTrackIDs) {
@@ -1495,22 +1536,19 @@ export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults) {
-            object.tracks = [];
+        if (options.arrays || options.defaults)
             object.removeTrackIDs = [];
-        }
-        if (options.defaults) {
-            object.id = "";
+        if (options.objects || options.defaults)
+            object.tracks = {};
+        if (options.defaults)
             object.label = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.label != null && message.hasOwnProperty("label"))
             object.label = message.label;
-        if (message.tracks && message.tracks.length) {
-            object.tracks = [];
-            for (let j = 0; j < message.tracks.length; ++j)
-                object.tracks[j] = $root.WebRTCTrack.toObject(message.tracks[j], options);
+        let keys2;
+        if (message.tracks && (keys2 = Object.keys(message.tracks)).length) {
+            object.tracks = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.tracks[keys2[j]] = $root.WebRTCTrack.toObject(message.tracks[keys2[j]], options);
         }
         if (message.removeTrackIDs && message.removeTrackIDs.length) {
             object.removeTrackIDs = [];
@@ -1755,8 +1793,8 @@ export const Room = $root.Room = (() => {
      * Properties of a Room.
      * @exports IRoom
      * @interface IRoom
-     * @property {Array.<IUser>|null} [teachers] Room teachers
-     * @property {Array.<IUser>|null} [students] Room students
+     * @property {Object.<string,IUser>|null} [teachers] Room teachers
+     * @property {Object.<string,IUser>|null} [students] Room students
      * @property {string|null} [host] Room host
      * @property {IContent|null} [content] Room content
      * @property {number|null} [endTimestamp] Room endTimestamp
@@ -1771,8 +1809,8 @@ export const Room = $root.Room = (() => {
      * @param {IRoom=} [properties] Properties to set
      */
     function Room(properties) {
-        this.teachers = [];
-        this.students = [];
+        this.teachers = {};
+        this.students = {};
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1781,19 +1819,19 @@ export const Room = $root.Room = (() => {
 
     /**
      * Room teachers.
-     * @member {Array.<IUser>} teachers
+     * @member {Object.<string,IUser>} teachers
      * @memberof Room
      * @instance
      */
-    Room.prototype.teachers = $util.emptyArray;
+    Room.prototype.teachers = $util.emptyObject;
 
     /**
      * Room students.
-     * @member {Array.<IUser>} students
+     * @member {Object.<string,IUser>} students
      * @memberof Room
      * @instance
      */
-    Room.prototype.students = $util.emptyArray;
+    Room.prototype.students = $util.emptyObject;
 
     /**
      * Room host.
@@ -1843,12 +1881,16 @@ export const Room = $root.Room = (() => {
     Room.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.teachers != null && message.teachers.length)
-            for (let i = 0; i < message.teachers.length; ++i)
-                $root.User.encode(message.teachers[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
-        if (message.students != null && message.students.length)
-            for (let i = 0; i < message.students.length; ++i)
-                $root.User.encode(message.students[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.teachers != null && Object.hasOwnProperty.call(message, "teachers"))
+            for (let keys = Object.keys(message.teachers), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 0, wireType 2 =*/2).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.User.encode(message.teachers[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
+        if (message.students != null && Object.hasOwnProperty.call(message, "students"))
+            for (let keys = Object.keys(message.students), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.User.encode(message.students[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         if (message.host != null && Object.hasOwnProperty.call(message, "host"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.host);
         if (message.content != null && Object.hasOwnProperty.call(message, "content"))
@@ -1885,20 +1927,55 @@ export const Room = $root.Room = (() => {
     Room.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Room();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Room(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                if (!(message.teachers && message.teachers.length))
-                    message.teachers = [];
-                message.teachers.push($root.User.decode(reader, reader.uint32()));
+                if (message.teachers === $util.emptyObject)
+                    message.teachers = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.User.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.teachers[key] = value;
                 break;
-            case 1:
-                if (!(message.students && message.students.length))
-                    message.students = [];
-                message.students.push($root.User.decode(reader, reader.uint32()));
+            case 1: {
+                if (message.students === $util.emptyObject)
+                    message.students = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.User.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.students[key] = value;
                 break;
+            }
             case 2:
                 message.host = reader.string();
                 break;
@@ -1944,19 +2021,21 @@ export const Room = $root.Room = (() => {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.teachers != null && message.hasOwnProperty("teachers")) {
-            if (!Array.isArray(message.teachers))
-                return "teachers: array expected";
-            for (let i = 0; i < message.teachers.length; ++i) {
-                let error = $root.User.verify(message.teachers[i]);
+            if (!$util.isObject(message.teachers))
+                return "teachers: object expected";
+            let key = Object.keys(message.teachers);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.User.verify(message.teachers[key[i]]);
                 if (error)
                     return "teachers." + error;
             }
         }
         if (message.students != null && message.hasOwnProperty("students")) {
-            if (!Array.isArray(message.students))
-                return "students: array expected";
-            for (let i = 0; i < message.students.length; ++i) {
-                let error = $root.User.verify(message.students[i]);
+            if (!$util.isObject(message.students))
+                return "students: object expected";
+            let key = Object.keys(message.students);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.User.verify(message.students[key[i]]);
                 if (error)
                     return "students." + error;
             }
@@ -1988,23 +2067,23 @@ export const Room = $root.Room = (() => {
             return object;
         let message = new $root.Room();
         if (object.teachers) {
-            if (!Array.isArray(object.teachers))
-                throw TypeError(".Room.teachers: array expected");
-            message.teachers = [];
-            for (let i = 0; i < object.teachers.length; ++i) {
-                if (typeof object.teachers[i] !== "object")
+            if (typeof object.teachers !== "object")
+                throw TypeError(".Room.teachers: object expected");
+            message.teachers = {};
+            for (let keys = Object.keys(object.teachers), i = 0; i < keys.length; ++i) {
+                if (typeof object.teachers[keys[i]] !== "object")
                     throw TypeError(".Room.teachers: object expected");
-                message.teachers[i] = $root.User.fromObject(object.teachers[i]);
+                message.teachers[keys[i]] = $root.User.fromObject(object.teachers[keys[i]]);
             }
         }
         if (object.students) {
-            if (!Array.isArray(object.students))
-                throw TypeError(".Room.students: array expected");
-            message.students = [];
-            for (let i = 0; i < object.students.length; ++i) {
-                if (typeof object.students[i] !== "object")
+            if (typeof object.students !== "object")
+                throw TypeError(".Room.students: object expected");
+            message.students = {};
+            for (let keys = Object.keys(object.students), i = 0; i < keys.length; ++i) {
+                if (typeof object.students[keys[i]] !== "object")
                     throw TypeError(".Room.students: object expected");
-                message.students[i] = $root.User.fromObject(object.students[i]);
+                message.students[keys[i]] = $root.User.fromObject(object.students[keys[i]]);
             }
         }
         if (object.host != null)
@@ -2032,24 +2111,25 @@ export const Room = $root.Room = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults) {
-            object.teachers = [];
-            object.students = [];
+        if (options.objects || options.defaults) {
+            object.teachers = {};
+            object.students = {};
         }
         if (options.defaults) {
             object.host = "";
             object.content = null;
             object.endTimestamp = 0;
         }
-        if (message.teachers && message.teachers.length) {
-            object.teachers = [];
-            for (let j = 0; j < message.teachers.length; ++j)
-                object.teachers[j] = $root.User.toObject(message.teachers[j], options);
+        let keys2;
+        if (message.teachers && (keys2 = Object.keys(message.teachers)).length) {
+            object.teachers = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.teachers[keys2[j]] = $root.User.toObject(message.teachers[keys2[j]], options);
         }
-        if (message.students && message.students.length) {
-            object.students = [];
-            for (let j = 0; j < message.students.length; ++j)
-                object.students[j] = $root.User.toObject(message.students[j], options);
+        if (message.students && (keys2 = Object.keys(message.students)).length) {
+            object.students = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.students[keys2[j]] = $root.User.toObject(message.students[keys2[j]], options);
         }
         if (message.host != null && message.hasOwnProperty("host"))
             object.host = message.host;
@@ -2080,9 +2160,8 @@ export const User = $root.User = (() => {
      * Properties of a User.
      * @exports IUser
      * @interface IUser
-     * @property {string|null} [id] User id
      * @property {string|null} [name] User name
-     * @property {Array.<IDevice>|null} [devices] User devices
+     * @property {Object.<string,IDevice>|null} [devices] User devices
      * @property {Array.<ITrophy>|null} [trophies] User trophies
      * @property {Array.<IChatMessage>|null} [chatMessages] User chatMessages
      */
@@ -2096,7 +2175,7 @@ export const User = $root.User = (() => {
      * @param {IUser=} [properties] Properties to set
      */
     function User(properties) {
-        this.devices = [];
+        this.devices = {};
         this.trophies = [];
         this.chatMessages = [];
         if (properties)
@@ -2104,14 +2183,6 @@ export const User = $root.User = (() => {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * User id.
-     * @member {string} id
-     * @memberof User
-     * @instance
-     */
-    User.prototype.id = "";
 
     /**
      * User name.
@@ -2123,11 +2194,11 @@ export const User = $root.User = (() => {
 
     /**
      * User devices.
-     * @member {Array.<IDevice>} devices
+     * @member {Object.<string,IDevice>} devices
      * @memberof User
      * @instance
      */
-    User.prototype.devices = $util.emptyArray;
+    User.prototype.devices = $util.emptyObject;
 
     /**
      * User trophies.
@@ -2169,19 +2240,19 @@ export const User = $root.User = (() => {
     User.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.devices != null && message.devices.length)
-            for (let i = 0; i < message.devices.length; ++i)
-                $root.Device.encode(message.devices[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.name);
+        if (message.devices != null && Object.hasOwnProperty.call(message, "devices"))
+            for (let keys = Object.keys(message.devices), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.Device.encode(message.devices[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         if (message.trophies != null && message.trophies.length)
             for (let i = 0; i < message.trophies.length; ++i)
-                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.chatMessages != null && message.chatMessages.length)
             for (let i = 0; i < message.chatMessages.length; ++i)
-                $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -2212,27 +2283,41 @@ export const User = $root.User = (() => {
     User.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.User();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.User(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.name = reader.string();
                 break;
-            case 2:
-                if (!(message.devices && message.devices.length))
-                    message.devices = [];
-                message.devices.push($root.Device.decode(reader, reader.uint32()));
+            case 1:
+                if (message.devices === $util.emptyObject)
+                    message.devices = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.Device.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.devices[key] = value;
                 break;
-            case 3:
+            case 2:
                 if (!(message.trophies && message.trophies.length))
                     message.trophies = [];
                 message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
                 break;
-            case 4:
+            case 3:
                 if (!(message.chatMessages && message.chatMessages.length))
                     message.chatMessages = [];
                 message.chatMessages.push($root.ChatMessage.decode(reader, reader.uint32()));
@@ -2272,17 +2357,15 @@ export const User = $root.User = (() => {
     User.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
         if (message.devices != null && message.hasOwnProperty("devices")) {
-            if (!Array.isArray(message.devices))
-                return "devices: array expected";
-            for (let i = 0; i < message.devices.length; ++i) {
-                let error = $root.Device.verify(message.devices[i]);
+            if (!$util.isObject(message.devices))
+                return "devices: object expected";
+            let key = Object.keys(message.devices);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.Device.verify(message.devices[key[i]]);
                 if (error)
                     return "devices." + error;
             }
@@ -2320,18 +2403,16 @@ export const User = $root.User = (() => {
         if (object instanceof $root.User)
             return object;
         let message = new $root.User();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.name != null)
             message.name = String(object.name);
         if (object.devices) {
-            if (!Array.isArray(object.devices))
-                throw TypeError(".User.devices: array expected");
-            message.devices = [];
-            for (let i = 0; i < object.devices.length; ++i) {
-                if (typeof object.devices[i] !== "object")
+            if (typeof object.devices !== "object")
+                throw TypeError(".User.devices: object expected");
+            message.devices = {};
+            for (let keys = Object.keys(object.devices), i = 0; i < keys.length; ++i) {
+                if (typeof object.devices[keys[i]] !== "object")
                     throw TypeError(".User.devices: object expected");
-                message.devices[i] = $root.Device.fromObject(object.devices[i]);
+                message.devices[keys[i]] = $root.Device.fromObject(object.devices[keys[i]]);
             }
         }
         if (object.trophies) {
@@ -2371,22 +2452,20 @@ export const User = $root.User = (() => {
             options = {};
         let object = {};
         if (options.arrays || options.defaults) {
-            object.devices = [];
             object.trophies = [];
             object.chatMessages = [];
         }
-        if (options.defaults) {
-            object.id = "";
+        if (options.objects || options.defaults)
+            object.devices = {};
+        if (options.defaults)
             object.name = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
-        if (message.devices && message.devices.length) {
-            object.devices = [];
-            for (let j = 0; j < message.devices.length; ++j)
-                object.devices[j] = $root.Device.toObject(message.devices[j], options);
+        let keys2;
+        if (message.devices && (keys2 = Object.keys(message.devices)).length) {
+            object.devices = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.devices[keys2[j]] = $root.Device.toObject(message.devices[keys2[j]], options);
         }
         if (message.trophies && message.trophies.length) {
             object.trophies = [];
@@ -2421,10 +2500,9 @@ export const Device = $root.Device = (() => {
      * Properties of a Device.
      * @exports IDevice
      * @interface IDevice
-     * @property {string|null} [id] Device id
      * @property {string|null} [activityId] Device activityId
      * @property {string|null} [activityStreamId] Device activityStreamId
-     * @property {Array.<IWebRTCStream>|null} [webRTCStreams] Device webRTCStreams
+     * @property {Object.<string,IWebRTCStream>|null} [webRTCStreams] Device webRTCStreams
      */
 
     /**
@@ -2436,20 +2514,12 @@ export const Device = $root.Device = (() => {
      * @param {IDevice=} [properties] Properties to set
      */
     function Device(properties) {
-        this.webRTCStreams = [];
+        this.webRTCStreams = {};
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * Device id.
-     * @member {string} id
-     * @memberof Device
-     * @instance
-     */
-    Device.prototype.id = "";
 
     /**
      * Device activityId.
@@ -2469,11 +2539,11 @@ export const Device = $root.Device = (() => {
 
     /**
      * Device webRTCStreams.
-     * @member {Array.<IWebRTCStream>} webRTCStreams
+     * @member {Object.<string,IWebRTCStream>} webRTCStreams
      * @memberof Device
      * @instance
      */
-    Device.prototype.webRTCStreams = $util.emptyArray;
+    Device.prototype.webRTCStreams = $util.emptyObject;
 
     /**
      * Creates a new Device instance using the specified properties.
@@ -2499,15 +2569,15 @@ export const Device = $root.Device = (() => {
     Device.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.activityId != null && Object.hasOwnProperty.call(message, "activityId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.activityId);
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.activityId);
         if (message.activityStreamId != null && Object.hasOwnProperty.call(message, "activityStreamId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.activityStreamId);
-        if (message.webRTCStreams != null && message.webRTCStreams.length)
-            for (let i = 0; i < message.webRTCStreams.length; ++i)
-                $root.WebRTCStream.encode(message.webRTCStreams[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.activityStreamId);
+        if (message.webRTCStreams != null && Object.hasOwnProperty.call(message, "webRTCStreams"))
+            for (let keys = Object.keys(message.webRTCStreams), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 2, wireType 2 =*/18).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.WebRTCStream.encode(message.webRTCStreams[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         return writer;
     };
 
@@ -2538,23 +2608,37 @@ export const Device = $root.Device = (() => {
     Device.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Device();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Device(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.activityId = reader.string();
                 break;
-            case 2:
+            case 1:
                 message.activityStreamId = reader.string();
                 break;
-            case 3:
-                if (!(message.webRTCStreams && message.webRTCStreams.length))
-                    message.webRTCStreams = [];
-                message.webRTCStreams.push($root.WebRTCStream.decode(reader, reader.uint32()));
+            case 2:
+                if (message.webRTCStreams === $util.emptyObject)
+                    message.webRTCStreams = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.WebRTCStream.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.webRTCStreams[key] = value;
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2591,9 +2675,6 @@ export const Device = $root.Device = (() => {
     Device.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.activityId != null && message.hasOwnProperty("activityId"))
             if (!$util.isString(message.activityId))
                 return "activityId: string expected";
@@ -2601,10 +2682,11 @@ export const Device = $root.Device = (() => {
             if (!$util.isString(message.activityStreamId))
                 return "activityStreamId: string expected";
         if (message.webRTCStreams != null && message.hasOwnProperty("webRTCStreams")) {
-            if (!Array.isArray(message.webRTCStreams))
-                return "webRTCStreams: array expected";
-            for (let i = 0; i < message.webRTCStreams.length; ++i) {
-                let error = $root.WebRTCStream.verify(message.webRTCStreams[i]);
+            if (!$util.isObject(message.webRTCStreams))
+                return "webRTCStreams: object expected";
+            let key = Object.keys(message.webRTCStreams);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.WebRTCStream.verify(message.webRTCStreams[key[i]]);
                 if (error)
                     return "webRTCStreams." + error;
             }
@@ -2624,20 +2706,18 @@ export const Device = $root.Device = (() => {
         if (object instanceof $root.Device)
             return object;
         let message = new $root.Device();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.activityId != null)
             message.activityId = String(object.activityId);
         if (object.activityStreamId != null)
             message.activityStreamId = String(object.activityStreamId);
         if (object.webRTCStreams) {
-            if (!Array.isArray(object.webRTCStreams))
-                throw TypeError(".Device.webRTCStreams: array expected");
-            message.webRTCStreams = [];
-            for (let i = 0; i < object.webRTCStreams.length; ++i) {
-                if (typeof object.webRTCStreams[i] !== "object")
+            if (typeof object.webRTCStreams !== "object")
+                throw TypeError(".Device.webRTCStreams: object expected");
+            message.webRTCStreams = {};
+            for (let keys = Object.keys(object.webRTCStreams), i = 0; i < keys.length; ++i) {
+                if (typeof object.webRTCStreams[keys[i]] !== "object")
                     throw TypeError(".Device.webRTCStreams: object expected");
-                message.webRTCStreams[i] = $root.WebRTCStream.fromObject(object.webRTCStreams[i]);
+                message.webRTCStreams[keys[i]] = $root.WebRTCStream.fromObject(object.webRTCStreams[keys[i]]);
             }
         }
         return message;
@@ -2656,23 +2736,21 @@ export const Device = $root.Device = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults)
-            object.webRTCStreams = [];
+        if (options.objects || options.defaults)
+            object.webRTCStreams = {};
         if (options.defaults) {
-            object.id = "";
             object.activityId = "";
             object.activityStreamId = "";
         }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.activityId != null && message.hasOwnProperty("activityId"))
             object.activityId = message.activityId;
         if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
             object.activityStreamId = message.activityStreamId;
-        if (message.webRTCStreams && message.webRTCStreams.length) {
-            object.webRTCStreams = [];
-            for (let j = 0; j < message.webRTCStreams.length; ++j)
-                object.webRTCStreams[j] = $root.WebRTCStream.toObject(message.webRTCStreams[j], options);
+        let keys2;
+        if (message.webRTCStreams && (keys2 = Object.keys(message.webRTCStreams)).length) {
+            object.webRTCStreams = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.webRTCStreams[keys2[j]] = $root.WebRTCStream.toObject(message.webRTCStreams[keys2[j]], options);
         }
         return object;
     };
@@ -2697,9 +2775,8 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
      * Properties of a WebRTCStream.
      * @exports IWebRTCStream
      * @interface IWebRTCStream
-     * @property {string|null} [id] WebRTCStream id
      * @property {string|null} [label] WebRTCStream label
-     * @property {Array.<IWebRTCTrack>|null} [tracks] WebRTCStream tracks
+     * @property {Object.<string,IWebRTCTrack>|null} [tracks] WebRTCStream tracks
      */
 
     /**
@@ -2711,20 +2788,12 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
      * @param {IWebRTCStream=} [properties] Properties to set
      */
     function WebRTCStream(properties) {
-        this.tracks = [];
+        this.tracks = {};
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * WebRTCStream id.
-     * @member {string} id
-     * @memberof WebRTCStream
-     * @instance
-     */
-    WebRTCStream.prototype.id = "";
 
     /**
      * WebRTCStream label.
@@ -2736,11 +2805,11 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
 
     /**
      * WebRTCStream tracks.
-     * @member {Array.<IWebRTCTrack>} tracks
+     * @member {Object.<string,IWebRTCTrack>} tracks
      * @memberof WebRTCStream
      * @instance
      */
-    WebRTCStream.prototype.tracks = $util.emptyArray;
+    WebRTCStream.prototype.tracks = $util.emptyObject;
 
     /**
      * Creates a new WebRTCStream instance using the specified properties.
@@ -2766,13 +2835,13 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
     WebRTCStream.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.label != null && Object.hasOwnProperty.call(message, "label"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.label);
-        if (message.tracks != null && message.tracks.length)
-            for (let i = 0; i < message.tracks.length; ++i)
-                $root.WebRTCTrack.encode(message.tracks[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.label);
+        if (message.tracks != null && Object.hasOwnProperty.call(message, "tracks"))
+            for (let keys = Object.keys(message.tracks), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.WebRTCTrack.encode(message.tracks[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
         return writer;
     };
 
@@ -2803,20 +2872,34 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
     WebRTCStream.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.WebRTCStream();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.WebRTCStream(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.label = reader.string();
                 break;
-            case 2:
-                if (!(message.tracks && message.tracks.length))
-                    message.tracks = [];
-                message.tracks.push($root.WebRTCTrack.decode(reader, reader.uint32()));
+            case 1:
+                if (message.tracks === $util.emptyObject)
+                    message.tracks = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.WebRTCTrack.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.tracks[key] = value;
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2853,17 +2936,15 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
     WebRTCStream.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.label != null && message.hasOwnProperty("label"))
             if (!$util.isString(message.label))
                 return "label: string expected";
         if (message.tracks != null && message.hasOwnProperty("tracks")) {
-            if (!Array.isArray(message.tracks))
-                return "tracks: array expected";
-            for (let i = 0; i < message.tracks.length; ++i) {
-                let error = $root.WebRTCTrack.verify(message.tracks[i]);
+            if (!$util.isObject(message.tracks))
+                return "tracks: object expected";
+            let key = Object.keys(message.tracks);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.WebRTCTrack.verify(message.tracks[key[i]]);
                 if (error)
                     return "tracks." + error;
             }
@@ -2883,18 +2964,16 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
         if (object instanceof $root.WebRTCStream)
             return object;
         let message = new $root.WebRTCStream();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.label != null)
             message.label = String(object.label);
         if (object.tracks) {
-            if (!Array.isArray(object.tracks))
-                throw TypeError(".WebRTCStream.tracks: array expected");
-            message.tracks = [];
-            for (let i = 0; i < object.tracks.length; ++i) {
-                if (typeof object.tracks[i] !== "object")
+            if (typeof object.tracks !== "object")
+                throw TypeError(".WebRTCStream.tracks: object expected");
+            message.tracks = {};
+            for (let keys = Object.keys(object.tracks), i = 0; i < keys.length; ++i) {
+                if (typeof object.tracks[keys[i]] !== "object")
                     throw TypeError(".WebRTCStream.tracks: object expected");
-                message.tracks[i] = $root.WebRTCTrack.fromObject(object.tracks[i]);
+                message.tracks[keys[i]] = $root.WebRTCTrack.fromObject(object.tracks[keys[i]]);
             }
         }
         return message;
@@ -2913,20 +2992,17 @@ export const WebRTCStream = $root.WebRTCStream = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults)
-            object.tracks = [];
-        if (options.defaults) {
-            object.id = "";
+        if (options.objects || options.defaults)
+            object.tracks = {};
+        if (options.defaults)
             object.label = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.label != null && message.hasOwnProperty("label"))
             object.label = message.label;
-        if (message.tracks && message.tracks.length) {
-            object.tracks = [];
-            for (let j = 0; j < message.tracks.length; ++j)
-                object.tracks[j] = $root.WebRTCTrack.toObject(message.tracks[j], options);
+        let keys2;
+        if (message.tracks && (keys2 = Object.keys(message.tracks)).length) {
+            object.tracks = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.tracks[keys2[j]] = $root.WebRTCTrack.toObject(message.tracks[keys2[j]], options);
         }
         return object;
     };
@@ -2951,7 +3027,6 @@ export const WebRTCTrack = $root.WebRTCTrack = (() => {
      * Properties of a WebRTCTrack.
      * @exports IWebRTCTrack
      * @interface IWebRTCTrack
-     * @property {string|null} [id] WebRTCTrack id
      * @property {string|null} [sfu] WebRTCTrack sfu
      */
 
@@ -2969,14 +3044,6 @@ export const WebRTCTrack = $root.WebRTCTrack = (() => {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * WebRTCTrack id.
-     * @member {string} id
-     * @memberof WebRTCTrack
-     * @instance
-     */
-    WebRTCTrack.prototype.id = "";
 
     /**
      * WebRTCTrack sfu.
@@ -3010,10 +3077,8 @@ export const WebRTCTrack = $root.WebRTCTrack = (() => {
     WebRTCTrack.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.sfu != null && Object.hasOwnProperty.call(message, "sfu"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.sfu);
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.sfu);
         return writer;
     };
 
@@ -3049,9 +3114,6 @@ export const WebRTCTrack = $root.WebRTCTrack = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.sfu = reader.string();
                 break;
             default:
@@ -3089,9 +3151,6 @@ export const WebRTCTrack = $root.WebRTCTrack = (() => {
     WebRTCTrack.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.sfu != null && message.hasOwnProperty("sfu"))
             if (!$util.isString(message.sfu))
                 return "sfu: string expected";
@@ -3110,8 +3169,6 @@ export const WebRTCTrack = $root.WebRTCTrack = (() => {
         if (object instanceof $root.WebRTCTrack)
             return object;
         let message = new $root.WebRTCTrack();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.sfu != null)
             message.sfu = String(object.sfu);
         return message;
@@ -3130,12 +3187,8 @@ export const WebRTCTrack = $root.WebRTCTrack = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.defaults) {
-            object.id = "";
+        if (options.defaults)
             object.sfu = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.sfu != null && message.hasOwnProperty("sfu"))
             object.sfu = message.sfu;
         return object;
@@ -3161,8 +3214,8 @@ export const Trophy = $root.Trophy = (() => {
      * Properties of a Trophy.
      * @exports ITrophy
      * @interface ITrophy
-     * @property {string|null} [tropy] Trophy tropy
      * @property {number|null} [timestamp] Trophy timestamp
+     * @property {string|null} [tropy] Trophy tropy
      */
 
     /**
@@ -3181,20 +3234,20 @@ export const Trophy = $root.Trophy = (() => {
     }
 
     /**
-     * Trophy tropy.
-     * @member {string} tropy
-     * @memberof Trophy
-     * @instance
-     */
-    Trophy.prototype.tropy = "";
-
-    /**
      * Trophy timestamp.
      * @member {number} timestamp
      * @memberof Trophy
      * @instance
      */
     Trophy.prototype.timestamp = 0;
+
+    /**
+     * Trophy tropy.
+     * @member {string} tropy
+     * @memberof Trophy
+     * @instance
+     */
+    Trophy.prototype.tropy = "";
 
     /**
      * Creates a new Trophy instance using the specified properties.
@@ -3220,10 +3273,10 @@ export const Trophy = $root.Trophy = (() => {
     Trophy.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.tropy != null && Object.hasOwnProperty.call(message, "tropy"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.tropy);
         if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
-            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.timestamp);
+            writer.uint32(/* id 0, wireType 0 =*/0).uint32(message.timestamp);
+        if (message.tropy != null && Object.hasOwnProperty.call(message, "tropy"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.tropy);
         return writer;
     };
 
@@ -3259,10 +3312,10 @@ export const Trophy = $root.Trophy = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.tropy = reader.string();
+                message.timestamp = reader.uint32();
                 break;
             case 1:
-                message.timestamp = reader.uint32();
+                message.tropy = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3299,12 +3352,12 @@ export const Trophy = $root.Trophy = (() => {
     Trophy.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.tropy != null && message.hasOwnProperty("tropy"))
-            if (!$util.isString(message.tropy))
-                return "tropy: string expected";
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             if (!$util.isInteger(message.timestamp))
                 return "timestamp: integer expected";
+        if (message.tropy != null && message.hasOwnProperty("tropy"))
+            if (!$util.isString(message.tropy))
+                return "tropy: string expected";
         return null;
     };
 
@@ -3320,10 +3373,10 @@ export const Trophy = $root.Trophy = (() => {
         if (object instanceof $root.Trophy)
             return object;
         let message = new $root.Trophy();
-        if (object.tropy != null)
-            message.tropy = String(object.tropy);
         if (object.timestamp != null)
             message.timestamp = object.timestamp >>> 0;
+        if (object.tropy != null)
+            message.tropy = String(object.tropy);
         return message;
     };
 
@@ -3341,13 +3394,13 @@ export const Trophy = $root.Trophy = (() => {
             options = {};
         let object = {};
         if (options.defaults) {
-            object.tropy = "";
             object.timestamp = 0;
+            object.tropy = "";
         }
-        if (message.tropy != null && message.hasOwnProperty("tropy"))
-            object.tropy = message.tropy;
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             object.timestamp = message.timestamp;
+        if (message.tropy != null && message.hasOwnProperty("tropy"))
+            object.tropy = message.tropy;
         return object;
     };
 
@@ -3371,8 +3424,8 @@ export const ChatMessage = $root.ChatMessage = (() => {
      * Properties of a ChatMessage.
      * @exports IChatMessage
      * @interface IChatMessage
-     * @property {string|null} [message] ChatMessage message
      * @property {number|null} [timestamp] ChatMessage timestamp
+     * @property {string|null} [message] ChatMessage message
      */
 
     /**
@@ -3391,20 +3444,20 @@ export const ChatMessage = $root.ChatMessage = (() => {
     }
 
     /**
-     * ChatMessage message.
-     * @member {string} message
-     * @memberof ChatMessage
-     * @instance
-     */
-    ChatMessage.prototype.message = "";
-
-    /**
      * ChatMessage timestamp.
      * @member {number} timestamp
      * @memberof ChatMessage
      * @instance
      */
     ChatMessage.prototype.timestamp = 0;
+
+    /**
+     * ChatMessage message.
+     * @member {string} message
+     * @memberof ChatMessage
+     * @instance
+     */
+    ChatMessage.prototype.message = "";
 
     /**
      * Creates a new ChatMessage instance using the specified properties.
@@ -3430,10 +3483,10 @@ export const ChatMessage = $root.ChatMessage = (() => {
     ChatMessage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.message != null && Object.hasOwnProperty.call(message, "message"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.message);
         if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
-            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.timestamp);
+            writer.uint32(/* id 0, wireType 0 =*/0).uint32(message.timestamp);
+        if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.message);
         return writer;
     };
 
@@ -3469,10 +3522,10 @@ export const ChatMessage = $root.ChatMessage = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.message = reader.string();
+                message.timestamp = reader.uint32();
                 break;
             case 1:
-                message.timestamp = reader.uint32();
+                message.message = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3509,12 +3562,12 @@ export const ChatMessage = $root.ChatMessage = (() => {
     ChatMessage.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.message != null && message.hasOwnProperty("message"))
-            if (!$util.isString(message.message))
-                return "message: string expected";
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             if (!$util.isInteger(message.timestamp))
                 return "timestamp: integer expected";
+        if (message.message != null && message.hasOwnProperty("message"))
+            if (!$util.isString(message.message))
+                return "message: string expected";
         return null;
     };
 
@@ -3530,10 +3583,10 @@ export const ChatMessage = $root.ChatMessage = (() => {
         if (object instanceof $root.ChatMessage)
             return object;
         let message = new $root.ChatMessage();
-        if (object.message != null)
-            message.message = String(object.message);
         if (object.timestamp != null)
             message.timestamp = object.timestamp >>> 0;
+        if (object.message != null)
+            message.message = String(object.message);
         return message;
     };
 
@@ -3551,13 +3604,13 @@ export const ChatMessage = $root.ChatMessage = (() => {
             options = {};
         let object = {};
         if (options.defaults) {
-            object.message = "";
             object.timestamp = 0;
+            object.message = "";
         }
-        if (message.message != null && message.hasOwnProperty("message"))
-            object.message = message.message;
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             object.timestamp = message.timestamp;
+        if (message.message != null && message.hasOwnProperty("message"))
+            object.message = message.message;
         return object;
     };
 
