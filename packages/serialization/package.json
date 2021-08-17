@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/protobuf.js",
+  "types": "src/protobuf.d.ts",
   "scripts": {    
     "build": "rollup -c",
     "protobuf": "npm run protobuf-js; npm run protobuf-ts",
