@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+message WebRTCStreamUpdate {
+    string label = 0;
+    string sfu = 1;
+
+    repeated string trackIDs = 2;
+    repeated string removeTrackIDs = 3;
+}
+
+
+message DeviceUpdate {
+    string activityId = 0;
+    string activityStreamId = 1;
+
+    map<string, WebRTCStreamUpdate> webRTCStreams = 2;
+    repeated string removeWebRTCStreamIDs = 3;
+}
+
+message ChatMessage {
+    uint32 timestamp = 0;
+    string message = 1;
+}
+
+message Trophy {
+    uint32 timestamp = 0;
+    string trophy = 1;
+}
+
+message UserUpdate {
+    string name = 0;
+    
+    map<string, DeviceUpdate> devices = 1;
+    repeated string removeDeviceIDs = 2;
+
+    repeated Trophy trophies = 3;
+    repeated ChatMessage chatMessages = 4;
+}
+
+message Content {
+    ContentType contentType = 0;
+    string id = 1;
+}
+
+message RoomUpdate {
+    map<string, UserUpdate> teachers = 0;
+    map<string, UserUpdate> students = 1;
+    string host = 2;
+    Content content = 3;
+    uint32 endTimestamp = 4;
+}
+
+message StateUpdate {
+    uint32 actionCount = 0;
+    RoomUpdate room = 1;
+}
+
+message Connect {
+    string device_id = 0;
+    string jwt = 1;
+}
+
+message Action {
+    Connect connect = 0;
+    DeviceUpdate device = 1;
+    string chatMessage = 2;
+
+    //Teacher messages
+    bool end = 50;
+    Content content = 51;
+    string host = 52;
+    
+    string user_id = 53;
+    Trophy trophy = 54;
+}
+
+// Bug: put enums at the end
+// pbts stops generating interfaces after enums
+enum ContentType {
+    Blank = 0;
+    WebRTCStream = 1;
+    ActivityStream = 2;
+    H5P = 3;
+    Image = 4;
+    Video = 5;
+    Audio = 6;
+}

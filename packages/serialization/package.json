@@ -4,10 +4,10 @@
   "description": "",
   "main": "src/protobuf.js",
   "types": "src/protobuf.d.ts",
-  "scripts": {    
+  "scripts": {
     "build": "rollup -c",
     "protobuf": "npm run protobuf-js; npm run protobuf-ts",
-    "protobuf-js": "pbjs -w es6 -t static-module -o src/protobuf.js protobuf/*.proto",
+    "protobuf-js": "pbjs -w es6 -t static-module -o src/protobuf.js src/serialization.proto",
     "protobuf-ts": "pbts -o src/protobuf.d.ts src/protobuf.js"
   },
   "author": "",
