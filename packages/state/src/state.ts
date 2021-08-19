@@ -41,7 +41,7 @@ export interface WebRTCStream {
 }
 
 export interface ChatMessage {
-    user: ID
+    userId: ID
     message:string
     timestamp: number
 }
