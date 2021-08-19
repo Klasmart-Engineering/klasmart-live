@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+service Live {
+    rpc SendAction(stream Action) returns (stream ActionReciept);
+    rpc State(Empty) returns (stream StateChanges);
+}
+
+message Empty {}
+
+message Action {
+    oneof action {
+        SetDevice set_device = 0;
+        RemoveDevice remove_device = 1;
+        SetWebRTCStream set_web_rtc_stream = 2;
+        SetActivity set_activity = 3;
+        SetHost set_host = 4;
+        AddTrophy add_trophy = 5;
+        SetContent set_content = 6;
+        SendChatMessage send_chat_message = 7;
+        UserJoin user_join = 8;
+        UserLeave user_leave = 9;
+        EndClass end_class = 15;
+    }
+}
+
+message ActionReciept {
+    uint32 epoch = 0;
+    uint32 action_counter = 1;
+}
+
+message UserJoin {}
+
+message UserLeave {}
+
+message EndClass {}
+
+message SetDevice {
+    Device device = 0;
+}
+
+message RemoveDevice {
+    string id = 0;
+}
+
+message SetWebRTCStream {
+    string device_id = 0;
+    repeated WebRTCStream streams = 1;
+}
+
+message SetActivity {
+    string device_id = 0;
+    string activity_id = 1;
+    string activity_stream_id = 2;
+}
+
+message SetHost {
+    string id = 0;
+}
+
+message AddTrophy {
+    string trophy_id = 0;
+    uint64 timestamp = 1;
+    string id = 2;
+}
+
+message SetContent {
+    Content content = 0;
+}
+
+message SendChatMessage {
+    ChatMessage message = 0;
+}
+
+message StateChanges {
+    repeated StateDiff changes = 0;
+}
+
+message StateDiff {
+    oneof action {
+        State get_state = 0;
+
+        AddParticipants add_participants = 1;
+        ChangeParticipants change_participants = 2;
+        RemoveParticipants remove_participants = 3;
+
+        ChangeContent change_content = 4;
+        ChangeHost change_host = 5;
+
+        AppendChatMessage append_chat_message = 6;
+        ReceiveTrophy receive_trophy = 7;
+
+        ClassEnded class_ended = 15;
+    }
+}
+
+message Participant {
+    string id = 0; // Do we need this here?
+    string name = 1;
+    repeated Device devices = 2;
+    repeated Trophy trophies = 3;
+}
+
+message State {
+    map<string, Participant> participants = 0;
+    string host = 2;
+    Content content = 3;
+    repeated ChatMessage chat_messages = 4;
+    uint32 endTimestamp = 5;
+}
+
+message AddParticipants {
+    repeated Participant participants = 0;
+}
+
+// Assumes you look up current participant and merge
+message ChangeParticipants {
+    repeated Participant participants = 0;
+}
+
+// Array of IDs
+message RemoveParticipants {
+    repeated string participants = 0;
+}
+
+message ChangeContent {
+    Content content = 0;
+}
+
+message ChangeHost {
+    string host_id = 0;
+}
+
+message AppendChatMessage {
+    repeated ChatMessage messages = 0;
+}
+
+message ReceiveTrophy {
+    Trophy trophy = 0;
+}
+
+message ClassEnded {}
+
+message Device {
+    string id = 0; 
+    string activityId = 1;
+    string activityStreamId = 2;
+    repeated WebRTCStream webRTCStreams = 3;
+}
+
+message WebRTCStream {
+    string id = 0;
+    string label = 1;
+    repeated WebRTCTrack tracks = 2;
+}
+
+message WebRTCTrack {
+    string id = 0;
+    string sfu = 1;
+}
+
+message Trophy {
+    string trophy = 0;
+    uint32 timestamp = 1;
+}
+
+message ChatMessage {
+    string message = 0;
+    string from_user = 1;
+    uint32 timestamp = 2;
+}
+
+message Content {
+    enum Type {
+        Blank = 0;
+        WebRTCStream = 1;
+        ActivityStream = 2;
+        H5P = 3;
+        Image = 4;
+        Video = 5;
+        Audio = 6;
+    } 
+    Type type = 0;
+    string id = 1;
+    string url = 2;
+}

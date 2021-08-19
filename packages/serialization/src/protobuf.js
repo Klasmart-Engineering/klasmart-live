@@ -7,14 +7,284 @@ const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.
 // Exported root namespace
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
+export const Live = $root.Live = (() => {
+
+    /**
+     * Constructs a new Live service.
+     * @exports Live
+     * @classdesc Represents a Live
+     * @extends $protobuf.rpc.Service
+     * @constructor
+     * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
+     * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+     * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+     */
+    function Live(rpcImpl, requestDelimited, responseDelimited) {
+        $protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);
+    }
+
+    (Live.prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = Live;
+
+    /**
+     * Creates new Live service using the specified rpc implementation.
+     * @function create
+     * @memberof Live
+     * @static
+     * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
+     * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+     * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+     * @returns {Live} RPC service. Useful where requests and/or responses are streamed.
+     */
+    Live.create = function create(rpcImpl, requestDelimited, responseDelimited) {
+        return new this(rpcImpl, requestDelimited, responseDelimited);
+    };
+
+    /**
+     * Callback as used by {@link Live#sendAction}.
+     * @memberof Live
+     * @typedef SendActionCallback
+     * @type {function}
+     * @param {Error|null} error Error, if any
+     * @param {ActionReciept} [response] ActionReciept
+     */
+
+    /**
+     * Calls SendAction.
+     * @function sendAction
+     * @memberof Live
+     * @instance
+     * @param {IAction} request Action message or plain object
+     * @param {Live.SendActionCallback} callback Node-style callback called with the error, if any, and ActionReciept
+     * @returns {undefined}
+     * @variation 1
+     */
+    Object.defineProperty(Live.prototype.sendAction = function sendAction(request, callback) {
+        return this.rpcCall(sendAction, $root.Action, $root.ActionReciept, request, callback);
+    }, "name", { value: "SendAction" });
+
+    /**
+     * Calls SendAction.
+     * @function sendAction
+     * @memberof Live
+     * @instance
+     * @param {IAction} request Action message or plain object
+     * @returns {Promise<ActionReciept>} Promise
+     * @variation 2
+     */
+
+    /**
+     * Callback as used by {@link Live#state}.
+     * @memberof Live
+     * @typedef StateCallback
+     * @type {function}
+     * @param {Error|null} error Error, if any
+     * @param {StateChanges} [response] StateChanges
+     */
+
+    /**
+     * Calls State.
+     * @function state
+     * @memberof Live
+     * @instance
+     * @param {IEmpty} request Empty message or plain object
+     * @param {Live.StateCallback} callback Node-style callback called with the error, if any, and StateChanges
+     * @returns {undefined}
+     * @variation 1
+     */
+    Object.defineProperty(Live.prototype.state = function state(request, callback) {
+        return this.rpcCall(state, $root.Empty, $root.StateChanges, request, callback);
+    }, "name", { value: "State" });
+
+    /**
+     * Calls State.
+     * @function state
+     * @memberof Live
+     * @instance
+     * @param {IEmpty} request Empty message or plain object
+     * @returns {Promise<StateChanges>} Promise
+     * @variation 2
+     */
+
+    return Live;
+})();
+
+export const Empty = $root.Empty = (() => {
+
+    /**
+     * Properties of an Empty.
+     * @exports IEmpty
+     * @interface IEmpty
+     */
+
+    /**
+     * Constructs a new Empty.
+     * @exports Empty
+     * @classdesc Represents an Empty.
+     * @implements IEmpty
+     * @constructor
+     * @param {IEmpty=} [properties] Properties to set
+     */
+    function Empty(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Creates a new Empty instance using the specified properties.
+     * @function create
+     * @memberof Empty
+     * @static
+     * @param {IEmpty=} [properties] Properties to set
+     * @returns {Empty} Empty instance
+     */
+    Empty.create = function create(properties) {
+        return new Empty(properties);
+    };
+
+    /**
+     * Encodes the specified Empty message. Does not implicitly {@link Empty.verify|verify} messages.
+     * @function encode
+     * @memberof Empty
+     * @static
+     * @param {IEmpty} message Empty message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Empty.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Empty message, length delimited. Does not implicitly {@link Empty.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Empty
+     * @static
+     * @param {IEmpty} message Empty message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Empty.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an Empty message from the specified reader or buffer.
+     * @function decode
+     * @memberof Empty
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Empty} Empty
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Empty.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Empty();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an Empty message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Empty
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Empty} Empty
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Empty.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an Empty message.
+     * @function verify
+     * @memberof Empty
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Empty.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        return null;
+    };
+
+    /**
+     * Creates an Empty message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Empty
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Empty} Empty
+     */
+    Empty.fromObject = function fromObject(object) {
+        if (object instanceof $root.Empty)
+            return object;
+        return new $root.Empty();
+    };
+
+    /**
+     * Creates a plain object from an Empty message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Empty
+     * @static
+     * @param {Empty} message Empty
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Empty.toObject = function toObject() {
+        return {};
+    };
+
+    /**
+     * Converts this Empty to JSON.
+     * @function toJSON
+     * @memberof Empty
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Empty.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Empty;
+})();
+
 export const Action = $root.Action = (() => {
 
     /**
      * Properties of an Action.
      * @exports IAction
      * @interface IAction
-     * @property {number|null} [actionCount] Action actionCount
-     * @property {IRoomAction|null} [actions] Action actions
+     * @property {ISetDevice|null} [setDevice] Action setDevice
+     * @property {IRemoveDevice|null} [removeDevice] Action removeDevice
+     * @property {ISetWebRTCStream|null} [setWebRtcStream] Action setWebRtcStream
+     * @property {ISetActivity|null} [setActivity] Action setActivity
+     * @property {ISetHost|null} [setHost] Action setHost
+     * @property {IAddTrophy|null} [addTrophy] Action addTrophy
+     * @property {ISetContent|null} [setContent] Action setContent
+     * @property {ISendChatMessage|null} [sendChatMessage] Action sendChatMessage
+     * @property {IUserJoin|null} [userJoin] Action userJoin
+     * @property {IUserLeave|null} [userLeave] Action userLeave
+     * @property {IEndClass|null} [endClass] Action endClass
      */
 
     /**
@@ -33,20 +303,106 @@ export const Action = $root.Action = (() => {
     }
 
     /**
-     * Action actionCount.
-     * @member {number} actionCount
+     * Action setDevice.
+     * @member {ISetDevice|null|undefined} setDevice
      * @memberof Action
      * @instance
      */
-    Action.prototype.actionCount = 0;
+    Action.prototype.setDevice = null;
 
     /**
-     * Action actions.
-     * @member {IRoomAction|null|undefined} actions
+     * Action removeDevice.
+     * @member {IRemoveDevice|null|undefined} removeDevice
      * @memberof Action
      * @instance
      */
-    Action.prototype.actions = null;
+    Action.prototype.removeDevice = null;
+
+    /**
+     * Action setWebRtcStream.
+     * @member {ISetWebRTCStream|null|undefined} setWebRtcStream
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.setWebRtcStream = null;
+
+    /**
+     * Action setActivity.
+     * @member {ISetActivity|null|undefined} setActivity
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.setActivity = null;
+
+    /**
+     * Action setHost.
+     * @member {ISetHost|null|undefined} setHost
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.setHost = null;
+
+    /**
+     * Action addTrophy.
+     * @member {IAddTrophy|null|undefined} addTrophy
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.addTrophy = null;
+
+    /**
+     * Action setContent.
+     * @member {ISetContent|null|undefined} setContent
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.setContent = null;
+
+    /**
+     * Action sendChatMessage.
+     * @member {ISendChatMessage|null|undefined} sendChatMessage
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.sendChatMessage = null;
+
+    /**
+     * Action userJoin.
+     * @member {IUserJoin|null|undefined} userJoin
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.userJoin = null;
+
+    /**
+     * Action userLeave.
+     * @member {IUserLeave|null|undefined} userLeave
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.userLeave = null;
+
+    /**
+     * Action endClass.
+     * @member {IEndClass|null|undefined} endClass
+     * @memberof Action
+     * @instance
+     */
+    Action.prototype.endClass = null;
+
+    // OneOf field names bound to virtual getters and setters
+    let $oneOfFields;
+
+    /**
+     * Action action.
+     * @member {"setDevice"|"removeDevice"|"setWebRtcStream"|"setActivity"|"setHost"|"addTrophy"|"setContent"|"sendChatMessage"|"userJoin"|"userLeave"|"endClass"|undefined} action
+     * @memberof Action
+     * @instance
+     */
+    Object.defineProperty(Action.prototype, "action", {
+        get: $util.oneOfGetter($oneOfFields = ["setDevice", "removeDevice", "setWebRtcStream", "setActivity", "setHost", "addTrophy", "setContent", "sendChatMessage", "userJoin", "userLeave", "endClass"]),
+        set: $util.oneOfSetter($oneOfFields)
+    });
 
     /**
      * Creates a new Action instance using the specified properties.
@@ -72,10 +428,28 @@ export const Action = $root.Action = (() => {
     Action.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.actionCount != null && Object.hasOwnProperty.call(message, "actionCount"))
-            writer.uint32(/* id 0, wireType 0 =*/0).uint32(message.actionCount);
-        if (message.actions != null && Object.hasOwnProperty.call(message, "actions"))
-            $root.RoomAction.encode(message.actions, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.setDevice != null && Object.hasOwnProperty.call(message, "setDevice"))
+            $root.SetDevice.encode(message.setDevice, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        if (message.removeDevice != null && Object.hasOwnProperty.call(message, "removeDevice"))
+            $root.RemoveDevice.encode(message.removeDevice, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.setWebRtcStream != null && Object.hasOwnProperty.call(message, "setWebRtcStream"))
+            $root.SetWebRTCStream.encode(message.setWebRtcStream, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.setActivity != null && Object.hasOwnProperty.call(message, "setActivity"))
+            $root.SetActivity.encode(message.setActivity, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.setHost != null && Object.hasOwnProperty.call(message, "setHost"))
+            $root.SetHost.encode(message.setHost, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.addTrophy != null && Object.hasOwnProperty.call(message, "addTrophy"))
+            $root.AddTrophy.encode(message.addTrophy, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.setContent != null && Object.hasOwnProperty.call(message, "setContent"))
+            $root.SetContent.encode(message.setContent, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+        if (message.sendChatMessage != null && Object.hasOwnProperty.call(message, "sendChatMessage"))
+            $root.SendChatMessage.encode(message.sendChatMessage, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+        if (message.userJoin != null && Object.hasOwnProperty.call(message, "userJoin"))
+            $root.UserJoin.encode(message.userJoin, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.userLeave != null && Object.hasOwnProperty.call(message, "userLeave"))
+            $root.UserLeave.encode(message.userLeave, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+        if (message.endClass != null && Object.hasOwnProperty.call(message, "endClass"))
+            $root.EndClass.encode(message.endClass, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
         return writer;
     };
 
@@ -111,10 +485,37 @@ export const Action = $root.Action = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.actionCount = reader.uint32();
+                message.setDevice = $root.SetDevice.decode(reader, reader.uint32());
                 break;
             case 1:
-                message.actions = $root.RoomAction.decode(reader, reader.uint32());
+                message.removeDevice = $root.RemoveDevice.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.setWebRtcStream = $root.SetWebRTCStream.decode(reader, reader.uint32());
+                break;
+            case 3:
+                message.setActivity = $root.SetActivity.decode(reader, reader.uint32());
+                break;
+            case 4:
+                message.setHost = $root.SetHost.decode(reader, reader.uint32());
+                break;
+            case 5:
+                message.addTrophy = $root.AddTrophy.decode(reader, reader.uint32());
+                break;
+            case 6:
+                message.setContent = $root.SetContent.decode(reader, reader.uint32());
+                break;
+            case 7:
+                message.sendChatMessage = $root.SendChatMessage.decode(reader, reader.uint32());
+                break;
+            case 8:
+                message.userJoin = $root.UserJoin.decode(reader, reader.uint32());
+                break;
+            case 9:
+                message.userLeave = $root.UserLeave.decode(reader, reader.uint32());
+                break;
+            case 15:
+                message.endClass = $root.EndClass.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -151,13 +552,114 @@ export const Action = $root.Action = (() => {
     Action.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.actionCount != null && message.hasOwnProperty("actionCount"))
-            if (!$util.isInteger(message.actionCount))
-                return "actionCount: integer expected";
-        if (message.actions != null && message.hasOwnProperty("actions")) {
-            let error = $root.RoomAction.verify(message.actions);
-            if (error)
-                return "actions." + error;
+        let properties = {};
+        if (message.setDevice != null && message.hasOwnProperty("setDevice")) {
+            properties.action = 1;
+            {
+                let error = $root.SetDevice.verify(message.setDevice);
+                if (error)
+                    return "setDevice." + error;
+            }
+        }
+        if (message.removeDevice != null && message.hasOwnProperty("removeDevice")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.RemoveDevice.verify(message.removeDevice);
+                if (error)
+                    return "removeDevice." + error;
+            }
+        }
+        if (message.setWebRtcStream != null && message.hasOwnProperty("setWebRtcStream")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.SetWebRTCStream.verify(message.setWebRtcStream);
+                if (error)
+                    return "setWebRtcStream." + error;
+            }
+        }
+        if (message.setActivity != null && message.hasOwnProperty("setActivity")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.SetActivity.verify(message.setActivity);
+                if (error)
+                    return "setActivity." + error;
+            }
+        }
+        if (message.setHost != null && message.hasOwnProperty("setHost")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.SetHost.verify(message.setHost);
+                if (error)
+                    return "setHost." + error;
+            }
+        }
+        if (message.addTrophy != null && message.hasOwnProperty("addTrophy")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.AddTrophy.verify(message.addTrophy);
+                if (error)
+                    return "addTrophy." + error;
+            }
+        }
+        if (message.setContent != null && message.hasOwnProperty("setContent")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.SetContent.verify(message.setContent);
+                if (error)
+                    return "setContent." + error;
+            }
+        }
+        if (message.sendChatMessage != null && message.hasOwnProperty("sendChatMessage")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.SendChatMessage.verify(message.sendChatMessage);
+                if (error)
+                    return "sendChatMessage." + error;
+            }
+        }
+        if (message.userJoin != null && message.hasOwnProperty("userJoin")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.UserJoin.verify(message.userJoin);
+                if (error)
+                    return "userJoin." + error;
+            }
+        }
+        if (message.userLeave != null && message.hasOwnProperty("userLeave")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.UserLeave.verify(message.userLeave);
+                if (error)
+                    return "userLeave." + error;
+            }
+        }
+        if (message.endClass != null && message.hasOwnProperty("endClass")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.EndClass.verify(message.endClass);
+                if (error)
+                    return "endClass." + error;
+            }
         }
         return null;
     };
@@ -174,12 +676,60 @@ export const Action = $root.Action = (() => {
         if (object instanceof $root.Action)
             return object;
         let message = new $root.Action();
-        if (object.actionCount != null)
-            message.actionCount = object.actionCount >>> 0;
-        if (object.actions != null) {
-            if (typeof object.actions !== "object")
-                throw TypeError(".Action.actions: object expected");
-            message.actions = $root.RoomAction.fromObject(object.actions);
+        if (object.setDevice != null) {
+            if (typeof object.setDevice !== "object")
+                throw TypeError(".Action.setDevice: object expected");
+            message.setDevice = $root.SetDevice.fromObject(object.setDevice);
+        }
+        if (object.removeDevice != null) {
+            if (typeof object.removeDevice !== "object")
+                throw TypeError(".Action.removeDevice: object expected");
+            message.removeDevice = $root.RemoveDevice.fromObject(object.removeDevice);
+        }
+        if (object.setWebRtcStream != null) {
+            if (typeof object.setWebRtcStream !== "object")
+                throw TypeError(".Action.setWebRtcStream: object expected");
+            message.setWebRtcStream = $root.SetWebRTCStream.fromObject(object.setWebRtcStream);
+        }
+        if (object.setActivity != null) {
+            if (typeof object.setActivity !== "object")
+                throw TypeError(".Action.setActivity: object expected");
+            message.setActivity = $root.SetActivity.fromObject(object.setActivity);
+        }
+        if (object.setHost != null) {
+            if (typeof object.setHost !== "object")
+                throw TypeError(".Action.setHost: object expected");
+            message.setHost = $root.SetHost.fromObject(object.setHost);
+        }
+        if (object.addTrophy != null) {
+            if (typeof object.addTrophy !== "object")
+                throw TypeError(".Action.addTrophy: object expected");
+            message.addTrophy = $root.AddTrophy.fromObject(object.addTrophy);
+        }
+        if (object.setContent != null) {
+            if (typeof object.setContent !== "object")
+                throw TypeError(".Action.setContent: object expected");
+            message.setContent = $root.SetContent.fromObject(object.setContent);
+        }
+        if (object.sendChatMessage != null) {
+            if (typeof object.sendChatMessage !== "object")
+                throw TypeError(".Action.sendChatMessage: object expected");
+            message.sendChatMessage = $root.SendChatMessage.fromObject(object.sendChatMessage);
+        }
+        if (object.userJoin != null) {
+            if (typeof object.userJoin !== "object")
+                throw TypeError(".Action.userJoin: object expected");
+            message.userJoin = $root.UserJoin.fromObject(object.userJoin);
+        }
+        if (object.userLeave != null) {
+            if (typeof object.userLeave !== "object")
+                throw TypeError(".Action.userLeave: object expected");
+            message.userLeave = $root.UserLeave.fromObject(object.userLeave);
+        }
+        if (object.endClass != null) {
+            if (typeof object.endClass !== "object")
+                throw TypeError(".Action.endClass: object expected");
+            message.endClass = $root.EndClass.fromObject(object.endClass);
         }
         return message;
     };
@@ -197,14 +747,61 @@ export const Action = $root.Action = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.defaults) {
-            object.actionCount = 0;
-            object.actions = null;
+        if (message.setDevice != null && message.hasOwnProperty("setDevice")) {
+            object.setDevice = $root.SetDevice.toObject(message.setDevice, options);
+            if (options.oneofs)
+                object.action = "setDevice";
         }
-        if (message.actionCount != null && message.hasOwnProperty("actionCount"))
-            object.actionCount = message.actionCount;
-        if (message.actions != null && message.hasOwnProperty("actions"))
-            object.actions = $root.RoomAction.toObject(message.actions, options);
+        if (message.removeDevice != null && message.hasOwnProperty("removeDevice")) {
+            object.removeDevice = $root.RemoveDevice.toObject(message.removeDevice, options);
+            if (options.oneofs)
+                object.action = "removeDevice";
+        }
+        if (message.setWebRtcStream != null && message.hasOwnProperty("setWebRtcStream")) {
+            object.setWebRtcStream = $root.SetWebRTCStream.toObject(message.setWebRtcStream, options);
+            if (options.oneofs)
+                object.action = "setWebRtcStream";
+        }
+        if (message.setActivity != null && message.hasOwnProperty("setActivity")) {
+            object.setActivity = $root.SetActivity.toObject(message.setActivity, options);
+            if (options.oneofs)
+                object.action = "setActivity";
+        }
+        if (message.setHost != null && message.hasOwnProperty("setHost")) {
+            object.setHost = $root.SetHost.toObject(message.setHost, options);
+            if (options.oneofs)
+                object.action = "setHost";
+        }
+        if (message.addTrophy != null && message.hasOwnProperty("addTrophy")) {
+            object.addTrophy = $root.AddTrophy.toObject(message.addTrophy, options);
+            if (options.oneofs)
+                object.action = "addTrophy";
+        }
+        if (message.setContent != null && message.hasOwnProperty("setContent")) {
+            object.setContent = $root.SetContent.toObject(message.setContent, options);
+            if (options.oneofs)
+                object.action = "setContent";
+        }
+        if (message.sendChatMessage != null && message.hasOwnProperty("sendChatMessage")) {
+            object.sendChatMessage = $root.SendChatMessage.toObject(message.sendChatMessage, options);
+            if (options.oneofs)
+                object.action = "sendChatMessage";
+        }
+        if (message.userJoin != null && message.hasOwnProperty("userJoin")) {
+            object.userJoin = $root.UserJoin.toObject(message.userJoin, options);
+            if (options.oneofs)
+                object.action = "userJoin";
+        }
+        if (message.userLeave != null && message.hasOwnProperty("userLeave")) {
+            object.userLeave = $root.UserLeave.toObject(message.userLeave, options);
+            if (options.oneofs)
+                object.action = "userLeave";
+        }
+        if (message.endClass != null && message.hasOwnProperty("endClass")) {
+            object.endClass = $root.EndClass.toObject(message.endClass, options);
+            if (options.oneofs)
+                object.action = "endClass";
+        }
         return object;
     };
 
@@ -222,30 +819,25 @@ export const Action = $root.Action = (() => {
     return Action;
 })();
 
-export const RoomAction = $root.RoomAction = (() => {
+export const ActionReciept = $root.ActionReciept = (() => {
 
     /**
-     * Properties of a RoomAction.
-     * @exports IRoomAction
-     * @interface IRoomAction
-     * @property {Array.<IUserAction>|null} [teachers] RoomAction teachers
-     * @property {Array.<IUserAction>|null} [students] RoomAction students
-     * @property {string|null} [host] RoomAction host
-     * @property {IContent|null} [content] RoomAction content
-     * @property {number|null} [endTimestamp] RoomAction endTimestamp
+     * Properties of an ActionReciept.
+     * @exports IActionReciept
+     * @interface IActionReciept
+     * @property {number|null} [epoch] ActionReciept epoch
+     * @property {number|null} [actionCounter] ActionReciept actionCounter
      */
 
     /**
-     * Constructs a new RoomAction.
-     * @exports RoomAction
-     * @classdesc Represents a RoomAction.
-     * @implements IRoomAction
+     * Constructs a new ActionReciept.
+     * @exports ActionReciept
+     * @classdesc Represents an ActionReciept.
+     * @implements IActionReciept
      * @constructor
-     * @param {IRoomAction=} [properties] Properties to set
+     * @param {IActionReciept=} [properties] Properties to set
      */
-    function RoomAction(properties) {
-        this.teachers = [];
-        this.students = [];
+    function ActionReciept(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -253,133 +845,88 @@ export const RoomAction = $root.RoomAction = (() => {
     }
 
     /**
-     * RoomAction teachers.
-     * @member {Array.<IUserAction>} teachers
-     * @memberof RoomAction
+     * ActionReciept epoch.
+     * @member {number} epoch
+     * @memberof ActionReciept
      * @instance
      */
-    RoomAction.prototype.teachers = $util.emptyArray;
+    ActionReciept.prototype.epoch = 0;
 
     /**
-     * RoomAction students.
-     * @member {Array.<IUserAction>} students
-     * @memberof RoomAction
+     * ActionReciept actionCounter.
+     * @member {number} actionCounter
+     * @memberof ActionReciept
      * @instance
      */
-    RoomAction.prototype.students = $util.emptyArray;
+    ActionReciept.prototype.actionCounter = 0;
 
     /**
-     * RoomAction host.
-     * @member {string} host
-     * @memberof RoomAction
-     * @instance
-     */
-    RoomAction.prototype.host = "";
-
-    /**
-     * RoomAction content.
-     * @member {IContent|null|undefined} content
-     * @memberof RoomAction
-     * @instance
-     */
-    RoomAction.prototype.content = null;
-
-    /**
-     * RoomAction endTimestamp.
-     * @member {number} endTimestamp
-     * @memberof RoomAction
-     * @instance
-     */
-    RoomAction.prototype.endTimestamp = 0;
-
-    /**
-     * Creates a new RoomAction instance using the specified properties.
+     * Creates a new ActionReciept instance using the specified properties.
      * @function create
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
-     * @param {IRoomAction=} [properties] Properties to set
-     * @returns {RoomAction} RoomAction instance
+     * @param {IActionReciept=} [properties] Properties to set
+     * @returns {ActionReciept} ActionReciept instance
      */
-    RoomAction.create = function create(properties) {
-        return new RoomAction(properties);
+    ActionReciept.create = function create(properties) {
+        return new ActionReciept(properties);
     };
 
     /**
-     * Encodes the specified RoomAction message. Does not implicitly {@link RoomAction.verify|verify} messages.
+     * Encodes the specified ActionReciept message. Does not implicitly {@link ActionReciept.verify|verify} messages.
      * @function encode
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
-     * @param {IRoomAction} message RoomAction message or plain object to encode
+     * @param {IActionReciept} message ActionReciept message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RoomAction.encode = function encode(message, writer) {
+    ActionReciept.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.teachers != null && message.teachers.length)
-            for (let i = 0; i < message.teachers.length; ++i)
-                $root.UserAction.encode(message.teachers[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
-        if (message.students != null && message.students.length)
-            for (let i = 0; i < message.students.length; ++i)
-                $root.UserAction.encode(message.students[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.host != null && Object.hasOwnProperty.call(message, "host"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.host);
-        if (message.content != null && Object.hasOwnProperty.call(message, "content"))
-            $root.Content.encode(message.content, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.endTimestamp != null && Object.hasOwnProperty.call(message, "endTimestamp"))
-            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.endTimestamp);
+        if (message.epoch != null && Object.hasOwnProperty.call(message, "epoch"))
+            writer.uint32(/* id 0, wireType 0 =*/0).uint32(message.epoch);
+        if (message.actionCounter != null && Object.hasOwnProperty.call(message, "actionCounter"))
+            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.actionCounter);
         return writer;
     };
 
     /**
-     * Encodes the specified RoomAction message, length delimited. Does not implicitly {@link RoomAction.verify|verify} messages.
+     * Encodes the specified ActionReciept message, length delimited. Does not implicitly {@link ActionReciept.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
-     * @param {IRoomAction} message RoomAction message or plain object to encode
+     * @param {IActionReciept} message ActionReciept message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RoomAction.encodeDelimited = function encodeDelimited(message, writer) {
+    ActionReciept.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a RoomAction message from the specified reader or buffer.
+     * Decodes an ActionReciept message from the specified reader or buffer.
      * @function decode
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {RoomAction} RoomAction
+     * @returns {ActionReciept} ActionReciept
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RoomAction.decode = function decode(reader, length) {
+    ActionReciept.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.RoomAction();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ActionReciept();
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                if (!(message.teachers && message.teachers.length))
-                    message.teachers = [];
-                message.teachers.push($root.UserAction.decode(reader, reader.uint32()));
+                message.epoch = reader.uint32();
                 break;
             case 1:
-                if (!(message.students && message.students.length))
-                    message.students = [];
-                message.students.push($root.UserAction.decode(reader, reader.uint32()));
-                break;
-            case 2:
-                message.host = reader.string();
-                break;
-            case 3:
-                message.content = $root.Content.decode(reader, reader.uint32());
-                break;
-            case 4:
-                message.endTimestamp = reader.uint32();
+                message.actionCounter = reader.uint32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -390,190 +937,115 @@ export const RoomAction = $root.RoomAction = (() => {
     };
 
     /**
-     * Decodes a RoomAction message from the specified reader or buffer, length delimited.
+     * Decodes an ActionReciept message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {RoomAction} RoomAction
+     * @returns {ActionReciept} ActionReciept
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RoomAction.decodeDelimited = function decodeDelimited(reader) {
+    ActionReciept.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a RoomAction message.
+     * Verifies an ActionReciept message.
      * @function verify
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    RoomAction.verify = function verify(message) {
+    ActionReciept.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.teachers != null && message.hasOwnProperty("teachers")) {
-            if (!Array.isArray(message.teachers))
-                return "teachers: array expected";
-            for (let i = 0; i < message.teachers.length; ++i) {
-                let error = $root.UserAction.verify(message.teachers[i]);
-                if (error)
-                    return "teachers." + error;
-            }
-        }
-        if (message.students != null && message.hasOwnProperty("students")) {
-            if (!Array.isArray(message.students))
-                return "students: array expected";
-            for (let i = 0; i < message.students.length; ++i) {
-                let error = $root.UserAction.verify(message.students[i]);
-                if (error)
-                    return "students." + error;
-            }
-        }
-        if (message.host != null && message.hasOwnProperty("host"))
-            if (!$util.isString(message.host))
-                return "host: string expected";
-        if (message.content != null && message.hasOwnProperty("content")) {
-            let error = $root.Content.verify(message.content);
-            if (error)
-                return "content." + error;
-        }
-        if (message.endTimestamp != null && message.hasOwnProperty("endTimestamp"))
-            if (!$util.isInteger(message.endTimestamp))
-                return "endTimestamp: integer expected";
+        if (message.epoch != null && message.hasOwnProperty("epoch"))
+            if (!$util.isInteger(message.epoch))
+                return "epoch: integer expected";
+        if (message.actionCounter != null && message.hasOwnProperty("actionCounter"))
+            if (!$util.isInteger(message.actionCounter))
+                return "actionCounter: integer expected";
         return null;
     };
 
     /**
-     * Creates a RoomAction message from a plain object. Also converts values to their respective internal types.
+     * Creates an ActionReciept message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {RoomAction} RoomAction
+     * @returns {ActionReciept} ActionReciept
      */
-    RoomAction.fromObject = function fromObject(object) {
-        if (object instanceof $root.RoomAction)
+    ActionReciept.fromObject = function fromObject(object) {
+        if (object instanceof $root.ActionReciept)
             return object;
-        let message = new $root.RoomAction();
-        if (object.teachers) {
-            if (!Array.isArray(object.teachers))
-                throw TypeError(".RoomAction.teachers: array expected");
-            message.teachers = [];
-            for (let i = 0; i < object.teachers.length; ++i) {
-                if (typeof object.teachers[i] !== "object")
-                    throw TypeError(".RoomAction.teachers: object expected");
-                message.teachers[i] = $root.UserAction.fromObject(object.teachers[i]);
-            }
-        }
-        if (object.students) {
-            if (!Array.isArray(object.students))
-                throw TypeError(".RoomAction.students: array expected");
-            message.students = [];
-            for (let i = 0; i < object.students.length; ++i) {
-                if (typeof object.students[i] !== "object")
-                    throw TypeError(".RoomAction.students: object expected");
-                message.students[i] = $root.UserAction.fromObject(object.students[i]);
-            }
-        }
-        if (object.host != null)
-            message.host = String(object.host);
-        if (object.content != null) {
-            if (typeof object.content !== "object")
-                throw TypeError(".RoomAction.content: object expected");
-            message.content = $root.Content.fromObject(object.content);
-        }
-        if (object.endTimestamp != null)
-            message.endTimestamp = object.endTimestamp >>> 0;
+        let message = new $root.ActionReciept();
+        if (object.epoch != null)
+            message.epoch = object.epoch >>> 0;
+        if (object.actionCounter != null)
+            message.actionCounter = object.actionCounter >>> 0;
         return message;
     };
 
     /**
-     * Creates a plain object from a RoomAction message. Also converts values to other types if specified.
+     * Creates a plain object from an ActionReciept message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @static
-     * @param {RoomAction} message RoomAction
+     * @param {ActionReciept} message ActionReciept
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    RoomAction.toObject = function toObject(message, options) {
+    ActionReciept.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults) {
-            object.teachers = [];
-            object.students = [];
-        }
         if (options.defaults) {
-            object.host = "";
-            object.content = null;
-            object.endTimestamp = 0;
+            object.epoch = 0;
+            object.actionCounter = 0;
         }
-        if (message.teachers && message.teachers.length) {
-            object.teachers = [];
-            for (let j = 0; j < message.teachers.length; ++j)
-                object.teachers[j] = $root.UserAction.toObject(message.teachers[j], options);
-        }
-        if (message.students && message.students.length) {
-            object.students = [];
-            for (let j = 0; j < message.students.length; ++j)
-                object.students[j] = $root.UserAction.toObject(message.students[j], options);
-        }
-        if (message.host != null && message.hasOwnProperty("host"))
-            object.host = message.host;
-        if (message.content != null && message.hasOwnProperty("content"))
-            object.content = $root.Content.toObject(message.content, options);
-        if (message.endTimestamp != null && message.hasOwnProperty("endTimestamp"))
-            object.endTimestamp = message.endTimestamp;
+        if (message.epoch != null && message.hasOwnProperty("epoch"))
+            object.epoch = message.epoch;
+        if (message.actionCounter != null && message.hasOwnProperty("actionCounter"))
+            object.actionCounter = message.actionCounter;
         return object;
     };
 
     /**
-     * Converts this RoomAction to JSON.
+     * Converts this ActionReciept to JSON.
      * @function toJSON
-     * @memberof RoomAction
+     * @memberof ActionReciept
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    RoomAction.prototype.toJSON = function toJSON() {
+    ActionReciept.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return RoomAction;
+    return ActionReciept;
 })();
 
-export const UserAction = $root.UserAction = (() => {
+export const UserJoin = $root.UserJoin = (() => {
 
     /**
-     * Properties of a UserAction.
-     * @exports IUserAction
-     * @interface IUserAction
-     * @property {string|null} [id] UserAction id
-     * @property {string|null} [name] UserAction name
-     * @property {Array.<IDeviceAction>|null} [devices] UserAction devices
-     * @property {Array.<string>|null} [removeDeviceIDs] UserAction removeDeviceIDs
-     * @property {Array.<ITrophy>|null} [trophies] UserAction trophies
-     * @property {Array.<IChatMessage>|null} [chatMessages] UserAction chatMessages
+     * Properties of a UserJoin.
+     * @exports IUserJoin
+     * @interface IUserJoin
      */
 
     /**
-     * Constructs a new UserAction.
-     * @exports UserAction
-     * @classdesc Represents a UserAction.
-     * @implements IUserAction
+     * Constructs a new UserJoin.
+     * @exports UserJoin
+     * @classdesc Represents a UserJoin.
+     * @implements IUserJoin
      * @constructor
-     * @param {IUserAction=} [properties] Properties to set
+     * @param {IUserJoin=} [properties] Properties to set
      */
-    function UserAction(properties) {
-        this.devices = [];
-        this.removeDeviceIDs = [];
-        this.trophies = [];
-        this.chatMessages = [];
+    function UserJoin(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -581,75 +1053,2895 @@ export const UserAction = $root.UserAction = (() => {
     }
 
     /**
-     * UserAction id.
-     * @member {string} id
-     * @memberof UserAction
-     * @instance
-     */
-    UserAction.prototype.id = "";
-
-    /**
-     * UserAction name.
-     * @member {string} name
-     * @memberof UserAction
-     * @instance
-     */
-    UserAction.prototype.name = "";
-
-    /**
-     * UserAction devices.
-     * @member {Array.<IDeviceAction>} devices
-     * @memberof UserAction
-     * @instance
-     */
-    UserAction.prototype.devices = $util.emptyArray;
-
-    /**
-     * UserAction removeDeviceIDs.
-     * @member {Array.<string>} removeDeviceIDs
-     * @memberof UserAction
-     * @instance
-     */
-    UserAction.prototype.removeDeviceIDs = $util.emptyArray;
-
-    /**
-     * UserAction trophies.
-     * @member {Array.<ITrophy>} trophies
-     * @memberof UserAction
-     * @instance
-     */
-    UserAction.prototype.trophies = $util.emptyArray;
-
-    /**
-     * UserAction chatMessages.
-     * @member {Array.<IChatMessage>} chatMessages
-     * @memberof UserAction
-     * @instance
-     */
-    UserAction.prototype.chatMessages = $util.emptyArray;
-
-    /**
-     * Creates a new UserAction instance using the specified properties.
+     * Creates a new UserJoin instance using the specified properties.
      * @function create
-     * @memberof UserAction
+     * @memberof UserJoin
      * @static
-     * @param {IUserAction=} [properties] Properties to set
-     * @returns {UserAction} UserAction instance
+     * @param {IUserJoin=} [properties] Properties to set
+     * @returns {UserJoin} UserJoin instance
      */
-    UserAction.create = function create(properties) {
-        return new UserAction(properties);
+    UserJoin.create = function create(properties) {
+        return new UserJoin(properties);
     };
 
     /**
-     * Encodes the specified UserAction message. Does not implicitly {@link UserAction.verify|verify} messages.
+     * Encodes the specified UserJoin message. Does not implicitly {@link UserJoin.verify|verify} messages.
      * @function encode
-     * @memberof UserAction
+     * @memberof UserJoin
      * @static
-     * @param {IUserAction} message UserAction message or plain object to encode
+     * @param {IUserJoin} message UserJoin message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserAction.encode = function encode(message, writer) {
+    UserJoin.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified UserJoin message, length delimited. Does not implicitly {@link UserJoin.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof UserJoin
+     * @static
+     * @param {IUserJoin} message UserJoin message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    UserJoin.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a UserJoin message from the specified reader or buffer.
+     * @function decode
+     * @memberof UserJoin
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {UserJoin} UserJoin
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    UserJoin.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserJoin();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a UserJoin message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof UserJoin
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {UserJoin} UserJoin
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    UserJoin.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a UserJoin message.
+     * @function verify
+     * @memberof UserJoin
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    UserJoin.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        return null;
+    };
+
+    /**
+     * Creates a UserJoin message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof UserJoin
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {UserJoin} UserJoin
+     */
+    UserJoin.fromObject = function fromObject(object) {
+        if (object instanceof $root.UserJoin)
+            return object;
+        return new $root.UserJoin();
+    };
+
+    /**
+     * Creates a plain object from a UserJoin message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof UserJoin
+     * @static
+     * @param {UserJoin} message UserJoin
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    UserJoin.toObject = function toObject() {
+        return {};
+    };
+
+    /**
+     * Converts this UserJoin to JSON.
+     * @function toJSON
+     * @memberof UserJoin
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    UserJoin.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return UserJoin;
+})();
+
+export const UserLeave = $root.UserLeave = (() => {
+
+    /**
+     * Properties of a UserLeave.
+     * @exports IUserLeave
+     * @interface IUserLeave
+     */
+
+    /**
+     * Constructs a new UserLeave.
+     * @exports UserLeave
+     * @classdesc Represents a UserLeave.
+     * @implements IUserLeave
+     * @constructor
+     * @param {IUserLeave=} [properties] Properties to set
+     */
+    function UserLeave(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Creates a new UserLeave instance using the specified properties.
+     * @function create
+     * @memberof UserLeave
+     * @static
+     * @param {IUserLeave=} [properties] Properties to set
+     * @returns {UserLeave} UserLeave instance
+     */
+    UserLeave.create = function create(properties) {
+        return new UserLeave(properties);
+    };
+
+    /**
+     * Encodes the specified UserLeave message. Does not implicitly {@link UserLeave.verify|verify} messages.
+     * @function encode
+     * @memberof UserLeave
+     * @static
+     * @param {IUserLeave} message UserLeave message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    UserLeave.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified UserLeave message, length delimited. Does not implicitly {@link UserLeave.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof UserLeave
+     * @static
+     * @param {IUserLeave} message UserLeave message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    UserLeave.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a UserLeave message from the specified reader or buffer.
+     * @function decode
+     * @memberof UserLeave
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {UserLeave} UserLeave
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    UserLeave.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserLeave();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a UserLeave message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof UserLeave
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {UserLeave} UserLeave
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    UserLeave.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a UserLeave message.
+     * @function verify
+     * @memberof UserLeave
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    UserLeave.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        return null;
+    };
+
+    /**
+     * Creates a UserLeave message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof UserLeave
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {UserLeave} UserLeave
+     */
+    UserLeave.fromObject = function fromObject(object) {
+        if (object instanceof $root.UserLeave)
+            return object;
+        return new $root.UserLeave();
+    };
+
+    /**
+     * Creates a plain object from a UserLeave message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof UserLeave
+     * @static
+     * @param {UserLeave} message UserLeave
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    UserLeave.toObject = function toObject() {
+        return {};
+    };
+
+    /**
+     * Converts this UserLeave to JSON.
+     * @function toJSON
+     * @memberof UserLeave
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    UserLeave.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return UserLeave;
+})();
+
+export const EndClass = $root.EndClass = (() => {
+
+    /**
+     * Properties of an EndClass.
+     * @exports IEndClass
+     * @interface IEndClass
+     */
+
+    /**
+     * Constructs a new EndClass.
+     * @exports EndClass
+     * @classdesc Represents an EndClass.
+     * @implements IEndClass
+     * @constructor
+     * @param {IEndClass=} [properties] Properties to set
+     */
+    function EndClass(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Creates a new EndClass instance using the specified properties.
+     * @function create
+     * @memberof EndClass
+     * @static
+     * @param {IEndClass=} [properties] Properties to set
+     * @returns {EndClass} EndClass instance
+     */
+    EndClass.create = function create(properties) {
+        return new EndClass(properties);
+    };
+
+    /**
+     * Encodes the specified EndClass message. Does not implicitly {@link EndClass.verify|verify} messages.
+     * @function encode
+     * @memberof EndClass
+     * @static
+     * @param {IEndClass} message EndClass message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    EndClass.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified EndClass message, length delimited. Does not implicitly {@link EndClass.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof EndClass
+     * @static
+     * @param {IEndClass} message EndClass message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    EndClass.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an EndClass message from the specified reader or buffer.
+     * @function decode
+     * @memberof EndClass
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {EndClass} EndClass
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    EndClass.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.EndClass();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an EndClass message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof EndClass
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {EndClass} EndClass
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    EndClass.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an EndClass message.
+     * @function verify
+     * @memberof EndClass
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    EndClass.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        return null;
+    };
+
+    /**
+     * Creates an EndClass message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof EndClass
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {EndClass} EndClass
+     */
+    EndClass.fromObject = function fromObject(object) {
+        if (object instanceof $root.EndClass)
+            return object;
+        return new $root.EndClass();
+    };
+
+    /**
+     * Creates a plain object from an EndClass message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof EndClass
+     * @static
+     * @param {EndClass} message EndClass
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    EndClass.toObject = function toObject() {
+        return {};
+    };
+
+    /**
+     * Converts this EndClass to JSON.
+     * @function toJSON
+     * @memberof EndClass
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    EndClass.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return EndClass;
+})();
+
+export const SetDevice = $root.SetDevice = (() => {
+
+    /**
+     * Properties of a SetDevice.
+     * @exports ISetDevice
+     * @interface ISetDevice
+     * @property {IDevice|null} [device] SetDevice device
+     */
+
+    /**
+     * Constructs a new SetDevice.
+     * @exports SetDevice
+     * @classdesc Represents a SetDevice.
+     * @implements ISetDevice
+     * @constructor
+     * @param {ISetDevice=} [properties] Properties to set
+     */
+    function SetDevice(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SetDevice device.
+     * @member {IDevice|null|undefined} device
+     * @memberof SetDevice
+     * @instance
+     */
+    SetDevice.prototype.device = null;
+
+    /**
+     * Creates a new SetDevice instance using the specified properties.
+     * @function create
+     * @memberof SetDevice
+     * @static
+     * @param {ISetDevice=} [properties] Properties to set
+     * @returns {SetDevice} SetDevice instance
+     */
+    SetDevice.create = function create(properties) {
+        return new SetDevice(properties);
+    };
+
+    /**
+     * Encodes the specified SetDevice message. Does not implicitly {@link SetDevice.verify|verify} messages.
+     * @function encode
+     * @memberof SetDevice
+     * @static
+     * @param {ISetDevice} message SetDevice message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetDevice.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.device != null && Object.hasOwnProperty.call(message, "device"))
+            $root.Device.encode(message.device, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SetDevice message, length delimited. Does not implicitly {@link SetDevice.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SetDevice
+     * @static
+     * @param {ISetDevice} message SetDevice message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetDevice.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SetDevice message from the specified reader or buffer.
+     * @function decode
+     * @memberof SetDevice
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SetDevice} SetDevice
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetDevice.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetDevice();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.device = $root.Device.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SetDevice message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SetDevice
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SetDevice} SetDevice
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetDevice.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SetDevice message.
+     * @function verify
+     * @memberof SetDevice
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SetDevice.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.device != null && message.hasOwnProperty("device")) {
+            let error = $root.Device.verify(message.device);
+            if (error)
+                return "device." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SetDevice message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SetDevice
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SetDevice} SetDevice
+     */
+    SetDevice.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetDevice)
+            return object;
+        let message = new $root.SetDevice();
+        if (object.device != null) {
+            if (typeof object.device !== "object")
+                throw TypeError(".SetDevice.device: object expected");
+            message.device = $root.Device.fromObject(object.device);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SetDevice message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SetDevice
+     * @static
+     * @param {SetDevice} message SetDevice
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SetDevice.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.device = null;
+        if (message.device != null && message.hasOwnProperty("device"))
+            object.device = $root.Device.toObject(message.device, options);
+        return object;
+    };
+
+    /**
+     * Converts this SetDevice to JSON.
+     * @function toJSON
+     * @memberof SetDevice
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SetDevice.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SetDevice;
+})();
+
+export const RemoveDevice = $root.RemoveDevice = (() => {
+
+    /**
+     * Properties of a RemoveDevice.
+     * @exports IRemoveDevice
+     * @interface IRemoveDevice
+     * @property {string|null} [id] RemoveDevice id
+     */
+
+    /**
+     * Constructs a new RemoveDevice.
+     * @exports RemoveDevice
+     * @classdesc Represents a RemoveDevice.
+     * @implements IRemoveDevice
+     * @constructor
+     * @param {IRemoveDevice=} [properties] Properties to set
+     */
+    function RemoveDevice(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RemoveDevice id.
+     * @member {string} id
+     * @memberof RemoveDevice
+     * @instance
+     */
+    RemoveDevice.prototype.id = "";
+
+    /**
+     * Creates a new RemoveDevice instance using the specified properties.
+     * @function create
+     * @memberof RemoveDevice
+     * @static
+     * @param {IRemoveDevice=} [properties] Properties to set
+     * @returns {RemoveDevice} RemoveDevice instance
+     */
+    RemoveDevice.create = function create(properties) {
+        return new RemoveDevice(properties);
+    };
+
+    /**
+     * Encodes the specified RemoveDevice message. Does not implicitly {@link RemoveDevice.verify|verify} messages.
+     * @function encode
+     * @memberof RemoveDevice
+     * @static
+     * @param {IRemoveDevice} message RemoveDevice message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RemoveDevice.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RemoveDevice message, length delimited. Does not implicitly {@link RemoveDevice.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RemoveDevice
+     * @static
+     * @param {IRemoveDevice} message RemoveDevice message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RemoveDevice.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RemoveDevice message from the specified reader or buffer.
+     * @function decode
+     * @memberof RemoveDevice
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RemoveDevice} RemoveDevice
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RemoveDevice.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.RemoveDevice();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.id = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RemoveDevice message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RemoveDevice
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RemoveDevice} RemoveDevice
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RemoveDevice.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RemoveDevice message.
+     * @function verify
+     * @memberof RemoveDevice
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RemoveDevice.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a RemoveDevice message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RemoveDevice
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RemoveDevice} RemoveDevice
+     */
+    RemoveDevice.fromObject = function fromObject(object) {
+        if (object instanceof $root.RemoveDevice)
+            return object;
+        let message = new $root.RemoveDevice();
+        if (object.id != null)
+            message.id = String(object.id);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RemoveDevice message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RemoveDevice
+     * @static
+     * @param {RemoveDevice} message RemoveDevice
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RemoveDevice.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.id = "";
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        return object;
+    };
+
+    /**
+     * Converts this RemoveDevice to JSON.
+     * @function toJSON
+     * @memberof RemoveDevice
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RemoveDevice.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RemoveDevice;
+})();
+
+export const SetWebRTCStream = $root.SetWebRTCStream = (() => {
+
+    /**
+     * Properties of a SetWebRTCStream.
+     * @exports ISetWebRTCStream
+     * @interface ISetWebRTCStream
+     * @property {string|null} [deviceId] SetWebRTCStream deviceId
+     * @property {Array.<IWebRTCStream>|null} [streams] SetWebRTCStream streams
+     */
+
+    /**
+     * Constructs a new SetWebRTCStream.
+     * @exports SetWebRTCStream
+     * @classdesc Represents a SetWebRTCStream.
+     * @implements ISetWebRTCStream
+     * @constructor
+     * @param {ISetWebRTCStream=} [properties] Properties to set
+     */
+    function SetWebRTCStream(properties) {
+        this.streams = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SetWebRTCStream deviceId.
+     * @member {string} deviceId
+     * @memberof SetWebRTCStream
+     * @instance
+     */
+    SetWebRTCStream.prototype.deviceId = "";
+
+    /**
+     * SetWebRTCStream streams.
+     * @member {Array.<IWebRTCStream>} streams
+     * @memberof SetWebRTCStream
+     * @instance
+     */
+    SetWebRTCStream.prototype.streams = $util.emptyArray;
+
+    /**
+     * Creates a new SetWebRTCStream instance using the specified properties.
+     * @function create
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {ISetWebRTCStream=} [properties] Properties to set
+     * @returns {SetWebRTCStream} SetWebRTCStream instance
+     */
+    SetWebRTCStream.create = function create(properties) {
+        return new SetWebRTCStream(properties);
+    };
+
+    /**
+     * Encodes the specified SetWebRTCStream message. Does not implicitly {@link SetWebRTCStream.verify|verify} messages.
+     * @function encode
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {ISetWebRTCStream} message SetWebRTCStream message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetWebRTCStream.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.deviceId != null && Object.hasOwnProperty.call(message, "deviceId"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.deviceId);
+        if (message.streams != null && message.streams.length)
+            for (let i = 0; i < message.streams.length; ++i)
+                $root.WebRTCStream.encode(message.streams[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SetWebRTCStream message, length delimited. Does not implicitly {@link SetWebRTCStream.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {ISetWebRTCStream} message SetWebRTCStream message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetWebRTCStream.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SetWebRTCStream message from the specified reader or buffer.
+     * @function decode
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SetWebRTCStream} SetWebRTCStream
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetWebRTCStream.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetWebRTCStream();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.deviceId = reader.string();
+                break;
+            case 1:
+                if (!(message.streams && message.streams.length))
+                    message.streams = [];
+                message.streams.push($root.WebRTCStream.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SetWebRTCStream message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SetWebRTCStream} SetWebRTCStream
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetWebRTCStream.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SetWebRTCStream message.
+     * @function verify
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SetWebRTCStream.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            if (!$util.isString(message.deviceId))
+                return "deviceId: string expected";
+        if (message.streams != null && message.hasOwnProperty("streams")) {
+            if (!Array.isArray(message.streams))
+                return "streams: array expected";
+            for (let i = 0; i < message.streams.length; ++i) {
+                let error = $root.WebRTCStream.verify(message.streams[i]);
+                if (error)
+                    return "streams." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SetWebRTCStream message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SetWebRTCStream} SetWebRTCStream
+     */
+    SetWebRTCStream.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetWebRTCStream)
+            return object;
+        let message = new $root.SetWebRTCStream();
+        if (object.deviceId != null)
+            message.deviceId = String(object.deviceId);
+        if (object.streams) {
+            if (!Array.isArray(object.streams))
+                throw TypeError(".SetWebRTCStream.streams: array expected");
+            message.streams = [];
+            for (let i = 0; i < object.streams.length; ++i) {
+                if (typeof object.streams[i] !== "object")
+                    throw TypeError(".SetWebRTCStream.streams: object expected");
+                message.streams[i] = $root.WebRTCStream.fromObject(object.streams[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SetWebRTCStream message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SetWebRTCStream
+     * @static
+     * @param {SetWebRTCStream} message SetWebRTCStream
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SetWebRTCStream.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.streams = [];
+        if (options.defaults)
+            object.deviceId = "";
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            object.deviceId = message.deviceId;
+        if (message.streams && message.streams.length) {
+            object.streams = [];
+            for (let j = 0; j < message.streams.length; ++j)
+                object.streams[j] = $root.WebRTCStream.toObject(message.streams[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this SetWebRTCStream to JSON.
+     * @function toJSON
+     * @memberof SetWebRTCStream
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SetWebRTCStream.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SetWebRTCStream;
+})();
+
+export const SetActivity = $root.SetActivity = (() => {
+
+    /**
+     * Properties of a SetActivity.
+     * @exports ISetActivity
+     * @interface ISetActivity
+     * @property {string|null} [deviceId] SetActivity deviceId
+     * @property {string|null} [activityId] SetActivity activityId
+     * @property {string|null} [activityStreamId] SetActivity activityStreamId
+     */
+
+    /**
+     * Constructs a new SetActivity.
+     * @exports SetActivity
+     * @classdesc Represents a SetActivity.
+     * @implements ISetActivity
+     * @constructor
+     * @param {ISetActivity=} [properties] Properties to set
+     */
+    function SetActivity(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SetActivity deviceId.
+     * @member {string} deviceId
+     * @memberof SetActivity
+     * @instance
+     */
+    SetActivity.prototype.deviceId = "";
+
+    /**
+     * SetActivity activityId.
+     * @member {string} activityId
+     * @memberof SetActivity
+     * @instance
+     */
+    SetActivity.prototype.activityId = "";
+
+    /**
+     * SetActivity activityStreamId.
+     * @member {string} activityStreamId
+     * @memberof SetActivity
+     * @instance
+     */
+    SetActivity.prototype.activityStreamId = "";
+
+    /**
+     * Creates a new SetActivity instance using the specified properties.
+     * @function create
+     * @memberof SetActivity
+     * @static
+     * @param {ISetActivity=} [properties] Properties to set
+     * @returns {SetActivity} SetActivity instance
+     */
+    SetActivity.create = function create(properties) {
+        return new SetActivity(properties);
+    };
+
+    /**
+     * Encodes the specified SetActivity message. Does not implicitly {@link SetActivity.verify|verify} messages.
+     * @function encode
+     * @memberof SetActivity
+     * @static
+     * @param {ISetActivity} message SetActivity message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetActivity.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.deviceId != null && Object.hasOwnProperty.call(message, "deviceId"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.deviceId);
+        if (message.activityId != null && Object.hasOwnProperty.call(message, "activityId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.activityId);
+        if (message.activityStreamId != null && Object.hasOwnProperty.call(message, "activityStreamId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.activityStreamId);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SetActivity message, length delimited. Does not implicitly {@link SetActivity.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SetActivity
+     * @static
+     * @param {ISetActivity} message SetActivity message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetActivity.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SetActivity message from the specified reader or buffer.
+     * @function decode
+     * @memberof SetActivity
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SetActivity} SetActivity
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetActivity.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetActivity();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.deviceId = reader.string();
+                break;
+            case 1:
+                message.activityId = reader.string();
+                break;
+            case 2:
+                message.activityStreamId = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SetActivity message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SetActivity
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SetActivity} SetActivity
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetActivity.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SetActivity message.
+     * @function verify
+     * @memberof SetActivity
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SetActivity.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            if (!$util.isString(message.deviceId))
+                return "deviceId: string expected";
+        if (message.activityId != null && message.hasOwnProperty("activityId"))
+            if (!$util.isString(message.activityId))
+                return "activityId: string expected";
+        if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
+            if (!$util.isString(message.activityStreamId))
+                return "activityStreamId: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a SetActivity message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SetActivity
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SetActivity} SetActivity
+     */
+    SetActivity.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetActivity)
+            return object;
+        let message = new $root.SetActivity();
+        if (object.deviceId != null)
+            message.deviceId = String(object.deviceId);
+        if (object.activityId != null)
+            message.activityId = String(object.activityId);
+        if (object.activityStreamId != null)
+            message.activityStreamId = String(object.activityStreamId);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SetActivity message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SetActivity
+     * @static
+     * @param {SetActivity} message SetActivity
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SetActivity.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.deviceId = "";
+            object.activityId = "";
+            object.activityStreamId = "";
+        }
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            object.deviceId = message.deviceId;
+        if (message.activityId != null && message.hasOwnProperty("activityId"))
+            object.activityId = message.activityId;
+        if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
+            object.activityStreamId = message.activityStreamId;
+        return object;
+    };
+
+    /**
+     * Converts this SetActivity to JSON.
+     * @function toJSON
+     * @memberof SetActivity
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SetActivity.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SetActivity;
+})();
+
+export const SetHost = $root.SetHost = (() => {
+
+    /**
+     * Properties of a SetHost.
+     * @exports ISetHost
+     * @interface ISetHost
+     * @property {string|null} [id] SetHost id
+     */
+
+    /**
+     * Constructs a new SetHost.
+     * @exports SetHost
+     * @classdesc Represents a SetHost.
+     * @implements ISetHost
+     * @constructor
+     * @param {ISetHost=} [properties] Properties to set
+     */
+    function SetHost(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SetHost id.
+     * @member {string} id
+     * @memberof SetHost
+     * @instance
+     */
+    SetHost.prototype.id = "";
+
+    /**
+     * Creates a new SetHost instance using the specified properties.
+     * @function create
+     * @memberof SetHost
+     * @static
+     * @param {ISetHost=} [properties] Properties to set
+     * @returns {SetHost} SetHost instance
+     */
+    SetHost.create = function create(properties) {
+        return new SetHost(properties);
+    };
+
+    /**
+     * Encodes the specified SetHost message. Does not implicitly {@link SetHost.verify|verify} messages.
+     * @function encode
+     * @memberof SetHost
+     * @static
+     * @param {ISetHost} message SetHost message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetHost.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SetHost message, length delimited. Does not implicitly {@link SetHost.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SetHost
+     * @static
+     * @param {ISetHost} message SetHost message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetHost.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SetHost message from the specified reader or buffer.
+     * @function decode
+     * @memberof SetHost
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SetHost} SetHost
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetHost.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetHost();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.id = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SetHost message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SetHost
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SetHost} SetHost
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetHost.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SetHost message.
+     * @function verify
+     * @memberof SetHost
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SetHost.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a SetHost message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SetHost
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SetHost} SetHost
+     */
+    SetHost.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetHost)
+            return object;
+        let message = new $root.SetHost();
+        if (object.id != null)
+            message.id = String(object.id);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SetHost message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SetHost
+     * @static
+     * @param {SetHost} message SetHost
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SetHost.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.id = "";
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        return object;
+    };
+
+    /**
+     * Converts this SetHost to JSON.
+     * @function toJSON
+     * @memberof SetHost
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SetHost.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SetHost;
+})();
+
+export const AddTrophy = $root.AddTrophy = (() => {
+
+    /**
+     * Properties of an AddTrophy.
+     * @exports IAddTrophy
+     * @interface IAddTrophy
+     * @property {string|null} [trophyId] AddTrophy trophyId
+     * @property {number|Long|null} [timestamp] AddTrophy timestamp
+     * @property {string|null} [id] AddTrophy id
+     */
+
+    /**
+     * Constructs a new AddTrophy.
+     * @exports AddTrophy
+     * @classdesc Represents an AddTrophy.
+     * @implements IAddTrophy
+     * @constructor
+     * @param {IAddTrophy=} [properties] Properties to set
+     */
+    function AddTrophy(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * AddTrophy trophyId.
+     * @member {string} trophyId
+     * @memberof AddTrophy
+     * @instance
+     */
+    AddTrophy.prototype.trophyId = "";
+
+    /**
+     * AddTrophy timestamp.
+     * @member {number|Long} timestamp
+     * @memberof AddTrophy
+     * @instance
+     */
+    AddTrophy.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+    /**
+     * AddTrophy id.
+     * @member {string} id
+     * @memberof AddTrophy
+     * @instance
+     */
+    AddTrophy.prototype.id = "";
+
+    /**
+     * Creates a new AddTrophy instance using the specified properties.
+     * @function create
+     * @memberof AddTrophy
+     * @static
+     * @param {IAddTrophy=} [properties] Properties to set
+     * @returns {AddTrophy} AddTrophy instance
+     */
+    AddTrophy.create = function create(properties) {
+        return new AddTrophy(properties);
+    };
+
+    /**
+     * Encodes the specified AddTrophy message. Does not implicitly {@link AddTrophy.verify|verify} messages.
+     * @function encode
+     * @memberof AddTrophy
+     * @static
+     * @param {IAddTrophy} message AddTrophy message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AddTrophy.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.trophyId != null && Object.hasOwnProperty.call(message, "trophyId"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.trophyId);
+        if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
+            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.timestamp);
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.id);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified AddTrophy message, length delimited. Does not implicitly {@link AddTrophy.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof AddTrophy
+     * @static
+     * @param {IAddTrophy} message AddTrophy message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AddTrophy.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an AddTrophy message from the specified reader or buffer.
+     * @function decode
+     * @memberof AddTrophy
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {AddTrophy} AddTrophy
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AddTrophy.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.AddTrophy();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.trophyId = reader.string();
+                break;
+            case 1:
+                message.timestamp = reader.uint64();
+                break;
+            case 2:
+                message.id = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an AddTrophy message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof AddTrophy
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {AddTrophy} AddTrophy
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AddTrophy.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an AddTrophy message.
+     * @function verify
+     * @memberof AddTrophy
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    AddTrophy.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.trophyId != null && message.hasOwnProperty("trophyId"))
+            if (!$util.isString(message.trophyId))
+                return "trophyId: string expected";
+        if (message.timestamp != null && message.hasOwnProperty("timestamp"))
+            if (!$util.isInteger(message.timestamp) && !(message.timestamp && $util.isInteger(message.timestamp.low) && $util.isInteger(message.timestamp.high)))
+                return "timestamp: integer|Long expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        return null;
+    };
+
+    /**
+     * Creates an AddTrophy message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof AddTrophy
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {AddTrophy} AddTrophy
+     */
+    AddTrophy.fromObject = function fromObject(object) {
+        if (object instanceof $root.AddTrophy)
+            return object;
+        let message = new $root.AddTrophy();
+        if (object.trophyId != null)
+            message.trophyId = String(object.trophyId);
+        if (object.timestamp != null)
+            if ($util.Long)
+                (message.timestamp = $util.Long.fromValue(object.timestamp)).unsigned = true;
+            else if (typeof object.timestamp === "string")
+                message.timestamp = parseInt(object.timestamp, 10);
+            else if (typeof object.timestamp === "number")
+                message.timestamp = object.timestamp;
+            else if (typeof object.timestamp === "object")
+                message.timestamp = new $util.LongBits(object.timestamp.low >>> 0, object.timestamp.high >>> 0).toNumber(true);
+        if (object.id != null)
+            message.id = String(object.id);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an AddTrophy message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof AddTrophy
+     * @static
+     * @param {AddTrophy} message AddTrophy
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    AddTrophy.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.trophyId = "";
+            if ($util.Long) {
+                let long = new $util.Long(0, 0, true);
+                object.timestamp = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.timestamp = options.longs === String ? "0" : 0;
+            object.id = "";
+        }
+        if (message.trophyId != null && message.hasOwnProperty("trophyId"))
+            object.trophyId = message.trophyId;
+        if (message.timestamp != null && message.hasOwnProperty("timestamp"))
+            if (typeof message.timestamp === "number")
+                object.timestamp = options.longs === String ? String(message.timestamp) : message.timestamp;
+            else
+                object.timestamp = options.longs === String ? $util.Long.prototype.toString.call(message.timestamp) : options.longs === Number ? new $util.LongBits(message.timestamp.low >>> 0, message.timestamp.high >>> 0).toNumber(true) : message.timestamp;
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        return object;
+    };
+
+    /**
+     * Converts this AddTrophy to JSON.
+     * @function toJSON
+     * @memberof AddTrophy
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    AddTrophy.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return AddTrophy;
+})();
+
+export const SetContent = $root.SetContent = (() => {
+
+    /**
+     * Properties of a SetContent.
+     * @exports ISetContent
+     * @interface ISetContent
+     * @property {IContent|null} [content] SetContent content
+     */
+
+    /**
+     * Constructs a new SetContent.
+     * @exports SetContent
+     * @classdesc Represents a SetContent.
+     * @implements ISetContent
+     * @constructor
+     * @param {ISetContent=} [properties] Properties to set
+     */
+    function SetContent(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SetContent content.
+     * @member {IContent|null|undefined} content
+     * @memberof SetContent
+     * @instance
+     */
+    SetContent.prototype.content = null;
+
+    /**
+     * Creates a new SetContent instance using the specified properties.
+     * @function create
+     * @memberof SetContent
+     * @static
+     * @param {ISetContent=} [properties] Properties to set
+     * @returns {SetContent} SetContent instance
+     */
+    SetContent.create = function create(properties) {
+        return new SetContent(properties);
+    };
+
+    /**
+     * Encodes the specified SetContent message. Does not implicitly {@link SetContent.verify|verify} messages.
+     * @function encode
+     * @memberof SetContent
+     * @static
+     * @param {ISetContent} message SetContent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetContent.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.content != null && Object.hasOwnProperty.call(message, "content"))
+            $root.Content.encode(message.content, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SetContent message, length delimited. Does not implicitly {@link SetContent.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SetContent
+     * @static
+     * @param {ISetContent} message SetContent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SetContent.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SetContent message from the specified reader or buffer.
+     * @function decode
+     * @memberof SetContent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SetContent} SetContent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetContent.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetContent();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.content = $root.Content.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SetContent message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SetContent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SetContent} SetContent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SetContent.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SetContent message.
+     * @function verify
+     * @memberof SetContent
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SetContent.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.content != null && message.hasOwnProperty("content")) {
+            let error = $root.Content.verify(message.content);
+            if (error)
+                return "content." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SetContent message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SetContent
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SetContent} SetContent
+     */
+    SetContent.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetContent)
+            return object;
+        let message = new $root.SetContent();
+        if (object.content != null) {
+            if (typeof object.content !== "object")
+                throw TypeError(".SetContent.content: object expected");
+            message.content = $root.Content.fromObject(object.content);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SetContent message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SetContent
+     * @static
+     * @param {SetContent} message SetContent
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SetContent.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.content = null;
+        if (message.content != null && message.hasOwnProperty("content"))
+            object.content = $root.Content.toObject(message.content, options);
+        return object;
+    };
+
+    /**
+     * Converts this SetContent to JSON.
+     * @function toJSON
+     * @memberof SetContent
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SetContent.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SetContent;
+})();
+
+export const SendChatMessage = $root.SendChatMessage = (() => {
+
+    /**
+     * Properties of a SendChatMessage.
+     * @exports ISendChatMessage
+     * @interface ISendChatMessage
+     * @property {IChatMessage|null} [message] SendChatMessage message
+     */
+
+    /**
+     * Constructs a new SendChatMessage.
+     * @exports SendChatMessage
+     * @classdesc Represents a SendChatMessage.
+     * @implements ISendChatMessage
+     * @constructor
+     * @param {ISendChatMessage=} [properties] Properties to set
+     */
+    function SendChatMessage(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SendChatMessage message.
+     * @member {IChatMessage|null|undefined} message
+     * @memberof SendChatMessage
+     * @instance
+     */
+    SendChatMessage.prototype.message = null;
+
+    /**
+     * Creates a new SendChatMessage instance using the specified properties.
+     * @function create
+     * @memberof SendChatMessage
+     * @static
+     * @param {ISendChatMessage=} [properties] Properties to set
+     * @returns {SendChatMessage} SendChatMessage instance
+     */
+    SendChatMessage.create = function create(properties) {
+        return new SendChatMessage(properties);
+    };
+
+    /**
+     * Encodes the specified SendChatMessage message. Does not implicitly {@link SendChatMessage.verify|verify} messages.
+     * @function encode
+     * @memberof SendChatMessage
+     * @static
+     * @param {ISendChatMessage} message SendChatMessage message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SendChatMessage.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+            $root.ChatMessage.encode(message.message, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SendChatMessage message, length delimited. Does not implicitly {@link SendChatMessage.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SendChatMessage
+     * @static
+     * @param {ISendChatMessage} message SendChatMessage message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SendChatMessage.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SendChatMessage message from the specified reader or buffer.
+     * @function decode
+     * @memberof SendChatMessage
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SendChatMessage} SendChatMessage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SendChatMessage.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SendChatMessage();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.message = $root.ChatMessage.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SendChatMessage message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SendChatMessage
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SendChatMessage} SendChatMessage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SendChatMessage.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SendChatMessage message.
+     * @function verify
+     * @memberof SendChatMessage
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SendChatMessage.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.message != null && message.hasOwnProperty("message")) {
+            let error = $root.ChatMessage.verify(message.message);
+            if (error)
+                return "message." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SendChatMessage message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SendChatMessage
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SendChatMessage} SendChatMessage
+     */
+    SendChatMessage.fromObject = function fromObject(object) {
+        if (object instanceof $root.SendChatMessage)
+            return object;
+        let message = new $root.SendChatMessage();
+        if (object.message != null) {
+            if (typeof object.message !== "object")
+                throw TypeError(".SendChatMessage.message: object expected");
+            message.message = $root.ChatMessage.fromObject(object.message);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SendChatMessage message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SendChatMessage
+     * @static
+     * @param {SendChatMessage} message SendChatMessage
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SendChatMessage.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.message = null;
+        if (message.message != null && message.hasOwnProperty("message"))
+            object.message = $root.ChatMessage.toObject(message.message, options);
+        return object;
+    };
+
+    /**
+     * Converts this SendChatMessage to JSON.
+     * @function toJSON
+     * @memberof SendChatMessage
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SendChatMessage.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SendChatMessage;
+})();
+
+export const StateChanges = $root.StateChanges = (() => {
+
+    /**
+     * Properties of a StateChanges.
+     * @exports IStateChanges
+     * @interface IStateChanges
+     * @property {Array.<IStateDiff>|null} [changes] StateChanges changes
+     */
+
+    /**
+     * Constructs a new StateChanges.
+     * @exports StateChanges
+     * @classdesc Represents a StateChanges.
+     * @implements IStateChanges
+     * @constructor
+     * @param {IStateChanges=} [properties] Properties to set
+     */
+    function StateChanges(properties) {
+        this.changes = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * StateChanges changes.
+     * @member {Array.<IStateDiff>} changes
+     * @memberof StateChanges
+     * @instance
+     */
+    StateChanges.prototype.changes = $util.emptyArray;
+
+    /**
+     * Creates a new StateChanges instance using the specified properties.
+     * @function create
+     * @memberof StateChanges
+     * @static
+     * @param {IStateChanges=} [properties] Properties to set
+     * @returns {StateChanges} StateChanges instance
+     */
+    StateChanges.create = function create(properties) {
+        return new StateChanges(properties);
+    };
+
+    /**
+     * Encodes the specified StateChanges message. Does not implicitly {@link StateChanges.verify|verify} messages.
+     * @function encode
+     * @memberof StateChanges
+     * @static
+     * @param {IStateChanges} message StateChanges message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    StateChanges.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.changes != null && message.changes.length)
+            for (let i = 0; i < message.changes.length; ++i)
+                $root.StateDiff.encode(message.changes[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified StateChanges message, length delimited. Does not implicitly {@link StateChanges.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof StateChanges
+     * @static
+     * @param {IStateChanges} message StateChanges message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    StateChanges.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a StateChanges message from the specified reader or buffer.
+     * @function decode
+     * @memberof StateChanges
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {StateChanges} StateChanges
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    StateChanges.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.StateChanges();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                if (!(message.changes && message.changes.length))
+                    message.changes = [];
+                message.changes.push($root.StateDiff.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a StateChanges message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof StateChanges
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {StateChanges} StateChanges
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    StateChanges.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a StateChanges message.
+     * @function verify
+     * @memberof StateChanges
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    StateChanges.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.changes != null && message.hasOwnProperty("changes")) {
+            if (!Array.isArray(message.changes))
+                return "changes: array expected";
+            for (let i = 0; i < message.changes.length; ++i) {
+                let error = $root.StateDiff.verify(message.changes[i]);
+                if (error)
+                    return "changes." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a StateChanges message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof StateChanges
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {StateChanges} StateChanges
+     */
+    StateChanges.fromObject = function fromObject(object) {
+        if (object instanceof $root.StateChanges)
+            return object;
+        let message = new $root.StateChanges();
+        if (object.changes) {
+            if (!Array.isArray(object.changes))
+                throw TypeError(".StateChanges.changes: array expected");
+            message.changes = [];
+            for (let i = 0; i < object.changes.length; ++i) {
+                if (typeof object.changes[i] !== "object")
+                    throw TypeError(".StateChanges.changes: object expected");
+                message.changes[i] = $root.StateDiff.fromObject(object.changes[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a StateChanges message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof StateChanges
+     * @static
+     * @param {StateChanges} message StateChanges
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    StateChanges.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.changes = [];
+        if (message.changes && message.changes.length) {
+            object.changes = [];
+            for (let j = 0; j < message.changes.length; ++j)
+                object.changes[j] = $root.StateDiff.toObject(message.changes[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this StateChanges to JSON.
+     * @function toJSON
+     * @memberof StateChanges
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    StateChanges.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return StateChanges;
+})();
+
+export const StateDiff = $root.StateDiff = (() => {
+
+    /**
+     * Properties of a StateDiff.
+     * @exports IStateDiff
+     * @interface IStateDiff
+     * @property {IState|null} [getState] StateDiff getState
+     * @property {IAddParticipants|null} [addParticipants] StateDiff addParticipants
+     * @property {IChangeParticipants|null} [changeParticipants] StateDiff changeParticipants
+     * @property {IRemoveParticipants|null} [removeParticipants] StateDiff removeParticipants
+     * @property {IChangeContent|null} [changeContent] StateDiff changeContent
+     * @property {IChangeHost|null} [changeHost] StateDiff changeHost
+     * @property {IAppendChatMessage|null} [appendChatMessage] StateDiff appendChatMessage
+     * @property {IReceiveTrophy|null} [receiveTrophy] StateDiff receiveTrophy
+     * @property {IClassEnded|null} [classEnded] StateDiff classEnded
+     */
+
+    /**
+     * Constructs a new StateDiff.
+     * @exports StateDiff
+     * @classdesc Represents a StateDiff.
+     * @implements IStateDiff
+     * @constructor
+     * @param {IStateDiff=} [properties] Properties to set
+     */
+    function StateDiff(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * StateDiff getState.
+     * @member {IState|null|undefined} getState
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.getState = null;
+
+    /**
+     * StateDiff addParticipants.
+     * @member {IAddParticipants|null|undefined} addParticipants
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.addParticipants = null;
+
+    /**
+     * StateDiff changeParticipants.
+     * @member {IChangeParticipants|null|undefined} changeParticipants
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.changeParticipants = null;
+
+    /**
+     * StateDiff removeParticipants.
+     * @member {IRemoveParticipants|null|undefined} removeParticipants
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.removeParticipants = null;
+
+    /**
+     * StateDiff changeContent.
+     * @member {IChangeContent|null|undefined} changeContent
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.changeContent = null;
+
+    /**
+     * StateDiff changeHost.
+     * @member {IChangeHost|null|undefined} changeHost
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.changeHost = null;
+
+    /**
+     * StateDiff appendChatMessage.
+     * @member {IAppendChatMessage|null|undefined} appendChatMessage
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.appendChatMessage = null;
+
+    /**
+     * StateDiff receiveTrophy.
+     * @member {IReceiveTrophy|null|undefined} receiveTrophy
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.receiveTrophy = null;
+
+    /**
+     * StateDiff classEnded.
+     * @member {IClassEnded|null|undefined} classEnded
+     * @memberof StateDiff
+     * @instance
+     */
+    StateDiff.prototype.classEnded = null;
+
+    // OneOf field names bound to virtual getters and setters
+    let $oneOfFields;
+
+    /**
+     * StateDiff action.
+     * @member {"getState"|"addParticipants"|"changeParticipants"|"removeParticipants"|"changeContent"|"changeHost"|"appendChatMessage"|"receiveTrophy"|"classEnded"|undefined} action
+     * @memberof StateDiff
+     * @instance
+     */
+    Object.defineProperty(StateDiff.prototype, "action", {
+        get: $util.oneOfGetter($oneOfFields = ["getState", "addParticipants", "changeParticipants", "removeParticipants", "changeContent", "changeHost", "appendChatMessage", "receiveTrophy", "classEnded"]),
+        set: $util.oneOfSetter($oneOfFields)
+    });
+
+    /**
+     * Creates a new StateDiff instance using the specified properties.
+     * @function create
+     * @memberof StateDiff
+     * @static
+     * @param {IStateDiff=} [properties] Properties to set
+     * @returns {StateDiff} StateDiff instance
+     */
+    StateDiff.create = function create(properties) {
+        return new StateDiff(properties);
+    };
+
+    /**
+     * Encodes the specified StateDiff message. Does not implicitly {@link StateDiff.verify|verify} messages.
+     * @function encode
+     * @memberof StateDiff
+     * @static
+     * @param {IStateDiff} message StateDiff message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    StateDiff.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.getState != null && Object.hasOwnProperty.call(message, "getState"))
+            $root.State.encode(message.getState, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        if (message.addParticipants != null && Object.hasOwnProperty.call(message, "addParticipants"))
+            $root.AddParticipants.encode(message.addParticipants, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.changeParticipants != null && Object.hasOwnProperty.call(message, "changeParticipants"))
+            $root.ChangeParticipants.encode(message.changeParticipants, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.removeParticipants != null && Object.hasOwnProperty.call(message, "removeParticipants"))
+            $root.RemoveParticipants.encode(message.removeParticipants, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.changeContent != null && Object.hasOwnProperty.call(message, "changeContent"))
+            $root.ChangeContent.encode(message.changeContent, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.changeHost != null && Object.hasOwnProperty.call(message, "changeHost"))
+            $root.ChangeHost.encode(message.changeHost, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.appendChatMessage != null && Object.hasOwnProperty.call(message, "appendChatMessage"))
+            $root.AppendChatMessage.encode(message.appendChatMessage, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+        if (message.receiveTrophy != null && Object.hasOwnProperty.call(message, "receiveTrophy"))
+            $root.ReceiveTrophy.encode(message.receiveTrophy, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+        if (message.classEnded != null && Object.hasOwnProperty.call(message, "classEnded"))
+            $root.ClassEnded.encode(message.classEnded, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified StateDiff message, length delimited. Does not implicitly {@link StateDiff.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof StateDiff
+     * @static
+     * @param {IStateDiff} message StateDiff message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    StateDiff.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a StateDiff message from the specified reader or buffer.
+     * @function decode
+     * @memberof StateDiff
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {StateDiff} StateDiff
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    StateDiff.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.StateDiff();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.getState = $root.State.decode(reader, reader.uint32());
+                break;
+            case 1:
+                message.addParticipants = $root.AddParticipants.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.changeParticipants = $root.ChangeParticipants.decode(reader, reader.uint32());
+                break;
+            case 3:
+                message.removeParticipants = $root.RemoveParticipants.decode(reader, reader.uint32());
+                break;
+            case 4:
+                message.changeContent = $root.ChangeContent.decode(reader, reader.uint32());
+                break;
+            case 5:
+                message.changeHost = $root.ChangeHost.decode(reader, reader.uint32());
+                break;
+            case 6:
+                message.appendChatMessage = $root.AppendChatMessage.decode(reader, reader.uint32());
+                break;
+            case 7:
+                message.receiveTrophy = $root.ReceiveTrophy.decode(reader, reader.uint32());
+                break;
+            case 15:
+                message.classEnded = $root.ClassEnded.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a StateDiff message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof StateDiff
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {StateDiff} StateDiff
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    StateDiff.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a StateDiff message.
+     * @function verify
+     * @memberof StateDiff
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    StateDiff.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        let properties = {};
+        if (message.getState != null && message.hasOwnProperty("getState")) {
+            properties.action = 1;
+            {
+                let error = $root.State.verify(message.getState);
+                if (error)
+                    return "getState." + error;
+            }
+        }
+        if (message.addParticipants != null && message.hasOwnProperty("addParticipants")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.AddParticipants.verify(message.addParticipants);
+                if (error)
+                    return "addParticipants." + error;
+            }
+        }
+        if (message.changeParticipants != null && message.hasOwnProperty("changeParticipants")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.ChangeParticipants.verify(message.changeParticipants);
+                if (error)
+                    return "changeParticipants." + error;
+            }
+        }
+        if (message.removeParticipants != null && message.hasOwnProperty("removeParticipants")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.RemoveParticipants.verify(message.removeParticipants);
+                if (error)
+                    return "removeParticipants." + error;
+            }
+        }
+        if (message.changeContent != null && message.hasOwnProperty("changeContent")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.ChangeContent.verify(message.changeContent);
+                if (error)
+                    return "changeContent." + error;
+            }
+        }
+        if (message.changeHost != null && message.hasOwnProperty("changeHost")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.ChangeHost.verify(message.changeHost);
+                if (error)
+                    return "changeHost." + error;
+            }
+        }
+        if (message.appendChatMessage != null && message.hasOwnProperty("appendChatMessage")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.AppendChatMessage.verify(message.appendChatMessage);
+                if (error)
+                    return "appendChatMessage." + error;
+            }
+        }
+        if (message.receiveTrophy != null && message.hasOwnProperty("receiveTrophy")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.ReceiveTrophy.verify(message.receiveTrophy);
+                if (error)
+                    return "receiveTrophy." + error;
+            }
+        }
+        if (message.classEnded != null && message.hasOwnProperty("classEnded")) {
+            if (properties.action === 1)
+                return "action: multiple values";
+            properties.action = 1;
+            {
+                let error = $root.ClassEnded.verify(message.classEnded);
+                if (error)
+                    return "classEnded." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a StateDiff message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof StateDiff
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {StateDiff} StateDiff
+     */
+    StateDiff.fromObject = function fromObject(object) {
+        if (object instanceof $root.StateDiff)
+            return object;
+        let message = new $root.StateDiff();
+        if (object.getState != null) {
+            if (typeof object.getState !== "object")
+                throw TypeError(".StateDiff.getState: object expected");
+            message.getState = $root.State.fromObject(object.getState);
+        }
+        if (object.addParticipants != null) {
+            if (typeof object.addParticipants !== "object")
+                throw TypeError(".StateDiff.addParticipants: object expected");
+            message.addParticipants = $root.AddParticipants.fromObject(object.addParticipants);
+        }
+        if (object.changeParticipants != null) {
+            if (typeof object.changeParticipants !== "object")
+                throw TypeError(".StateDiff.changeParticipants: object expected");
+            message.changeParticipants = $root.ChangeParticipants.fromObject(object.changeParticipants);
+        }
+        if (object.removeParticipants != null) {
+            if (typeof object.removeParticipants !== "object")
+                throw TypeError(".StateDiff.removeParticipants: object expected");
+            message.removeParticipants = $root.RemoveParticipants.fromObject(object.removeParticipants);
+        }
+        if (object.changeContent != null) {
+            if (typeof object.changeContent !== "object")
+                throw TypeError(".StateDiff.changeContent: object expected");
+            message.changeContent = $root.ChangeContent.fromObject(object.changeContent);
+        }
+        if (object.changeHost != null) {
+            if (typeof object.changeHost !== "object")
+                throw TypeError(".StateDiff.changeHost: object expected");
+            message.changeHost = $root.ChangeHost.fromObject(object.changeHost);
+        }
+        if (object.appendChatMessage != null) {
+            if (typeof object.appendChatMessage !== "object")
+                throw TypeError(".StateDiff.appendChatMessage: object expected");
+            message.appendChatMessage = $root.AppendChatMessage.fromObject(object.appendChatMessage);
+        }
+        if (object.receiveTrophy != null) {
+            if (typeof object.receiveTrophy !== "object")
+                throw TypeError(".StateDiff.receiveTrophy: object expected");
+            message.receiveTrophy = $root.ReceiveTrophy.fromObject(object.receiveTrophy);
+        }
+        if (object.classEnded != null) {
+            if (typeof object.classEnded !== "object")
+                throw TypeError(".StateDiff.classEnded: object expected");
+            message.classEnded = $root.ClassEnded.fromObject(object.classEnded);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a StateDiff message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof StateDiff
+     * @static
+     * @param {StateDiff} message StateDiff
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    StateDiff.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (message.getState != null && message.hasOwnProperty("getState")) {
+            object.getState = $root.State.toObject(message.getState, options);
+            if (options.oneofs)
+                object.action = "getState";
+        }
+        if (message.addParticipants != null && message.hasOwnProperty("addParticipants")) {
+            object.addParticipants = $root.AddParticipants.toObject(message.addParticipants, options);
+            if (options.oneofs)
+                object.action = "addParticipants";
+        }
+        if (message.changeParticipants != null && message.hasOwnProperty("changeParticipants")) {
+            object.changeParticipants = $root.ChangeParticipants.toObject(message.changeParticipants, options);
+            if (options.oneofs)
+                object.action = "changeParticipants";
+        }
+        if (message.removeParticipants != null && message.hasOwnProperty("removeParticipants")) {
+            object.removeParticipants = $root.RemoveParticipants.toObject(message.removeParticipants, options);
+            if (options.oneofs)
+                object.action = "removeParticipants";
+        }
+        if (message.changeContent != null && message.hasOwnProperty("changeContent")) {
+            object.changeContent = $root.ChangeContent.toObject(message.changeContent, options);
+            if (options.oneofs)
+                object.action = "changeContent";
+        }
+        if (message.changeHost != null && message.hasOwnProperty("changeHost")) {
+            object.changeHost = $root.ChangeHost.toObject(message.changeHost, options);
+            if (options.oneofs)
+                object.action = "changeHost";
+        }
+        if (message.appendChatMessage != null && message.hasOwnProperty("appendChatMessage")) {
+            object.appendChatMessage = $root.AppendChatMessage.toObject(message.appendChatMessage, options);
+            if (options.oneofs)
+                object.action = "appendChatMessage";
+        }
+        if (message.receiveTrophy != null && message.hasOwnProperty("receiveTrophy")) {
+            object.receiveTrophy = $root.ReceiveTrophy.toObject(message.receiveTrophy, options);
+            if (options.oneofs)
+                object.action = "receiveTrophy";
+        }
+        if (message.classEnded != null && message.hasOwnProperty("classEnded")) {
+            object.classEnded = $root.ClassEnded.toObject(message.classEnded, options);
+            if (options.oneofs)
+                object.action = "classEnded";
+        }
+        return object;
+    };
+
+    /**
+     * Converts this StateDiff to JSON.
+     * @function toJSON
+     * @memberof StateDiff
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    StateDiff.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return StateDiff;
+})();
+
+export const Participant = $root.Participant = (() => {
+
+    /**
+     * Properties of a Participant.
+     * @exports IParticipant
+     * @interface IParticipant
+     * @property {string|null} [id] Participant id
+     * @property {string|null} [name] Participant name
+     * @property {Array.<IDevice>|null} [devices] Participant devices
+     * @property {Array.<ITrophy>|null} [trophies] Participant trophies
+     */
+
+    /**
+     * Constructs a new Participant.
+     * @exports Participant
+     * @classdesc Represents a Participant.
+     * @implements IParticipant
+     * @constructor
+     * @param {IParticipant=} [properties] Properties to set
+     */
+    function Participant(properties) {
+        this.devices = [];
+        this.trophies = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Participant id.
+     * @member {string} id
+     * @memberof Participant
+     * @instance
+     */
+    Participant.prototype.id = "";
+
+    /**
+     * Participant name.
+     * @member {string} name
+     * @memberof Participant
+     * @instance
+     */
+    Participant.prototype.name = "";
+
+    /**
+     * Participant devices.
+     * @member {Array.<IDevice>} devices
+     * @memberof Participant
+     * @instance
+     */
+    Participant.prototype.devices = $util.emptyArray;
+
+    /**
+     * Participant trophies.
+     * @member {Array.<ITrophy>} trophies
+     * @memberof Participant
+     * @instance
+     */
+    Participant.prototype.trophies = $util.emptyArray;
+
+    /**
+     * Creates a new Participant instance using the specified properties.
+     * @function create
+     * @memberof Participant
+     * @static
+     * @param {IParticipant=} [properties] Properties to set
+     * @returns {Participant} Participant instance
+     */
+    Participant.create = function create(properties) {
+        return new Participant(properties);
+    };
+
+    /**
+     * Encodes the specified Participant message. Does not implicitly {@link Participant.verify|verify} messages.
+     * @function encode
+     * @memberof Participant
+     * @static
+     * @param {IParticipant} message Participant message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Participant.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
@@ -658,47 +3950,41 @@ export const UserAction = $root.UserAction = (() => {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
         if (message.devices != null && message.devices.length)
             for (let i = 0; i < message.devices.length; ++i)
-                $root.DeviceAction.encode(message.devices[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.removeDeviceIDs != null && message.removeDeviceIDs.length)
-            for (let i = 0; i < message.removeDeviceIDs.length; ++i)
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.removeDeviceIDs[i]);
+                $root.Device.encode(message.devices[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.trophies != null && message.trophies.length)
             for (let i = 0; i < message.trophies.length; ++i)
-                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.chatMessages != null && message.chatMessages.length)
-            for (let i = 0; i < message.chatMessages.length; ++i)
-                $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
     /**
-     * Encodes the specified UserAction message, length delimited. Does not implicitly {@link UserAction.verify|verify} messages.
+     * Encodes the specified Participant message, length delimited. Does not implicitly {@link Participant.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof UserAction
+     * @memberof Participant
      * @static
-     * @param {IUserAction} message UserAction message or plain object to encode
+     * @param {IParticipant} message Participant message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserAction.encodeDelimited = function encodeDelimited(message, writer) {
+    Participant.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a UserAction message from the specified reader or buffer.
+     * Decodes a Participant message from the specified reader or buffer.
      * @function decode
-     * @memberof UserAction
+     * @memberof Participant
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {UserAction} UserAction
+     * @returns {Participant} Participant
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserAction.decode = function decode(reader, length) {
+    Participant.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserAction();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Participant();
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
@@ -711,22 +3997,12 @@ export const UserAction = $root.UserAction = (() => {
             case 2:
                 if (!(message.devices && message.devices.length))
                     message.devices = [];
-                message.devices.push($root.DeviceAction.decode(reader, reader.uint32()));
+                message.devices.push($root.Device.decode(reader, reader.uint32()));
                 break;
             case 3:
-                if (!(message.removeDeviceIDs && message.removeDeviceIDs.length))
-                    message.removeDeviceIDs = [];
-                message.removeDeviceIDs.push(reader.string());
-                break;
-            case 4:
                 if (!(message.trophies && message.trophies.length))
                     message.trophies = [];
                 message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
-                break;
-            case 5:
-                if (!(message.chatMessages && message.chatMessages.length))
-                    message.chatMessages = [];
-                message.chatMessages.push($root.ChatMessage.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -737,30 +4013,30 @@ export const UserAction = $root.UserAction = (() => {
     };
 
     /**
-     * Decodes a UserAction message from the specified reader or buffer, length delimited.
+     * Decodes a Participant message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof UserAction
+     * @memberof Participant
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UserAction} UserAction
+     * @returns {Participant} Participant
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserAction.decodeDelimited = function decodeDelimited(reader) {
+    Participant.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a UserAction message.
+     * Verifies a Participant message.
      * @function verify
-     * @memberof UserAction
+     * @memberof Participant
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    UserAction.verify = function verify(message) {
+    Participant.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.id != null && message.hasOwnProperty("id"))
@@ -773,17 +4049,10 @@ export const UserAction = $root.UserAction = (() => {
             if (!Array.isArray(message.devices))
                 return "devices: array expected";
             for (let i = 0; i < message.devices.length; ++i) {
-                let error = $root.DeviceAction.verify(message.devices[i]);
+                let error = $root.Device.verify(message.devices[i]);
                 if (error)
                     return "devices." + error;
             }
-        }
-        if (message.removeDeviceIDs != null && message.hasOwnProperty("removeDeviceIDs")) {
-            if (!Array.isArray(message.removeDeviceIDs))
-                return "removeDeviceIDs: array expected";
-            for (let i = 0; i < message.removeDeviceIDs.length; ++i)
-                if (!$util.isString(message.removeDeviceIDs[i]))
-                    return "removeDeviceIDs: string[] expected";
         }
         if (message.trophies != null && message.hasOwnProperty("trophies")) {
             if (!Array.isArray(message.trophies))
@@ -794,92 +4063,64 @@ export const UserAction = $root.UserAction = (() => {
                     return "trophies." + error;
             }
         }
-        if (message.chatMessages != null && message.hasOwnProperty("chatMessages")) {
-            if (!Array.isArray(message.chatMessages))
-                return "chatMessages: array expected";
-            for (let i = 0; i < message.chatMessages.length; ++i) {
-                let error = $root.ChatMessage.verify(message.chatMessages[i]);
-                if (error)
-                    return "chatMessages." + error;
-            }
-        }
         return null;
     };
 
     /**
-     * Creates a UserAction message from a plain object. Also converts values to their respective internal types.
+     * Creates a Participant message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof UserAction
+     * @memberof Participant
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {UserAction} UserAction
+     * @returns {Participant} Participant
      */
-    UserAction.fromObject = function fromObject(object) {
-        if (object instanceof $root.UserAction)
+    Participant.fromObject = function fromObject(object) {
+        if (object instanceof $root.Participant)
             return object;
-        let message = new $root.UserAction();
+        let message = new $root.Participant();
         if (object.id != null)
             message.id = String(object.id);
         if (object.name != null)
             message.name = String(object.name);
         if (object.devices) {
             if (!Array.isArray(object.devices))
-                throw TypeError(".UserAction.devices: array expected");
+                throw TypeError(".Participant.devices: array expected");
             message.devices = [];
             for (let i = 0; i < object.devices.length; ++i) {
                 if (typeof object.devices[i] !== "object")
-                    throw TypeError(".UserAction.devices: object expected");
-                message.devices[i] = $root.DeviceAction.fromObject(object.devices[i]);
+                    throw TypeError(".Participant.devices: object expected");
+                message.devices[i] = $root.Device.fromObject(object.devices[i]);
             }
-        }
-        if (object.removeDeviceIDs) {
-            if (!Array.isArray(object.removeDeviceIDs))
-                throw TypeError(".UserAction.removeDeviceIDs: array expected");
-            message.removeDeviceIDs = [];
-            for (let i = 0; i < object.removeDeviceIDs.length; ++i)
-                message.removeDeviceIDs[i] = String(object.removeDeviceIDs[i]);
         }
         if (object.trophies) {
             if (!Array.isArray(object.trophies))
-                throw TypeError(".UserAction.trophies: array expected");
+                throw TypeError(".Participant.trophies: array expected");
             message.trophies = [];
             for (let i = 0; i < object.trophies.length; ++i) {
                 if (typeof object.trophies[i] !== "object")
-                    throw TypeError(".UserAction.trophies: object expected");
+                    throw TypeError(".Participant.trophies: object expected");
                 message.trophies[i] = $root.Trophy.fromObject(object.trophies[i]);
-            }
-        }
-        if (object.chatMessages) {
-            if (!Array.isArray(object.chatMessages))
-                throw TypeError(".UserAction.chatMessages: array expected");
-            message.chatMessages = [];
-            for (let i = 0; i < object.chatMessages.length; ++i) {
-                if (typeof object.chatMessages[i] !== "object")
-                    throw TypeError(".UserAction.chatMessages: object expected");
-                message.chatMessages[i] = $root.ChatMessage.fromObject(object.chatMessages[i]);
             }
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a UserAction message. Also converts values to other types if specified.
+     * Creates a plain object from a Participant message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof UserAction
+     * @memberof Participant
      * @static
-     * @param {UserAction} message UserAction
+     * @param {Participant} message Participant
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    UserAction.toObject = function toObject(message, options) {
+    Participant.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         let object = {};
         if (options.arrays || options.defaults) {
             object.devices = [];
-            object.removeDeviceIDs = [];
             object.trophies = [];
-            object.chatMessages = [];
         }
         if (options.defaults) {
             object.id = "";
@@ -892,646 +4133,28 @@ export const UserAction = $root.UserAction = (() => {
         if (message.devices && message.devices.length) {
             object.devices = [];
             for (let j = 0; j < message.devices.length; ++j)
-                object.devices[j] = $root.DeviceAction.toObject(message.devices[j], options);
-        }
-        if (message.removeDeviceIDs && message.removeDeviceIDs.length) {
-            object.removeDeviceIDs = [];
-            for (let j = 0; j < message.removeDeviceIDs.length; ++j)
-                object.removeDeviceIDs[j] = message.removeDeviceIDs[j];
+                object.devices[j] = $root.Device.toObject(message.devices[j], options);
         }
         if (message.trophies && message.trophies.length) {
             object.trophies = [];
             for (let j = 0; j < message.trophies.length; ++j)
                 object.trophies[j] = $root.Trophy.toObject(message.trophies[j], options);
         }
-        if (message.chatMessages && message.chatMessages.length) {
-            object.chatMessages = [];
-            for (let j = 0; j < message.chatMessages.length; ++j)
-                object.chatMessages[j] = $root.ChatMessage.toObject(message.chatMessages[j], options);
-        }
         return object;
     };
 
     /**
-     * Converts this UserAction to JSON.
+     * Converts this Participant to JSON.
      * @function toJSON
-     * @memberof UserAction
+     * @memberof Participant
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    UserAction.prototype.toJSON = function toJSON() {
+    Participant.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return UserAction;
-})();
-
-export const DeviceAction = $root.DeviceAction = (() => {
-
-    /**
-     * Properties of a DeviceAction.
-     * @exports IDeviceAction
-     * @interface IDeviceAction
-     * @property {string|null} [id] DeviceAction id
-     * @property {string|null} [activityId] DeviceAction activityId
-     * @property {string|null} [activityStreamId] DeviceAction activityStreamId
-     * @property {Array.<IWebRTCStreamAction>|null} [webRTCStreams] DeviceAction webRTCStreams
-     * @property {Array.<string>|null} [removeWebRTCStreamIDs] DeviceAction removeWebRTCStreamIDs
-     */
-
-    /**
-     * Constructs a new DeviceAction.
-     * @exports DeviceAction
-     * @classdesc Represents a DeviceAction.
-     * @implements IDeviceAction
-     * @constructor
-     * @param {IDeviceAction=} [properties] Properties to set
-     */
-    function DeviceAction(properties) {
-        this.webRTCStreams = [];
-        this.removeWebRTCStreamIDs = [];
-        if (properties)
-            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * DeviceAction id.
-     * @member {string} id
-     * @memberof DeviceAction
-     * @instance
-     */
-    DeviceAction.prototype.id = "";
-
-    /**
-     * DeviceAction activityId.
-     * @member {string} activityId
-     * @memberof DeviceAction
-     * @instance
-     */
-    DeviceAction.prototype.activityId = "";
-
-    /**
-     * DeviceAction activityStreamId.
-     * @member {string} activityStreamId
-     * @memberof DeviceAction
-     * @instance
-     */
-    DeviceAction.prototype.activityStreamId = "";
-
-    /**
-     * DeviceAction webRTCStreams.
-     * @member {Array.<IWebRTCStreamAction>} webRTCStreams
-     * @memberof DeviceAction
-     * @instance
-     */
-    DeviceAction.prototype.webRTCStreams = $util.emptyArray;
-
-    /**
-     * DeviceAction removeWebRTCStreamIDs.
-     * @member {Array.<string>} removeWebRTCStreamIDs
-     * @memberof DeviceAction
-     * @instance
-     */
-    DeviceAction.prototype.removeWebRTCStreamIDs = $util.emptyArray;
-
-    /**
-     * Creates a new DeviceAction instance using the specified properties.
-     * @function create
-     * @memberof DeviceAction
-     * @static
-     * @param {IDeviceAction=} [properties] Properties to set
-     * @returns {DeviceAction} DeviceAction instance
-     */
-    DeviceAction.create = function create(properties) {
-        return new DeviceAction(properties);
-    };
-
-    /**
-     * Encodes the specified DeviceAction message. Does not implicitly {@link DeviceAction.verify|verify} messages.
-     * @function encode
-     * @memberof DeviceAction
-     * @static
-     * @param {IDeviceAction} message DeviceAction message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    DeviceAction.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
-        if (message.activityId != null && Object.hasOwnProperty.call(message, "activityId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.activityId);
-        if (message.activityStreamId != null && Object.hasOwnProperty.call(message, "activityStreamId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.activityStreamId);
-        if (message.webRTCStreams != null && message.webRTCStreams.length)
-            for (let i = 0; i < message.webRTCStreams.length; ++i)
-                $root.WebRTCStreamAction.encode(message.webRTCStreams[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.removeWebRTCStreamIDs != null && message.removeWebRTCStreamIDs.length)
-            for (let i = 0; i < message.removeWebRTCStreamIDs.length; ++i)
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.removeWebRTCStreamIDs[i]);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified DeviceAction message, length delimited. Does not implicitly {@link DeviceAction.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof DeviceAction
-     * @static
-     * @param {IDeviceAction} message DeviceAction message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    DeviceAction.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a DeviceAction message from the specified reader or buffer.
-     * @function decode
-     * @memberof DeviceAction
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {DeviceAction} DeviceAction
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    DeviceAction.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.DeviceAction();
-        while (reader.pos < end) {
-            let tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 0:
-                message.id = reader.string();
-                break;
-            case 1:
-                message.activityId = reader.string();
-                break;
-            case 2:
-                message.activityStreamId = reader.string();
-                break;
-            case 3:
-                if (!(message.webRTCStreams && message.webRTCStreams.length))
-                    message.webRTCStreams = [];
-                message.webRTCStreams.push($root.WebRTCStreamAction.decode(reader, reader.uint32()));
-                break;
-            case 4:
-                if (!(message.removeWebRTCStreamIDs && message.removeWebRTCStreamIDs.length))
-                    message.removeWebRTCStreamIDs = [];
-                message.removeWebRTCStreamIDs.push(reader.string());
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a DeviceAction message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof DeviceAction
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {DeviceAction} DeviceAction
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    DeviceAction.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a DeviceAction message.
-     * @function verify
-     * @memberof DeviceAction
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    DeviceAction.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
-        if (message.activityId != null && message.hasOwnProperty("activityId"))
-            if (!$util.isString(message.activityId))
-                return "activityId: string expected";
-        if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
-            if (!$util.isString(message.activityStreamId))
-                return "activityStreamId: string expected";
-        if (message.webRTCStreams != null && message.hasOwnProperty("webRTCStreams")) {
-            if (!Array.isArray(message.webRTCStreams))
-                return "webRTCStreams: array expected";
-            for (let i = 0; i < message.webRTCStreams.length; ++i) {
-                let error = $root.WebRTCStreamAction.verify(message.webRTCStreams[i]);
-                if (error)
-                    return "webRTCStreams." + error;
-            }
-        }
-        if (message.removeWebRTCStreamIDs != null && message.hasOwnProperty("removeWebRTCStreamIDs")) {
-            if (!Array.isArray(message.removeWebRTCStreamIDs))
-                return "removeWebRTCStreamIDs: array expected";
-            for (let i = 0; i < message.removeWebRTCStreamIDs.length; ++i)
-                if (!$util.isString(message.removeWebRTCStreamIDs[i]))
-                    return "removeWebRTCStreamIDs: string[] expected";
-        }
-        return null;
-    };
-
-    /**
-     * Creates a DeviceAction message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof DeviceAction
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {DeviceAction} DeviceAction
-     */
-    DeviceAction.fromObject = function fromObject(object) {
-        if (object instanceof $root.DeviceAction)
-            return object;
-        let message = new $root.DeviceAction();
-        if (object.id != null)
-            message.id = String(object.id);
-        if (object.activityId != null)
-            message.activityId = String(object.activityId);
-        if (object.activityStreamId != null)
-            message.activityStreamId = String(object.activityStreamId);
-        if (object.webRTCStreams) {
-            if (!Array.isArray(object.webRTCStreams))
-                throw TypeError(".DeviceAction.webRTCStreams: array expected");
-            message.webRTCStreams = [];
-            for (let i = 0; i < object.webRTCStreams.length; ++i) {
-                if (typeof object.webRTCStreams[i] !== "object")
-                    throw TypeError(".DeviceAction.webRTCStreams: object expected");
-                message.webRTCStreams[i] = $root.WebRTCStreamAction.fromObject(object.webRTCStreams[i]);
-            }
-        }
-        if (object.removeWebRTCStreamIDs) {
-            if (!Array.isArray(object.removeWebRTCStreamIDs))
-                throw TypeError(".DeviceAction.removeWebRTCStreamIDs: array expected");
-            message.removeWebRTCStreamIDs = [];
-            for (let i = 0; i < object.removeWebRTCStreamIDs.length; ++i)
-                message.removeWebRTCStreamIDs[i] = String(object.removeWebRTCStreamIDs[i]);
-        }
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a DeviceAction message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof DeviceAction
-     * @static
-     * @param {DeviceAction} message DeviceAction
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    DeviceAction.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        let object = {};
-        if (options.arrays || options.defaults) {
-            object.webRTCStreams = [];
-            object.removeWebRTCStreamIDs = [];
-        }
-        if (options.defaults) {
-            object.id = "";
-            object.activityId = "";
-            object.activityStreamId = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        if (message.activityId != null && message.hasOwnProperty("activityId"))
-            object.activityId = message.activityId;
-        if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
-            object.activityStreamId = message.activityStreamId;
-        if (message.webRTCStreams && message.webRTCStreams.length) {
-            object.webRTCStreams = [];
-            for (let j = 0; j < message.webRTCStreams.length; ++j)
-                object.webRTCStreams[j] = $root.WebRTCStreamAction.toObject(message.webRTCStreams[j], options);
-        }
-        if (message.removeWebRTCStreamIDs && message.removeWebRTCStreamIDs.length) {
-            object.removeWebRTCStreamIDs = [];
-            for (let j = 0; j < message.removeWebRTCStreamIDs.length; ++j)
-                object.removeWebRTCStreamIDs[j] = message.removeWebRTCStreamIDs[j];
-        }
-        return object;
-    };
-
-    /**
-     * Converts this DeviceAction to JSON.
-     * @function toJSON
-     * @memberof DeviceAction
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    DeviceAction.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return DeviceAction;
-})();
-
-export const WebRTCStreamAction = $root.WebRTCStreamAction = (() => {
-
-    /**
-     * Properties of a WebRTCStreamAction.
-     * @exports IWebRTCStreamAction
-     * @interface IWebRTCStreamAction
-     * @property {string|null} [id] WebRTCStreamAction id
-     * @property {string|null} [label] WebRTCStreamAction label
-     * @property {Array.<IWebRTCTrack>|null} [tracks] WebRTCStreamAction tracks
-     * @property {Array.<string>|null} [removeTrackIDs] WebRTCStreamAction removeTrackIDs
-     */
-
-    /**
-     * Constructs a new WebRTCStreamAction.
-     * @exports WebRTCStreamAction
-     * @classdesc Represents a WebRTCStreamAction.
-     * @implements IWebRTCStreamAction
-     * @constructor
-     * @param {IWebRTCStreamAction=} [properties] Properties to set
-     */
-    function WebRTCStreamAction(properties) {
-        this.tracks = [];
-        this.removeTrackIDs = [];
-        if (properties)
-            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * WebRTCStreamAction id.
-     * @member {string} id
-     * @memberof WebRTCStreamAction
-     * @instance
-     */
-    WebRTCStreamAction.prototype.id = "";
-
-    /**
-     * WebRTCStreamAction label.
-     * @member {string} label
-     * @memberof WebRTCStreamAction
-     * @instance
-     */
-    WebRTCStreamAction.prototype.label = "";
-
-    /**
-     * WebRTCStreamAction tracks.
-     * @member {Array.<IWebRTCTrack>} tracks
-     * @memberof WebRTCStreamAction
-     * @instance
-     */
-    WebRTCStreamAction.prototype.tracks = $util.emptyArray;
-
-    /**
-     * WebRTCStreamAction removeTrackIDs.
-     * @member {Array.<string>} removeTrackIDs
-     * @memberof WebRTCStreamAction
-     * @instance
-     */
-    WebRTCStreamAction.prototype.removeTrackIDs = $util.emptyArray;
-
-    /**
-     * Creates a new WebRTCStreamAction instance using the specified properties.
-     * @function create
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {IWebRTCStreamAction=} [properties] Properties to set
-     * @returns {WebRTCStreamAction} WebRTCStreamAction instance
-     */
-    WebRTCStreamAction.create = function create(properties) {
-        return new WebRTCStreamAction(properties);
-    };
-
-    /**
-     * Encodes the specified WebRTCStreamAction message. Does not implicitly {@link WebRTCStreamAction.verify|verify} messages.
-     * @function encode
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {IWebRTCStreamAction} message WebRTCStreamAction message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    WebRTCStreamAction.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
-        if (message.label != null && Object.hasOwnProperty.call(message, "label"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.label);
-        if (message.tracks != null && message.tracks.length)
-            for (let i = 0; i < message.tracks.length; ++i)
-                $root.WebRTCTrack.encode(message.tracks[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.removeTrackIDs != null && message.removeTrackIDs.length)
-            for (let i = 0; i < message.removeTrackIDs.length; ++i)
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.removeTrackIDs[i]);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified WebRTCStreamAction message, length delimited. Does not implicitly {@link WebRTCStreamAction.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {IWebRTCStreamAction} message WebRTCStreamAction message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    WebRTCStreamAction.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a WebRTCStreamAction message from the specified reader or buffer.
-     * @function decode
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {WebRTCStreamAction} WebRTCStreamAction
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    WebRTCStreamAction.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.WebRTCStreamAction();
-        while (reader.pos < end) {
-            let tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 0:
-                message.id = reader.string();
-                break;
-            case 1:
-                message.label = reader.string();
-                break;
-            case 2:
-                if (!(message.tracks && message.tracks.length))
-                    message.tracks = [];
-                message.tracks.push($root.WebRTCTrack.decode(reader, reader.uint32()));
-                break;
-            case 3:
-                if (!(message.removeTrackIDs && message.removeTrackIDs.length))
-                    message.removeTrackIDs = [];
-                message.removeTrackIDs.push(reader.string());
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a WebRTCStreamAction message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {WebRTCStreamAction} WebRTCStreamAction
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    WebRTCStreamAction.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a WebRTCStreamAction message.
-     * @function verify
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    WebRTCStreamAction.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
-        if (message.label != null && message.hasOwnProperty("label"))
-            if (!$util.isString(message.label))
-                return "label: string expected";
-        if (message.tracks != null && message.hasOwnProperty("tracks")) {
-            if (!Array.isArray(message.tracks))
-                return "tracks: array expected";
-            for (let i = 0; i < message.tracks.length; ++i) {
-                let error = $root.WebRTCTrack.verify(message.tracks[i]);
-                if (error)
-                    return "tracks." + error;
-            }
-        }
-        if (message.removeTrackIDs != null && message.hasOwnProperty("removeTrackIDs")) {
-            if (!Array.isArray(message.removeTrackIDs))
-                return "removeTrackIDs: array expected";
-            for (let i = 0; i < message.removeTrackIDs.length; ++i)
-                if (!$util.isString(message.removeTrackIDs[i]))
-                    return "removeTrackIDs: string[] expected";
-        }
-        return null;
-    };
-
-    /**
-     * Creates a WebRTCStreamAction message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {WebRTCStreamAction} WebRTCStreamAction
-     */
-    WebRTCStreamAction.fromObject = function fromObject(object) {
-        if (object instanceof $root.WebRTCStreamAction)
-            return object;
-        let message = new $root.WebRTCStreamAction();
-        if (object.id != null)
-            message.id = String(object.id);
-        if (object.label != null)
-            message.label = String(object.label);
-        if (object.tracks) {
-            if (!Array.isArray(object.tracks))
-                throw TypeError(".WebRTCStreamAction.tracks: array expected");
-            message.tracks = [];
-            for (let i = 0; i < object.tracks.length; ++i) {
-                if (typeof object.tracks[i] !== "object")
-                    throw TypeError(".WebRTCStreamAction.tracks: object expected");
-                message.tracks[i] = $root.WebRTCTrack.fromObject(object.tracks[i]);
-            }
-        }
-        if (object.removeTrackIDs) {
-            if (!Array.isArray(object.removeTrackIDs))
-                throw TypeError(".WebRTCStreamAction.removeTrackIDs: array expected");
-            message.removeTrackIDs = [];
-            for (let i = 0; i < object.removeTrackIDs.length; ++i)
-                message.removeTrackIDs[i] = String(object.removeTrackIDs[i]);
-        }
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a WebRTCStreamAction message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof WebRTCStreamAction
-     * @static
-     * @param {WebRTCStreamAction} message WebRTCStreamAction
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    WebRTCStreamAction.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        let object = {};
-        if (options.arrays || options.defaults) {
-            object.tracks = [];
-            object.removeTrackIDs = [];
-        }
-        if (options.defaults) {
-            object.id = "";
-            object.label = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        if (message.label != null && message.hasOwnProperty("label"))
-            object.label = message.label;
-        if (message.tracks && message.tracks.length) {
-            object.tracks = [];
-            for (let j = 0; j < message.tracks.length; ++j)
-                object.tracks[j] = $root.WebRTCTrack.toObject(message.tracks[j], options);
-        }
-        if (message.removeTrackIDs && message.removeTrackIDs.length) {
-            object.removeTrackIDs = [];
-            for (let j = 0; j < message.removeTrackIDs.length; ++j)
-                object.removeTrackIDs[j] = message.removeTrackIDs[j];
-        }
-        return object;
-    };
-
-    /**
-     * Converts this WebRTCStreamAction to JSON.
-     * @function toJSON
-     * @memberof WebRTCStreamAction
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    WebRTCStreamAction.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return WebRTCStreamAction;
+    return Participant;
 })();
 
 export const State = $root.State = (() => {
@@ -1540,8 +4163,11 @@ export const State = $root.State = (() => {
      * Properties of a State.
      * @exports IState
      * @interface IState
-     * @property {number|null} [transitions] State transitions
-     * @property {IRoom|null} [room] State room
+     * @property {Object.<string,IParticipant>|null} [participants] State participants
+     * @property {string|null} [host] State host
+     * @property {IContent|null} [content] State content
+     * @property {Array.<IChatMessage>|null} [chatMessages] State chatMessages
+     * @property {number|null} [endTimestamp] State endTimestamp
      */
 
     /**
@@ -1553,6 +4179,8 @@ export const State = $root.State = (() => {
      * @param {IState=} [properties] Properties to set
      */
     function State(properties) {
+        this.participants = {};
+        this.chatMessages = [];
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1560,20 +4188,44 @@ export const State = $root.State = (() => {
     }
 
     /**
-     * State transitions.
-     * @member {number} transitions
+     * State participants.
+     * @member {Object.<string,IParticipant>} participants
      * @memberof State
      * @instance
      */
-    State.prototype.transitions = 0;
+    State.prototype.participants = $util.emptyObject;
 
     /**
-     * State room.
-     * @member {IRoom|null|undefined} room
+     * State host.
+     * @member {string} host
      * @memberof State
      * @instance
      */
-    State.prototype.room = null;
+    State.prototype.host = "";
+
+    /**
+     * State content.
+     * @member {IContent|null|undefined} content
+     * @memberof State
+     * @instance
+     */
+    State.prototype.content = null;
+
+    /**
+     * State chatMessages.
+     * @member {Array.<IChatMessage>} chatMessages
+     * @memberof State
+     * @instance
+     */
+    State.prototype.chatMessages = $util.emptyArray;
+
+    /**
+     * State endTimestamp.
+     * @member {number} endTimestamp
+     * @memberof State
+     * @instance
+     */
+    State.prototype.endTimestamp = 0;
 
     /**
      * Creates a new State instance using the specified properties.
@@ -1599,10 +4251,20 @@ export const State = $root.State = (() => {
     State.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.transitions != null && Object.hasOwnProperty.call(message, "transitions"))
-            writer.uint32(/* id 0, wireType 0 =*/0).uint32(message.transitions);
-        if (message.room != null && Object.hasOwnProperty.call(message, "room"))
-            $root.Room.encode(message.room, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.participants != null && Object.hasOwnProperty.call(message, "participants"))
+            for (let keys = Object.keys(message.participants), i = 0; i < keys.length; ++i) {
+                writer.uint32(/* id 0, wireType 2 =*/2).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
+                $root.Participant.encode(message.participants[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
+            }
+        if (message.host != null && Object.hasOwnProperty.call(message, "host"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.host);
+        if (message.content != null && Object.hasOwnProperty.call(message, "content"))
+            $root.Content.encode(message.content, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.chatMessages != null && message.chatMessages.length)
+            for (let i = 0; i < message.chatMessages.length; ++i)
+                $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.endTimestamp != null && Object.hasOwnProperty.call(message, "endTimestamp"))
+            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.endTimestamp);
         return writer;
     };
 
@@ -1633,15 +4295,45 @@ export const State = $root.State = (() => {
     State.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.State();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.State(), key, value;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.transitions = reader.uint32();
+                if (message.participants === $util.emptyObject)
+                    message.participants = {};
+                let end2 = reader.uint32() + reader.pos;
+                key = "";
+                value = null;
+                while (reader.pos < end2) {
+                    let tag2 = reader.uint32();
+                    switch (tag2 >>> 3) {
+                    case 1:
+                        key = reader.string();
+                        break;
+                    case 2:
+                        value = $root.Participant.decode(reader, reader.uint32());
+                        break;
+                    default:
+                        reader.skipType(tag2 & 7);
+                        break;
+                    }
+                }
+                message.participants[key] = value;
                 break;
-            case 1:
-                message.room = $root.Room.decode(reader, reader.uint32());
+            case 2:
+                message.host = reader.string();
+                break;
+            case 3:
+                message.content = $root.Content.decode(reader, reader.uint32());
+                break;
+            case 4:
+                if (!(message.chatMessages && message.chatMessages.length))
+                    message.chatMessages = [];
+                message.chatMessages.push($root.ChatMessage.decode(reader, reader.uint32()));
+                break;
+            case 5:
+                message.endTimestamp = reader.uint32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -1678,14 +4370,36 @@ export const State = $root.State = (() => {
     State.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.transitions != null && message.hasOwnProperty("transitions"))
-            if (!$util.isInteger(message.transitions))
-                return "transitions: integer expected";
-        if (message.room != null && message.hasOwnProperty("room")) {
-            let error = $root.Room.verify(message.room);
-            if (error)
-                return "room." + error;
+        if (message.participants != null && message.hasOwnProperty("participants")) {
+            if (!$util.isObject(message.participants))
+                return "participants: object expected";
+            let key = Object.keys(message.participants);
+            for (let i = 0; i < key.length; ++i) {
+                let error = $root.Participant.verify(message.participants[key[i]]);
+                if (error)
+                    return "participants." + error;
+            }
         }
+        if (message.host != null && message.hasOwnProperty("host"))
+            if (!$util.isString(message.host))
+                return "host: string expected";
+        if (message.content != null && message.hasOwnProperty("content")) {
+            let error = $root.Content.verify(message.content);
+            if (error)
+                return "content." + error;
+        }
+        if (message.chatMessages != null && message.hasOwnProperty("chatMessages")) {
+            if (!Array.isArray(message.chatMessages))
+                return "chatMessages: array expected";
+            for (let i = 0; i < message.chatMessages.length; ++i) {
+                let error = $root.ChatMessage.verify(message.chatMessages[i]);
+                if (error)
+                    return "chatMessages." + error;
+            }
+        }
+        if (message.endTimestamp != null && message.hasOwnProperty("endTimestamp"))
+            if (!$util.isInteger(message.endTimestamp))
+                return "endTimestamp: integer expected";
         return null;
     };
 
@@ -1701,13 +4415,35 @@ export const State = $root.State = (() => {
         if (object instanceof $root.State)
             return object;
         let message = new $root.State();
-        if (object.transitions != null)
-            message.transitions = object.transitions >>> 0;
-        if (object.room != null) {
-            if (typeof object.room !== "object")
-                throw TypeError(".State.room: object expected");
-            message.room = $root.Room.fromObject(object.room);
+        if (object.participants) {
+            if (typeof object.participants !== "object")
+                throw TypeError(".State.participants: object expected");
+            message.participants = {};
+            for (let keys = Object.keys(object.participants), i = 0; i < keys.length; ++i) {
+                if (typeof object.participants[keys[i]] !== "object")
+                    throw TypeError(".State.participants: object expected");
+                message.participants[keys[i]] = $root.Participant.fromObject(object.participants[keys[i]]);
+            }
         }
+        if (object.host != null)
+            message.host = String(object.host);
+        if (object.content != null) {
+            if (typeof object.content !== "object")
+                throw TypeError(".State.content: object expected");
+            message.content = $root.Content.fromObject(object.content);
+        }
+        if (object.chatMessages) {
+            if (!Array.isArray(object.chatMessages))
+                throw TypeError(".State.chatMessages: array expected");
+            message.chatMessages = [];
+            for (let i = 0; i < object.chatMessages.length; ++i) {
+                if (typeof object.chatMessages[i] !== "object")
+                    throw TypeError(".State.chatMessages: object expected");
+                message.chatMessages[i] = $root.ChatMessage.fromObject(object.chatMessages[i]);
+            }
+        }
+        if (object.endTimestamp != null)
+            message.endTimestamp = object.endTimestamp >>> 0;
         return message;
     };
 
@@ -1724,14 +4460,32 @@ export const State = $root.State = (() => {
         if (!options)
             options = {};
         let object = {};
+        if (options.arrays || options.defaults)
+            object.chatMessages = [];
+        if (options.objects || options.defaults)
+            object.participants = {};
         if (options.defaults) {
-            object.transitions = 0;
-            object.room = null;
+            object.host = "";
+            object.content = null;
+            object.endTimestamp = 0;
         }
-        if (message.transitions != null && message.hasOwnProperty("transitions"))
-            object.transitions = message.transitions;
-        if (message.room != null && message.hasOwnProperty("room"))
-            object.room = $root.Room.toObject(message.room, options);
+        let keys2;
+        if (message.participants && (keys2 = Object.keys(message.participants)).length) {
+            object.participants = {};
+            for (let j = 0; j < keys2.length; ++j)
+                object.participants[keys2[j]] = $root.Participant.toObject(message.participants[keys2[j]], options);
+        }
+        if (message.host != null && message.hasOwnProperty("host"))
+            object.host = message.host;
+        if (message.content != null && message.hasOwnProperty("content"))
+            object.content = $root.Content.toObject(message.content, options);
+        if (message.chatMessages && message.chatMessages.length) {
+            object.chatMessages = [];
+            for (let j = 0; j < message.chatMessages.length; ++j)
+                object.chatMessages[j] = $root.ChatMessage.toObject(message.chatMessages[j], options);
+        }
+        if (message.endTimestamp != null && message.hasOwnProperty("endTimestamp"))
+            object.endTimestamp = message.endTimestamp;
         return object;
     };
 
@@ -1749,30 +4503,25 @@ export const State = $root.State = (() => {
     return State;
 })();
 
-export const Room = $root.Room = (() => {
+export const AddParticipants = $root.AddParticipants = (() => {
 
     /**
-     * Properties of a Room.
-     * @exports IRoom
-     * @interface IRoom
-     * @property {Array.<IUser>|null} [teachers] Room teachers
-     * @property {Array.<IUser>|null} [students] Room students
-     * @property {string|null} [host] Room host
-     * @property {IContent|null} [content] Room content
-     * @property {number|null} [endTimestamp] Room endTimestamp
+     * Properties of an AddParticipants.
+     * @exports IAddParticipants
+     * @interface IAddParticipants
+     * @property {Array.<IParticipant>|null} [participants] AddParticipants participants
      */
 
     /**
-     * Constructs a new Room.
-     * @exports Room
-     * @classdesc Represents a Room.
-     * @implements IRoom
+     * Constructs a new AddParticipants.
+     * @exports AddParticipants
+     * @classdesc Represents an AddParticipants.
+     * @implements IAddParticipants
      * @constructor
-     * @param {IRoom=} [properties] Properties to set
+     * @param {IAddParticipants=} [properties] Properties to set
      */
-    function Room(properties) {
-        this.teachers = [];
-        this.students = [];
+    function AddParticipants(properties) {
+        this.participants = [];
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1780,133 +4529,78 @@ export const Room = $root.Room = (() => {
     }
 
     /**
-     * Room teachers.
-     * @member {Array.<IUser>} teachers
-     * @memberof Room
+     * AddParticipants participants.
+     * @member {Array.<IParticipant>} participants
+     * @memberof AddParticipants
      * @instance
      */
-    Room.prototype.teachers = $util.emptyArray;
+    AddParticipants.prototype.participants = $util.emptyArray;
 
     /**
-     * Room students.
-     * @member {Array.<IUser>} students
-     * @memberof Room
-     * @instance
-     */
-    Room.prototype.students = $util.emptyArray;
-
-    /**
-     * Room host.
-     * @member {string} host
-     * @memberof Room
-     * @instance
-     */
-    Room.prototype.host = "";
-
-    /**
-     * Room content.
-     * @member {IContent|null|undefined} content
-     * @memberof Room
-     * @instance
-     */
-    Room.prototype.content = null;
-
-    /**
-     * Room endTimestamp.
-     * @member {number} endTimestamp
-     * @memberof Room
-     * @instance
-     */
-    Room.prototype.endTimestamp = 0;
-
-    /**
-     * Creates a new Room instance using the specified properties.
+     * Creates a new AddParticipants instance using the specified properties.
      * @function create
-     * @memberof Room
+     * @memberof AddParticipants
      * @static
-     * @param {IRoom=} [properties] Properties to set
-     * @returns {Room} Room instance
+     * @param {IAddParticipants=} [properties] Properties to set
+     * @returns {AddParticipants} AddParticipants instance
      */
-    Room.create = function create(properties) {
-        return new Room(properties);
+    AddParticipants.create = function create(properties) {
+        return new AddParticipants(properties);
     };
 
     /**
-     * Encodes the specified Room message. Does not implicitly {@link Room.verify|verify} messages.
+     * Encodes the specified AddParticipants message. Does not implicitly {@link AddParticipants.verify|verify} messages.
      * @function encode
-     * @memberof Room
+     * @memberof AddParticipants
      * @static
-     * @param {IRoom} message Room message or plain object to encode
+     * @param {IAddParticipants} message AddParticipants message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Room.encode = function encode(message, writer) {
+    AddParticipants.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.teachers != null && message.teachers.length)
-            for (let i = 0; i < message.teachers.length; ++i)
-                $root.User.encode(message.teachers[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
-        if (message.students != null && message.students.length)
-            for (let i = 0; i < message.students.length; ++i)
-                $root.User.encode(message.students[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.host != null && Object.hasOwnProperty.call(message, "host"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.host);
-        if (message.content != null && Object.hasOwnProperty.call(message, "content"))
-            $root.Content.encode(message.content, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.endTimestamp != null && Object.hasOwnProperty.call(message, "endTimestamp"))
-            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.endTimestamp);
+        if (message.participants != null && message.participants.length)
+            for (let i = 0; i < message.participants.length; ++i)
+                $root.Participant.encode(message.participants[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
         return writer;
     };
 
     /**
-     * Encodes the specified Room message, length delimited. Does not implicitly {@link Room.verify|verify} messages.
+     * Encodes the specified AddParticipants message, length delimited. Does not implicitly {@link AddParticipants.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof Room
+     * @memberof AddParticipants
      * @static
-     * @param {IRoom} message Room message or plain object to encode
+     * @param {IAddParticipants} message AddParticipants message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Room.encodeDelimited = function encodeDelimited(message, writer) {
+    AddParticipants.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a Room message from the specified reader or buffer.
+     * Decodes an AddParticipants message from the specified reader or buffer.
      * @function decode
-     * @memberof Room
+     * @memberof AddParticipants
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {Room} Room
+     * @returns {AddParticipants} AddParticipants
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Room.decode = function decode(reader, length) {
+    AddParticipants.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Room();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.AddParticipants();
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                if (!(message.teachers && message.teachers.length))
-                    message.teachers = [];
-                message.teachers.push($root.User.decode(reader, reader.uint32()));
-                break;
-            case 1:
-                if (!(message.students && message.students.length))
-                    message.students = [];
-                message.students.push($root.User.decode(reader, reader.uint32()));
-                break;
-            case 2:
-                message.host = reader.string();
-                break;
-            case 3:
-                message.content = $root.Content.decode(reader, reader.uint32());
-                break;
-            case 4:
-                message.endTimestamp = reader.uint32();
+                if (!(message.participants && message.participants.length))
+                    message.participants = [];
+                message.participants.push($root.Participant.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -1917,188 +4611,727 @@ export const Room = $root.Room = (() => {
     };
 
     /**
-     * Decodes a Room message from the specified reader or buffer, length delimited.
+     * Decodes an AddParticipants message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof Room
+     * @memberof AddParticipants
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Room} Room
+     * @returns {AddParticipants} AddParticipants
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Room.decodeDelimited = function decodeDelimited(reader) {
+    AddParticipants.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a Room message.
+     * Verifies an AddParticipants message.
      * @function verify
-     * @memberof Room
+     * @memberof AddParticipants
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Room.verify = function verify(message) {
+    AddParticipants.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.teachers != null && message.hasOwnProperty("teachers")) {
-            if (!Array.isArray(message.teachers))
-                return "teachers: array expected";
-            for (let i = 0; i < message.teachers.length; ++i) {
-                let error = $root.User.verify(message.teachers[i]);
+        if (message.participants != null && message.hasOwnProperty("participants")) {
+            if (!Array.isArray(message.participants))
+                return "participants: array expected";
+            for (let i = 0; i < message.participants.length; ++i) {
+                let error = $root.Participant.verify(message.participants[i]);
                 if (error)
-                    return "teachers." + error;
+                    return "participants." + error;
             }
         }
-        if (message.students != null && message.hasOwnProperty("students")) {
-            if (!Array.isArray(message.students))
-                return "students: array expected";
-            for (let i = 0; i < message.students.length; ++i) {
-                let error = $root.User.verify(message.students[i]);
-                if (error)
-                    return "students." + error;
+        return null;
+    };
+
+    /**
+     * Creates an AddParticipants message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof AddParticipants
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {AddParticipants} AddParticipants
+     */
+    AddParticipants.fromObject = function fromObject(object) {
+        if (object instanceof $root.AddParticipants)
+            return object;
+        let message = new $root.AddParticipants();
+        if (object.participants) {
+            if (!Array.isArray(object.participants))
+                throw TypeError(".AddParticipants.participants: array expected");
+            message.participants = [];
+            for (let i = 0; i < object.participants.length; ++i) {
+                if (typeof object.participants[i] !== "object")
+                    throw TypeError(".AddParticipants.participants: object expected");
+                message.participants[i] = $root.Participant.fromObject(object.participants[i]);
             }
         }
-        if (message.host != null && message.hasOwnProperty("host"))
-            if (!$util.isString(message.host))
-                return "host: string expected";
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an AddParticipants message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof AddParticipants
+     * @static
+     * @param {AddParticipants} message AddParticipants
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    AddParticipants.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.participants = [];
+        if (message.participants && message.participants.length) {
+            object.participants = [];
+            for (let j = 0; j < message.participants.length; ++j)
+                object.participants[j] = $root.Participant.toObject(message.participants[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this AddParticipants to JSON.
+     * @function toJSON
+     * @memberof AddParticipants
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    AddParticipants.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return AddParticipants;
+})();
+
+export const ChangeParticipants = $root.ChangeParticipants = (() => {
+
+    /**
+     * Properties of a ChangeParticipants.
+     * @exports IChangeParticipants
+     * @interface IChangeParticipants
+     * @property {Array.<IParticipant>|null} [participants] ChangeParticipants participants
+     */
+
+    /**
+     * Constructs a new ChangeParticipants.
+     * @exports ChangeParticipants
+     * @classdesc Represents a ChangeParticipants.
+     * @implements IChangeParticipants
+     * @constructor
+     * @param {IChangeParticipants=} [properties] Properties to set
+     */
+    function ChangeParticipants(properties) {
+        this.participants = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ChangeParticipants participants.
+     * @member {Array.<IParticipant>} participants
+     * @memberof ChangeParticipants
+     * @instance
+     */
+    ChangeParticipants.prototype.participants = $util.emptyArray;
+
+    /**
+     * Creates a new ChangeParticipants instance using the specified properties.
+     * @function create
+     * @memberof ChangeParticipants
+     * @static
+     * @param {IChangeParticipants=} [properties] Properties to set
+     * @returns {ChangeParticipants} ChangeParticipants instance
+     */
+    ChangeParticipants.create = function create(properties) {
+        return new ChangeParticipants(properties);
+    };
+
+    /**
+     * Encodes the specified ChangeParticipants message. Does not implicitly {@link ChangeParticipants.verify|verify} messages.
+     * @function encode
+     * @memberof ChangeParticipants
+     * @static
+     * @param {IChangeParticipants} message ChangeParticipants message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ChangeParticipants.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.participants != null && message.participants.length)
+            for (let i = 0; i < message.participants.length; ++i)
+                $root.Participant.encode(message.participants[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ChangeParticipants message, length delimited. Does not implicitly {@link ChangeParticipants.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ChangeParticipants
+     * @static
+     * @param {IChangeParticipants} message ChangeParticipants message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ChangeParticipants.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ChangeParticipants message from the specified reader or buffer.
+     * @function decode
+     * @memberof ChangeParticipants
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ChangeParticipants} ChangeParticipants
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ChangeParticipants.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ChangeParticipants();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                if (!(message.participants && message.participants.length))
+                    message.participants = [];
+                message.participants.push($root.Participant.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ChangeParticipants message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ChangeParticipants
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ChangeParticipants} ChangeParticipants
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ChangeParticipants.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ChangeParticipants message.
+     * @function verify
+     * @memberof ChangeParticipants
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ChangeParticipants.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.participants != null && message.hasOwnProperty("participants")) {
+            if (!Array.isArray(message.participants))
+                return "participants: array expected";
+            for (let i = 0; i < message.participants.length; ++i) {
+                let error = $root.Participant.verify(message.participants[i]);
+                if (error)
+                    return "participants." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a ChangeParticipants message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ChangeParticipants
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ChangeParticipants} ChangeParticipants
+     */
+    ChangeParticipants.fromObject = function fromObject(object) {
+        if (object instanceof $root.ChangeParticipants)
+            return object;
+        let message = new $root.ChangeParticipants();
+        if (object.participants) {
+            if (!Array.isArray(object.participants))
+                throw TypeError(".ChangeParticipants.participants: array expected");
+            message.participants = [];
+            for (let i = 0; i < object.participants.length; ++i) {
+                if (typeof object.participants[i] !== "object")
+                    throw TypeError(".ChangeParticipants.participants: object expected");
+                message.participants[i] = $root.Participant.fromObject(object.participants[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ChangeParticipants message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ChangeParticipants
+     * @static
+     * @param {ChangeParticipants} message ChangeParticipants
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ChangeParticipants.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.participants = [];
+        if (message.participants && message.participants.length) {
+            object.participants = [];
+            for (let j = 0; j < message.participants.length; ++j)
+                object.participants[j] = $root.Participant.toObject(message.participants[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this ChangeParticipants to JSON.
+     * @function toJSON
+     * @memberof ChangeParticipants
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ChangeParticipants.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ChangeParticipants;
+})();
+
+export const RemoveParticipants = $root.RemoveParticipants = (() => {
+
+    /**
+     * Properties of a RemoveParticipants.
+     * @exports IRemoveParticipants
+     * @interface IRemoveParticipants
+     * @property {Array.<string>|null} [participants] RemoveParticipants participants
+     */
+
+    /**
+     * Constructs a new RemoveParticipants.
+     * @exports RemoveParticipants
+     * @classdesc Represents a RemoveParticipants.
+     * @implements IRemoveParticipants
+     * @constructor
+     * @param {IRemoveParticipants=} [properties] Properties to set
+     */
+    function RemoveParticipants(properties) {
+        this.participants = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * RemoveParticipants participants.
+     * @member {Array.<string>} participants
+     * @memberof RemoveParticipants
+     * @instance
+     */
+    RemoveParticipants.prototype.participants = $util.emptyArray;
+
+    /**
+     * Creates a new RemoveParticipants instance using the specified properties.
+     * @function create
+     * @memberof RemoveParticipants
+     * @static
+     * @param {IRemoveParticipants=} [properties] Properties to set
+     * @returns {RemoveParticipants} RemoveParticipants instance
+     */
+    RemoveParticipants.create = function create(properties) {
+        return new RemoveParticipants(properties);
+    };
+
+    /**
+     * Encodes the specified RemoveParticipants message. Does not implicitly {@link RemoveParticipants.verify|verify} messages.
+     * @function encode
+     * @memberof RemoveParticipants
+     * @static
+     * @param {IRemoveParticipants} message RemoveParticipants message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RemoveParticipants.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.participants != null && message.participants.length)
+            for (let i = 0; i < message.participants.length; ++i)
+                writer.uint32(/* id 0, wireType 2 =*/2).string(message.participants[i]);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified RemoveParticipants message, length delimited. Does not implicitly {@link RemoveParticipants.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof RemoveParticipants
+     * @static
+     * @param {IRemoveParticipants} message RemoveParticipants message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    RemoveParticipants.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a RemoveParticipants message from the specified reader or buffer.
+     * @function decode
+     * @memberof RemoveParticipants
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {RemoveParticipants} RemoveParticipants
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RemoveParticipants.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.RemoveParticipants();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                if (!(message.participants && message.participants.length))
+                    message.participants = [];
+                message.participants.push(reader.string());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a RemoveParticipants message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof RemoveParticipants
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {RemoveParticipants} RemoveParticipants
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    RemoveParticipants.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a RemoveParticipants message.
+     * @function verify
+     * @memberof RemoveParticipants
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    RemoveParticipants.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.participants != null && message.hasOwnProperty("participants")) {
+            if (!Array.isArray(message.participants))
+                return "participants: array expected";
+            for (let i = 0; i < message.participants.length; ++i)
+                if (!$util.isString(message.participants[i]))
+                    return "participants: string[] expected";
+        }
+        return null;
+    };
+
+    /**
+     * Creates a RemoveParticipants message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof RemoveParticipants
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {RemoveParticipants} RemoveParticipants
+     */
+    RemoveParticipants.fromObject = function fromObject(object) {
+        if (object instanceof $root.RemoveParticipants)
+            return object;
+        let message = new $root.RemoveParticipants();
+        if (object.participants) {
+            if (!Array.isArray(object.participants))
+                throw TypeError(".RemoveParticipants.participants: array expected");
+            message.participants = [];
+            for (let i = 0; i < object.participants.length; ++i)
+                message.participants[i] = String(object.participants[i]);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a RemoveParticipants message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof RemoveParticipants
+     * @static
+     * @param {RemoveParticipants} message RemoveParticipants
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    RemoveParticipants.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.participants = [];
+        if (message.participants && message.participants.length) {
+            object.participants = [];
+            for (let j = 0; j < message.participants.length; ++j)
+                object.participants[j] = message.participants[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this RemoveParticipants to JSON.
+     * @function toJSON
+     * @memberof RemoveParticipants
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    RemoveParticipants.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return RemoveParticipants;
+})();
+
+export const ChangeContent = $root.ChangeContent = (() => {
+
+    /**
+     * Properties of a ChangeContent.
+     * @exports IChangeContent
+     * @interface IChangeContent
+     * @property {IContent|null} [content] ChangeContent content
+     */
+
+    /**
+     * Constructs a new ChangeContent.
+     * @exports ChangeContent
+     * @classdesc Represents a ChangeContent.
+     * @implements IChangeContent
+     * @constructor
+     * @param {IChangeContent=} [properties] Properties to set
+     */
+    function ChangeContent(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ChangeContent content.
+     * @member {IContent|null|undefined} content
+     * @memberof ChangeContent
+     * @instance
+     */
+    ChangeContent.prototype.content = null;
+
+    /**
+     * Creates a new ChangeContent instance using the specified properties.
+     * @function create
+     * @memberof ChangeContent
+     * @static
+     * @param {IChangeContent=} [properties] Properties to set
+     * @returns {ChangeContent} ChangeContent instance
+     */
+    ChangeContent.create = function create(properties) {
+        return new ChangeContent(properties);
+    };
+
+    /**
+     * Encodes the specified ChangeContent message. Does not implicitly {@link ChangeContent.verify|verify} messages.
+     * @function encode
+     * @memberof ChangeContent
+     * @static
+     * @param {IChangeContent} message ChangeContent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ChangeContent.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.content != null && Object.hasOwnProperty.call(message, "content"))
+            $root.Content.encode(message.content, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ChangeContent message, length delimited. Does not implicitly {@link ChangeContent.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ChangeContent
+     * @static
+     * @param {IChangeContent} message ChangeContent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ChangeContent.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ChangeContent message from the specified reader or buffer.
+     * @function decode
+     * @memberof ChangeContent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ChangeContent} ChangeContent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ChangeContent.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ChangeContent();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.content = $root.Content.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ChangeContent message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ChangeContent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ChangeContent} ChangeContent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ChangeContent.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ChangeContent message.
+     * @function verify
+     * @memberof ChangeContent
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ChangeContent.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         if (message.content != null && message.hasOwnProperty("content")) {
             let error = $root.Content.verify(message.content);
             if (error)
                 return "content." + error;
         }
-        if (message.endTimestamp != null && message.hasOwnProperty("endTimestamp"))
-            if (!$util.isInteger(message.endTimestamp))
-                return "endTimestamp: integer expected";
         return null;
     };
 
     /**
-     * Creates a Room message from a plain object. Also converts values to their respective internal types.
+     * Creates a ChangeContent message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof Room
+     * @memberof ChangeContent
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {Room} Room
+     * @returns {ChangeContent} ChangeContent
      */
-    Room.fromObject = function fromObject(object) {
-        if (object instanceof $root.Room)
+    ChangeContent.fromObject = function fromObject(object) {
+        if (object instanceof $root.ChangeContent)
             return object;
-        let message = new $root.Room();
-        if (object.teachers) {
-            if (!Array.isArray(object.teachers))
-                throw TypeError(".Room.teachers: array expected");
-            message.teachers = [];
-            for (let i = 0; i < object.teachers.length; ++i) {
-                if (typeof object.teachers[i] !== "object")
-                    throw TypeError(".Room.teachers: object expected");
-                message.teachers[i] = $root.User.fromObject(object.teachers[i]);
-            }
-        }
-        if (object.students) {
-            if (!Array.isArray(object.students))
-                throw TypeError(".Room.students: array expected");
-            message.students = [];
-            for (let i = 0; i < object.students.length; ++i) {
-                if (typeof object.students[i] !== "object")
-                    throw TypeError(".Room.students: object expected");
-                message.students[i] = $root.User.fromObject(object.students[i]);
-            }
-        }
-        if (object.host != null)
-            message.host = String(object.host);
+        let message = new $root.ChangeContent();
         if (object.content != null) {
             if (typeof object.content !== "object")
-                throw TypeError(".Room.content: object expected");
+                throw TypeError(".ChangeContent.content: object expected");
             message.content = $root.Content.fromObject(object.content);
         }
-        if (object.endTimestamp != null)
-            message.endTimestamp = object.endTimestamp >>> 0;
         return message;
     };
 
     /**
-     * Creates a plain object from a Room message. Also converts values to other types if specified.
+     * Creates a plain object from a ChangeContent message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof Room
+     * @memberof ChangeContent
      * @static
-     * @param {Room} message Room
+     * @param {ChangeContent} message ChangeContent
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Room.toObject = function toObject(message, options) {
+    ChangeContent.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults) {
-            object.teachers = [];
-            object.students = [];
-        }
-        if (options.defaults) {
-            object.host = "";
+        if (options.defaults)
             object.content = null;
-            object.endTimestamp = 0;
-        }
-        if (message.teachers && message.teachers.length) {
-            object.teachers = [];
-            for (let j = 0; j < message.teachers.length; ++j)
-                object.teachers[j] = $root.User.toObject(message.teachers[j], options);
-        }
-        if (message.students && message.students.length) {
-            object.students = [];
-            for (let j = 0; j < message.students.length; ++j)
-                object.students[j] = $root.User.toObject(message.students[j], options);
-        }
-        if (message.host != null && message.hasOwnProperty("host"))
-            object.host = message.host;
         if (message.content != null && message.hasOwnProperty("content"))
             object.content = $root.Content.toObject(message.content, options);
-        if (message.endTimestamp != null && message.hasOwnProperty("endTimestamp"))
-            object.endTimestamp = message.endTimestamp;
         return object;
     };
 
     /**
-     * Converts this Room to JSON.
+     * Converts this ChangeContent to JSON.
      * @function toJSON
-     * @memberof Room
+     * @memberof ChangeContent
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    Room.prototype.toJSON = function toJSON() {
+    ChangeContent.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return Room;
+    return ChangeContent;
 })();
 
-export const User = $root.User = (() => {
+export const ChangeHost = $root.ChangeHost = (() => {
 
     /**
-     * Properties of a User.
-     * @exports IUser
-     * @interface IUser
-     * @property {string|null} [id] User id
-     * @property {string|null} [name] User name
-     * @property {Array.<IDevice>|null} [devices] User devices
-     * @property {Array.<ITrophy>|null} [trophies] User trophies
-     * @property {Array.<IChatMessage>|null} [chatMessages] User chatMessages
+     * Properties of a ChangeHost.
+     * @exports IChangeHost
+     * @interface IChangeHost
+     * @property {string|null} [hostId] ChangeHost hostId
      */
 
     /**
-     * Constructs a new User.
-     * @exports User
-     * @classdesc Represents a User.
-     * @implements IUser
+     * Constructs a new ChangeHost.
+     * @exports ChangeHost
+     * @classdesc Represents a ChangeHost.
+     * @implements IChangeHost
      * @constructor
-     * @param {IUser=} [properties] Properties to set
+     * @param {IChangeHost=} [properties] Properties to set
      */
-    function User(properties) {
-        this.devices = [];
-        this.trophies = [];
-        this.chatMessages = [];
+    function ChangeHost(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -2106,136 +5339,75 @@ export const User = $root.User = (() => {
     }
 
     /**
-     * User id.
-     * @member {string} id
-     * @memberof User
+     * ChangeHost hostId.
+     * @member {string} hostId
+     * @memberof ChangeHost
      * @instance
      */
-    User.prototype.id = "";
+    ChangeHost.prototype.hostId = "";
 
     /**
-     * User name.
-     * @member {string} name
-     * @memberof User
-     * @instance
-     */
-    User.prototype.name = "";
-
-    /**
-     * User devices.
-     * @member {Array.<IDevice>} devices
-     * @memberof User
-     * @instance
-     */
-    User.prototype.devices = $util.emptyArray;
-
-    /**
-     * User trophies.
-     * @member {Array.<ITrophy>} trophies
-     * @memberof User
-     * @instance
-     */
-    User.prototype.trophies = $util.emptyArray;
-
-    /**
-     * User chatMessages.
-     * @member {Array.<IChatMessage>} chatMessages
-     * @memberof User
-     * @instance
-     */
-    User.prototype.chatMessages = $util.emptyArray;
-
-    /**
-     * Creates a new User instance using the specified properties.
+     * Creates a new ChangeHost instance using the specified properties.
      * @function create
-     * @memberof User
+     * @memberof ChangeHost
      * @static
-     * @param {IUser=} [properties] Properties to set
-     * @returns {User} User instance
+     * @param {IChangeHost=} [properties] Properties to set
+     * @returns {ChangeHost} ChangeHost instance
      */
-    User.create = function create(properties) {
-        return new User(properties);
+    ChangeHost.create = function create(properties) {
+        return new ChangeHost(properties);
     };
 
     /**
-     * Encodes the specified User message. Does not implicitly {@link User.verify|verify} messages.
+     * Encodes the specified ChangeHost message. Does not implicitly {@link ChangeHost.verify|verify} messages.
      * @function encode
-     * @memberof User
+     * @memberof ChangeHost
      * @static
-     * @param {IUser} message User message or plain object to encode
+     * @param {IChangeHost} message ChangeHost message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    User.encode = function encode(message, writer) {
+    ChangeHost.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
-        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-        if (message.devices != null && message.devices.length)
-            for (let i = 0; i < message.devices.length; ++i)
-                $root.Device.encode(message.devices[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.trophies != null && message.trophies.length)
-            for (let i = 0; i < message.trophies.length; ++i)
-                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.chatMessages != null && message.chatMessages.length)
-            for (let i = 0; i < message.chatMessages.length; ++i)
-                $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.hostId != null && Object.hasOwnProperty.call(message, "hostId"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.hostId);
         return writer;
     };
 
     /**
-     * Encodes the specified User message, length delimited. Does not implicitly {@link User.verify|verify} messages.
+     * Encodes the specified ChangeHost message, length delimited. Does not implicitly {@link ChangeHost.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof User
+     * @memberof ChangeHost
      * @static
-     * @param {IUser} message User message or plain object to encode
+     * @param {IChangeHost} message ChangeHost message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    User.encodeDelimited = function encodeDelimited(message, writer) {
+    ChangeHost.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a User message from the specified reader or buffer.
+     * Decodes a ChangeHost message from the specified reader or buffer.
      * @function decode
-     * @memberof User
+     * @memberof ChangeHost
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {User} User
+     * @returns {ChangeHost} ChangeHost
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    User.decode = function decode(reader, length) {
+    ChangeHost.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.User();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ChangeHost();
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
-                message.name = reader.string();
-                break;
-            case 2:
-                if (!(message.devices && message.devices.length))
-                    message.devices = [];
-                message.devices.push($root.Device.decode(reader, reader.uint32()));
-                break;
-            case 3:
-                if (!(message.trophies && message.trophies.length))
-                    message.trophies = [];
-                message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
-                break;
-            case 4:
-                if (!(message.chatMessages && message.chatMessages.length))
-                    message.chatMessages = [];
-                message.chatMessages.push($root.ChatMessage.decode(reader, reader.uint32()));
+                message.hostId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2246,173 +5418,647 @@ export const User = $root.User = (() => {
     };
 
     /**
-     * Decodes a User message from the specified reader or buffer, length delimited.
+     * Decodes a ChangeHost message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof User
+     * @memberof ChangeHost
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {User} User
+     * @returns {ChangeHost} ChangeHost
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    User.decodeDelimited = function decodeDelimited(reader) {
+    ChangeHost.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a User message.
+     * Verifies a ChangeHost message.
      * @function verify
-     * @memberof User
+     * @memberof ChangeHost
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    User.verify = function verify(message) {
+    ChangeHost.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
-        if (message.name != null && message.hasOwnProperty("name"))
-            if (!$util.isString(message.name))
-                return "name: string expected";
-        if (message.devices != null && message.hasOwnProperty("devices")) {
-            if (!Array.isArray(message.devices))
-                return "devices: array expected";
-            for (let i = 0; i < message.devices.length; ++i) {
-                let error = $root.Device.verify(message.devices[i]);
-                if (error)
-                    return "devices." + error;
-            }
-        }
-        if (message.trophies != null && message.hasOwnProperty("trophies")) {
-            if (!Array.isArray(message.trophies))
-                return "trophies: array expected";
-            for (let i = 0; i < message.trophies.length; ++i) {
-                let error = $root.Trophy.verify(message.trophies[i]);
-                if (error)
-                    return "trophies." + error;
-            }
-        }
-        if (message.chatMessages != null && message.hasOwnProperty("chatMessages")) {
-            if (!Array.isArray(message.chatMessages))
-                return "chatMessages: array expected";
-            for (let i = 0; i < message.chatMessages.length; ++i) {
-                let error = $root.ChatMessage.verify(message.chatMessages[i]);
-                if (error)
-                    return "chatMessages." + error;
-            }
-        }
+        if (message.hostId != null && message.hasOwnProperty("hostId"))
+            if (!$util.isString(message.hostId))
+                return "hostId: string expected";
         return null;
     };
 
     /**
-     * Creates a User message from a plain object. Also converts values to their respective internal types.
+     * Creates a ChangeHost message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof User
+     * @memberof ChangeHost
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {User} User
+     * @returns {ChangeHost} ChangeHost
      */
-    User.fromObject = function fromObject(object) {
-        if (object instanceof $root.User)
+    ChangeHost.fromObject = function fromObject(object) {
+        if (object instanceof $root.ChangeHost)
             return object;
-        let message = new $root.User();
-        if (object.id != null)
-            message.id = String(object.id);
-        if (object.name != null)
-            message.name = String(object.name);
-        if (object.devices) {
-            if (!Array.isArray(object.devices))
-                throw TypeError(".User.devices: array expected");
-            message.devices = [];
-            for (let i = 0; i < object.devices.length; ++i) {
-                if (typeof object.devices[i] !== "object")
-                    throw TypeError(".User.devices: object expected");
-                message.devices[i] = $root.Device.fromObject(object.devices[i]);
-            }
-        }
-        if (object.trophies) {
-            if (!Array.isArray(object.trophies))
-                throw TypeError(".User.trophies: array expected");
-            message.trophies = [];
-            for (let i = 0; i < object.trophies.length; ++i) {
-                if (typeof object.trophies[i] !== "object")
-                    throw TypeError(".User.trophies: object expected");
-                message.trophies[i] = $root.Trophy.fromObject(object.trophies[i]);
-            }
-        }
-        if (object.chatMessages) {
-            if (!Array.isArray(object.chatMessages))
-                throw TypeError(".User.chatMessages: array expected");
-            message.chatMessages = [];
-            for (let i = 0; i < object.chatMessages.length; ++i) {
-                if (typeof object.chatMessages[i] !== "object")
-                    throw TypeError(".User.chatMessages: object expected");
-                message.chatMessages[i] = $root.ChatMessage.fromObject(object.chatMessages[i]);
+        let message = new $root.ChangeHost();
+        if (object.hostId != null)
+            message.hostId = String(object.hostId);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ChangeHost message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ChangeHost
+     * @static
+     * @param {ChangeHost} message ChangeHost
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ChangeHost.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.hostId = "";
+        if (message.hostId != null && message.hasOwnProperty("hostId"))
+            object.hostId = message.hostId;
+        return object;
+    };
+
+    /**
+     * Converts this ChangeHost to JSON.
+     * @function toJSON
+     * @memberof ChangeHost
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ChangeHost.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ChangeHost;
+})();
+
+export const AppendChatMessage = $root.AppendChatMessage = (() => {
+
+    /**
+     * Properties of an AppendChatMessage.
+     * @exports IAppendChatMessage
+     * @interface IAppendChatMessage
+     * @property {Array.<IChatMessage>|null} [messages] AppendChatMessage messages
+     */
+
+    /**
+     * Constructs a new AppendChatMessage.
+     * @exports AppendChatMessage
+     * @classdesc Represents an AppendChatMessage.
+     * @implements IAppendChatMessage
+     * @constructor
+     * @param {IAppendChatMessage=} [properties] Properties to set
+     */
+    function AppendChatMessage(properties) {
+        this.messages = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * AppendChatMessage messages.
+     * @member {Array.<IChatMessage>} messages
+     * @memberof AppendChatMessage
+     * @instance
+     */
+    AppendChatMessage.prototype.messages = $util.emptyArray;
+
+    /**
+     * Creates a new AppendChatMessage instance using the specified properties.
+     * @function create
+     * @memberof AppendChatMessage
+     * @static
+     * @param {IAppendChatMessage=} [properties] Properties to set
+     * @returns {AppendChatMessage} AppendChatMessage instance
+     */
+    AppendChatMessage.create = function create(properties) {
+        return new AppendChatMessage(properties);
+    };
+
+    /**
+     * Encodes the specified AppendChatMessage message. Does not implicitly {@link AppendChatMessage.verify|verify} messages.
+     * @function encode
+     * @memberof AppendChatMessage
+     * @static
+     * @param {IAppendChatMessage} message AppendChatMessage message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AppendChatMessage.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.messages != null && message.messages.length)
+            for (let i = 0; i < message.messages.length; ++i)
+                $root.ChatMessage.encode(message.messages[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified AppendChatMessage message, length delimited. Does not implicitly {@link AppendChatMessage.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof AppendChatMessage
+     * @static
+     * @param {IAppendChatMessage} message AppendChatMessage message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AppendChatMessage.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an AppendChatMessage message from the specified reader or buffer.
+     * @function decode
+     * @memberof AppendChatMessage
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {AppendChatMessage} AppendChatMessage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AppendChatMessage.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.AppendChatMessage();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                if (!(message.messages && message.messages.length))
+                    message.messages = [];
+                message.messages.push($root.ChatMessage.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
             }
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a User message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof User
+     * Decodes an AppendChatMessage message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof AppendChatMessage
      * @static
-     * @param {User} message User
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {AppendChatMessage} AppendChatMessage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AppendChatMessage.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an AppendChatMessage message.
+     * @function verify
+     * @memberof AppendChatMessage
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    AppendChatMessage.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.messages != null && message.hasOwnProperty("messages")) {
+            if (!Array.isArray(message.messages))
+                return "messages: array expected";
+            for (let i = 0; i < message.messages.length; ++i) {
+                let error = $root.ChatMessage.verify(message.messages[i]);
+                if (error)
+                    return "messages." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates an AppendChatMessage message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof AppendChatMessage
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {AppendChatMessage} AppendChatMessage
+     */
+    AppendChatMessage.fromObject = function fromObject(object) {
+        if (object instanceof $root.AppendChatMessage)
+            return object;
+        let message = new $root.AppendChatMessage();
+        if (object.messages) {
+            if (!Array.isArray(object.messages))
+                throw TypeError(".AppendChatMessage.messages: array expected");
+            message.messages = [];
+            for (let i = 0; i < object.messages.length; ++i) {
+                if (typeof object.messages[i] !== "object")
+                    throw TypeError(".AppendChatMessage.messages: object expected");
+                message.messages[i] = $root.ChatMessage.fromObject(object.messages[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an AppendChatMessage message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof AppendChatMessage
+     * @static
+     * @param {AppendChatMessage} message AppendChatMessage
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    User.toObject = function toObject(message, options) {
+    AppendChatMessage.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         let object = {};
-        if (options.arrays || options.defaults) {
-            object.devices = [];
-            object.trophies = [];
-            object.chatMessages = [];
-        }
-        if (options.defaults) {
-            object.id = "";
-            object.name = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        if (message.name != null && message.hasOwnProperty("name"))
-            object.name = message.name;
-        if (message.devices && message.devices.length) {
-            object.devices = [];
-            for (let j = 0; j < message.devices.length; ++j)
-                object.devices[j] = $root.Device.toObject(message.devices[j], options);
-        }
-        if (message.trophies && message.trophies.length) {
-            object.trophies = [];
-            for (let j = 0; j < message.trophies.length; ++j)
-                object.trophies[j] = $root.Trophy.toObject(message.trophies[j], options);
-        }
-        if (message.chatMessages && message.chatMessages.length) {
-            object.chatMessages = [];
-            for (let j = 0; j < message.chatMessages.length; ++j)
-                object.chatMessages[j] = $root.ChatMessage.toObject(message.chatMessages[j], options);
+        if (options.arrays || options.defaults)
+            object.messages = [];
+        if (message.messages && message.messages.length) {
+            object.messages = [];
+            for (let j = 0; j < message.messages.length; ++j)
+                object.messages[j] = $root.ChatMessage.toObject(message.messages[j], options);
         }
         return object;
     };
 
     /**
-     * Converts this User to JSON.
+     * Converts this AppendChatMessage to JSON.
      * @function toJSON
-     * @memberof User
+     * @memberof AppendChatMessage
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    User.prototype.toJSON = function toJSON() {
+    AppendChatMessage.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return User;
+    return AppendChatMessage;
+})();
+
+export const ReceiveTrophy = $root.ReceiveTrophy = (() => {
+
+    /**
+     * Properties of a ReceiveTrophy.
+     * @exports IReceiveTrophy
+     * @interface IReceiveTrophy
+     * @property {ITrophy|null} [trophy] ReceiveTrophy trophy
+     */
+
+    /**
+     * Constructs a new ReceiveTrophy.
+     * @exports ReceiveTrophy
+     * @classdesc Represents a ReceiveTrophy.
+     * @implements IReceiveTrophy
+     * @constructor
+     * @param {IReceiveTrophy=} [properties] Properties to set
+     */
+    function ReceiveTrophy(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ReceiveTrophy trophy.
+     * @member {ITrophy|null|undefined} trophy
+     * @memberof ReceiveTrophy
+     * @instance
+     */
+    ReceiveTrophy.prototype.trophy = null;
+
+    /**
+     * Creates a new ReceiveTrophy instance using the specified properties.
+     * @function create
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {IReceiveTrophy=} [properties] Properties to set
+     * @returns {ReceiveTrophy} ReceiveTrophy instance
+     */
+    ReceiveTrophy.create = function create(properties) {
+        return new ReceiveTrophy(properties);
+    };
+
+    /**
+     * Encodes the specified ReceiveTrophy message. Does not implicitly {@link ReceiveTrophy.verify|verify} messages.
+     * @function encode
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {IReceiveTrophy} message ReceiveTrophy message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReceiveTrophy.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.trophy != null && Object.hasOwnProperty.call(message, "trophy"))
+            $root.Trophy.encode(message.trophy, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ReceiveTrophy message, length delimited. Does not implicitly {@link ReceiveTrophy.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {IReceiveTrophy} message ReceiveTrophy message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ReceiveTrophy.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ReceiveTrophy message from the specified reader or buffer.
+     * @function decode
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ReceiveTrophy} ReceiveTrophy
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReceiveTrophy.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ReceiveTrophy();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.trophy = $root.Trophy.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ReceiveTrophy message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ReceiveTrophy} ReceiveTrophy
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ReceiveTrophy.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ReceiveTrophy message.
+     * @function verify
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ReceiveTrophy.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.trophy != null && message.hasOwnProperty("trophy")) {
+            let error = $root.Trophy.verify(message.trophy);
+            if (error)
+                return "trophy." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a ReceiveTrophy message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ReceiveTrophy} ReceiveTrophy
+     */
+    ReceiveTrophy.fromObject = function fromObject(object) {
+        if (object instanceof $root.ReceiveTrophy)
+            return object;
+        let message = new $root.ReceiveTrophy();
+        if (object.trophy != null) {
+            if (typeof object.trophy !== "object")
+                throw TypeError(".ReceiveTrophy.trophy: object expected");
+            message.trophy = $root.Trophy.fromObject(object.trophy);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ReceiveTrophy message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ReceiveTrophy
+     * @static
+     * @param {ReceiveTrophy} message ReceiveTrophy
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ReceiveTrophy.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.trophy = null;
+        if (message.trophy != null && message.hasOwnProperty("trophy"))
+            object.trophy = $root.Trophy.toObject(message.trophy, options);
+        return object;
+    };
+
+    /**
+     * Converts this ReceiveTrophy to JSON.
+     * @function toJSON
+     * @memberof ReceiveTrophy
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ReceiveTrophy.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ReceiveTrophy;
+})();
+
+export const ClassEnded = $root.ClassEnded = (() => {
+
+    /**
+     * Properties of a ClassEnded.
+     * @exports IClassEnded
+     * @interface IClassEnded
+     */
+
+    /**
+     * Constructs a new ClassEnded.
+     * @exports ClassEnded
+     * @classdesc Represents a ClassEnded.
+     * @implements IClassEnded
+     * @constructor
+     * @param {IClassEnded=} [properties] Properties to set
+     */
+    function ClassEnded(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Creates a new ClassEnded instance using the specified properties.
+     * @function create
+     * @memberof ClassEnded
+     * @static
+     * @param {IClassEnded=} [properties] Properties to set
+     * @returns {ClassEnded} ClassEnded instance
+     */
+    ClassEnded.create = function create(properties) {
+        return new ClassEnded(properties);
+    };
+
+    /**
+     * Encodes the specified ClassEnded message. Does not implicitly {@link ClassEnded.verify|verify} messages.
+     * @function encode
+     * @memberof ClassEnded
+     * @static
+     * @param {IClassEnded} message ClassEnded message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ClassEnded.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ClassEnded message, length delimited. Does not implicitly {@link ClassEnded.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ClassEnded
+     * @static
+     * @param {IClassEnded} message ClassEnded message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ClassEnded.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ClassEnded message from the specified reader or buffer.
+     * @function decode
+     * @memberof ClassEnded
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ClassEnded} ClassEnded
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ClassEnded.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ClassEnded();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ClassEnded message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ClassEnded
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ClassEnded} ClassEnded
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ClassEnded.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ClassEnded message.
+     * @function verify
+     * @memberof ClassEnded
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ClassEnded.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        return null;
+    };
+
+    /**
+     * Creates a ClassEnded message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ClassEnded
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ClassEnded} ClassEnded
+     */
+    ClassEnded.fromObject = function fromObject(object) {
+        if (object instanceof $root.ClassEnded)
+            return object;
+        return new $root.ClassEnded();
+    };
+
+    /**
+     * Creates a plain object from a ClassEnded message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ClassEnded
+     * @static
+     * @param {ClassEnded} message ClassEnded
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ClassEnded.toObject = function toObject() {
+        return {};
+    };
+
+    /**
+     * Converts this ClassEnded to JSON.
+     * @function toJSON
+     * @memberof ClassEnded
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ClassEnded.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ClassEnded;
 })();
 
 export const Device = $root.Device = (() => {
@@ -3161,7 +6807,7 @@ export const Trophy = $root.Trophy = (() => {
      * Properties of a Trophy.
      * @exports ITrophy
      * @interface ITrophy
-     * @property {string|null} [tropy] Trophy tropy
+     * @property {string|null} [trophy] Trophy trophy
      * @property {number|null} [timestamp] Trophy timestamp
      */
 
@@ -3181,12 +6827,12 @@ export const Trophy = $root.Trophy = (() => {
     }
 
     /**
-     * Trophy tropy.
-     * @member {string} tropy
+     * Trophy trophy.
+     * @member {string} trophy
      * @memberof Trophy
      * @instance
      */
-    Trophy.prototype.tropy = "";
+    Trophy.prototype.trophy = "";
 
     /**
      * Trophy timestamp.
@@ -3220,8 +6866,8 @@ export const Trophy = $root.Trophy = (() => {
     Trophy.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.tropy != null && Object.hasOwnProperty.call(message, "tropy"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.tropy);
+        if (message.trophy != null && Object.hasOwnProperty.call(message, "trophy"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.trophy);
         if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
             writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.timestamp);
         return writer;
@@ -3259,7 +6905,7 @@ export const Trophy = $root.Trophy = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.tropy = reader.string();
+                message.trophy = reader.string();
                 break;
             case 1:
                 message.timestamp = reader.uint32();
@@ -3299,9 +6945,9 @@ export const Trophy = $root.Trophy = (() => {
     Trophy.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.tropy != null && message.hasOwnProperty("tropy"))
-            if (!$util.isString(message.tropy))
-                return "tropy: string expected";
+        if (message.trophy != null && message.hasOwnProperty("trophy"))
+            if (!$util.isString(message.trophy))
+                return "trophy: string expected";
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             if (!$util.isInteger(message.timestamp))
                 return "timestamp: integer expected";
@@ -3320,8 +6966,8 @@ export const Trophy = $root.Trophy = (() => {
         if (object instanceof $root.Trophy)
             return object;
         let message = new $root.Trophy();
-        if (object.tropy != null)
-            message.tropy = String(object.tropy);
+        if (object.trophy != null)
+            message.trophy = String(object.trophy);
         if (object.timestamp != null)
             message.timestamp = object.timestamp >>> 0;
         return message;
@@ -3341,11 +6987,11 @@ export const Trophy = $root.Trophy = (() => {
             options = {};
         let object = {};
         if (options.defaults) {
-            object.tropy = "";
+            object.trophy = "";
             object.timestamp = 0;
         }
-        if (message.tropy != null && message.hasOwnProperty("tropy"))
-            object.tropy = message.tropy;
+        if (message.trophy != null && message.hasOwnProperty("trophy"))
+            object.trophy = message.trophy;
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             object.timestamp = message.timestamp;
         return object;
@@ -3372,6 +7018,7 @@ export const ChatMessage = $root.ChatMessage = (() => {
      * @exports IChatMessage
      * @interface IChatMessage
      * @property {string|null} [message] ChatMessage message
+     * @property {string|null} [fromUser] ChatMessage fromUser
      * @property {number|null} [timestamp] ChatMessage timestamp
      */
 
@@ -3397,6 +7044,14 @@ export const ChatMessage = $root.ChatMessage = (() => {
      * @instance
      */
     ChatMessage.prototype.message = "";
+
+    /**
+     * ChatMessage fromUser.
+     * @member {string} fromUser
+     * @memberof ChatMessage
+     * @instance
+     */
+    ChatMessage.prototype.fromUser = "";
 
     /**
      * ChatMessage timestamp.
@@ -3432,8 +7087,10 @@ export const ChatMessage = $root.ChatMessage = (() => {
             writer = $Writer.create();
         if (message.message != null && Object.hasOwnProperty.call(message, "message"))
             writer.uint32(/* id 0, wireType 2 =*/2).string(message.message);
+        if (message.fromUser != null && Object.hasOwnProperty.call(message, "fromUser"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.fromUser);
         if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
-            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.timestamp);
+            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.timestamp);
         return writer;
     };
 
@@ -3472,6 +7129,9 @@ export const ChatMessage = $root.ChatMessage = (() => {
                 message.message = reader.string();
                 break;
             case 1:
+                message.fromUser = reader.string();
+                break;
+            case 2:
                 message.timestamp = reader.uint32();
                 break;
             default:
@@ -3512,6 +7172,9 @@ export const ChatMessage = $root.ChatMessage = (() => {
         if (message.message != null && message.hasOwnProperty("message"))
             if (!$util.isString(message.message))
                 return "message: string expected";
+        if (message.fromUser != null && message.hasOwnProperty("fromUser"))
+            if (!$util.isString(message.fromUser))
+                return "fromUser: string expected";
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             if (!$util.isInteger(message.timestamp))
                 return "timestamp: integer expected";
@@ -3532,6 +7195,8 @@ export const ChatMessage = $root.ChatMessage = (() => {
         let message = new $root.ChatMessage();
         if (object.message != null)
             message.message = String(object.message);
+        if (object.fromUser != null)
+            message.fromUser = String(object.fromUser);
         if (object.timestamp != null)
             message.timestamp = object.timestamp >>> 0;
         return message;
@@ -3552,10 +7217,13 @@ export const ChatMessage = $root.ChatMessage = (() => {
         let object = {};
         if (options.defaults) {
             object.message = "";
+            object.fromUser = "";
             object.timestamp = 0;
         }
         if (message.message != null && message.hasOwnProperty("message"))
             object.message = message.message;
+        if (message.fromUser != null && message.hasOwnProperty("fromUser"))
+            object.fromUser = message.fromUser;
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             object.timestamp = message.timestamp;
         return object;
