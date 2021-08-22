@@ -6,6 +6,7 @@ export type ID = string;
 export interface Context {
   userId: ID;
   isTeacher: boolean;
+  name: string;
 }
 
 export type ContextPayload<T> = {
@@ -14,6 +15,7 @@ export type ContextPayload<T> = {
 };
 
 export const store = configureStore({
+  middleware: [],
   reducer: {
     room: roomReducer,
   },

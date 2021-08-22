@@ -162,7 +162,7 @@ export interface IAction {
     setWebRtcStream?: (ISetWebRTCStream|null);
 
     /** Action setActivity */
-    setActivity?: (ISetActivity|null);
+    setActivity?: (ISetActivityStream|null);
 
     /** Action setHost */
     setHost?: (ISetHost|null);
@@ -205,7 +205,7 @@ export class Action implements IAction {
     public setWebRtcStream?: (ISetWebRTCStream|null);
 
     /** Action setActivity. */
-    public setActivity?: (ISetActivity|null);
+    public setActivity?: (ISetActivityStream|null);
 
     /** Action setHost. */
     public setHost?: (ISetHost|null);
@@ -926,103 +926,103 @@ export class SetWebRTCStream implements ISetWebRTCStream {
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a SetActivity. */
-export interface ISetActivity {
+/** Properties of a SetActivityStream. */
+export interface ISetActivityStream {
 
-    /** SetActivity deviceId */
+    /** SetActivityStream deviceId */
     deviceId?: (string|null);
 
-    /** SetActivity activityId */
+    /** SetActivityStream activityId */
     activityId?: (string|null);
 
-    /** SetActivity activityStreamId */
+    /** SetActivityStream activityStreamId */
     activityStreamId?: (string|null);
 }
 
-/** Represents a SetActivity. */
-export class SetActivity implements ISetActivity {
+/** Represents a SetActivityStream. */
+export class SetActivityStream implements ISetActivityStream {
 
     /**
-     * Constructs a new SetActivity.
+     * Constructs a new SetActivityStream.
      * @param [properties] Properties to set
      */
-    constructor(properties?: ISetActivity);
+    constructor(properties?: ISetActivityStream);
 
-    /** SetActivity deviceId. */
+    /** SetActivityStream deviceId. */
     public deviceId: string;
 
-    /** SetActivity activityId. */
+    /** SetActivityStream activityId. */
     public activityId: string;
 
-    /** SetActivity activityStreamId. */
+    /** SetActivityStream activityStreamId. */
     public activityStreamId: string;
 
     /**
-     * Creates a new SetActivity instance using the specified properties.
+     * Creates a new SetActivityStream instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns SetActivity instance
+     * @returns SetActivityStream instance
      */
-    public static create(properties?: ISetActivity): SetActivity;
+    public static create(properties?: ISetActivityStream): SetActivityStream;
 
     /**
-     * Encodes the specified SetActivity message. Does not implicitly {@link SetActivity.verify|verify} messages.
-     * @param message SetActivity message or plain object to encode
+     * Encodes the specified SetActivityStream message. Does not implicitly {@link SetActivityStream.verify|verify} messages.
+     * @param message SetActivityStream message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: ISetActivity, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ISetActivityStream, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified SetActivity message, length delimited. Does not implicitly {@link SetActivity.verify|verify} messages.
-     * @param message SetActivity message or plain object to encode
+     * Encodes the specified SetActivityStream message, length delimited. Does not implicitly {@link SetActivityStream.verify|verify} messages.
+     * @param message SetActivityStream message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: ISetActivity, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ISetActivityStream, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a SetActivity message from the specified reader or buffer.
+     * Decodes a SetActivityStream message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns SetActivity
+     * @returns SetActivityStream
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetActivity;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetActivityStream;
 
     /**
-     * Decodes a SetActivity message from the specified reader or buffer, length delimited.
+     * Decodes a SetActivityStream message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns SetActivity
+     * @returns SetActivityStream
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetActivity;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetActivityStream;
 
     /**
-     * Verifies a SetActivity message.
+     * Verifies a SetActivityStream message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a SetActivity message from a plain object. Also converts values to their respective internal types.
+     * Creates a SetActivityStream message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns SetActivity
+     * @returns SetActivityStream
      */
-    public static fromObject(object: { [k: string]: any }): SetActivity;
+    public static fromObject(object: { [k: string]: any }): SetActivityStream;
 
     /**
-     * Creates a plain object from a SetActivity message. Also converts values to other types if specified.
-     * @param message SetActivity
+     * Creates a plain object from a SetActivityStream message. Also converts values to other types if specified.
+     * @param message SetActivityStream
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: SetActivity, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: SetActivityStream, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this SetActivity to JSON.
+     * Converts this SetActivityStream to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -1127,8 +1127,8 @@ export interface IAddTrophy {
     /** AddTrophy timestamp */
     timestamp?: (number|Long|null);
 
-    /** AddTrophy id */
-    id?: (string|null);
+    /** AddTrophy userId */
+    userId?: (string|null);
 }
 
 /** Represents an AddTrophy. */
@@ -1146,8 +1146,8 @@ export class AddTrophy implements IAddTrophy {
     /** AddTrophy timestamp. */
     public timestamp: (number|Long);
 
-    /** AddTrophy id. */
-    public id: string;
+    /** AddTrophy userId. */
+    public userId: string;
 
     /**
      * Creates a new AddTrophy instance using the specified properties.
@@ -1314,7 +1314,7 @@ export class SetContent implements ISetContent {
 export interface ISendChatMessage {
 
     /** SendChatMessage message */
-    message?: (IChatMessage|null);
+    message?: (string|null);
 }
 
 /** Represents a SendChatMessage. */
@@ -1327,7 +1327,7 @@ export class SendChatMessage implements ISendChatMessage {
     constructor(properties?: ISendChatMessage);
 
     /** SendChatMessage message. */
-    public message?: (IChatMessage|null);
+    public message: string;
 
     /**
      * Creates a new SendChatMessage instance using the specified properties.
@@ -1634,9 +1634,6 @@ export class StateDiff implements IStateDiff {
 /** Properties of a Participant. */
 export interface IParticipant {
 
-    /** Participant id */
-    id?: (string|null);
-
     /** Participant name */
     name?: (string|null);
 
@@ -1655,9 +1652,6 @@ export class Participant implements IParticipant {
      * @param [properties] Properties to set
      */
     constructor(properties?: IParticipant);
-
-    /** Participant id. */
-    public id: string;
 
     /** Participant name. */
     public name: string;
@@ -3075,7 +3069,7 @@ export class ChatMessage implements IChatMessage {
 export interface IContent {
 
     /** Content type */
-    type?: (Content.Type|null);
+    type?: (ContentType|null);
 
     /** Content id */
     id?: (string|null);
@@ -3094,7 +3088,7 @@ export class Content implements IContent {
     constructor(properties?: IContent);
 
     /** Content type. */
-    public type: Content.Type;
+    public type: ContentType;
 
     /** Content id. */
     public id: string;
@@ -3173,16 +3167,13 @@ export class Content implements IContent {
     public toJSON(): { [k: string]: any };
 }
 
-export namespace Content {
-
-    /** Type enum. */
-    enum Type {
-        Blank = 0,
-        WebRTCStream = 1,
-        ActivityStream = 2,
-        H5P = 3,
-        Image = 4,
-        Video = 5,
-        Audio = 6
-    }
+/** ContentType enum. */
+export enum ContentType {
+    Blank = 0,
+    WebRTCStream = 1,
+    ActivityStream = 2,
+    H5P = 3,
+    Image = 4,
+    Video = 5,
+    Audio = 6
 }

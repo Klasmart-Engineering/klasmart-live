@@ -277,7 +277,7 @@ export const Action = $root.Action = (() => {
      * @property {ISetDevice|null} [setDevice] Action setDevice
      * @property {IRemoveDevice|null} [removeDevice] Action removeDevice
      * @property {ISetWebRTCStream|null} [setWebRtcStream] Action setWebRtcStream
-     * @property {ISetActivity|null} [setActivity] Action setActivity
+     * @property {ISetActivityStream|null} [setActivity] Action setActivity
      * @property {ISetHost|null} [setHost] Action setHost
      * @property {IAddTrophy|null} [addTrophy] Action addTrophy
      * @property {ISetContent|null} [setContent] Action setContent
@@ -328,7 +328,7 @@ export const Action = $root.Action = (() => {
 
     /**
      * Action setActivity.
-     * @member {ISetActivity|null|undefined} setActivity
+     * @member {ISetActivityStream|null|undefined} setActivity
      * @memberof Action
      * @instance
      */
@@ -435,7 +435,7 @@ export const Action = $root.Action = (() => {
         if (message.setWebRtcStream != null && Object.hasOwnProperty.call(message, "setWebRtcStream"))
             $root.SetWebRTCStream.encode(message.setWebRtcStream, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.setActivity != null && Object.hasOwnProperty.call(message, "setActivity"))
-            $root.SetActivity.encode(message.setActivity, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            $root.SetActivityStream.encode(message.setActivity, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.setHost != null && Object.hasOwnProperty.call(message, "setHost"))
             $root.SetHost.encode(message.setHost, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         if (message.addTrophy != null && Object.hasOwnProperty.call(message, "addTrophy"))
@@ -494,7 +494,7 @@ export const Action = $root.Action = (() => {
                 message.setWebRtcStream = $root.SetWebRTCStream.decode(reader, reader.uint32());
                 break;
             case 3:
-                message.setActivity = $root.SetActivity.decode(reader, reader.uint32());
+                message.setActivity = $root.SetActivityStream.decode(reader, reader.uint32());
                 break;
             case 4:
                 message.setHost = $root.SetHost.decode(reader, reader.uint32());
@@ -586,7 +586,7 @@ export const Action = $root.Action = (() => {
                 return "action: multiple values";
             properties.action = 1;
             {
-                let error = $root.SetActivity.verify(message.setActivity);
+                let error = $root.SetActivityStream.verify(message.setActivity);
                 if (error)
                     return "setActivity." + error;
             }
@@ -694,7 +694,7 @@ export const Action = $root.Action = (() => {
         if (object.setActivity != null) {
             if (typeof object.setActivity !== "object")
                 throw TypeError(".Action.setActivity: object expected");
-            message.setActivity = $root.SetActivity.fromObject(object.setActivity);
+            message.setActivity = $root.SetActivityStream.fromObject(object.setActivity);
         }
         if (object.setHost != null) {
             if (typeof object.setHost !== "object")
@@ -763,7 +763,7 @@ export const Action = $root.Action = (() => {
                 object.action = "setWebRtcStream";
         }
         if (message.setActivity != null && message.hasOwnProperty("setActivity")) {
-            object.setActivity = $root.SetActivity.toObject(message.setActivity, options);
+            object.setActivity = $root.SetActivityStream.toObject(message.setActivity, options);
             if (options.oneofs)
                 object.action = "setActivity";
         }
@@ -2119,26 +2119,26 @@ export const SetWebRTCStream = $root.SetWebRTCStream = (() => {
     return SetWebRTCStream;
 })();
 
-export const SetActivity = $root.SetActivity = (() => {
+export const SetActivityStream = $root.SetActivityStream = (() => {
 
     /**
-     * Properties of a SetActivity.
-     * @exports ISetActivity
-     * @interface ISetActivity
-     * @property {string|null} [deviceId] SetActivity deviceId
-     * @property {string|null} [activityId] SetActivity activityId
-     * @property {string|null} [activityStreamId] SetActivity activityStreamId
+     * Properties of a SetActivityStream.
+     * @exports ISetActivityStream
+     * @interface ISetActivityStream
+     * @property {string|null} [deviceId] SetActivityStream deviceId
+     * @property {string|null} [activityId] SetActivityStream activityId
+     * @property {string|null} [activityStreamId] SetActivityStream activityStreamId
      */
 
     /**
-     * Constructs a new SetActivity.
-     * @exports SetActivity
-     * @classdesc Represents a SetActivity.
-     * @implements ISetActivity
+     * Constructs a new SetActivityStream.
+     * @exports SetActivityStream
+     * @classdesc Represents a SetActivityStream.
+     * @implements ISetActivityStream
      * @constructor
-     * @param {ISetActivity=} [properties] Properties to set
+     * @param {ISetActivityStream=} [properties] Properties to set
      */
-    function SetActivity(properties) {
+    function SetActivityStream(properties) {
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -2146,51 +2146,51 @@ export const SetActivity = $root.SetActivity = (() => {
     }
 
     /**
-     * SetActivity deviceId.
+     * SetActivityStream deviceId.
      * @member {string} deviceId
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @instance
      */
-    SetActivity.prototype.deviceId = "";
+    SetActivityStream.prototype.deviceId = "";
 
     /**
-     * SetActivity activityId.
+     * SetActivityStream activityId.
      * @member {string} activityId
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @instance
      */
-    SetActivity.prototype.activityId = "";
+    SetActivityStream.prototype.activityId = "";
 
     /**
-     * SetActivity activityStreamId.
+     * SetActivityStream activityStreamId.
      * @member {string} activityStreamId
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @instance
      */
-    SetActivity.prototype.activityStreamId = "";
+    SetActivityStream.prototype.activityStreamId = "";
 
     /**
-     * Creates a new SetActivity instance using the specified properties.
+     * Creates a new SetActivityStream instance using the specified properties.
      * @function create
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
-     * @param {ISetActivity=} [properties] Properties to set
-     * @returns {SetActivity} SetActivity instance
+     * @param {ISetActivityStream=} [properties] Properties to set
+     * @returns {SetActivityStream} SetActivityStream instance
      */
-    SetActivity.create = function create(properties) {
-        return new SetActivity(properties);
+    SetActivityStream.create = function create(properties) {
+        return new SetActivityStream(properties);
     };
 
     /**
-     * Encodes the specified SetActivity message. Does not implicitly {@link SetActivity.verify|verify} messages.
+     * Encodes the specified SetActivityStream message. Does not implicitly {@link SetActivityStream.verify|verify} messages.
      * @function encode
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
-     * @param {ISetActivity} message SetActivity message or plain object to encode
+     * @param {ISetActivityStream} message SetActivityStream message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetActivity.encode = function encode(message, writer) {
+    SetActivityStream.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.deviceId != null && Object.hasOwnProperty.call(message, "deviceId"))
@@ -2203,33 +2203,33 @@ export const SetActivity = $root.SetActivity = (() => {
     };
 
     /**
-     * Encodes the specified SetActivity message, length delimited. Does not implicitly {@link SetActivity.verify|verify} messages.
+     * Encodes the specified SetActivityStream message, length delimited. Does not implicitly {@link SetActivityStream.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
-     * @param {ISetActivity} message SetActivity message or plain object to encode
+     * @param {ISetActivityStream} message SetActivityStream message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetActivity.encodeDelimited = function encodeDelimited(message, writer) {
+    SetActivityStream.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a SetActivity message from the specified reader or buffer.
+     * Decodes a SetActivityStream message from the specified reader or buffer.
      * @function decode
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {SetActivity} SetActivity
+     * @returns {SetActivityStream} SetActivityStream
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetActivity.decode = function decode(reader, length) {
+    SetActivityStream.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetActivity();
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetActivityStream();
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2251,30 +2251,30 @@ export const SetActivity = $root.SetActivity = (() => {
     };
 
     /**
-     * Decodes a SetActivity message from the specified reader or buffer, length delimited.
+     * Decodes a SetActivityStream message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SetActivity} SetActivity
+     * @returns {SetActivityStream} SetActivityStream
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetActivity.decodeDelimited = function decodeDelimited(reader) {
+    SetActivityStream.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a SetActivity message.
+     * Verifies a SetActivityStream message.
      * @function verify
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    SetActivity.verify = function verify(message) {
+    SetActivityStream.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.deviceId != null && message.hasOwnProperty("deviceId"))
@@ -2290,17 +2290,17 @@ export const SetActivity = $root.SetActivity = (() => {
     };
 
     /**
-     * Creates a SetActivity message from a plain object. Also converts values to their respective internal types.
+     * Creates a SetActivityStream message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {SetActivity} SetActivity
+     * @returns {SetActivityStream} SetActivityStream
      */
-    SetActivity.fromObject = function fromObject(object) {
-        if (object instanceof $root.SetActivity)
+    SetActivityStream.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetActivityStream)
             return object;
-        let message = new $root.SetActivity();
+        let message = new $root.SetActivityStream();
         if (object.deviceId != null)
             message.deviceId = String(object.deviceId);
         if (object.activityId != null)
@@ -2311,15 +2311,15 @@ export const SetActivity = $root.SetActivity = (() => {
     };
 
     /**
-     * Creates a plain object from a SetActivity message. Also converts values to other types if specified.
+     * Creates a plain object from a SetActivityStream message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @static
-     * @param {SetActivity} message SetActivity
+     * @param {SetActivityStream} message SetActivityStream
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    SetActivity.toObject = function toObject(message, options) {
+    SetActivityStream.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         let object = {};
@@ -2338,17 +2338,17 @@ export const SetActivity = $root.SetActivity = (() => {
     };
 
     /**
-     * Converts this SetActivity to JSON.
+     * Converts this SetActivityStream to JSON.
      * @function toJSON
-     * @memberof SetActivity
+     * @memberof SetActivityStream
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    SetActivity.prototype.toJSON = function toJSON() {
+    SetActivityStream.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return SetActivity;
+    return SetActivityStream;
 })();
 
 export const SetHost = $root.SetHost = (() => {
@@ -2546,7 +2546,7 @@ export const AddTrophy = $root.AddTrophy = (() => {
      * @interface IAddTrophy
      * @property {string|null} [trophyId] AddTrophy trophyId
      * @property {number|Long|null} [timestamp] AddTrophy timestamp
-     * @property {string|null} [id] AddTrophy id
+     * @property {string|null} [userId] AddTrophy userId
      */
 
     /**
@@ -2581,12 +2581,12 @@ export const AddTrophy = $root.AddTrophy = (() => {
     AddTrophy.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
     /**
-     * AddTrophy id.
-     * @member {string} id
+     * AddTrophy userId.
+     * @member {string} userId
      * @memberof AddTrophy
      * @instance
      */
-    AddTrophy.prototype.id = "";
+    AddTrophy.prototype.userId = "";
 
     /**
      * Creates a new AddTrophy instance using the specified properties.
@@ -2616,8 +2616,8 @@ export const AddTrophy = $root.AddTrophy = (() => {
             writer.uint32(/* id 0, wireType 2 =*/2).string(message.trophyId);
         if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
             writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.timestamp);
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.id);
+        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
         return writer;
     };
 
@@ -2659,7 +2659,7 @@ export const AddTrophy = $root.AddTrophy = (() => {
                 message.timestamp = reader.uint64();
                 break;
             case 2:
-                message.id = reader.string();
+                message.userId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2702,9 +2702,9 @@ export const AddTrophy = $root.AddTrophy = (() => {
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             if (!$util.isInteger(message.timestamp) && !(message.timestamp && $util.isInteger(message.timestamp.low) && $util.isInteger(message.timestamp.high)))
                 return "timestamp: integer|Long expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            if (!$util.isString(message.userId))
+                return "userId: string expected";
         return null;
     };
 
@@ -2731,8 +2731,8 @@ export const AddTrophy = $root.AddTrophy = (() => {
                 message.timestamp = object.timestamp;
             else if (typeof object.timestamp === "object")
                 message.timestamp = new $util.LongBits(object.timestamp.low >>> 0, object.timestamp.high >>> 0).toNumber(true);
-        if (object.id != null)
-            message.id = String(object.id);
+        if (object.userId != null)
+            message.userId = String(object.userId);
         return message;
     };
 
@@ -2756,7 +2756,7 @@ export const AddTrophy = $root.AddTrophy = (() => {
                 object.timestamp = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.timestamp = options.longs === String ? "0" : 0;
-            object.id = "";
+            object.userId = "";
         }
         if (message.trophyId != null && message.hasOwnProperty("trophyId"))
             object.trophyId = message.trophyId;
@@ -2765,8 +2765,8 @@ export const AddTrophy = $root.AddTrophy = (() => {
                 object.timestamp = options.longs === String ? String(message.timestamp) : message.timestamp;
             else
                 object.timestamp = options.longs === String ? $util.Long.prototype.toString.call(message.timestamp) : options.longs === Number ? new $util.LongBits(message.timestamp.low >>> 0, message.timestamp.high >>> 0).toNumber(true) : message.timestamp;
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            object.userId = message.userId;
         return object;
     };
 
@@ -2982,7 +2982,7 @@ export const SendChatMessage = $root.SendChatMessage = (() => {
      * Properties of a SendChatMessage.
      * @exports ISendChatMessage
      * @interface ISendChatMessage
-     * @property {IChatMessage|null} [message] SendChatMessage message
+     * @property {string|null} [message] SendChatMessage message
      */
 
     /**
@@ -3002,11 +3002,11 @@ export const SendChatMessage = $root.SendChatMessage = (() => {
 
     /**
      * SendChatMessage message.
-     * @member {IChatMessage|null|undefined} message
+     * @member {string} message
      * @memberof SendChatMessage
      * @instance
      */
-    SendChatMessage.prototype.message = null;
+    SendChatMessage.prototype.message = "";
 
     /**
      * Creates a new SendChatMessage instance using the specified properties.
@@ -3033,7 +3033,7 @@ export const SendChatMessage = $root.SendChatMessage = (() => {
         if (!writer)
             writer = $Writer.create();
         if (message.message != null && Object.hasOwnProperty.call(message, "message"))
-            $root.ChatMessage.encode(message.message, writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.message);
         return writer;
     };
 
@@ -3069,7 +3069,7 @@ export const SendChatMessage = $root.SendChatMessage = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.message = $root.ChatMessage.decode(reader, reader.uint32());
+                message.message = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3106,11 +3106,9 @@ export const SendChatMessage = $root.SendChatMessage = (() => {
     SendChatMessage.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.message != null && message.hasOwnProperty("message")) {
-            let error = $root.ChatMessage.verify(message.message);
-            if (error)
-                return "message." + error;
-        }
+        if (message.message != null && message.hasOwnProperty("message"))
+            if (!$util.isString(message.message))
+                return "message: string expected";
         return null;
     };
 
@@ -3126,11 +3124,8 @@ export const SendChatMessage = $root.SendChatMessage = (() => {
         if (object instanceof $root.SendChatMessage)
             return object;
         let message = new $root.SendChatMessage();
-        if (object.message != null) {
-            if (typeof object.message !== "object")
-                throw TypeError(".SendChatMessage.message: object expected");
-            message.message = $root.ChatMessage.fromObject(object.message);
-        }
+        if (object.message != null)
+            message.message = String(object.message);
         return message;
     };
 
@@ -3148,9 +3143,9 @@ export const SendChatMessage = $root.SendChatMessage = (() => {
             options = {};
         let object = {};
         if (options.defaults)
-            object.message = null;
+            object.message = "";
         if (message.message != null && message.hasOwnProperty("message"))
-            object.message = $root.ChatMessage.toObject(message.message, options);
+            object.message = message.message;
         return object;
     };
 
@@ -3865,7 +3860,6 @@ export const Participant = $root.Participant = (() => {
      * Properties of a Participant.
      * @exports IParticipant
      * @interface IParticipant
-     * @property {string|null} [id] Participant id
      * @property {string|null} [name] Participant name
      * @property {Array.<IDevice>|null} [devices] Participant devices
      * @property {Array.<ITrophy>|null} [trophies] Participant trophies
@@ -3887,14 +3881,6 @@ export const Participant = $root.Participant = (() => {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * Participant id.
-     * @member {string} id
-     * @memberof Participant
-     * @instance
-     */
-    Participant.prototype.id = "";
 
     /**
      * Participant name.
@@ -3944,16 +3930,14 @@ export const Participant = $root.Participant = (() => {
     Participant.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
         if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.name);
         if (message.devices != null && message.devices.length)
             for (let i = 0; i < message.devices.length; ++i)
-                $root.Device.encode(message.devices[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                $root.Device.encode(message.devices[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message.trophies != null && message.trophies.length)
             for (let i = 0; i < message.trophies.length; ++i)
-                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
@@ -3989,17 +3973,14 @@ export const Participant = $root.Participant = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.id = reader.string();
-                break;
-            case 1:
                 message.name = reader.string();
                 break;
-            case 2:
+            case 1:
                 if (!(message.devices && message.devices.length))
                     message.devices = [];
                 message.devices.push($root.Device.decode(reader, reader.uint32()));
                 break;
-            case 3:
+            case 2:
                 if (!(message.trophies && message.trophies.length))
                     message.trophies = [];
                 message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
@@ -4039,9 +4020,6 @@ export const Participant = $root.Participant = (() => {
     Participant.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
@@ -4078,8 +4056,6 @@ export const Participant = $root.Participant = (() => {
         if (object instanceof $root.Participant)
             return object;
         let message = new $root.Participant();
-        if (object.id != null)
-            message.id = String(object.id);
         if (object.name != null)
             message.name = String(object.name);
         if (object.devices) {
@@ -4122,12 +4098,8 @@ export const Participant = $root.Participant = (() => {
             object.devices = [];
             object.trophies = [];
         }
-        if (options.defaults) {
-            object.id = "";
+        if (options.defaults)
             object.name = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
         if (message.devices && message.devices.length) {
@@ -7249,7 +7221,7 @@ export const Content = $root.Content = (() => {
      * Properties of a Content.
      * @exports IContent
      * @interface IContent
-     * @property {Content.Type|null} [type] Content type
+     * @property {ContentType|null} [type] Content type
      * @property {string|null} [id] Content id
      * @property {string|null} [url] Content url
      */
@@ -7271,7 +7243,7 @@ export const Content = $root.Content = (() => {
 
     /**
      * Content type.
-     * @member {Content.Type} type
+     * @member {ContentType} type
      * @memberof Content
      * @instance
      */
@@ -7491,7 +7463,7 @@ export const Content = $root.Content = (() => {
             object.url = "";
         }
         if (message.type != null && message.hasOwnProperty("type"))
-            object.type = options.enums === String ? $root.Content.Type[message.type] : message.type;
+            object.type = options.enums === String ? $root.ContentType[message.type] : message.type;
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.url != null && message.hasOwnProperty("url"))
@@ -7510,31 +7482,31 @@ export const Content = $root.Content = (() => {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    /**
-     * Type enum.
-     * @name Content.Type
-     * @enum {number}
-     * @property {number} Blank=0 Blank value
-     * @property {number} WebRTCStream=1 WebRTCStream value
-     * @property {number} ActivityStream=2 ActivityStream value
-     * @property {number} H5P=3 H5P value
-     * @property {number} Image=4 Image value
-     * @property {number} Video=5 Video value
-     * @property {number} Audio=6 Audio value
-     */
-    Content.Type = (function() {
-        const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "Blank"] = 0;
-        values[valuesById[1] = "WebRTCStream"] = 1;
-        values[valuesById[2] = "ActivityStream"] = 2;
-        values[valuesById[3] = "H5P"] = 3;
-        values[valuesById[4] = "Image"] = 4;
-        values[valuesById[5] = "Video"] = 5;
-        values[valuesById[6] = "Audio"] = 6;
-        return values;
-    })();
-
     return Content;
+})();
+
+/**
+ * ContentType enum.
+ * @exports ContentType
+ * @enum {number}
+ * @property {number} Blank=0 Blank value
+ * @property {number} WebRTCStream=1 WebRTCStream value
+ * @property {number} ActivityStream=2 ActivityStream value
+ * @property {number} H5P=3 H5P value
+ * @property {number} Image=4 Image value
+ * @property {number} Video=5 Video value
+ * @property {number} Audio=6 Audio value
+ */
+export const ContentType = $root.ContentType = (() => {
+    const valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "Blank"] = 0;
+    values[valuesById[1] = "WebRTCStream"] = 1;
+    values[valuesById[2] = "ActivityStream"] = 2;
+    values[valuesById[3] = "H5P"] = 3;
+    values[valuesById[4] = "Image"] = 4;
+    values[valuesById[5] = "Video"] = 5;
+    values[valuesById[6] = "Audio"] = 6;
+    return values;
 })();
 
 export { $root as default };

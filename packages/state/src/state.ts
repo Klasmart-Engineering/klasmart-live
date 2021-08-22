@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { GetUserId } from "./roomSlice";
 import { Map } from "immutable";
 type ID = string;
 

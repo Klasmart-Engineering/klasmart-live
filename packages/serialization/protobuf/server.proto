@@ -12,7 +12,7 @@ message Action {
         SetDevice set_device = 0;
         RemoveDevice remove_device = 1;
         SetWebRTCStream set_web_rtc_stream = 2;
-        SetActivity set_activity = 3;
+        SetActivityStream set_activity = 3;
         SetHost set_host = 4;
         AddTrophy add_trophy = 5;
         SetContent set_content = 6;
@@ -47,7 +47,7 @@ message SetWebRTCStream {
     repeated WebRTCStream streams = 1;
 }
 
-message SetActivity {
+message SetActivityStream {
     string device_id = 0;
     string activity_id = 1;
     string activity_stream_id = 2;
@@ -60,7 +60,7 @@ message SetHost {
 message AddTrophy {
     string trophy_id = 0;
     uint64 timestamp = 1;
-    string id = 2;
+    string user_id = 2;
 }
 
 message SetContent {
@@ -68,7 +68,7 @@ message SetContent {
 }
 
 message SendChatMessage {
-    ChatMessage message = 0;
+    string message = 0;
 }
 
 message StateChanges {
@@ -94,10 +94,9 @@ message StateDiff {
 }
 
 message Participant {
-    string id = 0; // Do we need this here?
-    string name = 1;
-    repeated Device devices = 2;
-    repeated Trophy trophies = 3;
+    string name = 0;
+    repeated Device devices = 1;
+    repeated Trophy trophies = 2;
 }
 
 message State {
@@ -170,16 +169,17 @@ message ChatMessage {
 }
 
 message Content {
-    enum Type {
-        Blank = 0;
-        WebRTCStream = 1;
-        ActivityStream = 2;
-        H5P = 3;
-        Image = 4;
-        Video = 5;
-        Audio = 6;
-    } 
-    Type type = 0;
+    ContentType type = 0;
     string id = 1;
     string url = 2;
+}
+
+enum ContentType {
+    Blank = 0;
+    WebRTCStream = 1;
+    ActivityStream = 2;
+    H5P = 3;
+    Image = 4;
+    Video = 5;
+    Audio = 6;
 }
