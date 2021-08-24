@@ -12,9 +12,8 @@ pipelines:
         image: node:lts
         deployment: live-kidsloop-dev
         script:
-          - npm i @cloudflare/wrangler -g
           - cd packages/edge/
           - npm ci
-          - wrangler publish --env dev
+          - ./node_modules/.bin/wrangler publish --env dev
         caches:
           - node
