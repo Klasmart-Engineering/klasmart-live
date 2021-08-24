@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1629790313926" clover="3.2.0">
-  <project timestamp="1629790313926" name="All files">
+<coverage generated="1629792516490" clover="3.2.0">
+  <project timestamp="1629792516490" name="All files">
     <metrics statements="258" coveredstatements="244" conditionals="29" coveredconditionals="18" methods="12" coveredmethods="12" elements="299" coveredelements="274" complexity="0" loc="258" ncloc="258" packages="1" files="2" classes="2"/>
     <file name="index.ts" path="/home/ncurtis/code/kidsloop/kidsloop-live/packages/state/src/roomSlice/index.ts">
       <metrics statements="202" coveredstatements="198" conditionals="19" coveredconditionals="14" methods="9" coveredmethods="9"/>
