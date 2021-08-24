@@ -1,0 +1,20 @@
+pipelines:
+  branches:    
+    main:
+      - step: &step-secret-check
+          name: Atlassian Security Secrets Scan
+          script:
+            - pipe: atlassian/git-secrets-scan:0.5.1
+  custom:
+    deploy-live-kidsloop-dev:
+    - step: &step-deploy-live-kidsloop-dev
+        name: 'Deploy live.kidsloop.dev'
+        image: node:lts
+        deployment: live-kidsloop-dev
+        script:
+          - npm i @cloudflare/wrangler -g
+          - cd packages/edge/
+          - npm ci
+          - wrangler publish --env dev
+        caches:
+          - node
