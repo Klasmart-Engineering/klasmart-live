@@ -168,12 +168,6 @@ message ChatMessage {
     uint32 timestamp = 2;
 }
 
-message Content {
-    ContentType type = 0;
-    string id = 1;
-    string url = 2;
-}
-
 enum ContentType {
     Blank = 0;
     WebRTCStream = 1;
@@ -183,3 +177,10 @@ enum ContentType {
     Video = 5;
     Audio = 6;
 }
+
+message Content {
+    ContentType type = 0;
+    string id = 1;
+    string url = 2;
+}
+

@@ -3065,17 +3065,15 @@ export class ChatMessage implements IChatMessage {
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a Content. */
-export interface IContent {
-
-    /** Content type */
-    type?: (ContentType|null);
-
-    /** Content id */
-    id?: (string|null);
-
-    /** Content url */
-    url?: (string|null);
+/** ContentType enum. */
+export enum ContentType {
+    Blank = 0,
+    WebRTCStream = 1,
+    ActivityStream = 2,
+    H5P = 3,
+    Image = 4,
+    Video = 5,
+    Audio = 6
 }
 
 /** Represents a Content. */
@@ -3165,15 +3163,4 @@ export class Content implements IContent {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
-}
-
-/** ContentType enum. */
-export enum ContentType {
-    Blank = 0,
-    WebRTCStream = 1,
-    ActivityStream = 2,
-    H5P = 3,
-    Image = 4,
-    Video = 5,
-    Audio = 6
 }

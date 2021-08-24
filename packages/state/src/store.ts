@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { Participant, ChatMessage } from './state';
 import { roomReducer } from './roomSlice';
 
 export type ID = string;

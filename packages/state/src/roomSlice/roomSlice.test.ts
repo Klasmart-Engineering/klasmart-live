@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { Context, ContextPayload, ID } from '../../src/store';
+import { Context, ContextPayload, ID } from '../store';
 import {
   addTrophy,
   roomReducer,
@@ -12,9 +12,8 @@ import {
   userJoin,
   setContent,
   userLeave,
-} from '../../src/roomSlice';
+} from '.';
 import {
-  IAppendChatMessage,
   IParticipant,
   ISendChatMessage,
   ISetActivityStream,
@@ -23,9 +22,9 @@ import {
   ISetHost,
   ISetWebRTCStream,
   IUserJoin,
-  ContentType,
   IAddTrophy,
 } from '../../../serialization/src/protobuf';
+import { ContentType } from '../../../serialization/src';
 
 describe('Store Actions', () => {
   let store: EnhancedStore;
@@ -310,7 +309,7 @@ describe('Store Actions', () => {
     };
 
     let { content } = store.getState().room;
-    expect(content).toBeUndefined();
+    expect(content).toBe(ContentType.Blank);
     store.dispatch(setContent(action));
     content = store.getState().room.content;
     expect(content).toBe(action.payload.content);

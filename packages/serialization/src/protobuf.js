@@ -7215,6 +7215,30 @@ export const ChatMessage = $root.ChatMessage = (() => {
     return ChatMessage;
 })();
 
+/**
+ * ContentType enum.
+ * @exports ContentType
+ * @enum {number}
+ * @property {number} Blank=0 Blank value
+ * @property {number} WebRTCStream=1 WebRTCStream value
+ * @property {number} ActivityStream=2 ActivityStream value
+ * @property {number} H5P=3 H5P value
+ * @property {number} Image=4 Image value
+ * @property {number} Video=5 Video value
+ * @property {number} Audio=6 Audio value
+ */
+export const ContentType = $root.ContentType = (() => {
+    const valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "Blank"] = 0;
+    values[valuesById[1] = "WebRTCStream"] = 1;
+    values[valuesById[2] = "ActivityStream"] = 2;
+    values[valuesById[3] = "H5P"] = 3;
+    values[valuesById[4] = "Image"] = 4;
+    values[valuesById[5] = "Video"] = 5;
+    values[valuesById[6] = "Audio"] = 6;
+    return values;
+})();
+
 export const Content = $root.Content = (() => {
 
     /**
@@ -7483,30 +7507,6 @@ export const Content = $root.Content = (() => {
     };
 
     return Content;
-})();
-
-/**
- * ContentType enum.
- * @exports ContentType
- * @enum {number}
- * @property {number} Blank=0 Blank value
- * @property {number} WebRTCStream=1 WebRTCStream value
- * @property {number} ActivityStream=2 ActivityStream value
- * @property {number} H5P=3 H5P value
- * @property {number} Image=4 Image value
- * @property {number} Video=5 Video value
- * @property {number} Audio=6 Audio value
- */
-export const ContentType = $root.ContentType = (() => {
-    const valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "Blank"] = 0;
-    values[valuesById[1] = "WebRTCStream"] = 1;
-    values[valuesById[2] = "ActivityStream"] = 2;
-    values[valuesById[3] = "H5P"] = 3;
-    values[valuesById[4] = "Image"] = 4;
-    values[valuesById[5] = "Video"] = 5;
-    values[valuesById[6] = "Audio"] = 6;
-    return values;
 })();
 
 export { $root as default };
