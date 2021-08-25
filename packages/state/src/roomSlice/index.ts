@@ -1,5 +1,4 @@
-import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ContextPayload } from '../store';
+import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   IState,
   IParticipant,
@@ -13,9 +12,10 @@ import {
   ISendChatMessage,
   ISetContent,
   IAddTrophy,
-} from '../../../serialization/src/protobuf';
-import { getDevice, getDevices, findIndex } from './util';
-import { ContentType } from '../../../serialization/src';
+  ContentType,
+} from "kidsloop-live-serialization";
+import { ContextPayload } from "../store";
+import { getDevice, getDevices, findIndex } from "./util";
 
 type Reducer<T> = CaseReducer<IState, PayloadAction<ContextPayload<T>>>;
 
@@ -24,7 +24,7 @@ const initialState: IState = {
   host: null,
   chatMessages: [],
   content: ContentType.Blank,
-  endTimestamp: null
+  endTimestamp: null,
 };
 
 const userJoinReducer: Reducer<IUserJoin> = (state, action) => {
@@ -101,7 +101,7 @@ const addTrophyReducer: CaseReducer<
     const user = participants[id];
     if (!user) {
       throw new Error(
-        `Unable to find user with ID: ${id} in the class participant list`,
+        `Unable to find user with ID: ${id} in the class participant list`
       );
     }
     const trophies = user.trophies || [];
@@ -119,7 +119,7 @@ const setDeviceReducer: Reducer<ISetDevice> = (state, action) => {
     context: { userId },
     payload: { device },
   } = action.payload;
-  if (!device) throw new Error('No device was provided');
+  if (!device) throw new Error("No device was provided");
   const { participants } = state;
   const devices = getDevices(userId, participants!);
   const index = findIndex((d) => d.id === device.id, devices);
@@ -147,7 +147,7 @@ const setWebRtcStreamReducer: Reducer<ISetWebRTCStream> = (state, action) => {
 
 const setActivityStreamReducer: Reducer<ISetActivityStream> = (
   state,
-  action,
+  action
 ) => {
   const {
     context: { userId },
@@ -172,7 +172,7 @@ const setContentReducer: Reducer<ISetContent> = (state, action) => {
 };
 
 export const roomSlice = createSlice({
-  name: 'room',
+  name: "room",
   initialState,
   reducers: {
     userJoin: userJoinReducer,

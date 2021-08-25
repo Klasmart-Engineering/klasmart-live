@@ -9,23 +9,23 @@ message Empty {}
 
 message Action {
     oneof action {
-        SetDevice set_device = 0;
-        RemoveDevice remove_device = 1;
-        SetWebRTCStream set_web_rtc_stream = 2;
-        SetActivityStream set_activity = 3;
-        SetHost set_host = 4;
-        AddTrophy add_trophy = 5;
-        SetContent set_content = 6;
-        SendChatMessage send_chat_message = 7;
-        UserJoin user_join = 8;
-        UserLeave user_leave = 9;
+        SetDevice set_device = 1;
+        RemoveDevice remove_device = 2;
+        SetWebRTCStream set_web_rtc_stream = 3;
+        SetActivityStream set_activity = 4;
+        SetHost set_host = 5;
+        AddTrophy add_trophy = 6;
+        SetContent set_content = 7;
+        SendChatMessage send_chat_message = 8;
+        UserJoin user_join = 9;
+        UserLeave user_leave = 10;
         EndClass end_class = 15;
     }
 }
 
 message ActionReciept {
-    uint32 epoch = 0;
-    uint32 action_counter = 1;
+    uint32 epoch = 1;
+    uint32 action_counter = 2;
 }
 
 message UserJoin {}
@@ -35,52 +35,51 @@ message UserLeave {}
 message EndClass {}
 
 message SetDevice {
-    Device device = 0;
+    Device device = 1;
 }
 
 message RemoveDevice {
-    string id = 0;
+    string id = 1;
 }
 
 message SetWebRTCStream {
-    string device_id = 0;
-    repeated WebRTCStream streams = 1;
+    string device_id = 1;
+    repeated WebRTCStream streams = 2;
 }
 
 message SetActivityStream {
-    string device_id = 0;
-    string activity_id = 1;
-    string activity_stream_id = 2;
+    string device_id = 1;
+    string activity_id = 2;
+    string activity_stream_id = 3;
 }
 
 message SetHost {
-    string id = 0;
+    string id = 1;
 }
 
 message AddTrophy {
-    string trophy_id = 0;
-    uint64 timestamp = 1;
-    string user_id = 2;
+    string trophy_id = 1;
+    uint64 timestamp = 2;
+    string user_id = 3;
 }
 
 message SetContent {
-    Content content = 0;
+    Content content = 1;
 }
 
 message SendChatMessage {
-    string message = 0;
+    string message = 1;
 }
 
 message StateChanges {
-    repeated StateDiff changes = 0;
+    repeated StateDiff changes = 1;
 }
 
 message StateDiff {
     oneof action {
-        State get_state = 0;
+        State get_state = 1;
 
-        AddParticipants add_participants = 1;
-        ChangeParticipants change_participants = 2;
+        AddParticipants add_participants = 2;
         RemoveParticipants remove_participants = 3;
 
         ChangeContent change_content = 4;
@@ -89,18 +88,18 @@ message StateDiff {
         AppendChatMessage append_chat_message = 6;
         ReceiveTrophy receive_trophy = 7;
 
-        ClassEnded class_ended = 15;
+        ClassEnded class_ended = 16;
     }
 }
 
 message Participant {
-    string name = 0;
-    repeated Device devices = 1;
-    repeated Trophy trophies = 2;
+    string name = 1;
+    repeated Device devices = 2;
+    repeated Trophy trophies = 3;
 }
 
 message State {
-    map<string, Participant> participants = 0;
+    map<string, Participant> participants = 1;
     string host = 2;
     Content content = 3;
     repeated ChatMessage chat_messages = 4;
@@ -108,69 +107,64 @@ message State {
 }
 
 message AddParticipants {
-    repeated Participant participants = 0;
-}
-
-// Assumes you look up current participant and merge
-message ChangeParticipants {
-    repeated Participant participants = 0;
+    map<string, Participant> participants = 1;
 }
 
 // Array of IDs
 message RemoveParticipants {
-    repeated string participants = 0;
+    repeated string participants = 1;
 }
 
 message ChangeContent {
-    Content content = 0;
+    Content content = 1;
 }
 
 message ChangeHost {
-    string host_id = 0;
+    string host_id = 1;
 }
 
 message AppendChatMessage {
-    repeated ChatMessage messages = 0;
+    repeated ChatMessage messages = 1;
 }
 
 message ReceiveTrophy {
-    Trophy trophy = 0;
+    Trophy trophy = 1;
 }
 
 message ClassEnded {}
 
 message Device {
-    string id = 0; 
-    string activityId = 1;
-    string activityStreamId = 2;
-    repeated WebRTCStream webRTCStreams = 3;
+    string id = 1; 
+    string activityId = 2;
+    string activityStreamId = 3;
+    repeated WebRTCStream webRTCStreams = 4;
 }
 
 message WebRTCStream {
-    string id = 0;
-    string label = 1;
-    repeated WebRTCTrack tracks = 2;
+    string id = 1;
+    string label = 2;
+    repeated WebRTCTrack tracks = 3;
 }
 
 message WebRTCTrack {
-    string id = 0;
-    string sfu = 1;
+    string id = 1;
+    string sfu = 2;
 }
 
 message Trophy {
-    string trophy = 0;
-    uint32 timestamp = 1;
+    string trophy = 1;
+    uint32 timestamp = 2;
 }
 
 message ChatMessage {
-    string message = 0;
-    string from_user = 1;
-    uint32 timestamp = 2;
+    string message = 1;
+    string from_user = 2;
+    uint32 timestamp = 3;
 }
 
 enum ContentType {
     Blank = 0;
-    WebRTCStream = 1;
+    WebRtcStream = 1;
     ActivityStream = 2;
     H5P = 3;
     Image = 4;
@@ -179,8 +173,8 @@ enum ContentType {
 }
 
 message Content {
-    ContentType type = 0;
-    string id = 1;
-    string url = 2;
+    ContentType type = 1;
+    string id = 2;
+    string url = 3;
 }
 

@@ -1499,9 +1499,6 @@ export interface IStateDiff {
     /** StateDiff addParticipants */
     addParticipants?: (IAddParticipants|null);
 
-    /** StateDiff changeParticipants */
-    changeParticipants?: (IChangeParticipants|null);
-
     /** StateDiff removeParticipants */
     removeParticipants?: (IRemoveParticipants|null);
 
@@ -1536,9 +1533,6 @@ export class StateDiff implements IStateDiff {
     /** StateDiff addParticipants. */
     public addParticipants?: (IAddParticipants|null);
 
-    /** StateDiff changeParticipants. */
-    public changeParticipants?: (IChangeParticipants|null);
-
     /** StateDiff removeParticipants. */
     public removeParticipants?: (IRemoveParticipants|null);
 
@@ -1558,7 +1552,7 @@ export class StateDiff implements IStateDiff {
     public classEnded?: (IClassEnded|null);
 
     /** StateDiff action. */
-    public action?: ("getState"|"addParticipants"|"changeParticipants"|"removeParticipants"|"changeContent"|"changeHost"|"appendChatMessage"|"receiveTrophy"|"classEnded");
+    public action?: ("getState"|"addParticipants"|"removeParticipants"|"changeContent"|"changeHost"|"appendChatMessage"|"receiveTrophy"|"classEnded");
 
     /**
      * Creates a new StateDiff instance using the specified properties.
@@ -1851,7 +1845,7 @@ export class State implements IState {
 export interface IAddParticipants {
 
     /** AddParticipants participants */
-    participants?: (IParticipant[]|null);
+    participants?: ({ [k: string]: IParticipant }|null);
 }
 
 /** Represents an AddParticipants. */
@@ -1864,7 +1858,7 @@ export class AddParticipants implements IAddParticipants {
     constructor(properties?: IAddParticipants);
 
     /** AddParticipants participants. */
-    public participants: IParticipant[];
+    public participants: { [k: string]: IParticipant };
 
     /**
      * Creates a new AddParticipants instance using the specified properties.
@@ -1932,96 +1926,6 @@ export class AddParticipants implements IAddParticipants {
 
     /**
      * Converts this AddParticipants to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a ChangeParticipants. */
-export interface IChangeParticipants {
-
-    /** ChangeParticipants participants */
-    participants?: (IParticipant[]|null);
-}
-
-/** Represents a ChangeParticipants. */
-export class ChangeParticipants implements IChangeParticipants {
-
-    /**
-     * Constructs a new ChangeParticipants.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IChangeParticipants);
-
-    /** ChangeParticipants participants. */
-    public participants: IParticipant[];
-
-    /**
-     * Creates a new ChangeParticipants instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns ChangeParticipants instance
-     */
-    public static create(properties?: IChangeParticipants): ChangeParticipants;
-
-    /**
-     * Encodes the specified ChangeParticipants message. Does not implicitly {@link ChangeParticipants.verify|verify} messages.
-     * @param message ChangeParticipants message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IChangeParticipants, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified ChangeParticipants message, length delimited. Does not implicitly {@link ChangeParticipants.verify|verify} messages.
-     * @param message ChangeParticipants message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IChangeParticipants, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a ChangeParticipants message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns ChangeParticipants
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ChangeParticipants;
-
-    /**
-     * Decodes a ChangeParticipants message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns ChangeParticipants
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ChangeParticipants;
-
-    /**
-     * Verifies a ChangeParticipants message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a ChangeParticipants message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns ChangeParticipants
-     */
-    public static fromObject(object: { [k: string]: any }): ChangeParticipants;
-
-    /**
-     * Creates a plain object from a ChangeParticipants message. Also converts values to other types if specified.
-     * @param message ChangeParticipants
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: ChangeParticipants, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this ChangeParticipants to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -3068,7 +2972,7 @@ export class ChatMessage implements IChatMessage {
 /** ContentType enum. */
 export enum ContentType {
     Blank = 0,
-    WebRTCStream = 1,
+    WebRtcStream = 1,
     ActivityStream = 2,
     H5P = 3,
     Image = 4,

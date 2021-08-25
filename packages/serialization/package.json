@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/protobuf.js",
+  "types": "src/protobuf.d.ts",
   "scripts": {
     "build": "rollup -c",
-    "protobuf": "pbjs -w es6 -t static-module -o src/protobuf.js protobuf/*.proto; pbts -o src/protobuf.d.ts src/protobuf.js"
+    "protobuf": "pbjs -w commonjs -t static-module -o src/protobuf.js protobuf/*.proto; pbts -o src/protobuf.d.ts src/protobuf.js"
   },
   "author": "",
   "license": "ISC",
