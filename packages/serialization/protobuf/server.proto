@@ -1,12 +1,5 @@
 syntax = "proto3";
 
-service Live {
-    rpc SendAction(stream Action) returns (stream ActionReciept);
-    rpc State(Empty) returns (stream StateChanges);
-}
-
-message Empty {}
-
 message Action {
     oneof action {
         SetDevice set_device = 1;
