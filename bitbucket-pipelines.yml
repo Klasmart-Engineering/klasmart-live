@@ -12,7 +12,7 @@ pipelines:
         image: node:lts
         deployment: live-kidsloop-dev
         script:
-          - cd packages/edge/
+          - cd packages/edge-api/
           - npm ci
           - ./node_modules/.bin/wrangler publish --env dev
         caches:
