@@ -1,0 +1,13 @@
+name = "kidsloop-live-edge-site"
+type = "webpack"
+workers_dev = false
+vars = { ENVIRONMENT = "unknown" }
+
+[site]
+bucket = "./public"
+
+[env.dev]
+account_id = "a511cc00f4a8396e83a447e33044aaa4"
+route = 'live.kidsloop.dev/*'
+zone_id = '867a0bd8cc67b876b85a1571bc31620a'
+vars = { ENVIRONMENT = "dev" }
