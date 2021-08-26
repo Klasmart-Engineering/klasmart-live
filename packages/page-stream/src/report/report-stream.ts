@@ -1,4 +1,4 @@
-import { IDOMEvent, ReportResponse, ReportRequest } from "../protobuf"
+import { IDOMEvent, ReportResponse, ReportRequest } from "../../protocol/protobuf"
 
 export class ReportStream {
   private events: IDOMEvent[] = []

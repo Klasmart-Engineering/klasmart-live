@@ -1,7 +1,5 @@
 import { Replayer } from 'rrweb'
-
-
-import { ReviewRequest, ReviewResponse } from "../protobuf"
+import { ReviewRequest, ReviewResponse } from "../../protocol/protobuf"
 
 export class ReviewStream {
   private offset = 0
