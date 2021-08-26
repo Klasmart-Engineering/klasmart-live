@@ -6,14 +6,29 @@ pipelines:
           script:
             - pipe: atlassian/git-secrets-scan:0.5.1
   custom:
-    deploy-live-kidsloop-dev:
-    - step: &step-deploy-live-kidsloop-dev
+    deploy-live-kidsloop-dev-api:
+    - step: &step-deploy-live-kidsloop-dev-api
         name: 'Deploy live.kidsloop.dev'
         image: node:lts
-        deployment: live-kidsloop-dev
+        deployment: live-kidsloop-dev-api
         script:
           - cd packages/edge-api/
           - npm ci
           - ./node_modules/.bin/wrangler publish --env dev
         caches:
           - node
+    deploy-live-kidsloop-dev-site:
+    - step: &step-deploy-live-kidsloop-dev-site
+        name: 'Deploy live.kidsloop.dev'
+        image: node:lts
+        deployment: live-kidsloop-dev-site
+        script:
+          - cd packages/edge-site/
+          - npm ci
+          - ./node_modules/.bin/wrangler publish --env dev
+        caches:
+          - node
+    deploy-live-kidsloop-dev:
+    - step: *step-deploy-live-kidsloop-dev-api
+    - step: *step-deploy-live-kidsloop-dev-site
+
