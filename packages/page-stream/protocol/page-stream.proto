@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+message DOMEvent {
+    uint32 n = 0;
+    string event = 1;
+    bool isCheckout = 2;
+}
+
+
+message ReportRequest {
+    string session = 0;
+    repeated DOMEvent events = 1;
+}
+
+
+message ReportResponse {
+    string setStreamId = 0;
+    string setSession = 1;
+    uint32 acknowledge = 2;
+}
+
+message ReviewRequest {
+    uint32 n = 0;
+}
+
+message ReviewResponse {
+    repeated string event = 0;
+    uint32 n = 1;
+}
