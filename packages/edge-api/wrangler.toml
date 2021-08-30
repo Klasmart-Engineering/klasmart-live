@@ -5,7 +5,10 @@ vars = { ENVIRONMENT = "unknown" }
 
 [env.dev]
 account_id = "a511cc00f4a8396e83a447e33044aaa4"
-route = 'live.kidsloop.dev/api/*'
+routes = [
+  'live.kidsloop.dev/h5p/*',
+  'live.kidsloop.dev/api/*'
+]
 zone_id = '867a0bd8cc67b876b85a1571bc31620a'
 vars = { ENVIRONMENT = "dev" }
 
