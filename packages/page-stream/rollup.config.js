@@ -28,4 +28,16 @@ export default [
       terser()
     ]
   },
+  {
+    input: 'src/review.ts',
+    output: {
+      file: 'dist/review.js',
+    },
+    plugins: [
+      typescript({tsconfig: "./tsconfig.json"}),
+      nodeResolve({ browser: true }),
+      commonjs(),
+      terser()
+    ]
+  },
 ]

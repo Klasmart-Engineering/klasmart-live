@@ -99,7 +99,7 @@ export class ReportStream {
   private getWSUrl() {
     const url = new URL(location.toString())
     url.protocol = "wss:"
-    url.pathname = "/api/activityStream"
+    url.pathname = "/api/activity"
     if (this.streamId) { url.pathname = `${url.pathname}/${this.streamId}` }
     return url.toString()
   }
