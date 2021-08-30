@@ -1,11 +1,18 @@
-import { IDOMEvent, ReportResponse, ReportRequest } from "../../protocol/protobuf"
+import { record } from "rrweb"
+import { IDOMEvent, ReportResponse, ReportRequest } from "../protocol/protobuf"
 
 export class ReportStream {
   private events: IDOMEvent[] = []
   private eventCount = 0
-
-  private streamId?: string
-  private session?: string
+  
+  constructor(
+    private streamId?: string,
+    private session?: Uint8Array,
+  ) {
+    record({
+      emit: (e, c) => this.event(e, c)
+    })
+  }
 
   private websocket?: Promise<() => void>
   private async getSender() {
@@ -25,7 +32,7 @@ export class ReportStream {
           sendIndex += events.length
         }
 
-        ws.addEventListener('open', (e) => { resolve(sender) })
+        ws.addEventListener('open', () => { resolve(sender) })
         ws.addEventListener('error', (e) => { this.websocket = undefined; reject(e); console.error(e) })
         ws.addEventListener('close', (e) => { this.websocket = undefined; reject(e); console.error(e) })
         ws.addEventListener('message', ({ data }) => {
@@ -34,9 +41,13 @@ export class ReportStream {
 
             const message = ReportResponse.decode(new Uint8Array(data))
             console.info(message)
-            const { acknowledge, setSession, setStreamId } = message
-            if (typeof setStreamId === "string") { this.streamId = setStreamId }
-            if (typeof setSession === "string") { this.session = setSession }
+            const { acknowledge, session, id } = message
+            if (typeof id === "string") {
+              this.streamId = id
+              window.postMessage(id, "*")
+            }
+            
+            if (session && session.length > 0) { this.session = session }
 
             if (typeof acknowledge === "number") {
               // Remove events that have been acknowledged
@@ -62,11 +73,12 @@ export class ReportStream {
   private sendPromise?: Promise<void>
   private async send() {
     if (this.sendPromise) { return this.sendPromise }
+    // eslint-disable-next-line no-async-promise-executor
     return this.sendPromise = new Promise<void>(async (resolve) => {
       try {
         const sender = await this.getSender()
         sender()
-      } catch(e) {
+      } catch (e) {
         console.error(e)
       } finally {
         resolve()
@@ -75,7 +87,7 @@ export class ReportStream {
     })
   }
 
-  public event(eventObject: object, isCheckout?: boolean) {
+  private event(eventObject: Record<string, unknown>, isCheckout?: boolean): void {
     this.events.push({
       event: JSON.stringify(eventObject),
       isCheckout,
@@ -88,7 +100,7 @@ export class ReportStream {
     const url = new URL(location.toString())
     url.protocol = "wss:"
     url.pathname = "/api/activityStream"
-    if(this.streamId) { url.pathname = `${url.pathname}/${this.streamId}` }
+    if (this.streamId) { url.pathname = `${url.pathname}/${this.streamId}` }
     return url.toString()
   }
 }

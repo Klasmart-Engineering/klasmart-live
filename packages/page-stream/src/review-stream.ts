@@ -1,5 +1,5 @@
 import { Replayer } from 'rrweb'
-import { ReviewRequest, ReviewResponse } from "../../protocol/protobuf"
+import { ReviewRequest, ReviewResponse } from "../protocol/protobuf"
 
 export class ReviewStream {
   private offset = 0
@@ -7,6 +7,7 @@ export class ReviewStream {
   constructor(
     streamId: string,
     private url = ReviewStream.getWSUrl(streamId),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private events: any[] = [],
     private replayer = new Replayer(events),
   ) {
@@ -23,8 +24,8 @@ export class ReviewStream {
         const ws = new WebSocket(url, ["review"])
         ws.binaryType = "arraybuffer"
 
-        ws.addEventListener('open', (e) => {
-          const request = ReviewRequest.encode({n: this.offset}).finish()
+        ws.addEventListener('open', () => {
+          const request = ReviewRequest.encode({ n: this.offset }).finish()
           ws.send(request)
           resolve();
         })
@@ -37,7 +38,7 @@ export class ReviewStream {
             const message = ReviewResponse.decode(new Uint8Array(data))
             console.info(message)
             const { event, n } = message
-            if(typeof n === "number") { this.offset = n }
+            if (typeof n === "number") { this.offset = n }
             if (typeof event === "string") { this.events.push(JSON.parse(event)) }
           } catch (e) {
             console.error(e)
@@ -51,7 +52,7 @@ export class ReviewStream {
     })
   }
 
-   private static getWSUrl(streamId: string) {
+  private static getWSUrl(streamId: string) {
     const url = new URL(location.toString())
     url.protocol = "wss:"
     url.pathname = `/api/activityStream/${streamId}`

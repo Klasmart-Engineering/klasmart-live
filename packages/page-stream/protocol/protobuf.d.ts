@@ -105,7 +105,7 @@ export class DOMEvent implements IDOMEvent {
 export interface IReportRequest {
 
     /** ReportRequest session */
-    session?: (string|null);
+    session?: (Uint8Array|null);
 
     /** ReportRequest events */
     events?: (IDOMEvent[]|null);
@@ -121,7 +121,7 @@ export class ReportRequest implements IReportRequest {
     constructor(properties?: IReportRequest);
 
     /** ReportRequest session. */
-    public session: string;
+    public session: Uint8Array;
 
     /** ReportRequest events. */
     public events: IDOMEvent[];
@@ -200,11 +200,11 @@ export class ReportRequest implements IReportRequest {
 /** Properties of a ReportResponse. */
 export interface IReportResponse {
 
-    /** ReportResponse setStreamId */
-    setStreamId?: (string|null);
+    /** ReportResponse id */
+    id?: (string|null);
 
-    /** ReportResponse setSession */
-    setSession?: (string|null);
+    /** ReportResponse session */
+    session?: (Uint8Array|null);
 
     /** ReportResponse acknowledge */
     acknowledge?: (number|null);
@@ -219,11 +219,11 @@ export class ReportResponse implements IReportResponse {
      */
     constructor(properties?: IReportResponse);
 
-    /** ReportResponse setStreamId. */
-    public setStreamId: string;
+    /** ReportResponse id. */
+    public id: string;
 
-    /** ReportResponse setSession. */
-    public setSession: string;
+    /** ReportResponse session. */
+    public session: Uint8Array;
 
     /** ReportResponse acknowledge. */
     public acknowledge: number;

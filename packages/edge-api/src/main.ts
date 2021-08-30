@@ -57,7 +57,7 @@ async function pageStreamProxy(url: string) {
       .on("head", {
           element(e) {
               e.prepend(
-                  "<script>alert('Hello, asd!')</script>",
+                  "<script src='/report.js' type='application/javascript'></script>",
                   {html: true}
               )
           }

@@ -1,37 +1,31 @@
 import { terser } from 'rollup-plugin-terser'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import typescript from 'rollup-plugin-typescript'
+import typescript from '@rollup/plugin-typescript'
 
 export default [
   {
-    input: 'src/report/entry.ts',
+    input: 'src/index.ts',
     output: {
-      exports: 'named',
-      format: 'es',
-      file: 'dist/report.js',
-      sourcemap: true
+      file: 'dist/index.js',
     },
     plugins: [
-      commonjs(),
+      typescript({tsconfig: "./tsconfig.json"}),
       nodeResolve({ browser: true }),
-      terser(),
-      typescript()
+      commonjs(),
+      terser()
     ]
   },
   {
-    input: 'src/review/entry.ts',
+    input: 'src/report.ts',
     output: {
-      exports: 'named',
-      format: 'es',
-      file: 'dist/review.js',
-      sourcemap: true
+      file: 'dist/report.js',
     },
     plugins: [
-      commonjs(),
+      typescript({tsconfig: "./tsconfig.json"}),
       nodeResolve({ browser: true }),
-      terser(),
-      typescript()
+      commonjs(),
+      terser()
     ]
   },
 ]

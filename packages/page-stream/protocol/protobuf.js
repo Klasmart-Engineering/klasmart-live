@@ -1,3 +1,6 @@
+/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
+import * as $protobuf from "protobufjs/minimal";
+
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
@@ -242,7 +245,7 @@ export const ReportRequest = $root.ReportRequest = (() => {
      * Properties of a ReportRequest.
      * @exports IReportRequest
      * @interface IReportRequest
-     * @property {string|null} [session] ReportRequest session
+     * @property {Uint8Array|null} [session] ReportRequest session
      * @property {Array.<IDOMEvent>|null} [events] ReportRequest events
      */
 
@@ -264,11 +267,11 @@ export const ReportRequest = $root.ReportRequest = (() => {
 
     /**
      * ReportRequest session.
-     * @member {string} session
+     * @member {Uint8Array} session
      * @memberof ReportRequest
      * @instance
      */
-    ReportRequest.prototype.session = "";
+    ReportRequest.prototype.session = $util.newBuffer([]);
 
     /**
      * ReportRequest events.
@@ -303,7 +306,7 @@ export const ReportRequest = $root.ReportRequest = (() => {
         if (!writer)
             writer = $Writer.create();
         if (message.session != null && Object.hasOwnProperty.call(message, "session"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.session);
+            writer.uint32(/* id 0, wireType 2 =*/2).bytes(message.session);
         if (message.events != null && message.events.length)
             for (let i = 0; i < message.events.length; ++i)
                 $root.DOMEvent.encode(message.events[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
@@ -342,7 +345,7 @@ export const ReportRequest = $root.ReportRequest = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.session = reader.string();
+                message.session = reader.bytes();
                 break;
             case 1:
                 if (!(message.events && message.events.length))
@@ -385,8 +388,8 @@ export const ReportRequest = $root.ReportRequest = (() => {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.session != null && message.hasOwnProperty("session"))
-            if (!$util.isString(message.session))
-                return "session: string expected";
+            if (!(message.session && typeof message.session.length === "number" || $util.isString(message.session)))
+                return "session: buffer expected";
         if (message.events != null && message.hasOwnProperty("events")) {
             if (!Array.isArray(message.events))
                 return "events: array expected";
@@ -412,7 +415,10 @@ export const ReportRequest = $root.ReportRequest = (() => {
             return object;
         let message = new $root.ReportRequest();
         if (object.session != null)
-            message.session = String(object.session);
+            if (typeof object.session === "string")
+                $util.base64.decode(object.session, message.session = $util.newBuffer($util.base64.length(object.session)), 0);
+            else if (object.session.length)
+                message.session = object.session;
         if (object.events) {
             if (!Array.isArray(object.events))
                 throw TypeError(".ReportRequest.events: array expected");
@@ -442,9 +448,15 @@ export const ReportRequest = $root.ReportRequest = (() => {
         if (options.arrays || options.defaults)
             object.events = [];
         if (options.defaults)
-            object.session = "";
+            if (options.bytes === String)
+                object.session = "";
+            else {
+                object.session = [];
+                if (options.bytes !== Array)
+                    object.session = $util.newBuffer(object.session);
+            }
         if (message.session != null && message.hasOwnProperty("session"))
-            object.session = message.session;
+            object.session = options.bytes === String ? $util.base64.encode(message.session, 0, message.session.length) : options.bytes === Array ? Array.prototype.slice.call(message.session) : message.session;
         if (message.events && message.events.length) {
             object.events = [];
             for (let j = 0; j < message.events.length; ++j)
@@ -473,8 +485,8 @@ export const ReportResponse = $root.ReportResponse = (() => {
      * Properties of a ReportResponse.
      * @exports IReportResponse
      * @interface IReportResponse
-     * @property {string|null} [setStreamId] ReportResponse setStreamId
-     * @property {string|null} [setSession] ReportResponse setSession
+     * @property {string|null} [id] ReportResponse id
+     * @property {Uint8Array|null} [session] ReportResponse session
      * @property {number|null} [acknowledge] ReportResponse acknowledge
      */
 
@@ -494,20 +506,20 @@ export const ReportResponse = $root.ReportResponse = (() => {
     }
 
     /**
-     * ReportResponse setStreamId.
-     * @member {string} setStreamId
+     * ReportResponse id.
+     * @member {string} id
      * @memberof ReportResponse
      * @instance
      */
-    ReportResponse.prototype.setStreamId = "";
+    ReportResponse.prototype.id = "";
 
     /**
-     * ReportResponse setSession.
-     * @member {string} setSession
+     * ReportResponse session.
+     * @member {Uint8Array} session
      * @memberof ReportResponse
      * @instance
      */
-    ReportResponse.prototype.setSession = "";
+    ReportResponse.prototype.session = $util.newBuffer([]);
 
     /**
      * ReportResponse acknowledge.
@@ -541,10 +553,10 @@ export const ReportResponse = $root.ReportResponse = (() => {
     ReportResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.setStreamId != null && Object.hasOwnProperty.call(message, "setStreamId"))
-            writer.uint32(/* id 0, wireType 2 =*/2).string(message.setStreamId);
-        if (message.setSession != null && Object.hasOwnProperty.call(message, "setSession"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.setSession);
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.id);
+        if (message.session != null && Object.hasOwnProperty.call(message, "session"))
+            writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.session);
         if (message.acknowledge != null && Object.hasOwnProperty.call(message, "acknowledge"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.acknowledge);
         return writer;
@@ -582,10 +594,10 @@ export const ReportResponse = $root.ReportResponse = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 0:
-                message.setStreamId = reader.string();
+                message.id = reader.string();
                 break;
             case 1:
-                message.setSession = reader.string();
+                message.session = reader.bytes();
                 break;
             case 2:
                 message.acknowledge = reader.uint32();
@@ -625,12 +637,12 @@ export const ReportResponse = $root.ReportResponse = (() => {
     ReportResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.setStreamId != null && message.hasOwnProperty("setStreamId"))
-            if (!$util.isString(message.setStreamId))
-                return "setStreamId: string expected";
-        if (message.setSession != null && message.hasOwnProperty("setSession"))
-            if (!$util.isString(message.setSession))
-                return "setSession: string expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.session != null && message.hasOwnProperty("session"))
+            if (!(message.session && typeof message.session.length === "number" || $util.isString(message.session)))
+                return "session: buffer expected";
         if (message.acknowledge != null && message.hasOwnProperty("acknowledge"))
             if (!$util.isInteger(message.acknowledge))
                 return "acknowledge: integer expected";
@@ -649,10 +661,13 @@ export const ReportResponse = $root.ReportResponse = (() => {
         if (object instanceof $root.ReportResponse)
             return object;
         let message = new $root.ReportResponse();
-        if (object.setStreamId != null)
-            message.setStreamId = String(object.setStreamId);
-        if (object.setSession != null)
-            message.setSession = String(object.setSession);
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.session != null)
+            if (typeof object.session === "string")
+                $util.base64.decode(object.session, message.session = $util.newBuffer($util.base64.length(object.session)), 0);
+            else if (object.session.length)
+                message.session = object.session;
         if (object.acknowledge != null)
             message.acknowledge = object.acknowledge >>> 0;
         return message;
@@ -672,14 +687,20 @@ export const ReportResponse = $root.ReportResponse = (() => {
             options = {};
         let object = {};
         if (options.defaults) {
-            object.setStreamId = "";
-            object.setSession = "";
+            object.id = "";
+            if (options.bytes === String)
+                object.session = "";
+            else {
+                object.session = [];
+                if (options.bytes !== Array)
+                    object.session = $util.newBuffer(object.session);
+            }
             object.acknowledge = 0;
         }
-        if (message.setStreamId != null && message.hasOwnProperty("setStreamId"))
-            object.setStreamId = message.setStreamId;
-        if (message.setSession != null && message.hasOwnProperty("setSession"))
-            object.setSession = message.setSession;
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.session != null && message.hasOwnProperty("session"))
+            object.session = options.bytes === String ? $util.base64.encode(message.session, 0, message.session.length) : options.bytes === Array ? Array.prototype.slice.call(message.session) : message.session;
         if (message.acknowledge != null && message.hasOwnProperty("acknowledge"))
             object.acknowledge = message.acknowledge;
         return object;
@@ -1111,3 +1132,5 @@ export const ReviewResponse = $root.ReviewResponse = (() => {
 
     return ReviewResponse;
 })();
+
+export { $root as default };

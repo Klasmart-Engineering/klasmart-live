@@ -6,16 +6,15 @@ message DOMEvent {
     bool isCheckout = 2;
 }
 
-
 message ReportRequest {
-    string session = 0;
+    bytes session = 0;
     repeated DOMEvent events = 1;
 }
 
 
 message ReportResponse {
-    string setStreamId = 0;
-    string setSession = 1;
+    string id = 0;
+    bytes session = 1;
     uint32 acknowledge = 2;
 }
 
