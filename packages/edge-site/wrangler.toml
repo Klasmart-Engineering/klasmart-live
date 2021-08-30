@@ -4,7 +4,7 @@ workers_dev = false
 vars = { ENVIRONMENT = "unknown" }
 
 [site]
-bucket = "./public"
+bucket = "./out"
 
 [env.dev]
 account_id = "a511cc00f4a8396e83a447e33044aaa4"
