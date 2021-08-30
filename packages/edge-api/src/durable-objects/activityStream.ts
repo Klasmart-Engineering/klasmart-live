@@ -1,39 +1,34 @@
 import { error } from "../responses/error"
 import { statusText } from "../responses/statusText"
 import { websocketUpgrade } from "../responses/websocket"
-
+import { IDOMEvent, ReportRequest, ReportResponse, ReviewRequest, ReviewResponse } from "kidsloop-page-stream"
+import { json } from "../responses/json";
 export class ActivityStream implements DurableObject {
+  private connectionCount = 0;
+
+  private sessionSecret?: Uint8Array;
+  private reporter?: WebSocket;
+  private reviewers = new Set<WebSocket>();
+
   public constructor(
     private state: DurableObjectState,
     private env: CloudflareEnvironment,
-    private websockets = new Set<WebSocket>(),
+    private id = state.id,
     private DEBUG = env.ENVIRONMENT === "dev",
   ) { }
-
-  private open(ws: WebSocket) {
-    this.websockets.add(ws)
-  }
-
-  private close(ws: WebSocket) {
-    this.websockets.delete(ws)
-  }
-
-  private message(ws: WebSocket, data: any) {
-    // echo
-    ws.send(data)
-  }
 
   public async fetch(request: Request): Promise<Response> {
     const { headers } = request
     try {
-      if (headers.get('Upgrade') !== 'websocket') { return statusText(400) }
+      if (headers.get('Upgrade') === 'websocket') {
+        const protocol = headers.get('Sec-WebSocket-Protocol')
+        return this.websocketUpdate(protocol)
+      }
+      // const url = new URL(request.url)
+      // const paths = url.pathname.split('/')
 
-      const protocols = headers.get('Sec-WebSocket-Protocol')
-
-      const { response, ws } = websocketUpgrade(protocols)
-      this.accept(ws)
-
-      return response
+      return json({this: this, request}, 200, 2)
+      return statusText(404)
     } catch (e) {
       return error(headers, e, this.DEBUG)
     }
@@ -41,22 +36,145 @@ export class ActivityStream implements DurableObject {
     return statusText(501)
   }
 
-  private accept(ws: WebSocket): void {
-    ws.addEventListener('message', (e) => this.message(ws, e.data))
-    ws.addEventListener('open', () => this.open(ws))
-    ws.addEventListener('close', () => this.close(ws))
-    ws.addEventListener('error', (e) => {
-      let errorString = "Unknown Error"
-      try {
-        if (this.DEBUG) { errorString = (e as any).toString() }
-      } finally {
-        ws.close(4500, errorString)
-      }
-    })
+  private websocketUpdate(protocol?: string | null) {
+    const { response, ws } = websocketUpgrade(protocol)
+    
+    ws.addEventListener('error', () => ws.close(4500))
+    switch (protocol) {
+      case "report":
+        ws.addEventListener('close', () => this.reporterClose(ws))
+        ws.addEventListener('message', ({data}) => this.reporterMessage(ws, data))
+        ws.accept()
+        this.reporterOpen(ws)
+        break
+      case "review":
+        ws.addEventListener('close', () => this.reviewerClose(ws))
+        ws.addEventListener('message', ({data}) => this.reviewerMessage(ws, data))
+        ws.accept()
+        this.reviewerOpen(ws)
+        break
+      default: 
+        throw `Invalid protocol: '${protocol}'`
+    }
 
-    ws.accept()
-
-    ws.close(4501, "Not implemented")
+    return response
   }
 
+  private reporterOpen(ws: WebSocket) {
+    try {
+      this.connectionCount++
+      if(!this.sessionSecret) {
+        this.reporter = ws
+        this.sessionSecret = crypto.getRandomValues(new Uint8Array(32))
+        const message = ReportResponse.encode({
+          id: this.state.id.toString(),
+          session: this.sessionSecret,
+        }).finish()
+        ws.send(message)
+      }
+    } catch(e) {
+      ws.close(4500, e.toString())
+    }
+  }
+
+  private reporterClose(ws: WebSocket) {
+    this.reviewers.delete(ws)
+    this.connectionCount--
+  }
+
+  private reporterMessage(ws: WebSocket, data: unknown) {
+    try {
+      if(!(data instanceof ArrayBuffer)) { ws.close(4401, "Only binary data"); return }
+      const { events, session } = ReportRequest.decode(new Uint8Array(data))
+      
+      // Authorize
+      if(session.length > 0 && equals(this.sessionSecret, session)) {
+        // Only allow reporter connection at a time
+        if(this.reporter && this.reporter !== ws) { this.reporter.close(4403, "Session displaced") }
+        this.reporter = ws
+      }
+
+      //Disconnect unauthorized connections
+      if(this.reporter !== ws) { ws.close(4403, "Not authorized" ); return }
+      
+      this.broadcast(events)
+    } catch(e) {
+      ws.close(4500, e.toString())
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private reviewerOpen(ws: WebSocket) {
+    this.connectionCount++
+  }
+
+  private reviewerClose(ws: WebSocket) {
+    this.connectionCount--
+    this.reviewers.delete(ws)
+  }
+
+  private reviewerMessage(ws: WebSocket, data: unknown) {
+    try {
+      if(!(data instanceof ArrayBuffer)) { ws.close(4401, "Only binary data"); return }
+      
+      const { n } = ReviewRequest.decode(new Uint8Array(data))
+      const offset = n - this.checkoutOffset
+      const events = offset > 0
+        ? this.eventsSinceCheckout.slice(offset)
+        : this.eventsSinceCheckout
+      
+      const message = ReviewResponse.encode({
+        event: events,
+        n: this.checkoutOffset + this.eventsSinceCheckout.length
+      }).finish()
+
+      ws.send(message)
+
+      this.reviewers.add(ws)
+    } catch(e) {
+      ws.close(4500, e.toString())
+    }
+  }
+
+  private checkoutOffset = 0;
+  private eventsSinceCheckout: string[] = []
+  private broadcast(newEvents: IDOMEvent[]) {
+    let checkoutOffset: number | undefined
+    let events: string[] = []
+
+    for (const {event, n, isCheckout} of newEvents) {
+      if(typeof n !== "number") { continue }
+      if(typeof event !== "string") { continue }
+      if(isCheckout) {
+        checkoutOffset = n
+        events = [event]
+      } else {
+        events.push(event)
+      }
+    }
+    
+    if(checkoutOffset !== undefined) {
+      this.checkoutOffset = checkoutOffset
+      this.eventsSinceCheckout = events
+    } else {
+      this.eventsSinceCheckout.push(...events)
+    }
+
+    const message = ReviewResponse.encode({event: events}).finish()
+    for(const reviewer of this.reviewers) {
+      reviewer.send(message)
+    }
+
+
+  }
+
+}
+
+function equals(a?: Uint8Array, b?: Uint8Array) {
+  if(!a || !b) { return false }
+  if(a.length !== b.length) { return false }
+  for(let i = 0; i< a.length; i++) {
+    if(a[i] !== b[i]) { return false }
+  }
+  return true
 }

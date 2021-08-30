@@ -19,7 +19,7 @@ export function error(requestHeaders: Headers, error?: unknown, DEBUG?: boolean)
 
     ws.accept();
 
-    const reason = `Exception during websocket setup: ${JSON.stringify({ error })}`
+    const reason = `Exception during websocket setup: ${error}`
     ws.close(1011, reason);
 
     return response

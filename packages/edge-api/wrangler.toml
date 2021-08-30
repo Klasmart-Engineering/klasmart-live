@@ -12,6 +12,11 @@ routes = [
 zone_id = '867a0bd8cc67b876b85a1571bc31620a'
 vars = { ENVIRONMENT = "dev" }
 
+[env.dev.durable_objects]
+bindings = [
+  # Changes here must be mirrored in cloudflare-env.d.ts
+  { name = "activity", class_name = "ActivityStream" },
+]
 
 [build]
 command = "npm run build"
@@ -19,10 +24,3 @@ command = "npm run build"
 [build.upload]
 format = "modules"
 main = "./index.mjs"
-
-[durable_objects]
-bindings = [
-    # Changes here must be mirrored in cloudflare-env.d.ts
-  { name = "activityStreams", class_name = "ActivityStream" },
-  { name = "rooms", class_name = "Room" },
-]
