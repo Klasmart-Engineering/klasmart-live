@@ -2,6 +2,7 @@
   "name": "kidsloop-live",
   "private": true,
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "cz": "cz",
     "prepare": "husky install"
   },

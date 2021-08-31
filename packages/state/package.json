@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
     "kidsloop-live-serialization": "file:../serialization",
     "mobx": "^6.3.2"
   },

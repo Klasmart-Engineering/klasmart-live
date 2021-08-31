@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message RoomState {
+    uint32 connection_count = 1;
+}
