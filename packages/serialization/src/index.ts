@@ -1,2 +1,1 @@
-// export * from "../protobuf/protobuf"
-console.log("test")
+export * from "../protobuf/protobuf"
