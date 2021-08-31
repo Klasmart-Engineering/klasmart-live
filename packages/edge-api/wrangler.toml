@@ -16,6 +16,7 @@ vars = { ENVIRONMENT = "dev" }
 bindings = [
   # Changes here must be mirrored in cloudflare-env.d.ts
   { name = "activity", class_name = "ActivityStream" },
+  { name = "room", class_name = "Room" },
 ]
 
 [build]

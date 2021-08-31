@@ -13,6 +13,7 @@ export const RoomState = $root.RoomState = (() => {
      * Properties of a RoomState.
      * @exports IRoomState
      * @interface IRoomState
+     * @property {string|null} [roomId] RoomState roomId
      * @property {number|null} [connectionCount] RoomState connectionCount
      */
 
@@ -30,6 +31,14 @@ export const RoomState = $root.RoomState = (() => {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * RoomState roomId.
+     * @member {string} roomId
+     * @memberof RoomState
+     * @instance
+     */
+    RoomState.prototype.roomId = "";
 
     /**
      * RoomState connectionCount.
@@ -63,8 +72,10 @@ export const RoomState = $root.RoomState = (() => {
     RoomState.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.roomId != null && Object.hasOwnProperty.call(message, "roomId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.roomId);
         if (message.connectionCount != null && Object.hasOwnProperty.call(message, "connectionCount"))
-            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.connectionCount);
+            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.connectionCount);
         return writer;
     };
 
@@ -100,6 +111,9 @@ export const RoomState = $root.RoomState = (() => {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
+                message.roomId = reader.string();
+                break;
+            case 2:
                 message.connectionCount = reader.uint32();
                 break;
             default:
@@ -137,6 +151,9 @@ export const RoomState = $root.RoomState = (() => {
     RoomState.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (message.roomId != null && message.hasOwnProperty("roomId"))
+            if (!$util.isString(message.roomId))
+                return "roomId: string expected";
         if (message.connectionCount != null && message.hasOwnProperty("connectionCount"))
             if (!$util.isInteger(message.connectionCount))
                 return "connectionCount: integer expected";
@@ -155,6 +172,8 @@ export const RoomState = $root.RoomState = (() => {
         if (object instanceof $root.RoomState)
             return object;
         let message = new $root.RoomState();
+        if (object.roomId != null)
+            message.roomId = String(object.roomId);
         if (object.connectionCount != null)
             message.connectionCount = object.connectionCount >>> 0;
         return message;
@@ -173,8 +192,12 @@ export const RoomState = $root.RoomState = (() => {
         if (!options)
             options = {};
         let object = {};
-        if (options.defaults)
+        if (options.defaults) {
+            object.roomId = "";
             object.connectionCount = 0;
+        }
+        if (message.roomId != null && message.hasOwnProperty("roomId"))
+            object.roomId = message.roomId;
         if (message.connectionCount != null && message.hasOwnProperty("connectionCount"))
             object.connectionCount = message.connectionCount;
         return object;

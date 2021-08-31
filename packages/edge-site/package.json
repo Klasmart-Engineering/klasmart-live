@@ -10,14 +10,17 @@
     "publish": "wrangler publish --env dev"
   },
   "dependencies": {
+    "kidsloop-live-state": "file:../state",
     "next": "^11.0.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.4"
   },
   "devDependencies": {
     "@cloudflare/wrangler": "^1.19.0",
     "@types/node": "^16.7.6",
     "@types/react": "^17.0.19",
+    "@types/react-redux": "^7.1.18",
     "typescript": "^4.4.2"
   }
 }

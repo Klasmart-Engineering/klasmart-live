@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { connectionCount, connectionState } from './networkReducer';
+import { connectionCount, connectionState, roomId } from './networkReducer';
 
 export const store = configureStore({
   middleware: [],
   reducer: {
-    setConnectionCount: connectionCount,
-    setConnectionState: connectionState,
+    connectionCount,
+    connectionState,
+    roomId,
   },
 });
 
+export type Dispatch = typeof store.dispatch

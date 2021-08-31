@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup -c",
-    "protobuf": "pbjs -w es6 -t static-module -o src/protobuf.js protobuf/*.proto; pbts -o src/protobuf.d.ts src/protobuf.js"
+    "protobuf": "pbjs -w es6 -t static-module -o protobuf/protobuf.js protobuf/*.proto; pbts -o protobuf/protobuf.d.ts protobuf/protobuf.js"
   },
   "author": "",
   "license": "ISC",

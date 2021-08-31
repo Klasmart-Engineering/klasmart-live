@@ -42,7 +42,7 @@ async function api(request: Request, env: CloudflareEnvironment, ctx: unknown, p
     case "request":
       return json(request, 200, 2)
     case "room":
-      return await fetchDurableObject(request, env.rooms, paths[3])
+      return await fetchDurableObject(request, env.room, paths[3])
     case "activity":
       return await fetchDurableObject(request, env.activity, paths[3])
   }

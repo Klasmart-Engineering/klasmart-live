@@ -1,6 +1,9 @@
-import * as $protobuf from "protobufjs/minimal";
+import * as $protobuf from "protobufjs";
 /** Properties of a RoomState. */
 export interface IRoomState {
+
+    /** RoomState roomId */
+    roomId?: (string|null);
 
     /** RoomState connectionCount */
     connectionCount?: (number|null);
@@ -14,6 +17,9 @@ export class RoomState implements IRoomState {
      * @param [properties] Properties to set
      */
     constructor(properties?: IRoomState);
+
+    /** RoomState roomId. */
+    public roomId: string;
 
     /** RoomState connectionCount. */
     public connectionCount: number;
