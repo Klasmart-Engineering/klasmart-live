@@ -46,8 +46,8 @@ export class Room implements DurableObject {
         if(protocol === "live") { return this.accept() }
       }
 
-      const websockets = [...this.websockets.entries()].map(([id,ws]) => [id])
-      return json({websockets, this: this, request}, 200, 2)
+      const websockets = [...this.websockets.entries()].map(([id]) => id)
+      return json({websockets, id: this.state.id.toString(), this: this, request}, 200, 2)
     } catch (e) {
       return error(headers, e, this.DEBUG)
     }
