@@ -5,5 +5,6 @@ declare global {
     ENVIRONMENT?: string
     activity?: DurableObjectNamespace
     room?: DurableObjectNamespace
+    wstest?: DurableObjectNamespace
   }
 }

@@ -45,6 +45,8 @@ async function api(request: Request, env: CloudflareEnvironment, ctx: unknown, p
       return await fetchDurableObject(request, env.room, paths[3])
     case "activity":
       return await fetchDurableObject(request, env.activity, paths[3])
+    case "ws":
+      return await fetchDurableObject(request, env.wstest, paths[3])
   }
 
   return statusText(404)

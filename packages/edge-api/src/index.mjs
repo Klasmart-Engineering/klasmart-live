@@ -1,9 +1,8 @@
 import main from './main'
-import { Room } from './durable-objects/room'
-import { ActivityStream } from './durable-objects/activityStream'
+export { Room } from './durable-objects/room'
+export { ActivityStream } from './durable-objects/activityStream'
+export { WebsocketTest } from './durable-objects/websocket-test'
 
 export {
   main as default,
-  ActivityStream,
-  Room,
 }

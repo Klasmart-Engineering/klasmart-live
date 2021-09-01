@@ -17,6 +17,7 @@ bindings = [
   # Changes here must be mirrored in cloudflare-env.d.ts
   { name = "activity", class_name = "ActivityStream" },
   { name = "room", class_name = "Room" },
+  { name = "wstest", class_name = "WebsocketTest" },
 ]
 
 [build]
