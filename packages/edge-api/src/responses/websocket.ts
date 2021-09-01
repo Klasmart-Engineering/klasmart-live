@@ -1,5 +1,5 @@
 export function websocketUpgrade(protocol?: string | null): {
-    ws: WebSocket,
+    ws: CloudflareWebsocket,
     response: Response
 } {
     const webSocketPair = new WebSocketPair()

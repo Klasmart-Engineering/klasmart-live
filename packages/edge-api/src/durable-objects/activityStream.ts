@@ -7,8 +7,8 @@ export class ActivityStream implements DurableObject {
   private connectionCount = 0;
 
   private sessionSecret?: Uint8Array;
-  private reporter?: WebSocket;
-  private reviewers = new Set<WebSocket>();
+  private reporter?: CloudflareWebsocket;
+  private reviewers = new Set<CloudflareWebsocket>();
 
   public constructor(
     private state: DurableObjectState,
@@ -60,7 +60,7 @@ export class ActivityStream implements DurableObject {
     return response
   }
 
-  private reporterOpen(ws: WebSocket) {
+  private reporterOpen(ws: CloudflareWebsocket) {
     try {
       this.connectionCount++
       if(!this.sessionSecret) {
@@ -77,12 +77,12 @@ export class ActivityStream implements DurableObject {
     }
   }
 
-  private reporterClose(ws: WebSocket) {
+  private reporterClose(ws: CloudflareWebsocket) {
     this.reviewers.delete(ws)
     this.connectionCount--
   }
 
-  private reporterMessage(ws: WebSocket, data: unknown) {
+  private reporterMessage(ws: CloudflareWebsocket, data: unknown) {
     try {
       if(!(data instanceof ArrayBuffer)) { ws.close(4401, "Only binary data"); return }
       const { events, session } = ReportRequest.decode(new Uint8Array(data))
@@ -104,16 +104,16 @@ export class ActivityStream implements DurableObject {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private reviewerOpen(ws: WebSocket) {
+  private reviewerOpen(ws: CloudflareWebsocket) {
     this.connectionCount++
   }
 
-  private reviewerClose(ws: WebSocket) {
+  private reviewerClose(ws: CloudflareWebsocket) {
     this.connectionCount--
     this.reviewers.delete(ws)
   }
 
-  private reviewerMessage(ws: WebSocket, data: unknown) {
+  private reviewerMessage(ws: CloudflareWebsocket, data: unknown) {
     try {
       if(!(data instanceof ArrayBuffer)) { ws.close(4401, "Only binary data"); return }
       

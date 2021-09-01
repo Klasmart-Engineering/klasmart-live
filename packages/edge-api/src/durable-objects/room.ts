@@ -11,7 +11,7 @@ export class Room implements DurableObject {
     private DEBUG = env.ENVIRONMENT === "dev",
   ) { }
 
-  private open(ws: WebSocket) {
+  private open(ws: CloudflareWebsocket) {
     const roomId = this.state.id.toString()    
     const message = RoomState.encode({ roomId }).finish()
     ws.send(message)
@@ -19,7 +19,7 @@ export class Room implements DurableObject {
     this.broadcastConnectionCount()
   }
 
-  private close(ws: WebSocket) {
+  private close(ws: CloudflareWebsocket) {
     this.broadcastConnectionCount()
   }
 
@@ -33,7 +33,7 @@ export class Room implements DurableObject {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private message(ws: WebSocket, data: unknown) { 
+  private message(ws: CloudflareWebsocket, data: unknown) { 
     // Unimplemented
   }
 
@@ -57,7 +57,7 @@ export class Room implements DurableObject {
 
   private deleted: number[] = []
   private websocketId = 0
-  private websockets = new Map<number,WebSocket>()
+  private websockets = new Map<number,CloudflareWebsocket>()
   private accept(): Response {
     const { response, ws } = websocketUpgrade("live")
 

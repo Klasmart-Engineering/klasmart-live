@@ -1,7 +1,7 @@
 export { }
 
 declare global {
-  interface WebSocket {
+  interface CloudflareWebsocket {
     accept(): unknown;
     addEventListener(event: 'close', callbackFunction: (code?: number, reason?: string) => unknown): unknown;
     addEventListener(event: 'error', callbackFunction: (e: unknown) => unknown): unknown;
@@ -12,15 +12,15 @@ declare global {
      * @param reason
      */
     close(code?: number, reason?: string): unknown;
-    send(message: string): unknown;
+    send(message: string|Uint8Array): unknown;
   }
 
   class WebSocketPair {
-    0: WebSocket; // Client
-    1: WebSocket; // Server
+    0: CloudflareWebsocket; // Client
+    1: CloudflareWebsocket; // Server
   }
 
   interface ResponseInit {
-    webSocket?: WebSocket;
+    webSocket?: CloudflareWebsocket;
   }
 }
