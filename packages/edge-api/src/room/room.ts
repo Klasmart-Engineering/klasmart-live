@@ -15,11 +15,7 @@ export class Room implements DurableObject {
     private env: CloudflareEnvironment,
     public readonly id = state.id.toString(),
     private DEBUG = env.ENVIRONMENT === "dev",
-    private JWKS = env.JKWS_URL ? createRemoteJWKSet(new URL(env.JKWS_URL),{
-      referrerPolicy: undefined,
-      credentials: undefined,
-      mode: undefined,
-    }) : undefined
+    private JWKS = env.JKWS_URL ? createRemoteJWKSet(new URL(env.JKWS_URL)) : undefined
     ) {
     setInterval(() => {
       this.clients.forEach((client) => client.checkForTimeout(5000))
