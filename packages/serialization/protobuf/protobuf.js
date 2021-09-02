@@ -217,4 +217,164 @@ export const RoomState = $root.RoomState = (() => {
     return RoomState;
 })();
 
+export const Heartbeat = $root.Heartbeat = (() => {
+
+    /**
+     * Properties of a Heartbeat.
+     * @exports IHeartbeat
+     * @interface IHeartbeat
+     */
+
+    /**
+     * Constructs a new Heartbeat.
+     * @exports Heartbeat
+     * @classdesc Represents a Heartbeat.
+     * @implements IHeartbeat
+     * @constructor
+     * @param {IHeartbeat=} [properties] Properties to set
+     */
+    function Heartbeat(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Creates a new Heartbeat instance using the specified properties.
+     * @function create
+     * @memberof Heartbeat
+     * @static
+     * @param {IHeartbeat=} [properties] Properties to set
+     * @returns {Heartbeat} Heartbeat instance
+     */
+    Heartbeat.create = function create(properties) {
+        return new Heartbeat(properties);
+    };
+
+    /**
+     * Encodes the specified Heartbeat message. Does not implicitly {@link Heartbeat.verify|verify} messages.
+     * @function encode
+     * @memberof Heartbeat
+     * @static
+     * @param {IHeartbeat} message Heartbeat message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Heartbeat.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Heartbeat message, length delimited. Does not implicitly {@link Heartbeat.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Heartbeat
+     * @static
+     * @param {IHeartbeat} message Heartbeat message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Heartbeat.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Heartbeat message from the specified reader or buffer.
+     * @function decode
+     * @memberof Heartbeat
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Heartbeat} Heartbeat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Heartbeat.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Heartbeat();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Heartbeat message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Heartbeat
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Heartbeat} Heartbeat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Heartbeat.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Heartbeat message.
+     * @function verify
+     * @memberof Heartbeat
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Heartbeat.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        return null;
+    };
+
+    /**
+     * Creates a Heartbeat message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Heartbeat
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Heartbeat} Heartbeat
+     */
+    Heartbeat.fromObject = function fromObject(object) {
+        if (object instanceof $root.Heartbeat)
+            return object;
+        return new $root.Heartbeat();
+    };
+
+    /**
+     * Creates a plain object from a Heartbeat message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Heartbeat
+     * @static
+     * @param {Heartbeat} message Heartbeat
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Heartbeat.toObject = function toObject() {
+        return {};
+    };
+
+    /**
+     * Converts this Heartbeat to JSON.
+     * @function toJSON
+     * @memberof Heartbeat
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Heartbeat.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Heartbeat;
+})();
+
 export { $root as default };

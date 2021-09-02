@@ -2,7 +2,7 @@ import { error } from "../responses/error"
 import { json } from "../responses/json"
 import { statusText } from "../responses/statusText"
 import { websocketUpgrade } from "../responses/websocket"
-import { RoomState } from "kidsloop-live-serialization"
+import { Heartbeat, RoomState } from "kidsloop-live-serialization"
 
 export class Room implements DurableObject {
   public constructor(
@@ -19,7 +19,9 @@ export class Room implements DurableObject {
     this.broadcastConnectionCount()
   }
 
-  private close(ws: CloudflareWebsocket) {
+  private close(ws: CloudflareWebsocket, id: number) {
+    this.websockets.delete(id);
+    this.deleted.push(id);
     this.broadcastConnectionCount()
   }
 
@@ -32,9 +34,16 @@ export class Room implements DurableObject {
     }
   }
 
+  private lastHeartbeat = new Date().getTime();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private message(ws: CloudflareWebsocket, data: unknown) { 
-    // Unimplemented
+    if(!(data instanceof ArrayBuffer)) { ws.close(4401, "Binary only protocol"); return }
+    try {
+        Heartbeat.decode(new Uint8Array(data))
+        this.lastHeartbeat = new Date().getTime();
+    } catch(e) {
+        ws.close(4400, "Parsing HeartBeat failed")
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -62,7 +71,6 @@ export class Room implements DurableObject {
     const { response, ws } = websocketUpgrade("live")
 
     const id = this.websocketId++
-    ws.addEventListener('close', () => { this.websockets.delete(id); this.deleted.push(id); this.close(ws) })
     ws.addEventListener('message', (e) => this.message(ws, e.data))
     ws.addEventListener('error', (e) => {
       let errorString = "Unknown Error"

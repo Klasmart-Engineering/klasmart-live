@@ -4,3 +4,5 @@ message RoomState {
     string roomId = 1;
     uint32 connection_count = 2;
 }
+
+message Heartbeat {}

@@ -1,4 +1,4 @@
-import { RoomState } from "kidsloop-live-serialization"
+import { Heartbeat, RoomState } from "kidsloop-live-serialization"
 import { setConnectionCount, setConnectionState, setRoomId } from "./networkActions";
 import { Dispatch } from "./redux";
 
@@ -29,9 +29,9 @@ export class Transport {
         })
     }
 
-    private async send() {
-        // const ws = await this.connect()
-        // ws.send()
+    private async send(ws: WebSocket, data: unknown) {
+        if(!(data instanceof ArrayBuffer)) { ws.close(4401, "Binary only protocol"); return }
+        ws.send(data);
     }
 
     private message(ws: WebSocket, data: unknown) {
@@ -48,6 +48,9 @@ export class Transport {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     private openEvent(ws: WebSocket) {
         this.dispatch(setConnectionState(true))
+        setInterval(() => {
+            this.send(ws, Heartbeat.create())
+        }, 1000);
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     private closeEvent(ws: WebSocket, e: CloseEvent) {
