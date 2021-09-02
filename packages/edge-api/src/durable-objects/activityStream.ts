@@ -1,4 +1,4 @@
-import { debugResponse } from "../responses/error"
+import { debugResponse } from "../responses/debug"
 import { statusText } from "../responses/statusText"
 import { websocketUpgrade } from "../responses/websocket"
 import { IDOMEvent, ReportRequest, ReportResponse, ReviewRequest, ReviewResponse } from "kidsloop-page-stream"

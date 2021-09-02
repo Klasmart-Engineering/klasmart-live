@@ -13,17 +13,18 @@ import { websocketUpgrade } from "./websocket";
 export function debugResponse(requestHeaders: Headers, error?: unknown, DEBUG?: boolean): Response {
   if (!DEBUG) { return statusText(500) }
 
+  let errorString = "Unknown Error"
+  // eslint-disable-next-line no-empty
+  try { errorString = `${error}` } catch (e) { }
+  const errorObject = {errorString, error}
+
   if (requestHeaders.get('Upgrade') === 'websocket') {
     const protocol = requestHeaders.get('Sec-WebSocket-Protocol')
     const { ws, response } = websocketUpgrade(protocol)
-
     ws.accept();
-
-    const reason = `Exception during websocket setup: ${error}`
-    ws.close(1011, reason);
-
+    ws.close(1011, JSON.stringify(response));
     return response
   } else {
-    return json(error, 501, 2)
+    return json(errorObject, 501, 2)
   }
 }

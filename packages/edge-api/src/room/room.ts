@@ -1,5 +1,5 @@
 import { RoomClient } from "./room-client"
-import { debugResponse } from "../responses/error"
+import { debugResponse } from "../responses/debug"
 import { json } from "../responses/json"
 import { statusText } from "../responses/statusText"
 import { websocketUpgrade } from "../responses/websocket"

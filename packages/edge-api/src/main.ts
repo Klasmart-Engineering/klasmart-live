@@ -1,4 +1,4 @@
-import { debugResponse  } from "./responses/error"
+import { debugResponse  } from "./responses/debug"
 import { json } from "./responses/json"
 import { redirectProtocol } from "./responses/redirect"
 import { statusText } from "./responses/statusText"
