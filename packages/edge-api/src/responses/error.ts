@@ -10,7 +10,7 @@ import { websocketUpgrade } from "./websocket";
  * @param DEBUG 
  * @returns 
  */
-export function error(requestHeaders: Headers, error?: unknown, DEBUG?: boolean): Response {
+export function debugResponse(requestHeaders: Headers, error?: unknown, DEBUG?: boolean): Response {
   if (!DEBUG) { return statusText(500) }
 
   if (requestHeaders.get('Upgrade') === 'websocket') {

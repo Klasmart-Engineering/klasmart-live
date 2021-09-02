@@ -1,4 +1,4 @@
-import { error } from "./responses/error"
+import { debugResponse  } from "./responses/error"
 import { json } from "./responses/json"
 import { redirectProtocol } from "./responses/redirect"
 import { statusText } from "./responses/statusText"
@@ -23,7 +23,7 @@ export default {
           return statusText(501)
       }
     } catch (e) {
-      return error(headers, e, env.ENVIRONMENT === "dev")
+      return debugResponse(headers, e, env.ENVIRONMENT === "dev")
     }
 
     //This should be unreachable

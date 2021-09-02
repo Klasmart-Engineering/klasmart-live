@@ -1,4 +1,4 @@
-import { error } from "../responses/error"
+import { debugResponse } from "../responses/error"
 import { json } from "../responses/json"
 import { statusText } from "../responses/statusText"
 import { websocketUpgrade } from "../responses/websocket"
@@ -26,7 +26,7 @@ export class Room implements DurableObject {
       }
       return this.status(request)
     } catch (e) {
-      return error(headers, e, this.DEBUG)
+      return debugResponse(headers, e, this.DEBUG)
     }
     // This should be unreachable
     return statusText(501)

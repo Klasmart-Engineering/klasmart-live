@@ -1,4 +1,4 @@
-import { error } from "../responses/error"
+import { debugResponse } from "../responses/error"
 import { statusText } from "../responses/statusText"
 import { websocketUpgrade } from "../responses/websocket"
 import { IDOMEvent, ReportRequest, ReportResponse, ReviewRequest, ReviewResponse } from "kidsloop-page-stream"
@@ -30,7 +30,7 @@ export class ActivityStream implements DurableObject {
       return json({this: this, request}, 200, 2)
       return statusText(404)
     } catch (e) {
-      return error(headers, e, this.DEBUG)
+      return debugResponse(headers, e, this.DEBUG)
     }
     // This should be unreachable
     return statusText(501)
