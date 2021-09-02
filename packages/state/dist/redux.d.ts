@@ -1,7 +1,6 @@
-export declare const store: import("@reduxjs/toolkit").EnhancedStore<{
-    connectionCount: number;
-    connectionState: boolean;
-    roomId: string;
-}, import("redux").AnyAction, never[]>;
-export declare type Dispatch = typeof store.dispatch;
+export declare const reducer: {
+    connectionCount: import("redux").Reducer<number, import("redux").AnyAction>;
+    connectionState: import("redux").Reducer<boolean, import("redux").AnyAction>;
+    roomId: import("redux").Reducer<string, import("redux").AnyAction>;
+};
 //# sourceMappingURL=redux.d.ts.map

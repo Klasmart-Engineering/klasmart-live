@@ -1,1 +1,1 @@
-{"version":3,"file":"redux.d.ts","sourceRoot":"","sources":["src/redux.ts"],"names":[],"mappings":"AAGA,eAAO,MAAM,KAAK;;;;sCAOhB,CAAC;AAEH,oBAAY,QAAQ,GAAG,OAAO,KAAK,CAAC,QAAQ,CAAA"}
+{"version":3,"file":"redux.d.ts","sourceRoot":"","sources":["src/redux.ts"],"names":[],"mappings":"AAEA,eAAO,MAAM,OAAO;;;;CAInB,CAAA"}
