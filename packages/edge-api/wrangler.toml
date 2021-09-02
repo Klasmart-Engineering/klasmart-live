@@ -10,7 +10,12 @@ routes = [
   'live.kidsloop.dev/api/*'
 ]
 zone_id = '867a0bd8cc67b876b85a1571bc31620a'
-vars = { ENVIRONMENT = "dev" }
+
+[env.dev.vars]
+ENVIRONMENT = "dev"
+JKWS_URL = "https://kidsloop.cloudflareaccess.com/cdn-cgi/access/certs"
+JKWS_ISSUER = "https://kidsloop.cloudflareaccess.com"
+JKWS_AUDIENCE = "af975841f98ad87e83fad10ef8ae56876e43309cea67e04a4722feb99faec1cc"
 
 [env.dev.durable_objects]
 bindings = [
