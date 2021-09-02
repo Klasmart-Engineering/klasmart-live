@@ -6,7 +6,7 @@ export declare class Transport {
     private _ws?;
     private _websocketPromise?;
     private websocket;
-    private send;
+    private sendHeartbeat;
     private message;
     private openEvent;
     private closeEvent;
