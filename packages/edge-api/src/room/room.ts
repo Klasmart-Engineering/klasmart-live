@@ -5,7 +5,7 @@ import { statusText } from "../responses/statusText"
 import { websocketUpgrade } from "../responses/websocket"
 import { parse as parseCookies } from "cookie";
 import { createRemoteJWKSet } from "jose-browser-runtime/jwks/remote"
-import { jwtVerify } from "jose-browser-runtime/jwt/verify"
+import { jwtVerify, JWTVerifyResult } from "jose-browser-runtime/jwt/verify"
 
 export class Room implements DurableObject {
   private clients = new Map<number, RoomClient>()
@@ -15,7 +15,11 @@ export class Room implements DurableObject {
     private env: CloudflareEnvironment,
     public readonly id = state.id.toString(),
     private DEBUG = env.ENVIRONMENT === "dev",
-    private JWKS = env.JKWS_URL ? createRemoteJWKSet(new URL(env.JKWS_URL)) : undefined
+    private JWKS = env.JKWS_URL ? createRemoteJWKSet(new URL(env.JKWS_URL),{
+      referrerPolicy: undefined,
+      credentials: undefined,
+      mode: undefined,
+    }) : undefined
     ) {
     setInterval(() => {
       this.clients.forEach((client) => client.checkForTimeout(5000))
@@ -26,15 +30,11 @@ export class Room implements DurableObject {
     if(!jwt) { return }
     if(!this.JWKS) { return }
 
-    try {
-      const result = await jwtVerify(jwt, this.JWKS, {
-        issuer: this.env.JKWS_ISSUER,
-        audience: this.env.JKWS_AUDIENCE,
-      })
-      return result
-    } catch(e) {
-      return undefined
-    }
+    const result = await jwtVerify(jwt, this.JWKS, {
+      issuer: this.env.JKWS_ISSUER,
+      audience: this.env.JKWS_AUDIENCE,
+    })
+    return result
   }
 
   public async fetch(request: Request): Promise<Response> {
