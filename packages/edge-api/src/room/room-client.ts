@@ -4,6 +4,7 @@ import { Heartbeat, RoomState } from "kidsloop-live-serialization"
 export class RoomClient {
     constructor(
       public readonly id: number,
+      public readonly email: string,
       private readonly ws: CloudflareWebsocket,
       private readonly env: CloudflareEnvironment,
       private readonly room: Room,

@@ -42,11 +42,13 @@ export class Room implements DurableObject {
 
       const auth = await this.authenticate(cookies["CF_Authorization"])
       if(!auth) { return statusText(403) }
+      const email = auth.payload.email
+      if(typeof email !== "string") { return statusText(400) }
 
 
       if (headers.get('Upgrade') === 'websocket') {
         const protocol = headers.get('Sec-WebSocket-Protocol')
-        if (protocol === "live") { return this.accept(auth) }
+        if (protocol === "live") { return this.accept(email) }
       }
       return this.status(request, auth)
     } catch (e) {
@@ -57,19 +59,19 @@ export class Room implements DurableObject {
   }
 
   private nextClientId = 0
-  private accept(auth: JWTVerifyResult): Response {
+  private accept(email: string): Response {
     const { response, ws } = websocketUpgrade("live")
 
     const id = this.nextClientId++;
-    const client = new RoomClient(id, ws, this.env, this)
+    const client = new RoomClient(id, email, ws, this.env, this)
     this.join(client)
 
     return response
   }
 
   private status(request: Request, auth: JWTVerifyResult) {
-    const websockets = [...this.clients.entries()].map(([id]) => id)
-    return json({ auth, websockets, id: this.state.id.toString(), this: this, request }, 200, 2)
+    const clients = [...this.clients.entries()].map(([id, client]) => `${id}: ${client.email}`)
+    return json({ auth, clients, id: this.state.id.toString(), this: this, request }, 200, 2)
   }
 
 
