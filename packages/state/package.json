@@ -2,28 +2,40 @@
   "name": "kidsloop-live-state",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "main.ts",
   "scripts": {
-    "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --ext .ts --fix",
+    "prettier-format": "prettier --config .prettierrc ./**/*.{ts,test.ts} --write",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
-    "kidsloop-live-serialization": "file:../serialization"
+    "kidsloop-live-serialization": "file:../serialization",
+    "redux": "^4.1.1",
+    "redux-immutable": "^4.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-typescript": "^8.2.5",
+    "@types/faker": "5.1.4",
+    "@types/jest": "^27.0.1",
+    "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.1",
     "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.0",
     "rollup": "^2.56.3",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "jest": "^27.0.6",
+    "prettier": "2.2.1",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "uuid": "^3.4.0"
   }
 }
