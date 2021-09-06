@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { Transport } from "./network";
-import { reducer } from "./redux";
+import { root } from "./redux";
 
 export class LiveClassState {
     constructor(
-        private readonly store = configureStore({ reducer }),
+        private readonly store = configureStore({ reducer: root }),
         private transport = new Transport(store.dispatch),
     ) {
     }

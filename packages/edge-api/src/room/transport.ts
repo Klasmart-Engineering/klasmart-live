@@ -1,10 +1,11 @@
 import { Room } from "./room"
-import { Heartbeat, RoomState } from "kidsloop-live-serialization"
+import { Network } from "kidsloop-live-serialization"
+const { ClientMessage, ServerMessage } = Network
 
-export class RoomClient {
+export class Transport {
     constructor(
-      public readonly id: number,
-      public readonly email: string,
+      public readonly deviceId: number,
+      public readonly userId: number,
       private readonly ws: CloudflareWebsocket,
       private readonly env: CloudflareEnvironment,
       private readonly room: Room,
@@ -17,7 +18,7 @@ export class RoomClient {
       ws.accept()
   
       const roomId = room.id
-      const message = RoomState.encode({ roomId }).finish()
+      const message = ServerMessage.encode({ roomId }).finish()
   
       ws.send(message)
     }
@@ -30,12 +31,6 @@ export class RoomClient {
       return true
     }
 
-  
-    public sendConnectionCount(connectionCount: number): void {
-      const message = RoomState.encode({ connectionCount }).finish()
-      this.ws.send(message)
-    }
-
     private close(code?: number, reason?: string) {
       this.ws.close(code, reason)
       this.room.leave(this)
@@ -45,7 +40,9 @@ export class RoomClient {
       this.lastMessageTimestamp = Date.now();
       if (!(data instanceof ArrayBuffer)) { this.close(4401, "Binary only protocol"); return }
       try {
-        Heartbeat.decode(new Uint8Array(data))
+        const { chatMessages, activityStream, roomAction } = ClientMessage.decode(new Uint8Array(data))
+        for(const text of chatMessages) { this.room.chatMessage(this.userId, text) }
+        
       } catch (e) {
         this.close(4400, "Invalid message")
       }

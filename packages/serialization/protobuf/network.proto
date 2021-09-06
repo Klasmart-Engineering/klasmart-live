@@ -1,8 +1,57 @@
 syntax = "proto3";
 
-message RoomState {
+message ServerMessage {
     string roomId = 1;
-    uint32 connection_count = 2;
+    RoomAction roomAction = 2;
+    map<uint32, UserAction> userActions = 3; 
+    map<uint32, DeviceAction> deviceActions = 4; 
 }
 
-message Heartbeat {}
+message ClientMessage {
+    repeated string chatMessages = 1;
+    ActivityStream activityStream = 2;
+    RoomAction roomAction = 3;
+}
+
+message RoomAction {
+    Content content = 1;
+    uint32 hostId = 2;
+    uint32 endTimestamp = 3;
+}
+
+message UserAction {
+    string name = 1;
+    bool teacher = 2;
+    repeated ChatMessage chatMessages = 3;
+}
+
+message DeviceAction {
+    uint32 userId = 1;
+    ActivityStream activityStream = 2;
+}
+
+message ActivityStream {
+    string activityId = 1;
+    string streamId = 2;
+}
+
+
+message ChatMessage {
+    uint32 timestamp = 1;
+    string text = 2;
+}
+
+message Content {
+    ContentType type = 1;
+    string locator = 2;
+}
+
+enum ContentType {
+    Blank = 0;
+    WebRTCStream = 1;
+    ActivityStream = 2;
+    H5P = 3;
+    Image = 4;
+    Video = 5;
+    Audio = 6;
+}

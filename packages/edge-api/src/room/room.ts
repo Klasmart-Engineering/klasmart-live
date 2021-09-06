@@ -1,4 +1,4 @@
-import { RoomClient } from "./room-client"
+import { Device } from "./device"
 import { debugResponse } from "../responses/debug"
 import { json } from "../responses/json"
 import { statusText } from "../responses/statusText"
@@ -6,9 +6,11 @@ import { websocketUpgrade } from "../responses/websocket"
 import { parse as parseCookies } from "cookie";
 import { createRemoteJWKSet } from "jose-browser-runtime/jwks/remote"
 import { jwtVerify, JWTVerifyResult } from "jose-browser-runtime/jwt/verify"
+import { User } from "./user"
+import { ChatMessage } from "./chatMessage"
 
 export class Room implements DurableObject {
-  private clients = new Map<number, RoomClient>()
+  private clients = new Map<number, Device>()
 
   public constructor(
     private state: DurableObjectState,
@@ -58,42 +60,66 @@ export class Room implements DurableObject {
     return statusText(501)
   }
 
-  private nextClientId = 0
+  private nextDeviceId = 1
+  private devices = new Map<string, Device>()
   private accept(email: string): Response {
     const { response, ws } = websocketUpgrade("live")
 
-    const id = this.nextClientId++;
-    const client = new RoomClient(id, email, ws, this.env, this)
+    const deviceId = this.nextDeviceId++;
+    const userId = this.initUser(email)
+    const client = new Device(deviceId, userId, ws, this.env, this)
     this.join(client)
 
     return response
   }
 
   private status(request: Request, auth: JWTVerifyResult) {
-    const clients = [...this.clients.entries()].map(([id, client]) => `${id}: ${client.email}`)
+    const clients = [...this.clients.entries()].map(([id, client]) => `${id}: ${this.users.get(client.userId)?.name}`)
     return json({ auth, clients, id: this.state.id.toString(), this: this, request }, 200, 2)
   }
 
-
-  private broadcastConnectionCount(skip?: number) {
-    const connectionCount = this.clients.size
+  private nextUserId = 1
+  private readonly usersIds = new Map<string, number>()
+  private readonly users = new Map<number, User>()
+  private initUser(name: string, teacher = false): number {
+    const existingId = this.usersIds.get(name)
+    if(existingId !== undefined) { return existingId }
     
-    this.clients.forEach((client, id) => {
-      if (id === skip) { return }
-      client.sendConnectionCount(connectionCount)
-    })
+    const id = this.nextUserId++
+    this.usersIds.set(name, id)
+    this.users.set(id, { id, name, teacher })
+    return id 
   }
 
-  public join(client: RoomClient): void {
-    if (this.clients.has(client.id)) { return; }
-    this.clients.set(client.id, client)
-    this.broadcastConnectionCount()
+
+  public join(client: Device): void {
+    if (this.clients.has(client.deviceId)) { return; }
+    this.clients.set(client.deviceId, client)
   }
 
-  public leave(client: RoomClient): void {
-    const id = client.id
+  public leave(client: Device): void {
+    const id = client.deviceId
     if (!this.clients.has(id)) { return; }
     this.clients.delete(id)
-    this.broadcastConnectionCount()
+  }
+
+  private readonly MAX_CHAT_MESSAGES = 1000
+  private readonly chatMessages: ChatMessage[] = []
+  public chatMessage(userId: number, text: string, timestamp?: number): void {
+    this.chatMessages.push({
+      userId,
+      text,
+      timestamp: timestamp || Date.now()
+    })
+    
+    if(timestamp) {
+      this.chatMessages.sort((a,b) => a.timestamp - b.timestamp)
+    }
+
+    while(this.chatMessages.length > this.MAX_CHAT_MESSAGES) {
+      this.chatMessages.shift()
+    }
+
+    // Broadcast
   }
 }

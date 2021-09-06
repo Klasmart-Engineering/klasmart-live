@@ -2,6 +2,7 @@ import { terser } from "rollup-plugin-terser";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
+import copy from "rollup-plugin-copy"
 
 export default [
   {
@@ -14,6 +15,11 @@ export default [
       nodeResolve({ browser: true }),
       commonjs(),
       terser(),
+      copy({
+        targets: [
+          { src: 'src/protobuf/*.d.ts', dest: 'dist/protobuf/' }
+        ]
+      }),
     ],
   },
 ];

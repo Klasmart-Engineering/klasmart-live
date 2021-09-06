@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup -c",
-    "protobuf": "pbjs -w es6 -t static-module -o protobuf/protobuf.js protobuf/*.proto; pbts -o protobuf/protobuf.d.ts protobuf/protobuf.js"
+    "protobuf": "npm run protobuf-js && npm run protobuf-ts",
+    "protobuf-js": "find protobuf -type f -name '*.proto' -print0 | sed 's/\\.proto\\x00/\\x00/g' | xargs -0 -I '{}' pbjs -w es6 -t static-module -o src/{}.js {}.proto;",
+    "protobuf-ts": "find src/protobuf -type f -name '*.js' -print0 | sed 's/\\.js\\x00/\\x00/g' | xargs -0 -I '{}' pbts -o {}.d.ts {}.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +17,7 @@
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-typescript": "^8.2.5",
     "rollup": "^2.56.3",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.3.5"
   },
