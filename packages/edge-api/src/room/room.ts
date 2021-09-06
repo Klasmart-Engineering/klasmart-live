@@ -1,4 +1,3 @@
-import { Device } from "./device"
 import { debugResponse } from "../responses/debug"
 import { json } from "../responses/json"
 import { statusText } from "../responses/statusText"
@@ -8,9 +7,10 @@ import { createRemoteJWKSet } from "jose-browser-runtime/jwks/remote"
 import { jwtVerify, JWTVerifyResult } from "jose-browser-runtime/jwt/verify"
 import { User } from "./user"
 import { ChatMessage } from "./chatMessage"
+import { Transport } from "./transport"
 
 export class Room implements DurableObject {
-  private clients = new Map<number, Device>()
+  private clients = new Map<number, Transport>()
 
   public constructor(
     private state: DurableObjectState,
@@ -61,13 +61,12 @@ export class Room implements DurableObject {
   }
 
   private nextDeviceId = 1
-  private devices = new Map<string, Device>()
   private accept(email: string): Response {
     const { response, ws } = websocketUpgrade("live")
 
     const deviceId = this.nextDeviceId++;
     const userId = this.initUser(email)
-    const client = new Device(deviceId, userId, ws, this.env, this)
+    const client = new Transport(deviceId, userId, ws, this.env, this)
     this.join(client)
 
     return response
@@ -92,12 +91,12 @@ export class Room implements DurableObject {
   }
 
 
-  public join(client: Device): void {
+  public join(client: Transport): void {
     if (this.clients.has(client.deviceId)) { return; }
     this.clients.set(client.deviceId, client)
   }
 
-  public leave(client: Device): void {
+  public leave(client: Transport): void {
     const id = client.deviceId
     if (!this.clients.has(id)) { return; }
     this.clients.delete(id)

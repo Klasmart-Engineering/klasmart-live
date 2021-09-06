@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rollup -c",
     "precommit": "lint-staged",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "wrangler publish --env dev"
   },
   "lint-staged": {
     "*.{js,ts,json}": "eslint"
