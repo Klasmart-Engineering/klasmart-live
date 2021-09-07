@@ -11,7 +11,7 @@ import {
   IUserJoin,
   IAddTrophy,
   ContentType,
-} from "kidsloop-live-serialization/dist/protobuf/server";
+} from "kidsloop-live-serialization";
 import { Context, ContextPayload, ID } from "../store";
 import {
   addTrophy,

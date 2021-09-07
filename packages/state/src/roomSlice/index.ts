@@ -13,9 +13,9 @@ import {
   ISetContent,
   IAddTrophy,
   ContentType,
-} from "kidsloop-live-serialization/dist/protobuf/server";
+} from "kidsloop-live-serialization";
 import { ContextPayload } from "../store";
-import { getDevice, getDevices, findIndex } from "./util";
+import { getDevice, getDevices } from "./util";
 
 type Reducer<T> = CaseReducer<IState, PayloadAction<ContextPayload<T>>>;
 
@@ -35,7 +35,7 @@ const userJoinReducer: Reducer<IUserJoin> = (state, action) => {
 
   const participant: IParticipant = {
     name,
-    devices: [],
+    devices: {},
     trophies: [],
   };
 
@@ -117,17 +117,13 @@ const addTrophyReducer: CaseReducer<
 const setDeviceReducer: Reducer<ISetDevice> = (state, action) => {
   const {
     context: { userId },
-    payload: { device },
+    payload: { device, deviceId },
   } = action.payload;
   if (!device) throw new Error("No device was provided");
+  if (!deviceId) throw new Error("No device id was provided");
   const { participants } = state;
   const devices = getDevices(userId, participants!);
-  const index = findIndex((d) => d.id === device.id, devices);
-  if (index >= 0) {
-    devices![index] = device;
-  } else {
-    devices!.push(device);
-  }
+  devices[deviceId] = device;
 
   return state;
 };
@@ -156,8 +152,11 @@ const setActivityStreamReducer: Reducer<ISetActivityStream> = (
   const { participants } = state;
 
   const device = getDevice(userId, deviceId, participants!);
-  device.activityId = activityId;
-  device.activityStreamId = activityStreamId;
+  const activity = {
+    id: activityId,
+    streamId: activityStreamId
+  }
+  device.activity = activity;
 
   return state;
 };
@@ -199,4 +198,7 @@ export const {
   setContent,
 } = roomSlice.actions;
 
+export const Actions = roomSlice.actions;
+
 export const roomReducer = roomSlice.reducer;
+export { generateStateDiff } from './diff';

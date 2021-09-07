@@ -6,7 +6,7 @@ import copy from "rollup-plugin-copy"
 
 export default [
   {
-    input: "src/index.ts",
+    input: "src/index.js",
     output: {
       file: "dist/index.js",
     },
@@ -17,7 +17,7 @@ export default [
       terser(),
       copy({
         targets: [
-          { src: 'src/protobuf/*.d.ts', dest: 'dist/protobuf/' }
+          { src: 'src/*.d.ts', dest: 'dist' }
         ]
       }),
     ],

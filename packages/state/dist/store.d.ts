@@ -9,7 +9,7 @@ export declare type ContextPayload<T> = {
     payload: T;
 };
 export declare const store: import("@reduxjs/toolkit").EnhancedStore<{
-    room: import("kidsloop-live-serialization/dist/protobuf/server").IState;
+    room: import("kidsloop-live-serialization").IState;
 }, import("redux").AnyAction, never[]>;
 export declare type RootState = ReturnType<typeof store.getState>;
 export declare type AppDispatch = typeof store.dispatch;

@@ -2,6 +2,9 @@ import * as $protobuf from "protobufjs";
 /** Properties of an Action. */
 export interface IAction {
 
+    /** Action id */
+    id?: (string|null);
+
     /** Action setDevice */
     setDevice?: (ISetDevice|null);
 
@@ -34,6 +37,9 @@ export interface IAction {
 
     /** Action endClass */
     endClass?: (IEndClass|null);
+
+    /** Action heartbeat */
+    heartbeat?: (IHeartbeat|null);
 }
 
 /** Represents an Action. */
@@ -44,6 +50,9 @@ export class Action implements IAction {
      * @param [properties] Properties to set
      */
     constructor(properties?: IAction);
+
+    /** Action id. */
+    public id: string;
 
     /** Action setDevice. */
     public setDevice?: (ISetDevice|null);
@@ -78,8 +87,11 @@ export class Action implements IAction {
     /** Action endClass. */
     public endClass?: (IEndClass|null);
 
+    /** Action heartbeat. */
+    public heartbeat?: (IHeartbeat|null);
+
     /** Action action. */
-    public action?: ("setDevice"|"removeDevice"|"setWebRtcStream"|"setActivity"|"setHost"|"addTrophy"|"setContent"|"sendChatMessage"|"userJoin"|"userLeave"|"endClass");
+    public action?: ("setDevice"|"removeDevice"|"setWebRtcStream"|"setActivity"|"setHost"|"addTrophy"|"setContent"|"sendChatMessage"|"userJoin"|"userLeave"|"endClass"|"heartbeat");
 
     /**
      * Creates a new Action instance using the specified properties.
@@ -152,97 +164,103 @@ export class Action implements IAction {
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of an ActionReciept. */
-export interface IActionReciept {
+/** Properties of an ActionAcknowledgement. */
+export interface IActionAcknowledgement {
 
-    /** ActionReciept epoch */
-    epoch?: (number|null);
+    /** ActionAcknowledgement id */
+    id?: (string|null);
 
-    /** ActionReciept actionCounter */
-    actionCounter?: (number|null);
+    /** ActionAcknowledgement error */
+    error?: (string|null);
+
+    /** ActionAcknowledgement code */
+    code?: (number|null);
 }
 
-/** Represents an ActionReciept. */
-export class ActionReciept implements IActionReciept {
+/** Represents an ActionAcknowledgement. */
+export class ActionAcknowledgement implements IActionAcknowledgement {
 
     /**
-     * Constructs a new ActionReciept.
+     * Constructs a new ActionAcknowledgement.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IActionReciept);
+    constructor(properties?: IActionAcknowledgement);
 
-    /** ActionReciept epoch. */
-    public epoch: number;
+    /** ActionAcknowledgement id. */
+    public id: string;
 
-    /** ActionReciept actionCounter. */
-    public actionCounter: number;
+    /** ActionAcknowledgement error. */
+    public error: string;
+
+    /** ActionAcknowledgement code. */
+    public code: number;
 
     /**
-     * Creates a new ActionReciept instance using the specified properties.
+     * Creates a new ActionAcknowledgement instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns ActionReciept instance
+     * @returns ActionAcknowledgement instance
      */
-    public static create(properties?: IActionReciept): ActionReciept;
+    public static create(properties?: IActionAcknowledgement): ActionAcknowledgement;
 
     /**
-     * Encodes the specified ActionReciept message. Does not implicitly {@link ActionReciept.verify|verify} messages.
-     * @param message ActionReciept message or plain object to encode
+     * Encodes the specified ActionAcknowledgement message. Does not implicitly {@link ActionAcknowledgement.verify|verify} messages.
+     * @param message ActionAcknowledgement message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IActionReciept, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IActionAcknowledgement, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified ActionReciept message, length delimited. Does not implicitly {@link ActionReciept.verify|verify} messages.
-     * @param message ActionReciept message or plain object to encode
+     * Encodes the specified ActionAcknowledgement message, length delimited. Does not implicitly {@link ActionAcknowledgement.verify|verify} messages.
+     * @param message ActionAcknowledgement message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IActionReciept, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IActionAcknowledgement, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes an ActionReciept message from the specified reader or buffer.
+     * Decodes an ActionAcknowledgement message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns ActionReciept
+     * @returns ActionAcknowledgement
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ActionReciept;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ActionAcknowledgement;
 
     /**
-     * Decodes an ActionReciept message from the specified reader or buffer, length delimited.
+     * Decodes an ActionAcknowledgement message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns ActionReciept
+     * @returns ActionAcknowledgement
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ActionReciept;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ActionAcknowledgement;
 
     /**
-     * Verifies an ActionReciept message.
+     * Verifies an ActionAcknowledgement message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates an ActionReciept message from a plain object. Also converts values to their respective internal types.
+     * Creates an ActionAcknowledgement message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns ActionReciept
+     * @returns ActionAcknowledgement
      */
-    public static fromObject(object: { [k: string]: any }): ActionReciept;
+    public static fromObject(object: { [k: string]: any }): ActionAcknowledgement;
 
     /**
-     * Creates a plain object from an ActionReciept message. Also converts values to other types if specified.
-     * @param message ActionReciept
+     * Creates a plain object from an ActionAcknowledgement message. Also converts values to other types if specified.
+     * @param message ActionAcknowledgement
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ActionReciept, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: ActionAcknowledgement, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this ActionReciept to JSON.
+     * Converts this ActionAcknowledgement to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -500,8 +518,95 @@ export class EndClass implements IEndClass {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a Heartbeat. */
+export interface IHeartbeat {
+}
+
+/** Represents a Heartbeat. */
+export class Heartbeat implements IHeartbeat {
+
+    /**
+     * Constructs a new Heartbeat.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IHeartbeat);
+
+    /**
+     * Creates a new Heartbeat instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns Heartbeat instance
+     */
+    public static create(properties?: IHeartbeat): Heartbeat;
+
+    /**
+     * Encodes the specified Heartbeat message. Does not implicitly {@link Heartbeat.verify|verify} messages.
+     * @param message Heartbeat message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IHeartbeat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified Heartbeat message, length delimited. Does not implicitly {@link Heartbeat.verify|verify} messages.
+     * @param message Heartbeat message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IHeartbeat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a Heartbeat message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns Heartbeat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Heartbeat;
+
+    /**
+     * Decodes a Heartbeat message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns Heartbeat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Heartbeat;
+
+    /**
+     * Verifies a Heartbeat message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a Heartbeat message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns Heartbeat
+     */
+    public static fromObject(object: { [k: string]: any }): Heartbeat;
+
+    /**
+     * Creates a plain object from a Heartbeat message. Also converts values to other types if specified.
+     * @param message Heartbeat
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: Heartbeat, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this Heartbeat to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a SetDevice. */
 export interface ISetDevice {
+
+    /** SetDevice deviceId */
+    deviceId?: (string|null);
 
     /** SetDevice device */
     device?: (IDevice|null);
@@ -515,6 +620,9 @@ export class SetDevice implements ISetDevice {
      * @param [properties] Properties to set
      */
     constructor(properties?: ISetDevice);
+
+    /** SetDevice deviceId. */
+    public deviceId: string;
 
     /** SetDevice device. */
     public device?: (IDevice|null);
@@ -1343,8 +1451,8 @@ export class StateChanges implements IStateChanges {
 /** Properties of a StateDiff. */
 export interface IStateDiff {
 
-    /** StateDiff getState */
-    getState?: (IState|null);
+    /** StateDiff setState */
+    setState?: (IState|null);
 
     /** StateDiff addParticipants */
     addParticipants?: (IAddParticipants|null);
@@ -1377,8 +1485,8 @@ export class StateDiff implements IStateDiff {
      */
     constructor(properties?: IStateDiff);
 
-    /** StateDiff getState. */
-    public getState?: (IState|null);
+    /** StateDiff setState. */
+    public setState?: (IState|null);
 
     /** StateDiff addParticipants. */
     public addParticipants?: (IAddParticipants|null);
@@ -1402,7 +1510,7 @@ export class StateDiff implements IStateDiff {
     public classEnded?: (IClassEnded|null);
 
     /** StateDiff action. */
-    public action?: ("getState"|"addParticipants"|"removeParticipants"|"changeContent"|"changeHost"|"appendChatMessage"|"receiveTrophy"|"classEnded");
+    public action?: ("setState"|"addParticipants"|"removeParticipants"|"changeContent"|"changeHost"|"appendChatMessage"|"receiveTrophy"|"classEnded");
 
     /**
      * Creates a new StateDiff instance using the specified properties.
@@ -1482,7 +1590,7 @@ export interface IParticipant {
     name?: (string|null);
 
     /** Participant devices */
-    devices?: (IDevice[]|null);
+    devices?: ({ [k: string]: IDevice }|null);
 
     /** Participant trophies */
     trophies?: (ITrophy[]|null);
@@ -1501,7 +1609,7 @@ export class Participant implements IParticipant {
     public name: string;
 
     /** Participant devices. */
-    public devices: IDevice[];
+    public devices: { [k: string]: IDevice };
 
     /** Participant trophies. */
     public trophies: ITrophy[];
@@ -2318,14 +2426,8 @@ export class ClassEnded implements IClassEnded {
 /** Properties of a Device. */
 export interface IDevice {
 
-    /** Device id */
-    id?: (string|null);
-
-    /** Device activityId */
-    activityId?: (string|null);
-
-    /** Device activityStreamId */
-    activityStreamId?: (string|null);
+    /** Device activity */
+    activity?: (IActivity|null);
 
     /** Device webRTCStreams */
     webRTCStreams?: (IWebRTCStream[]|null);
@@ -2340,14 +2442,8 @@ export class Device implements IDevice {
      */
     constructor(properties?: IDevice);
 
-    /** Device id. */
-    public id: string;
-
-    /** Device activityId. */
-    public activityId: string;
-
-    /** Device activityStreamId. */
-    public activityStreamId: string;
+    /** Device activity. */
+    public activity?: (IActivity|null);
 
     /** Device webRTCStreams. */
     public webRTCStreams: IWebRTCStream[];
@@ -2418,6 +2514,102 @@ export class Device implements IDevice {
 
     /**
      * Converts this Device to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an Activity. */
+export interface IActivity {
+
+    /** Activity id */
+    id?: (string|null);
+
+    /** Activity streamId */
+    streamId?: (string|null);
+}
+
+/** Represents an Activity. */
+export class Activity implements IActivity {
+
+    /**
+     * Constructs a new Activity.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IActivity);
+
+    /** Activity id. */
+    public id: string;
+
+    /** Activity streamId. */
+    public streamId: string;
+
+    /**
+     * Creates a new Activity instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns Activity instance
+     */
+    public static create(properties?: IActivity): Activity;
+
+    /**
+     * Encodes the specified Activity message. Does not implicitly {@link Activity.verify|verify} messages.
+     * @param message Activity message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IActivity, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified Activity message, length delimited. Does not implicitly {@link Activity.verify|verify} messages.
+     * @param message Activity message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IActivity, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an Activity message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns Activity
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Activity;
+
+    /**
+     * Decodes an Activity message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns Activity
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Activity;
+
+    /**
+     * Verifies an Activity message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an Activity message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns Activity
+     */
+    public static fromObject(object: { [k: string]: any }): Activity;
+
+    /**
+     * Creates a plain object from an Activity message. Also converts values to other types if specified.
+     * @param message Activity
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: Activity, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this Activity to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

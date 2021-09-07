@@ -1,57 +1,183 @@
 syntax = "proto3";
 
-message ServerMessage {
-    string roomId = 1;
-    RoomAction roomAction = 2;
-    map<uint32, UserAction> userActions = 3; 
-    map<uint32, DeviceAction> deviceActions = 4; 
+message Action {
+    string id = 1;
+    oneof action {
+        SetDevice set_device = 3;
+        RemoveDevice remove_device = 4;
+        SetWebRTCStream set_web_rtc_stream = 5;
+        SetActivityStream set_activity = 6;
+        SetHost set_host = 7;
+        AddTrophy add_trophy = 8;
+        SetContent set_content = 9;
+        SendChatMessage send_chat_message = 10;
+        UserJoin user_join = 11;
+        UserLeave user_leave = 12;
+        EndClass end_class = 13;
+
+        Heartbeat heartbeat = 2;
+    }
 }
 
-message ClientMessage {
-    repeated string chatMessages = 1;
-    ActivityStream activityStream = 2;
-    RoomAction roomAction = 3;
+message ActionAcknowledgement {
+    string id = 1;
+    string error = 2;
+    uint32 code = 3;
 }
 
-message RoomAction {
+message UserJoin {}
+
+message UserLeave {}
+
+message EndClass {}
+
+message Heartbeat {}
+
+message SetDevice {
+    string device_id = 1;
+    Device device = 2;
+}
+
+message RemoveDevice {
+    string id = 1;
+}
+
+message SetWebRTCStream {
+    string device_id = 1;
+    repeated WebRTCStream streams = 2;
+}
+
+message SetActivityStream {
+    string device_id = 1;
+    string activity_id = 2;
+    string activity_stream_id = 3;
+}
+
+message SetHost {
+    string id = 1;
+}
+
+message AddTrophy {
+    string trophy_id = 1;
+    uint64 timestamp = 2;
+    string user_id = 3;
+}
+
+message SetContent {
     Content content = 1;
-    uint32 hostId = 2;
-    uint32 endTimestamp = 3;
 }
 
-message UserAction {
+message SendChatMessage {
+    string message = 1;
+}
+
+message StateChanges {
+    repeated StateDiff changes = 1;
+}
+
+message StateDiff {
+    oneof action {
+        State set_state = 1;
+
+        AddParticipants add_participants = 2;
+        RemoveParticipants remove_participants = 3;
+
+        ChangeContent change_content = 4;
+        ChangeHost change_host = 5;
+
+        AppendChatMessage append_chat_message = 6;
+        ReceiveTrophy receive_trophy = 7;
+
+        ClassEnded class_ended = 16;
+    }
+}
+
+message Participant {
     string name = 1;
-    bool teacher = 2;
-    repeated ChatMessage chatMessages = 3;
+    map<uint32, Device> devices = 2;
+    repeated Trophy trophies = 3;
 }
 
-message DeviceAction {
-    uint32 userId = 1;
-    ActivityStream activityStream = 2;
+message State {
+    map<string, Participant> participants = 1;
+    string host = 2;
+    Content content = 3;
+    repeated ChatMessage chat_messages = 4;
+    uint32 endTimestamp = 5;
 }
 
-message ActivityStream {
-    string activityId = 1;
+message AddParticipants {
+    map<string, Participant> participants = 1;
+}
+
+// Array of IDs
+message RemoveParticipants {
+    repeated string participants = 1;
+}
+
+message ChangeContent {
+    Content content = 1;
+}
+
+message ChangeHost {
+    string host_id = 1;
+}
+
+message AppendChatMessage {
+    repeated ChatMessage messages = 1;
+}
+
+message ReceiveTrophy {
+    Trophy trophy = 1;
+}
+
+message ClassEnded {}
+
+message Device {
+    Activity activity = 1;
+    repeated WebRTCStream webRTCStreams = 2;
+}
+
+message Activity {
+    string id = 1;
     string streamId = 2;
 }
 
-
-message ChatMessage {
-    uint32 timestamp = 1;
-    string text = 2;
+message WebRTCStream {
+    string id = 1;
+    string label = 2;
+    repeated WebRTCTrack tracks = 3;
 }
 
-message Content {
-    ContentType type = 1;
-    string locator = 2;
+message WebRTCTrack {
+    string id = 1;
+    string sfu = 2;
+}
+
+message Trophy {
+    string trophy = 1;
+    uint32 timestamp = 2;
+}
+
+message ChatMessage {
+    string message = 1;
+    string from_user = 2;
+    uint32 timestamp = 3;
 }
 
 enum ContentType {
     Blank = 0;
-    WebRTCStream = 1;
+    WebRtcStream = 1;
     ActivityStream = 2;
     H5P = 3;
     Image = 4;
     Video = 5;
     Audio = 6;
 }
+
+message Content {
+    ContentType type = 1;
+    string id = 2;
+    string url = 3;
+}
+

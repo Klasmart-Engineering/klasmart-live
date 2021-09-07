@@ -1,4 +1,4 @@
-import { IDevice, IParticipant } from "kidsloop-live-serialization/dist/protobuf/server";
+import { IDevice, IParticipant } from "kidsloop-live-serialization";
 import { ID } from "../store";
 /**
  * A helper function to find whether or not an element of an array

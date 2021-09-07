@@ -2,13 +2,13 @@
   "name": "kidsloop-live-serialization",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "npm run protobuf && rollup -c",
     "protobuf": "npm run protobuf-js && npm run protobuf-ts",
-    "protobuf-js": "find protobuf -type f -name '*.proto' -print0 | sed 's/protobuf\\///g' | sed 's/\\.proto//g' | xargs -0 -I '{}' pbjs -w es6 -t static-module -o src/protobuf/{}.js protobuf/{}.proto;",
-    "protobuf-ts": "find protobuf -type f -name '*.proto' -print0 | sed 's/protobuf\\///g' | sed 's/\\.proto//g' | xargs -0 -I '{}' pbts -o src/protobuf/{}.d.ts src/protobuf/{}.js"
+    "protobuf-js": "pbjs -w commonjs -t static-module -o src/index.js protobuf/network.proto;",
+    "protobuf-ts": "pbts -o src/index.d.ts src/index.js"
   },
   "author": "",
   "license": "ISC",
