@@ -12,9 +12,9 @@ import {
   Actions,
   Context,
   INITIAL_ROOM_STATE,
+  generateStateDiff,
 } from 'kidsloop-live-state';
-import { generateStateDiff } from '../../../state/dist/roomSlice';
-import { IState, IStateChanges } from '../../../serialization/src';
+import { IState, IStateChanges } from 'kidsloop-live-serialization';
 
 type UserDevices = Map<number, Device>;
 
