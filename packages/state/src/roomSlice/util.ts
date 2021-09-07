@@ -1,4 +1,4 @@
-import { IDevice, IParticipant } from "kidsloop-live-serialization";
+import { IDevice, IParticipant } from "kidsloop-live-serialization/dist/protobuf/server";
 import { ID } from "../store";
 
 /**

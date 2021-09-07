@@ -1,4 +1,4 @@
-import { IStateDiff, IState, IParticipant } from "kidsloop-live-serialization";
+import { IStateDiff, IState, IParticipant } from "kidsloop-live-serialization/dist/protobuf/server";
 
 // Potential protocol flow
 //

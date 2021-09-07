@@ -3972,31 +3972,17 @@ export const State = $root.State = (() => {
     State.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.State(), key, value;
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.State(), key;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
+                reader.skip().pos++;
                 if (message.participants === $util.emptyObject)
                     message.participants = {};
-                let end2 = reader.uint32() + reader.pos;
-                key = "";
-                value = null;
-                while (reader.pos < end2) {
-                    let tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.string();
-                        break;
-                    case 2:
-                        value = $root.Participant.decode(reader, reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.participants[key] = value;
+                key = reader.string();
+                reader.pos++;
+                message.participants[key] = $root.Participant.decode(reader, reader.uint32());
                 break;
             case 2:
                 message.host = reader.string();
@@ -4272,31 +4258,17 @@ export const AddParticipants = $root.AddParticipants = (() => {
     AddParticipants.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.AddParticipants(), key, value;
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.AddParticipants(), key;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
+                reader.skip().pos++;
                 if (message.participants === $util.emptyObject)
                     message.participants = {};
-                let end2 = reader.uint32() + reader.pos;
-                key = "";
-                value = null;
-                while (reader.pos < end2) {
-                    let tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.string();
-                        break;
-                    case 2:
-                        value = $root.Participant.decode(reader, reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.participants[key] = value;
+                key = reader.string();
+                reader.pos++;
+                message.participants[key] = $root.Participant.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6745,7 +6717,7 @@ export const ChatMessage = $root.ChatMessage = (() => {
  * @property {number} Video=5 Video value
  * @property {number} Audio=6 Audio value
  */
-export const ContentType = $root.ContentType = (() => {
+$root.ContentType = (function() {
     const valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "Blank"] = 0;
     values[valuesById[1] = "WebRtcStream"] = 1;

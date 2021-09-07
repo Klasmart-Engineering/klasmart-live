@@ -1,7 +1,7 @@
 import { Action } from "@reduxjs/toolkit";
 import { setConnected, setRoomId, setEndTimestamp, setHostId, setContent, updateUser, User, content, addChatMessage, updateDevice, ActivityStream } from "./redux";
 import { Network } from "kidsloop-live-serialization"
-import { IActivityStream, IDeviceAction, IRoomAction, IUserAction } from "../../serialization/dist/protobuf/network";
+import { IActivityStream, IDeviceAction, IRoomAction, IUserAction } from "kidsloop-live-serialization/dist/protobuf/network";
 const { ClientMessage, ServerMessage } = Network
 
 export class Transport {

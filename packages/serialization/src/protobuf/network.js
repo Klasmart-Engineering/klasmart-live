@@ -136,7 +136,7 @@ export const ServerMessage = $root.ServerMessage = (() => {
     ServerMessage.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ServerMessage(), key, value;
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ServerMessage(), key;
         while (reader.pos < end) {
             let tag = reader.uint32();
             switch (tag >>> 3) {
@@ -146,52 +146,22 @@ export const ServerMessage = $root.ServerMessage = (() => {
             case 2:
                 message.roomAction = $root.RoomAction.decode(reader, reader.uint32());
                 break;
-            case 3:{
+            case 3:
+                reader.skip().pos++;
                 if (message.userActions === $util.emptyObject)
                     message.userActions = {};
-                let end2 = reader.uint32() + reader.pos;
-                key = 0;
-                value = null;
-                while (reader.pos < end2) {
-                    let tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.uint32();
-                        break;
-                    case 2:
-                        value = $root.UserAction.decode(reader, reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.userActions[key] = value;
+                key = reader.uint32();
+                reader.pos++;
+                message.userActions[key] = $root.UserAction.decode(reader, reader.uint32());
                 break;
-            }
-            case 4:{
+            case 4:
+                reader.skip().pos++;
                 if (message.deviceActions === $util.emptyObject)
                     message.deviceActions = {};
-                let end2 = reader.uint32() + reader.pos;
-                key = 0;
-                value = null;
-                while (reader.pos < end2) {
-                    let tag2 = reader.uint32();
-                    switch (tag2 >>> 3) {
-                    case 1:
-                        key = reader.uint32();
-                        break;
-                    case 2:
-                        value = $root.DeviceAction.decode(reader, reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag2 & 7);
-                        break;
-                    }
-                }
-                message.deviceActions[key] = value;
+                key = reader.uint32();
+                reader.pos++;
+                message.deviceActions[key] = $root.DeviceAction.decode(reader, reader.uint32());
                 break;
-            }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -2006,7 +1976,7 @@ export const Content = $root.Content = (() => {
  * @property {number} Video=5 Video value
  * @property {number} Audio=6 Audio value
  */
-export const ContentType = $root.ContentType = (() => {
+$root.ContentType = (function() {
     const valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "Blank"] = 0;
     values[valuesById[1] = "WebRTCStream"] = 1;

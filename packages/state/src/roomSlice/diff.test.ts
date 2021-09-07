@@ -1,4 +1,4 @@
-import { ContentType, IState } from "kidsloop-live-serialization";
+import { ContentType, IState } from "kidsloop-live-serialization/dist/protobuf/server";
 import { generateStateDiff } from "./diff";
 
 describe("State Diffing", () => {

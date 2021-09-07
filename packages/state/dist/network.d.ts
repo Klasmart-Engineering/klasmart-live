@@ -8,6 +8,10 @@ export declare class Transport {
     private websocket;
     private sendHeartbeat;
     private message;
+    private roomAction;
+    private userAction;
+    private deviceAction;
+    private activityStream;
     private openEvent;
     private closeEvent;
     private networkError;

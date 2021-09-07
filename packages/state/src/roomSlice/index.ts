@@ -13,7 +13,7 @@ import {
   ISetContent,
   IAddTrophy,
   ContentType,
-} from "kidsloop-live-serialization";
+} from "kidsloop-live-serialization/dist/protobuf/server";
 import { ContextPayload } from "../store";
 import { getDevice, getDevices, findIndex } from "./util";
 

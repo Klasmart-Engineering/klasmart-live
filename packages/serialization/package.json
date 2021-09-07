@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run protobuf && rollup -c",
     "protobuf": "npm run protobuf-js && npm run protobuf-ts",
-    "protobuf-js": "find protobuf -type f -name '*.proto' -print0 | sed 's/\\.proto\\x00/\\x00/g' | xargs -0 -I '{}' pbjs -w es6 -t static-module -o src/{}.js {}.proto;",
-    "protobuf-ts": "find src/protobuf -type f -name '*.js' -print0 | sed 's/\\.js\\x00/\\x00/g' | xargs -0 -I '{}' pbts -o {}.d.ts {}.js"
+    "protobuf-js": "find protobuf -type f -name '*.proto' -print0 | sed 's/protobuf\\///g' | sed 's/\\.proto//g' | xargs -0 -I '{}' pbjs -w es6 -t static-module -o src/protobuf/{}.js protobuf/{}.proto;",
+    "protobuf-ts": "find protobuf -type f -name '*.proto' -print0 | sed 's/protobuf\\///g' | sed 's/\\.proto//g' | xargs -0 -I '{}' pbts -o src/protobuf/{}.d.ts src/protobuf/{}.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +22,6 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "protobufjs": "^6.11.2"
+    "protobufjs": "6.9.0"
   }
 }
