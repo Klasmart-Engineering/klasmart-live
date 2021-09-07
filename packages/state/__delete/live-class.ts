@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { Transport } from "./network";
-import { root } from "./redux";
+import { configureStore } from '@reduxjs/toolkit';
+import { Transport } from './network';
+import { root } from './redux';
 
 export class LiveClassState {
     constructor(
@@ -9,9 +9,9 @@ export class LiveClassState {
     ) {
     }
 
-    public getStore() { return this.store }
+    public getStore() { return this.store; }
 
     public connect(url: string) {
-        return this.transport.connect(url)
+        return this.transport.connect(url);
     }
 }

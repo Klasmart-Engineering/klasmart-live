@@ -1,4 +1,4 @@
-import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   IState,
   IParticipant,
@@ -13,9 +13,9 @@ import {
   ISetContent,
   IAddTrophy,
   ContentType,
-} from "kidsloop-live-serialization";
-import { ContextPayload } from "../store";
-import { getDevice, getDevices } from "./util";
+} from 'kidsloop-live-serialization';
+import { ContextPayload } from '../store';
+import { getDevice, getDevices } from './util';
 
 type Reducer<T> = CaseReducer<IState, PayloadAction<ContextPayload<T>>>;
 
@@ -119,8 +119,8 @@ const setDeviceReducer: Reducer<ISetDevice> = (state, action) => {
     context: { userId },
     payload: { device, deviceId },
   } = action.payload;
-  if (!device) throw new Error("No device was provided");
-  if (!deviceId) throw new Error("No device id was provided");
+  if (!device) throw new Error('No device was provided');
+  if (!deviceId) throw new Error('No device id was provided');
   const { participants } = state;
   const devices = getDevices(userId, participants!);
   devices[deviceId] = device;
@@ -154,8 +154,8 @@ const setActivityStreamReducer: Reducer<ISetActivityStream> = (
   const device = getDevice(userId, deviceId, participants!);
   const activity = {
     id: activityId,
-    streamId: activityStreamId
-  }
+    streamId: activityStreamId,
+  };
   device.activity = activity;
 
   return state;
@@ -171,7 +171,7 @@ const setContentReducer: Reducer<ISetContent> = (state, action) => {
 };
 
 export const roomSlice = createSlice({
-  name: "room",
+  name: 'room',
   initialState,
   reducers: {
     userJoin: userJoinReducer,
@@ -201,4 +201,6 @@ export const {
 export const Actions = roomSlice.actions;
 
 export const roomReducer = roomSlice.reducer;
+export const INITIAL_ROOM_STATE = initialState;
 export { generateStateDiff } from './diff';
+

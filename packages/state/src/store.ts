@@ -1,5 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { roomReducer } from "./roomSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { roomReducer } from './roomSlice';
 
 export type ID = string;
 export interface Context {

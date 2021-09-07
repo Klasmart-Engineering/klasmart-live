@@ -5,5 +5,5 @@ export function json(x: unknown, status = 200, indent?: number): Response {
             status,
             headers: { 'Content-Type': 'application/json' },
         },
-    )
+    );
 }

@@ -1,10 +1,12 @@
-import { Room } from "./room";
-import { Context, ContextPayload, Actions } from "kidsloop-live-state";
+import { Room } from './room';
+import { Context, ContextPayload, Actions } from 'kidsloop-live-state';
 import {
   Action,
   IActionAcknowledgement,
   ActionAcknowledgement,
-} from "kidsloop-live-serialization";
+  IStateChanges,
+  StateChanges,
+} from 'kidsloop-live-serialization';
 
 const HEARTBEAT_INTERVAL = 5000;
 
@@ -17,17 +19,17 @@ export class Device {
     private readonly DEBUG: boolean,
     private lastHeartbeat: number | undefined = undefined
   ) {
-    ws.addEventListener("message", ({ data }) => {
+    ws.addEventListener('message', ({ data }) => {
       if (!(data instanceof ArrayBuffer)) {
-        this.onClose(4401, "Binary only protocol");
+        this.onClose(4401, 'Binary only protocol');
         return;
       }
       const response: IActionAcknowledgement = {
-        id: "Undefined Action ID",
+        id: 'Undefined Action ID',
       };
       clearTimeout(this.lastHeartbeat);
       this.lastHeartbeat = setTimeout(() => {
-        this.onClose(4408, "No heartbeat received - websocket timed out");
+        this.onClose(4408, 'No heartbeat received - websocket timed out');
       }, HEARTBEAT_INTERVAL);
 
       try {
@@ -38,40 +40,40 @@ export class Device {
         };
         let actionToDispatch = null;
         switch (action.action) {
-          case "heartbeat":
+          case 'heartbeat':
             break;
-          case "setDevice":
+          case 'setDevice':
             actionToDispatch = Actions.setDevice(contextAction);
             break;
-          case "removeDevice":
+          case 'removeDevice':
             actionToDispatch = Actions.removeDevice(contextAction);
             break;
-          case "setWebRtcStream":
+          case 'setWebRtcStream':
             actionToDispatch = Actions.setWebRtcStream(contextAction);
             break;
-          case "setActivity":
+          case 'setActivity':
             actionToDispatch = Actions.setActivity(contextAction);
             break;
-          case "setHost":
+          case 'setHost':
             actionToDispatch = Actions.setHost(contextAction);
             break;
-          case "addTrophy":
+          case 'addTrophy':
             actionToDispatch = Actions.addTrophy(contextAction);
             break;
-          case "setContent":
+          case 'setContent':
             actionToDispatch = Actions.setContent(contextAction);
             break;
-          case "sendChatMessage":
+          case 'sendChatMessage':
             actionToDispatch = Actions.sendChatMessage(contextAction);
             break;
-          case "userJoin":
-          case "userLeave":
+          case 'userJoin':
+          case 'userLeave':
             response.error =
-              "This action type should be generated automatically, there should be no need to send this to the server";
+              'This action type should be generated automatically, there should be no need to send this to the server';
             break;
-          case "endClass":
+          case 'endClass':
           default:
-            response.error = "Unidentified action type provided";
+            response.error = 'Unidentified action type provided';
             break;
         }
         if (!actionToDispatch) {
@@ -79,21 +81,22 @@ export class Device {
         }
       } catch (e) {
         console.log(e);
-        response.error = "Unexpected error occurred";
+        response.error = 'Unexpected error occurred';
       } finally {
         const receipt = ActionAcknowledgement.encode(response).finish();
         ws.send(receipt);
       }
     });
-    ws.addEventListener("error", (e) => {
+    ws.addEventListener('error', (e) => {
       console.error(e);
     });
-    ws.addEventListener("close", (c, r) => this.onClose(c, r));
+    ws.addEventListener('close', (c, r) => this.onClose(c, r));
     ws.accept();
   }
 
-  get roomId(): string {
-    return this.room.roomId;
+  public sendStateDiff(diff: IStateChanges): void {
+    const data = StateChanges.encode(diff).finish();
+    this.ws.send(data);
   }
 
   /*
@@ -141,4 +144,3 @@ export class Device {
   }
   */
 }
-

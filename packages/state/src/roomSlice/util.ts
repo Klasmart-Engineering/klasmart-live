@@ -1,5 +1,5 @@
-import { IDevice, IParticipant } from "kidsloop-live-serialization";
-import { ID } from "../store";
+import { IDevice, IParticipant } from 'kidsloop-live-serialization';
+import { ID } from '../store';
 
 /**
  * Fetches the devices for a given user
@@ -7,7 +7,7 @@ import { ID } from "../store";
 export function getDevices(
   userId: ID,
   participants: { [k: string]: IParticipant }
-): { [k:string]: IDevice } {
+): { [k: string]: IDevice } {
   const user = participants![userId];
   if (!user) {
     throw new Error(
@@ -29,12 +29,12 @@ export function getDevice(
   deviceId: string | null | undefined,
   participants: { [k: string]: IParticipant }
 ): IDevice {
-  if (!deviceId) throw new Error("No device ID was provided");
+  if (!deviceId) throw new Error('No device ID was provided');
 
   const devices = getDevices(userId, participants);
 
   const device = devices[deviceId];
-  if(!device) {
+  if (!device) {
     throw new Error(
       `Unable to find Device ID: '${deviceId}' in registered devices for user ${userId}`
     );

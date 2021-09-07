@@ -5,5 +5,5 @@ export function statusText(status = 200, statusText?: string): Response {
       status,
       statusText,
     },
-  )
+  );
 }

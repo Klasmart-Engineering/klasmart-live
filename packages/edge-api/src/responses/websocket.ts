@@ -2,11 +2,11 @@ export function websocketUpgrade(protocol?: string | null): {
     ws: CloudflareWebsocket,
     response: Response
 } {
-    const webSocketPair = new WebSocketPair()
+    const webSocketPair = new WebSocketPair();
 
-    const headers = typeof protocol === "string"
+    const headers = typeof protocol === 'string'
         ? { 'Sec-WebSocket-Protocol': protocol }
-        : undefined
+        : undefined;
 
     return {
         ws: webSocketPair[1],
@@ -18,5 +18,5 @@ export function websocketUpgrade(protocol?: string | null): {
                 headers,
             },
         ),
-    }
+    };
 }
