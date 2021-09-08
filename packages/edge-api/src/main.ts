@@ -4,6 +4,7 @@ import { redirectProtocol } from './responses/redirect';
 import { statusText } from './responses/statusText';
 import MimeType from 'whatwg-mimetype';
 
+
 export default {
   async fetch(request: Request, env: CloudflareEnvironment, ctx: unknown): Promise<Response> {
     const { headers } = request;

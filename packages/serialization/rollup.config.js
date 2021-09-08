@@ -14,7 +14,7 @@ export default [
     plugins: [
       nodeResolve(),
       commonjs(),
-      // terser(),
+      terser(),
     ],
   },
 ];

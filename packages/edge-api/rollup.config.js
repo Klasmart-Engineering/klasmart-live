@@ -11,12 +11,19 @@ export default [
       format: 'es',
       file: 'dist/index.mjs',
       sourcemap: true,
+      // This is a hack!
+      // Some librarires expect NODE_ENV to exist, but there is no environment in Cloudlfare Workers
+      banner: `const process = {
+    env: {
+        NODE_ENV: 'hack',
+    }
+};`
     },
     plugins: [
       typescript(),
       nodeResolve({ browser: true }),
       commonjs(),
-      // terser(),
+      terser(),
     ],
   },
 ];

@@ -16,7 +16,7 @@ export default [
       typescript({ tsconfig: './tsconfig.json' }),
       nodeResolve({ browser: true }),
       commonjs(),
-      // terser(),
+      terser(),
     ],
   },
 ];
