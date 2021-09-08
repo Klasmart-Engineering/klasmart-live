@@ -67,10 +67,7 @@ export class Room implements DurableObject {
           }
           // If we didn't previously have a fan out triggered, then trigger one
           if (!this.fanOutDebounceTimeout) {
-            this.fanOutDebounceTimeout = setTimeout(
-              () => this.fanOutStateDiff(),
-              DEBOUNCE_TIME
-            );
+            this.triggerFanOut();
             next(action);
             return;
           }
@@ -78,17 +75,14 @@ export class Room implements DurableObject {
           // If we have a timeout triggered then clear and restart the debounce
           clearTimeout(this.fanOutDebounceTimeout);
           next(action);
-          this.fanOutDebounceTimeout = setTimeout(
-            () => this.fanOutStateDiff(),
-            DEBOUNCE_TIME
-          );
+          this.triggerFanOut();
         },
       ],
       reducer: {
         room: roomReducer,
       },
     });
-    this.previousState = this.store.getState();
+    this.previousState = this.currentState;
   }
 
   get currentState(): IState {
@@ -209,15 +203,20 @@ export class Room implements DurableObject {
     return response;
   }
 
+  private triggerFanOut(): void {
+    this.fanOutDebounceTimeout = setTimeout(
+      () => this.fanOutStateDiff(),
+      DEBOUNCE_TIME
+    );
+  }
+
   /**
    THIS MUST BE DELETED
   */
   private status(request: Request, auth: Token) {
     const clients = [...this.clients.entries()].map(
       ([id, devices]) =>
-        `${id}: ${[...devices.entries()].map(
-          ([id]) => `Device: ID ${id}\n`
-        )}`
+        `${id}: ${[...devices.entries()].map(([id]) => `Device: ID ${id}\n`)}`
     );
     return json(
       { auth, clients, id: this.state.id.toString(), this: this, request },

@@ -3,7 +3,11 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
@@ -12,7 +16,10 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     semi: 2,
-    'no-unused-vars': ['warn', { varsIgnorePattern: '_\d*' }],
+    'no-unused-vars': [
+      'warn',
+      { varsIgnorePattern: '^_.*', argsIgnorePattern: '^_.*' },
+    ],
     '@typescript-eslint/member-ordering': ['error'],
     quotes: 'off',
     '@typescript-eslint/quotes': ['error', 'single', { avoidEscape: true }],

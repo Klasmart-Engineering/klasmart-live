@@ -3,6 +3,4 @@ export { Room } from './room/room';
 export { ActivityStream } from './durable-objects/activityStream';
 export { WebsocketTest } from './durable-objects/websocket-test';
 
-export {
-  main as default,
-};
+export { main as default };
