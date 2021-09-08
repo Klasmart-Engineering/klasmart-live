@@ -129,6 +129,20 @@ const setDeviceReducer: Reducer<pb.ISetDevice> = (state, action) => {
   return state;
 };
 
+const removeDeviceReducer: Reducer<pb.IRemoveDevice> = (state, action) => {
+  const {
+    context: { userId },
+    payload: { id },
+  } = action.payload;
+  if (!id) throw new Error('No device id was provided');
+
+  const { participants } = state;
+  const devices = getDevices(userId, participants || {});
+  delete devices[id];
+
+  return state;
+};
+
 const setWebRtcStreamReducer: Reducer<pb.ISetWebRTCStream> = (
   state,
   action
@@ -145,21 +159,14 @@ const setWebRtcStreamReducer: Reducer<pb.ISetWebRTCStream> = (
   return state;
 };
 
-const setActivityStreamReducer: Reducer<pb.ISetActivityStream> = (
-  state,
-  action
-) => {
+const setActivityReducer: Reducer<pb.ISetActivity> = (state, action) => {
   const {
     context: { userId },
-    payload: { deviceId, activityId, activityStreamId },
+    payload: { deviceId, activity },
   } = action.payload;
   const { participants } = state;
 
   const device = getDevice(userId, deviceId, participants || {});
-  const activity = {
-    id: activityId,
-    streamId: activityStreamId,
-  };
   device.activity = activity;
 
   return state;
@@ -184,8 +191,9 @@ export const roomSlice = createSlice({
     setHost: setHostReducer,
     addTrophy: addTrophyReducer,
     setDevice: setDeviceReducer,
+    removeDevice: removeDeviceReducer,
     setWebRtcStream: setWebRtcStreamReducer,
-    setActivityStream: setActivityStreamReducer,
+    setActivity: setActivityReducer,
     setContent: setContentReducer,
   },
 });
@@ -197,8 +205,9 @@ export const {
   setHost,
   addTrophy,
   setDevice,
+  removeDevice,
   setWebRtcStream,
-  setActivityStream,
+  setActivity,
   setContent,
 } = roomSlice.actions;
 

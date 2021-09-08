@@ -108,7 +108,7 @@ export class Room implements DurableObject {
       }
 
       if (headers.get('Upgrade') === 'websocket') {
-        const protocol = headers.get('Sec-WebSocket-Protocol');
+        const protocol = headers.get('Sec-WebSocket-Protocol')?.toLowerCase();
         if (protocol === 'live') {
           return this.accept(token);
         }

@@ -6,13 +6,14 @@ import {
   addTrophy,
   roomReducer,
   sendChatMessage,
-  setActivityStream,
+  setActivity,
   setDevice,
   setHost,
   setWebRtcStream,
   userJoin,
   setContent,
   userLeave,
+  removeDevice,
 } from '.';
 
 describe('Store Actions', () => {
@@ -265,9 +266,27 @@ describe('Store Actions', () => {
     const { participants } = store.getState().room;
     const { devices } = participants[id];
     expect(Object.keys(devices)).toHaveLength(1);
-    expect(devices[deviceId].webRTCStreams).toBe(
-      action.payload.streams
-    );
+    expect(devices[deviceId].webRTCStreams).toBe(action.payload.streams);
+  });
+
+  it('removeDevice allows a user to delete a device', () => {
+    const [id, user] = addSampleUserToStore(store, context).next().value;
+    context.userId = id;
+    context.name = user.name;
+    const deviceId = 'Test Device ID Default';
+
+    const action: ContextPayload<pb.IRemoveDevice> = {
+      context,
+      payload: {
+        id: deviceId,
+      },
+    };
+
+    store.dispatch(removeDevice(action));
+    const { participants } = store.getState().room;
+    const { devices } = participants[id];
+    expect(Object.keys(devices)).toHaveLength(0);
+    expect(devices[deviceId]).toBeUndefined();
   });
 
   it('setActivityStream allows a user to set a new activity stream for a device', () => {
@@ -276,22 +295,24 @@ describe('Store Actions', () => {
     context.name = user.name;
     const deviceId = 'Test Device ID Default';
 
-    const action: ContextPayload<pb.ISetActivityStream> = {
+    const action: ContextPayload<pb.ISetActivity> = {
       context,
       payload: {
         deviceId,
-        activityId: 'New Activity',
-        activityStreamId: uuidv4(),
+        activity: {
+          id: 'New Activity',
+          streamId: uuidv4(),
+        },
       },
     };
 
-    store.dispatch(setActivityStream(action));
+    store.dispatch(setActivity(action));
     const { participants } = store.getState().room;
     const { devices } = participants[id];
     expect(Object.keys(devices)).toHaveLength(1);
     const activity = devices[deviceId].activity;
-    expect(activity.id).toBe(action.payload.activityId);
-    expect(activity.streamId).toBe(action.payload.activityStreamId);
+    expect(activity.id).toBe(action.payload.activity!.id);
+    expect(activity.streamId).toBe(action.payload.activity!.streamId);
   });
 
   it('setContent allows a user to set the room content', () => {

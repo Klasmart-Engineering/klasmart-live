@@ -8,12 +8,13 @@ export class Device {
   constructor(
     public readonly deviceId: number,
     public readonly context: Context,
-    private readonly ws: CloudflareWebsocket,
+    private ws: CloudflareWebsocket,
     private readonly room: Room,
     private readonly DEBUG: boolean,
     private lastHeartbeat: number | undefined = undefined
   ) {
-    ws.addEventListener('message', ({ data }) => {
+    ws.accept();
+    ws.addEventListener('message', async ({ data }) => {
       if (!(data instanceof ArrayBuffer)) {
         this.onClose(4401, 'Binary only protocol');
         return;
@@ -37,28 +38,44 @@ export class Device {
           case 'heartbeat':
             break;
           case 'setDevice':
-            actionToDispatch = Actions.setDevice(contextAction as ContextPayload<pb.ISetDevice>);
+            actionToDispatch = Actions.setDevice(
+              contextAction as ContextPayload<pb.ISetDevice>
+            );
             break;
-          // case 'removeDevice':
-          //   actionToDispatch = Actions.removeDevice(contextAction);
-          //   break;
+          case 'removeDevice':
+            actionToDispatch = Actions.removeDevice(
+              contextAction as ContextPayload<pb.IRemoveDevice>
+            );
+            break;
           case 'setWebRtcStream':
-            actionToDispatch = Actions.setWebRtcStream(contextAction as ContextPayload<pb.ISetDevice>);
+            actionToDispatch = Actions.setWebRtcStream(
+              contextAction as ContextPayload<pb.ISetDevice>
+            );
             break;
-          // case 'setActivity':
-          //   actionToDispatch = Actions.setActivity(contextAction);
-          //   break;
+          case 'setActivity':
+            actionToDispatch = Actions.setActivity(
+              contextAction as ContextPayload<pb.ISetActivity>
+            );
+            break;
           case 'setHost':
-            actionToDispatch = Actions.setHost(contextAction as ContextPayload<pb.ISetHost>);
+            actionToDispatch = Actions.setHost(
+              contextAction as ContextPayload<pb.ISetHost>
+            );
             break;
           case 'addTrophy':
-            actionToDispatch = Actions.addTrophy(contextAction as ContextPayload<pb.IAddTrophy>);
+            actionToDispatch = Actions.addTrophy(
+              contextAction as ContextPayload<pb.IAddTrophy>
+            );
             break;
           case 'setContent':
-            actionToDispatch = Actions.setContent(contextAction as ContextPayload<pb.ISetContent>);
+            actionToDispatch = Actions.setContent(
+              contextAction as ContextPayload<pb.ISetContent>
+            );
             break;
           case 'sendChatMessage':
-            actionToDispatch = Actions.sendChatMessage(contextAction as ContextPayload<pb.ISendChatMessage>);
+            actionToDispatch = Actions.sendChatMessage(
+              contextAction as ContextPayload<pb.ISendChatMessage>
+            );
             break;
           case 'userJoin':
           case 'userLeave':
@@ -81,11 +98,10 @@ export class Device {
         ws.send(receipt);
       }
     });
-    ws.addEventListener('error', (e) => {
+    ws.addEventListener('error', async (e) => {
       console.error(e);
     });
-    ws.addEventListener('close', (c, r) => this.onClose(c, r));
-    ws.accept();
+    ws.addEventListener('close', async (c, r) => this.onClose(c, r));
   }
 
   public sendStateDiff(diff: pb.IStateChanges): void {

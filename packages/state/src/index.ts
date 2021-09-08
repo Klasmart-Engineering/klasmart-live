@@ -4,4 +4,4 @@ export {
   INITIAL_ROOM_STATE,
   generateStateDiff,
 } from './roomSlice';
-export { RootState, ContextPayload, Context } from './store';
+export { RootState, ContextPayload, Context, store } from './store';

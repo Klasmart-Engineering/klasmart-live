@@ -6,7 +6,7 @@ message Action {
         SetDevice set_device = 3;
         RemoveDevice remove_device = 4;
         SetWebRTCStream set_web_rtc_stream = 5;
-        SetActivityStream set_activity = 6;
+        SetActivity set_activity = 6;
         SetHost set_host = 7;
         AddTrophy add_trophy = 8;
         SetContent set_content = 9;
@@ -47,10 +47,9 @@ message SetWebRTCStream {
     repeated WebRTCStream streams = 2;
 }
 
-message SetActivityStream {
+message SetActivity {
     string device_id = 1;
-    string activity_id = 2;
-    string activity_stream_id = 3;
+    Activity activity = 2;
 }
 
 message SetHost {

@@ -12,11 +12,12 @@ export declare const roomSlice: import("@reduxjs/toolkit").Slice<pb.IState, {
         type: string;
     }>;
     setDevice: Reducer<pb.ISetDevice>;
+    removeDevice: Reducer<pb.IRemoveDevice>;
     setWebRtcStream: Reducer<pb.ISetWebRTCStream>;
-    setActivityStream: Reducer<pb.ISetActivityStream>;
+    setActivity: Reducer<pb.ISetActivity>;
     setContent: Reducer<pb.ISetContent>;
 }, "room">;
-export declare const userJoin: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.IUserJoin>, string>, userLeave: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.IUserLeave>, string>, sendChatMessage: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISendChatMessage>, string>, setHost: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetHost>, string>, addTrophy: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.IAddTrophy>, string>, setDevice: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetDevice>, string>, setWebRtcStream: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetWebRTCStream>, string>, setActivityStream: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetActivityStream>, string>, setContent: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetContent>, string>;
+export declare const userJoin: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.IUserJoin>, string>, userLeave: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.IUserLeave>, string>, sendChatMessage: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISendChatMessage>, string>, setHost: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetHost>, string>, addTrophy: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.IAddTrophy>, string>, setDevice: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetDevice>, string>, removeDevice: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.IRemoveDevice>, string>, setWebRtcStream: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetWebRTCStream>, string>, setActivity: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetActivity>, string>, setContent: import("@reduxjs/toolkit").ActionCreatorWithPayload<ContextPayload<pb.ISetContent>, string>;
 export declare const Actions: import("@reduxjs/toolkit").CaseReducerActions<{
     userJoin: Reducer<pb.IUserJoin>;
     userLeave: Reducer<pb.IUserLeave>;
@@ -27,8 +28,9 @@ export declare const Actions: import("@reduxjs/toolkit").CaseReducerActions<{
         type: string;
     }>;
     setDevice: Reducer<pb.ISetDevice>;
+    removeDevice: Reducer<pb.IRemoveDevice>;
     setWebRtcStream: Reducer<pb.ISetWebRTCStream>;
-    setActivityStream: Reducer<pb.ISetActivityStream>;
+    setActivity: Reducer<pb.ISetActivity>;
     setContent: Reducer<pb.ISetContent>;
 }>;
 export declare const roomReducer: import("redux").Reducer<pb.IState, import("redux").AnyAction>;
