@@ -1,12 +1,6 @@
 import { Room } from './room';
 import { Context, ContextPayload, Actions } from 'kidsloop-live-state';
-import {
-  Action,
-  IActionAcknowledgement,
-  ActionAcknowledgement,
-  IStateChanges,
-  StateChanges,
-} from 'kidsloop-live-serialization';
+import pb from 'kidsloop-live-serialization';
 
 const HEARTBEAT_INTERVAL = 5000;
 
@@ -24,7 +18,7 @@ export class Device {
         this.onClose(4401, 'Binary only protocol');
         return;
       }
-      const response: IActionAcknowledgement = {
+      const response: pb.IActionAcknowledgement = {
         id: 'Undefined Action ID',
       };
       clearTimeout(this.lastHeartbeat);
@@ -33,8 +27,8 @@ export class Device {
       }, HEARTBEAT_INTERVAL);
 
       try {
-        const action = Action.decode(new Uint8Array(data));
-        const contextAction: ContextPayload = {
+        const action = pb.Action.decode(new Uint8Array(data));
+        const contextAction = {
           context: this.context,
           payload: action,
         };
@@ -43,28 +37,28 @@ export class Device {
           case 'heartbeat':
             break;
           case 'setDevice':
-            actionToDispatch = Actions.setDevice(contextAction);
+            actionToDispatch = Actions.setDevice(contextAction as ContextPayload<pb.ISetDevice>);
             break;
-          case 'removeDevice':
-            actionToDispatch = Actions.removeDevice(contextAction);
-            break;
+          // case 'removeDevice':
+          //   actionToDispatch = Actions.removeDevice(contextAction);
+          //   break;
           case 'setWebRtcStream':
-            actionToDispatch = Actions.setWebRtcStream(contextAction);
+            actionToDispatch = Actions.setWebRtcStream(contextAction as ContextPayload<pb.ISetDevice>);
             break;
-          case 'setActivity':
-            actionToDispatch = Actions.setActivity(contextAction);
-            break;
+          // case 'setActivity':
+          //   actionToDispatch = Actions.setActivity(contextAction);
+          //   break;
           case 'setHost':
-            actionToDispatch = Actions.setHost(contextAction);
+            actionToDispatch = Actions.setHost(contextAction as ContextPayload<pb.ISetHost>);
             break;
           case 'addTrophy':
-            actionToDispatch = Actions.addTrophy(contextAction);
+            actionToDispatch = Actions.addTrophy(contextAction as ContextPayload<pb.IAddTrophy>);
             break;
           case 'setContent':
-            actionToDispatch = Actions.setContent(contextAction);
+            actionToDispatch = Actions.setContent(contextAction as ContextPayload<pb.ISetContent>);
             break;
           case 'sendChatMessage':
-            actionToDispatch = Actions.sendChatMessage(contextAction);
+            actionToDispatch = Actions.sendChatMessage(contextAction as ContextPayload<pb.ISendChatMessage>);
             break;
           case 'userJoin':
           case 'userLeave':
@@ -76,14 +70,14 @@ export class Device {
             response.error = 'Unidentified action type provided';
             break;
         }
-        if (!actionToDispatch) {
+        if (actionToDispatch) {
           this.room.store.dispatch(actionToDispatch);
         }
       } catch (e) {
         console.log(e);
         response.error = 'Unexpected error occurred';
       } finally {
-        const receipt = ActionAcknowledgement.encode(response).finish();
+        const receipt = pb.ActionAcknowledgement.encode(response).finish();
         ws.send(receipt);
       }
     });
@@ -94,8 +88,8 @@ export class Device {
     ws.accept();
   }
 
-  public sendStateDiff(diff: IStateChanges): void {
-    const data = StateChanges.encode(diff).finish();
+  public sendStateDiff(diff: pb.IStateChanges): void {
+    const data = pb.StateChanges.encode(diff).finish();
     this.ws.send(data);
   }
 
@@ -120,7 +114,7 @@ export class Device {
   */
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private onClose(close?: number, reason?: string) {
+  private onClose(_close?: number, _reason?: string) {
     this.room.disconnectDevice(this);
   }
 

@@ -56,7 +56,7 @@ export class Room implements DurableObject {
   ) {
     this.store = configureStore({
       middleware: [
-        (_store) => (next) => (action) => {
+        () => (next) => (action) => {
           // Check that we haven't debounced for longer than 1 second already
           if (
             Date.now() - this.lastFanOut > 1000 &&
@@ -159,7 +159,7 @@ export class Room implements DurableObject {
       issuer: this.env.JKWS_ISSUER,
       audience: this.env.JKWS_AUDIENCE,
     });
-    return (result.payload as any) as Token;
+    return (result.payload as unknown) as Token;
   }
 
   private getUserDevices(userId: string): UserDevices {
@@ -216,7 +216,7 @@ export class Room implements DurableObject {
     const clients = [...this.clients.entries()].map(
       ([id, devices]) =>
         `${id}: ${[...devices.entries()].map(
-          ([id, _device]) => `Device: ID ${id}\n`
+          ([id]) => `Device: ID ${id}\n`
         )}`
     );
     return json(

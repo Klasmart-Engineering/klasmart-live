@@ -26,7 +26,7 @@ bindings = [
 ]
 
 [build]
-command = "npm run build"
+# command = "npm run build"
 
 [build.upload]
 format = "modules"

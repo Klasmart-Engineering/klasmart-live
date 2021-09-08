@@ -1,13 +1,13 @@
-import { ContentType, IState } from 'kidsloop-live-serialization';
+import pb from 'kidsloop-live-serialization';
 import { generateStateDiff } from './diff';
 
 describe('State Diffing', () => {
   it('generates an empty diff when both diffs are default', () => {
-    const state: IState = {
+    const state: pb.IState = {
       participants: {},
       host: null,
       chatMessages: [],
-      content: ContentType.Blank,
+      content: pb.ContentType.Blank,
       endTimestamp: null,
     };
     const result = generateStateDiff(state, state);
@@ -16,14 +16,14 @@ describe('State Diffing', () => {
 
   describe('participants', () => {
     it('adds a new participant', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
         participants: {
           'Test User': {
@@ -63,7 +63,7 @@ describe('State Diffing', () => {
     });
 
     it('removes an existing participant', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {
           'Test User': {
             name: 'Test Name',
@@ -92,10 +92,10 @@ describe('State Diffing', () => {
         },
         host: null,
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
         participants: {},
       };
@@ -110,7 +110,7 @@ describe('State Diffing', () => {
     });
 
     it('works out changes to an existing participant', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {
           'Test User': {
             name: 'Test Name',
@@ -139,10 +139,10 @@ describe('State Diffing', () => {
         },
         host: null,
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
         participants: {
           'Test User': {
@@ -182,7 +182,7 @@ describe('State Diffing', () => {
     });
 
     it('works out multiple additions, changes and removals', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {
           'Test User': {
             name: 'Test Name',
@@ -235,10 +235,10 @@ describe('State Diffing', () => {
         },
         host: null,
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
         participants: {
           'Test User': {
@@ -309,64 +309,66 @@ describe('State Diffing', () => {
 
   describe('chat messages', () => {
     it('correctly appends the first message', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const newMessages = [
+        { message: 'Test Message', fromUser: 'Test User', timestamp: 123456 },
+      ];
+      const latest: pb.IState = {
         ...initial,
-        chatMessages: [
-          { message: 'Test Message', fromUser: 'Test User', timestamp: 123456 },
-        ],
+        chatMessages: newMessages,
       };
       const result = generateStateDiff(initial, latest);
       expect(result).toEqual([
         {
           appendChatMessage: {
-            messages: [latest.chatMessages![0]],
+            messages: newMessages,
           },
         },
       ]);
     });
 
     it('correct appends the multiple messages', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const newMessages = [
+        {
+          message: 'Test Message 1',
+          fromUser: 'Test User',
+          timestamp: 123456,
+        },
+        {
+          message: 'Test Message 2',
+          fromUser: 'Test User 2',
+          timestamp: 123457,
+        },
+      ];
+      const latest: pb.IState = {
         ...initial,
-        chatMessages: [
-          {
-            message: 'Test Message 1',
-            fromUser: 'Test User',
-            timestamp: 123456,
-          },
-          {
-            message: 'Test Message 2',
-            fromUser: 'Test User 2',
-            timestamp: 123457,
-          },
-        ],
+        chatMessages: newMessages,
       };
       const result = generateStateDiff(initial, latest);
       expect(result).toEqual([
         {
           appendChatMessage: {
-            messages: latest.chatMessages,
+            messages: newMessages,
           },
         },
       ]);
     });
 
     it('correct appends the multiple messages after the first', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [
@@ -376,10 +378,22 @@ describe('State Diffing', () => {
             timestamp: 123456,
           },
         ],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const newMessages = [
+        {
+          message: 'Test Message 2',
+          fromUser: 'Test User 2',
+          timestamp: 123457,
+        },
+        {
+          message: 'Test Message 3',
+          fromUser: 'Test User 3',
+          timestamp: 123458,
+        },
+      ];
+      const latest: pb.IState = {
         ...initial,
         chatMessages: [
           {
@@ -387,30 +401,21 @@ describe('State Diffing', () => {
             fromUser: 'Test User',
             timestamp: 123456,
           },
-          {
-            message: 'Test Message 2',
-            fromUser: 'Test User 2',
-            timestamp: 123457,
-          },
-          {
-            message: 'Test Message 3',
-            fromUser: 'Test User 3',
-            timestamp: 123458,
-          },
+          ...newMessages,
         ],
       };
       const result = generateStateDiff(initial, latest);
       expect(result).toEqual([
         {
           appendChatMessage: {
-            messages: latest.chatMessages!.slice(1),
+            messages: newMessages,
           },
         },
       ]);
     });
 
     it('correct appends the messages with a non-0 index', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [
@@ -425,10 +430,17 @@ describe('State Diffing', () => {
             timestamp: 123457,
           },
         ],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const newMessages = [
+        {
+          message: 'Test Message 3',
+          fromUser: 'Test User 3',
+          timestamp: 123458,
+        }
+      ];
+      const latest: pb.IState = {
         ...initial,
         chatMessages: [
           {
@@ -441,18 +453,14 @@ describe('State Diffing', () => {
             fromUser: 'Test User 2',
             timestamp: 123457,
           },
-          {
-            message: 'Test Message 3',
-            fromUser: 'Test User 3',
-            timestamp: 123458,
-          },
+          ...newMessages,
         ],
       };
       const result = generateStateDiff(initial, latest);
       expect(result).toEqual([
         {
           appendChatMessage: {
-            messages: [latest.chatMessages![2]],
+            messages: newMessages,
           },
         },
       ]);
@@ -460,14 +468,14 @@ describe('State Diffing', () => {
 
     describe('host', () => {
       it('can be set to an ID', () => {
-        const initial: IState = {
+        const initial: pb.IState = {
           participants: {},
           host: null,
           chatMessages: [],
-          content: ContentType.Blank,
+          content: pb.ContentType.Blank,
           endTimestamp: null,
         };
-        const latest: IState = {
+        const latest: pb.IState = {
           ...initial,
           host: 'Test Host',
         };
@@ -483,14 +491,14 @@ describe('State Diffing', () => {
     });
 
     it('can be set to null', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: 'Test Host',
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
         host: null,
       };
@@ -507,16 +515,16 @@ describe('State Diffing', () => {
 
   describe('content', () => {
     it('can be set to a content type', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [],
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
-        content: ContentType.Video,
+        content: pb.ContentType.Video,
       };
       const result = generateStateDiff(initial, latest);
       expect(result).toEqual([
@@ -529,16 +537,16 @@ describe('State Diffing', () => {
     });
 
     it('can be set to blank', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [],
-        content: ContentType.Audio,
+        content: pb.ContentType.Audio,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
-        content: ContentType.Blank,
+        content: pb.ContentType.Blank,
       };
       const result = generateStateDiff(initial, latest);
       expect(result).toEqual([
@@ -553,14 +561,14 @@ describe('State Diffing', () => {
 
   describe('end timestamp', () => {
     it("doesn't send an event when null", () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [],
-        content: ContentType.Audio,
+        content: pb.ContentType.Audio,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
       };
       const result = generateStateDiff(initial, latest);
@@ -568,14 +576,14 @@ describe('State Diffing', () => {
     });
 
     it('correctly sends a classEnded notification when populated', () => {
-      const initial: IState = {
+      const initial: pb.IState = {
         participants: {},
         host: null,
         chatMessages: [],
-        content: ContentType.Audio,
+        content: pb.ContentType.Audio,
         endTimestamp: null,
       };
-      const latest: IState = {
+      const latest: pb.IState = {
         ...initial,
         endTimestamp: 12345,
       };

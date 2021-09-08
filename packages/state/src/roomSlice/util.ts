@@ -1,4 +1,4 @@
-import { IDevice, IParticipant } from 'kidsloop-live-serialization';
+import pb from 'kidsloop-live-serialization';
 import { ID } from '../store';
 
 /**
@@ -6,9 +6,9 @@ import { ID } from '../store';
  */
 export function getDevices(
   userId: ID,
-  participants: { [k: string]: IParticipant }
-): { [k: string]: IDevice } {
-  const user = participants![userId];
+  participants: { [k: string]: pb.IParticipant }
+): { [k: string]: pb.IDevice } {
+  const user = participants[userId];
   if (!user) {
     throw new Error(
       `Unable to find user with ID: ${userId} in the class participant list`
@@ -27,8 +27,8 @@ export function getDevices(
 export function getDevice(
   userId: ID,
   deviceId: string | null | undefined,
-  participants: { [k: string]: IParticipant }
-): IDevice {
+  participants: { [k: string]: pb.IParticipant }
+): pb.IDevice {
   if (!deviceId) throw new Error('No device ID was provided');
 
   const devices = getDevices(userId, participants);

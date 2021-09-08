@@ -13,10 +13,10 @@ export default [
       sourcemap: true,
     },
     plugins: [
-      commonjs(),
-      nodeResolve({ browser: true }),
-      terser(),
       typescript(),
+      nodeResolve({ browser: true }),
+      commonjs(),
+      // terser(),
     ],
   },
 ];

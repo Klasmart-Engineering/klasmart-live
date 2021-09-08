@@ -7,13 +7,16 @@ export default [
   {
     input: 'src/index.ts',
     output: {
+      exports: 'named',
       file: 'dist/index.js',
+      format: 'cjs',
+      sourcemap: true,
     },
     plugins: [
       typescript({ tsconfig: './tsconfig.json' }),
       nodeResolve({ browser: true }),
       commonjs(),
-      terser(),
+      // terser(),
     ],
   },
 ];

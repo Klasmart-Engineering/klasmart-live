@@ -1,78 +1,79 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  IState,
-  IParticipant,
-  IChatMessage,
-  IUserJoin,
-  ISetHost,
-  ISetDevice,
-  IUserLeave,
-  ISetWebRTCStream,
-  ISetActivityStream,
-  ISendChatMessage,
-  ISetContent,
-  IAddTrophy,
-  ContentType,
-} from 'kidsloop-live-serialization';
+import pb from 'kidsloop-live-serialization';
 import { ContextPayload } from '../store';
 import { getDevice, getDevices } from './util';
 
-type Reducer<T> = CaseReducer<IState, PayloadAction<ContextPayload<T>>>;
+type Reducer<T> = CaseReducer<pb.IState, PayloadAction<ContextPayload<T>>>;
 
-const initialState: IState = {
+const initialState: pb.IState = {
   participants: {},
   host: null,
   chatMessages: [],
-  content: ContentType.Blank,
+  content: pb.ContentType.Blank,
   endTimestamp: null,
 };
 
-const userJoinReducer: Reducer<IUserJoin> = (state, action) => {
+const userJoinReducer: Reducer<pb.IUserJoin> = (state, action) => {
   const {
     context: { userId, name },
   } = action.payload;
-  const { participants } = state;
+  let { participants } = state;
 
-  const participant: IParticipant = {
+  if (!participants) {
+    participants = {};
+  }
+
+  const participant: pb.IParticipant = {
     name,
     devices: {},
     trophies: [],
   };
 
-  participants![userId] = participant;
+  participants[userId] = participant;
   return state;
 };
 
-const userLeaveReducer: Reducer<IUserLeave> = (state, action) => {
+const userLeaveReducer: Reducer<pb.IUserLeave> = (state, action) => {
   const {
     context: { userId },
   } = action.payload;
 
-  const { participants } = state;
-  delete participants![userId];
+  let { participants } = state;
+
+  if (!participants) {
+    participants = {};
+  }
+
+  delete participants[userId];
 
   return state;
 };
 
-const sendChatMessageReducer: Reducer<ISendChatMessage> = (state, action) => {
+const sendChatMessageReducer: Reducer<pb.ISendChatMessage> = (
+  state,
+  action
+) => {
   const {
     context: { userId },
     payload: { message },
   } = action.payload;
   if (!message || message.length === 0) return state;
 
-  const msg: IChatMessage = {
+  const msg: pb.IChatMessage = {
     fromUser: userId,
     message,
     timestamp: Date.now(),
   };
-  state.chatMessages!.push(msg);
+  if (!state.chatMessages) {
+    state.chatMessages = [];
+  }
+  state.chatMessages.push(msg);
 
   return state;
 };
 
 // @TODO - Probably want to make it so only teacher/internal server can set host?
-const setHostReducer: Reducer<ISetHost> = (state, action) => {
+const setHostReducer: Reducer<pb.ISetHost> = (state, action) => {
   const {
     payload: { id },
   } = action.payload;
@@ -83,8 +84,8 @@ const setHostReducer: Reducer<ISetHost> = (state, action) => {
 };
 
 const addTrophyReducer: CaseReducer<
-  IState,
-  PayloadAction<ContextPayload<IAddTrophy>>
+  pb.IState,
+  PayloadAction<ContextPayload<pb.IAddTrophy>>
 > = (state, action) => {
   const participants = state.participants || {};
   const trophy = action.payload.payload;
@@ -114,7 +115,7 @@ const addTrophyReducer: CaseReducer<
   return state;
 };
 
-const setDeviceReducer: Reducer<ISetDevice> = (state, action) => {
+const setDeviceReducer: Reducer<pb.ISetDevice> = (state, action) => {
   const {
     context: { userId },
     payload: { device, deviceId },
@@ -122,26 +123,29 @@ const setDeviceReducer: Reducer<ISetDevice> = (state, action) => {
   if (!device) throw new Error('No device was provided');
   if (!deviceId) throw new Error('No device id was provided');
   const { participants } = state;
-  const devices = getDevices(userId, participants!);
+  const devices = getDevices(userId, participants || {});
   devices[deviceId] = device;
 
   return state;
 };
 
-const setWebRtcStreamReducer: Reducer<ISetWebRTCStream> = (state, action) => {
+const setWebRtcStreamReducer: Reducer<pb.ISetWebRTCStream> = (
+  state,
+  action
+) => {
   const {
     context: { userId },
     payload: { deviceId, streams },
   } = action.payload;
 
   const { participants } = state;
-  const device = getDevice(userId, deviceId, participants!);
+  const device = getDevice(userId, deviceId, participants || {});
   device.webRTCStreams = streams;
 
   return state;
 };
 
-const setActivityStreamReducer: Reducer<ISetActivityStream> = (
+const setActivityStreamReducer: Reducer<pb.ISetActivityStream> = (
   state,
   action
 ) => {
@@ -151,7 +155,7 @@ const setActivityStreamReducer: Reducer<ISetActivityStream> = (
   } = action.payload;
   const { participants } = state;
 
-  const device = getDevice(userId, deviceId, participants!);
+  const device = getDevice(userId, deviceId, participants || {});
   const activity = {
     id: activityId,
     streamId: activityStreamId,
@@ -161,7 +165,7 @@ const setActivityStreamReducer: Reducer<ISetActivityStream> = (
   return state;
 };
 
-const setContentReducer: Reducer<ISetContent> = (state, action) => {
+const setContentReducer: Reducer<pb.ISetContent> = (state, action) => {
   const {
     payload: { content },
   } = action.payload;
@@ -203,4 +207,3 @@ export const Actions = roomSlice.actions;
 export const roomReducer = roomSlice.reducer;
 export const INITIAL_ROOM_STATE = initialState;
 export { generateStateDiff } from './diff';
-

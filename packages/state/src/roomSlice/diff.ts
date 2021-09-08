@@ -1,4 +1,4 @@
-import { IStateDiff, IState, IParticipant } from 'kidsloop-live-serialization';
+import pb from 'kidsloop-live-serialization';
 
 // Potential protocol flow
 //
@@ -22,19 +22,22 @@ import { IStateDiff, IState, IParticipant } from 'kidsloop-live-serialization';
 //    ws.send(ActionReceipt { epoch, epochCounter, actionId })
 // })
 
-type ParticipantMap = { [k: string]: IParticipant };
+type ParticipantMap = { [k: string]: pb.IParticipant };
 
-export function generateStateDiff(old: IState, latest: IState): IStateDiff[] {
+export function generateStateDiff(
+  old: pb.IState,
+  latest: pb.IState
+): pb.IStateDiff[] {
   const differences = parseParticipants(
-    old.participants!,
-    latest.participants!
+    old.participants || {},
+    latest.participants || {},
   );
 
-  if (old.chatMessages!.length < latest.chatMessages!.length) {
+  if ((old.chatMessages || []).length < (latest.chatMessages || []).length) {
     differences.push({
       appendChatMessage: {
-        messages: latest.chatMessages!.slice(
-          Math.max(old.chatMessages!.length, 0)
+        messages: (latest.chatMessages || []).slice(
+          Math.max((old.chatMessages || []).length, 0)
         ),
       },
     });
@@ -54,7 +57,7 @@ export function generateStateDiff(old: IState, latest: IState): IStateDiff[] {
 function parseParticipants(
   old: ParticipantMap,
   latest: ParticipantMap
-): IStateDiff[] {
+): pb.IStateDiff[] {
   const differences = [];
   const oldKeys = new Set(Object.keys(old));
   const newKeys = Object.keys(latest);

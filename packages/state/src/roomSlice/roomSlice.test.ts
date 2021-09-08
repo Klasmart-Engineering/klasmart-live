@@ -1,17 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  IParticipant,
-  ISendChatMessage,
-  ISetActivityStream,
-  ISetContent,
-  ISetDevice,
-  ISetHost,
-  ISetWebRTCStream,
-  IUserJoin,
-  IAddTrophy,
-  ContentType,
-} from 'kidsloop-live-serialization';
+import pb from 'kidsloop-live-serialization';
 import { Context, ContextPayload, ID } from '../store';
 import {
   addTrophy,
@@ -45,12 +34,12 @@ describe('Store Actions', () => {
   });
 
   it('userJoin allows a user to join the room', () => {
-    const user: IParticipant = {
+    const user: pb.IParticipant = {
       name: context.name,
       devices: {},
       trophies: [],
     };
-    const dummy: ContextPayload<IUserJoin> = {
+    const dummy: ContextPayload<pb.IUserJoin> = {
       context,
       payload: {},
     };
@@ -62,7 +51,7 @@ describe('Store Actions', () => {
   });
 
   it('userLeave allows a user to leave the room', () => {
-    const user: IParticipant = {
+    const user: pb.IParticipant = {
       name: context.name,
       devices: {},
       trophies: [],
@@ -89,7 +78,7 @@ describe('Store Actions', () => {
     const payload = {
       message: 'Test Message',
     };
-    const action: ContextPayload<ISendChatMessage> = {
+    const action: ContextPayload<pb.ISendChatMessage> = {
       context,
       payload,
     };
@@ -107,7 +96,7 @@ describe('Store Actions', () => {
   });
 
   it('setHost allows a user set a host', () => {
-    const action: ContextPayload<ISetHost> = {
+    const action: ContextPayload<pb.ISetHost> = {
       context,
       payload: {
         id: '12345',
@@ -120,10 +109,10 @@ describe('Store Actions', () => {
   });
 
   it('addTrophy allows a trophy to be added to a single user', () => {
-    const [id, _user] = addSampleUserToStore(store, context).next().value;
-    const [id2, _user2] = addSampleUserToStore(store, context).next().value;
+    const [id] = addSampleUserToStore(store, context).next().value;
+    const [id2] = addSampleUserToStore(store, context).next().value;
 
-    const action: ContextPayload<IAddTrophy> = {
+    const action: ContextPayload<pb.IAddTrophy> = {
       context,
       payload: {
         trophyId: 'Trophy 1',
@@ -142,7 +131,7 @@ describe('Store Actions', () => {
   it('addTrophy adds a trophy to the whole class if user is unspecified', () => {
     addUsersToStore(store, context, 2);
 
-    const action: ContextPayload<IAddTrophy> = {
+    const action: ContextPayload<pb.IAddTrophy> = {
       context,
       payload: {
         trophyId: 'Trophy 1',
@@ -154,20 +143,23 @@ describe('Store Actions', () => {
     const { participants } = store.getState().room;
 
     expect(Object.keys(participants)).toHaveLength(2);
-    (Object.values(participants) as IParticipant[]).forEach((participant) => {
-      expect(participant.trophies).toHaveLength(1);
-    });
+    (Object.values(participants) as pb.IParticipant[]).forEach(
+      (participant) => {
+        expect(participant.trophies).toHaveLength(1);
+      }
+    );
   });
 
   it('setDevice allows a user to set a device', () => {
     const [id, user] = addSampleUserToStore(store, context).next().value;
     context.userId = id;
     context.name = user.name;
+    const deviceId = 'Test Device ID';
 
-    const action: ContextPayload<ISetDevice> = {
+    const action: ContextPayload<pb.ISetDevice> = {
       context,
       payload: {
-        deviceId: 'Test Device ID',
+        deviceId,
         device: {
           activity: {
             id: 'Test Activity ID',
@@ -193,15 +185,16 @@ describe('Store Actions', () => {
     const { participants } = store.getState().room;
     const { devices } = participants[id];
     expect(Object.keys(devices)).toHaveLength(2);
-    expect(devices[action.payload.deviceId!]).toBe(action.payload.device);
+    expect(devices[deviceId]).toBe(action.payload.device);
   });
 
   it('setDevice overwrites an already existing device', () => {
     const [id, user] = addSampleUserToStore(store, context).next().value;
     context.userId = id;
     context.name = user.name;
+    const deviceId = 'Test Device ID Default';
 
-    const action: ContextPayload<ISetDevice> = {
+    const action: ContextPayload<pb.ISetDevice> = {
       context,
       payload: {
         deviceId: 'Test Device ID Default',
@@ -230,18 +223,19 @@ describe('Store Actions', () => {
     const { participants } = store.getState().room;
     const { devices } = participants[id];
     expect(Object.keys(devices)).toHaveLength(1);
-    expect(devices[action.payload.deviceId!]).toBe(action.payload.device);
+    expect(devices[deviceId]).toBe(action.payload.device);
   });
 
   it('setDevice allows a user to set a new web RTC streams for a device', () => {
     const [id, user] = addSampleUserToStore(store, context).next().value;
     context.userId = id;
     context.name = user.name;
+    const deviceId = 'Test Device ID Default';
 
-    const action: ContextPayload<ISetWebRTCStream> = {
+    const action: ContextPayload<pb.ISetWebRTCStream> = {
       context,
       payload: {
-        deviceId: 'Test Device ID Default',
+        deviceId,
         streams: [
           {
             id: 'Test Web RTC Stream Video',
@@ -271,7 +265,7 @@ describe('Store Actions', () => {
     const { participants } = store.getState().room;
     const { devices } = participants[id];
     expect(Object.keys(devices)).toHaveLength(1);
-    expect(devices[action.payload.deviceId!].webRTCStreams).toBe(
+    expect(devices[deviceId].webRTCStreams).toBe(
       action.payload.streams
     );
   });
@@ -280,11 +274,12 @@ describe('Store Actions', () => {
     const [id, user] = addSampleUserToStore(store, context).next().value;
     context.userId = id;
     context.name = user.name;
+    const deviceId = 'Test Device ID Default';
 
-    const action: ContextPayload<ISetActivityStream> = {
+    const action: ContextPayload<pb.ISetActivityStream> = {
       context,
       payload: {
-        deviceId: 'Test Device ID Default',
+        deviceId,
         activityId: 'New Activity',
         activityStreamId: uuidv4(),
       },
@@ -294,7 +289,7 @@ describe('Store Actions', () => {
     const { participants } = store.getState().room;
     const { devices } = participants[id];
     expect(Object.keys(devices)).toHaveLength(1);
-    const activity = devices[action.payload.deviceId!].activity;
+    const activity = devices[deviceId].activity;
     expect(activity.id).toBe(action.payload.activityId);
     expect(activity.streamId).toBe(action.payload.activityStreamId);
   });
@@ -304,11 +299,11 @@ describe('Store Actions', () => {
     context.userId = id;
     context.name = user.name;
 
-    const action: ContextPayload<ISetContent> = {
+    const action: ContextPayload<pb.ISetContent> = {
       context,
       payload: {
         content: {
-          type: ContentType.H5P,
+          type: pb.ContentType.H5P,
           id: 'Test H5P Activity',
           url: 'test.activity.com/h5p',
         },
@@ -316,7 +311,7 @@ describe('Store Actions', () => {
     };
 
     let { content } = store.getState().room;
-    expect(content).toBe(ContentType.Blank);
+    expect(content).toBe(pb.ContentType.Blank);
     store.dispatch(setContent(action));
     content = store.getState().room.content;
     expect(content).toBe(action.payload.content);
@@ -327,7 +322,7 @@ function addUsersToStore(
   store: EnhancedStore,
   context: Context,
   numberOfUsers: number
-): [ID, IParticipant][] {
+): [ID, pb.IParticipant][] {
   const users = [];
   for (let i = 0; i < numberOfUsers; i += 1) {
     users.push(addSampleUserToStore(store, context).next().value);
@@ -338,32 +333,33 @@ function addUsersToStore(
 function* addSampleUserToStore(
   store: EnhancedStore,
   context: Context
-): Generator<[ID, IParticipant]> {
+): Generator<[ID, pb.IParticipant]> {
   const id = uuidv4();
   const name = `Sample User ${id.substr(0, 5)}`;
   const defaultDeviceId = 'Test Device ID Default';
-  const user: IParticipant = {
-    name,
-    devices: {
-      [defaultDeviceId]: {
-        activity: {
-          id: 'Test Activity ID Default',
-          streamId: 'Test Activity Stream ID Default',
-        },
-        webRTCStreams: [
-          {
-            id: 'Test Web RTC Stream Default',
-            label: 'Test Label Default',
-            tracks: [
-              {
-                id: 'Test Video Default',
-                sfu: 'sfu.1.com/default',
-              },
-            ],
-          },
-        ],
+  const devices = {
+    [defaultDeviceId]: {
+      activity: {
+        id: 'Test Activity ID Default',
+        streamId: 'Test Activity Stream ID Default',
       },
+      webRTCStreams: [
+        {
+          id: 'Test Web RTC Stream Default',
+          label: 'Test Label Default',
+          tracks: [
+            {
+              id: 'Test Video Default',
+              sfu: 'sfu.1.com/default',
+            },
+          ],
+        },
+      ],
     },
+  };
+  const user: pb.IParticipant = {
+    name,
+    devices,
     trophies: [],
   };
   const ctx = {
@@ -371,18 +367,18 @@ function* addSampleUserToStore(
     userId: id,
     name,
   };
-  const join: ContextPayload<IUserJoin> = {
+  const join: ContextPayload<pb.IUserJoin> = {
     context: ctx,
     payload: {},
   };
 
   store.dispatch(userJoin(join));
 
-  const device: ContextPayload<ISetDevice> = {
+  const device: ContextPayload<pb.ISetDevice> = {
     context: ctx,
     payload: {
       deviceId: defaultDeviceId,
-      device: user.devices![defaultDeviceId],
+      device: devices[defaultDeviceId],
     },
   };
 
