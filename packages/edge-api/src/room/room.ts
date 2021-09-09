@@ -14,7 +14,7 @@ import {
   INITIAL_ROOM_STATE,
   generateStateDiff,
 } from 'kidsloop-live-state';
-import { IState, IStateChanges } from 'kidsloop-live-serialization';
+import pb from 'kidsloop-live-serialization';
 
 type UserDevices = Map<number, Device>;
 
@@ -36,65 +36,101 @@ export interface Token {
 const DEBOUNCE_TIME = 300;
 
 export class Room implements DurableObject {
-  // public store: EnhancedStore;
+  public store: EnhancedStore;
 
-  // private clients = new Map<string, UserDevices>();
-  // private teachers = new Set<string>();
+  private clients = new Map<string, UserDevices>();
+  private teachers = new Set<string>();
 
-  // private deviceId = 0;
-  // private fanOutDebounceTimeout: number | undefined = undefined;
-  // private lastFanOut = Date.now();
-  // private previousState = INITIAL_ROOM_STATE;
+  private deviceId = 0;
+  private fanOutDebounceTimeout: number | undefined = undefined;
+  private lastFanOut = Date.now();
+  private previousState = INITIAL_ROOM_STATE;
 
   private numMessages = 0;
 
+  private websockets = new Map<number, CloudflareWebsocket>();
+
   public constructor(
     private state: DurableObjectState,
-    private env: CloudflareEnvironment
-    // private state: DurableObjectState,
-    // private env: CloudflareEnvironment,
-    // private DEBUG = env.ENVIRONMENT === 'dev',
-    // private JWKS = env.JKWS_URL
-    //   ? createRemoteJWKSet(new URL(env.JKWS_URL))
-    //   : undefined
+    private env: CloudflareEnvironment,
+    private DEBUG = env.ENVIRONMENT === 'dev',
+    private JWKS = env.JKWS_URL
+      ? createRemoteJWKSet(new URL(env.JKWS_URL))
+      : undefined
   ) {
-  //   this.store = configureStore({
-  //     middleware: [
-  //       () => (next) => (action) => {
-  //         // Check that we haven't debounced for longer than 1 second already
-  //         if (
-  //           Date.now() - this.lastFanOut > 1000 &&
-  //           this.fanOutDebounceTimeout
-  //         ) {
-  //           next(action);
-  //           return;
-  //         }
-  //         // If we didn't previously have a fan out triggered, then trigger one
-  //         if (!this.fanOutDebounceTimeout) {
-  //           this.triggerFanOut();
-  //           next(action);
-  //           return;
-  //         }
+    this.store = configureStore({
+      middleware: [
+        () => (next) => (action) => {
+          // Check that we haven't debounced for longer than 1 second already
+          if (
+            Date.now() - this.lastFanOut > 1000 &&
+            this.fanOutDebounceTimeout
+          ) {
+            next(action);
+            return;
+          }
+          // If we didn't previously have a fan out triggered, then trigger one
+          if (!this.fanOutDebounceTimeout) {
+            this.triggerFanOut();
+            next(action);
+            return;
+          }
 
-  //         // If we have a timeout triggered then clear and restart the debounce
-  //         clearTimeout(this.fanOutDebounceTimeout);
-  //         next(action);
-  //         this.triggerFanOut();
-  //       },
-  //     ],
-  //     reducer: {
-  //       room: roomReducer,
-  //     },
-  //   });
-  //   this.previousState = this.currentState;
+          // If we have a timeout triggered then clear and restart the debounce
+          clearTimeout(this.fanOutDebounceTimeout);
+          next(action);
+          this.triggerFanOut();
+        },
+      ],
+      reducer: {
+        room: roomReducer,
+      },
+    });
+    this.previousState = this.currentState;
   }
 
-  // get currentState(): IState {
-  //   return this.store.getState().room;
-  // }
+  get currentState(): pb.IState {
+    return this.store.getState().room;
+  }
 
   public async fetch(request: Request): Promise<Response> {
     console.log('hey');
+
+    const { headers } = request;
+    try {
+      const cookieHeader = headers.get('Cookie');
+      if (!cookieHeader) {
+        return statusText(401);
+      }
+      const cookies = parseCookies(cookieHeader);
+
+      const token = await this.authenticate(cookies['CF_Authorization']);
+      if (!token) {
+        return statusText(403);
+      }
+      const { email } = token;
+      if (typeof email !== 'string') {
+        return statusText(400);
+      }
+      if (headers.get('Upgrade') === 'websocket') {
+        return this.websocket(request, token);
+      }
+      return this.http(request, token);
+    } catch (e) {
+      return debugResponse(headers, e, this.DEBUG);
+    }
+  }
+
+//   public disconnectDevice(device: Device): void {
+//     const userDevices = this.getUserDevices(device.context.userId);
+//     userDevices.delete(device.deviceId);
+//   }
+
+  private async http(request: Request, token: Token): Promise<Response> {
+    return new Response('hey');
+  }
+
+  private async websocket(request: Request, token: Token): Promise<Response> {
     const protocol = request.headers.get('Sec-WebSocket-Protocol');
 
     const webSocketPair = new WebSocketPair();
@@ -104,98 +140,81 @@ export class Room implements DurableObject {
         : undefined;
 
     const ws = webSocketPair[1];
-    ws.addEventListener('close', () => console.log('close'));
-    ws.addEventListener('message', ({data}) => {
-      console.log(`message: ${data}`);
-      this.numMessages++;
-      const message = JSON.stringify({
-        id,
-        numMessages: this.numMessages,
-        state: [...Object.entries(this.state)],
-      });
-      ws.send(message);
-    });
-    ws.addEventListener('error', () => console.log('error'));
-    ws.accept();
+    // ws.addEventListener('close', () => console.log('close'));
+    // ws.addEventListener('message', ({data}) => {
+    //   try {
+    //     pb.Action.decode(new Uint8Array(data));
+    //   } catch (e) {
+    //     console.error('decoding data failed');
+    //     return;
+    //   }
+    //   console.log(`message: ${data}`);
+    //   this.numMessages++;
+    //   const message = JSON.stringify({
+    //     id,
+    //     numMessages: this.numMessages,
+    //     state: [...Object.entries(this.state)],
+    //   });
+    //   ws.send(message);
+    // });
+    // ws.addEventListener('error', () => console.log('error'));
+    // ws.accept();
 
-    const id = this.state.id.toString();
-    const message = JSON.stringify({
-      id,
-      numMessages: this.numMessages,
-      state: [...Object.entries(this.state)],
-    });
-    ws.send(message);
+    // const id = this.state.id.toString();
+    // const message = JSON.stringify({
+    //   id,
+    //   numMessages: this.numMessages,
+    //   state: [...Object.entries(this.state)],
+    // });
+    // ws.send(message);
+
+    const context = tokenToContext(token);
+    new Device(
+      0,
+      context,
+      ws,
+      this,
+      this.env.ENVIRONMENT === 'dev'
+    );
 
     return new Response(null, {
       status: 101,
       webSocket: webSocketPair[0],
       headers,
     });
-    // const { headers } = request;
-    // try {
-    //   const cookieHeader = headers.get('Cookie');
-    //   if (!cookieHeader) {
-    //     return statusText(401);
-    //   }
-    //   const cookies = parseCookies(cookieHeader);
-
-    //   const token = await this.authenticate(cookies['CF_Authorization']);
-    //   if (!token) {
-    //     return statusText(403);
-    //   }
-    //   const { email } = token;
-    //   if (typeof email !== 'string') {
-    //     return statusText(400);
-    //   }
-
-    //   if (headers.get('Upgrade') === 'websocket') {
-    //     const protocol = headers.get('Sec-WebSocket-Protocol')?.toLowerCase();
-    //     if (protocol === 'live') {
-    //       return this.accept(token);
-    //     }
-    //   }
-    //   return this.status(request, token);
-    // } catch (e) {
-    //   return debugResponse(headers, e, this.DEBUG);
-    // }
   }
 
-//   public disconnectDevice(device: Device): void {
-//     const userDevices = this.getUserDevices(device.context.userId);
-//     userDevices.delete(device.deviceId);
-//   }
+  private fanOutStateDiff(): void {
+    const latestState = this.currentState;
+    const diff: pb.IStateChanges = {
+      changes: generateStateDiff(this.previousState, latestState),
+    };
 
-//   public fanOutStateDiff(): void {
-//     const latestState = this.currentState;
-//     const diff: IStateChanges = {
-//       changes: generateStateDiff(this.previousState, latestState),
-//     };
+    Object.values(this.clients).forEach((devices: UserDevices) => {
+      Object.values(devices).forEach((device: Device) =>
+        device.sendStateDiff(diff)
+      );
+    });
 
-//     Object.values(this.clients).forEach((devices: UserDevices) => {
-//       Object.values(devices).forEach((device: Device) =>
-//         device.sendStateDiff(diff)
-//       );
-//     });
+    this.previousState = latestState;
+    this.lastFanOut = Date.now();
+  }
 
-//     this.previousState = latestState;
-//     this.lastFanOut = Date.now();
-//   }
+  // move to auth.ts
+  private async authenticate(jwt?: string): Promise<Token> {
+    if (!jwt) {
+      throw new Error('No JWT provided');
+    }
+    if (!this.JWKS) {
+      throw new Error('JWT Decoding information not found');
+    }
 
-//   // move to auth.ts
-//   private async authenticate(jwt?: string): Promise<Token> {
-//     if (!jwt) {
-//       throw new Error('No JWT provided');
-//     }
-//     if (!this.JWKS) {
-//       throw new Error('JWT Decoding information not found');
-//     }
-
-//     const result = await jwtVerify(jwt, this.JWKS, {
-//       issuer: this.env.JKWS_ISSUER,
-//       audience: this.env.JKWS_AUDIENCE,
-//     });
-//     return (result.payload as unknown) as Token;
-//   }
+    const result = await jwtVerify(jwt, this.JWKS, {
+      issuer: this.env.JKWS_ISSUER,
+      audience: this.env.JKWS_AUDIENCE,
+    });
+    return (result.payload as unknown) as Token;
+  }
 
 //   private getUserDevices(userId: string): UserDevices {
 //     const user = this.clients.get(userId);
@@ -244,12 +263,12 @@ export class Room implements DurableObject {
 //     return response;
 //   }
 
-//   private triggerFanOut(): void {
-//     this.fanOutDebounceTimeout = setTimeout(
-//       () => this.fanOutStateDiff(),
-//       DEBOUNCE_TIME
-//     );
-//   }
+  private triggerFanOut(): void {
+    this.fanOutDebounceTimeout = setTimeout(
+      () => this.fanOutStateDiff(),
+      DEBOUNCE_TIME
+    );
+  }
 
 //   /**
 //    THIS MUST BE DELETED
@@ -267,12 +286,12 @@ export class Room implements DurableObject {
 //   }
 }
 
-// // A helper function until the code is re-written to use
-// // Kidsloop Authentication token
-// function tokenToContext(token: Token): Context {
-//   return {
-//     userId: token.sub,
-//     isTeacher: false,
-//     name: token.email,
-//   };
-// }
+// A helper function until the code is re-written to use
+// Kidsloop Authentication token
+function tokenToContext(token: Token): Context {
+  return {
+    userId: token.sub,
+    isTeacher: false,
+    name: token.email,
+  };
+}

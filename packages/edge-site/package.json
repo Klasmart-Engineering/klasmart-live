@@ -10,6 +10,7 @@
     "logs": "wrangler tail --env dev | jq -r '.logs[] | .message[] as $m | \"[\\(.timestamp/1000|todate)] \\($m)\"'"
   },
   "dependencies": {
+    "kidsloop-live-serialization": "file:../serialization",
     "kidsloop-live-state": "file:../state",
     "next": "^11.0.0",
     "react": "17.0.2",

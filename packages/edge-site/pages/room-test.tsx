@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { GetStaticProps } from 'next'
 import { useEffect, useMemo, useState } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import pb from 'kidsloop-live-serialization';
 
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -11,6 +12,7 @@ export const getStaticProps: GetStaticProps = async () => {
 }
 
 let heartbeatHandler;
+let heartbeatID = 0;
 
 export default function Home() {
   const url = "wss://live.kidsloop.dev/api/room";
@@ -19,9 +21,15 @@ export default function Home() {
     sendMessage,
     lastMessage,
     readyState,
+    getWebSocket,
   } = useWebSocket(url, {
+    protocols: ['live'],
     onOpen: () => {
-      heartbeatHandler = setInterval(() => sendMessage('heartbeat'), 1000);
+      (getWebSocket() as WebSocket).binaryType = 'arraybuffer';
+      heartbeatHandler = setInterval(() => {
+        const message = pb.Action.encode({id: `${heartbeatID++}`, heartbeat: {}}).finish()
+        sendMessage(message);
+      }, 1000)
     },
     onClose: () => {
       clearInterval(heartbeatHandler);
@@ -36,9 +44,11 @@ export default function Home() {
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
 
+  const acknowledgement = lastMessage ? pb.ActionAcknowledgement.decode(new Uint8Array(lastMessage.data)).toJSON() : {};
+
   return <>
     Status: {connectionStatus}
     <br/>
-    { lastMessage?.data }
+    Num Heartbeats: { acknowledgement.id || 0 }
   </>
 }

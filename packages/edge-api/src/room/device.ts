@@ -11,7 +11,7 @@ export class Device {
     private ws: CloudflareWebsocket,
     private readonly room: Room,
     private readonly DEBUG: boolean,
-    private lastHeartbeat: number | undefined = undefined
+    // private lastHeartbeat: number | undefined = undefined
   ) {
     ws.accept();
     ws.addEventListener('message', async ({ data }) => {
@@ -19,16 +19,17 @@ export class Device {
         this.onClose(4401, 'Binary only protocol');
         return;
       }
-      const response: pb.IActionAcknowledgement = {
+      const acknowledgement: pb.IActionAcknowledgement = {
         id: 'Undefined Action ID',
       };
-      clearTimeout(this.lastHeartbeat);
-      this.lastHeartbeat = setTimeout(() => {
-        this.onClose(4408, 'No heartbeat received - websocket timed out');
-      }, HEARTBEAT_INTERVAL);
+      // clearTimeout(this.lastHeartbeat);
+      // this.lastHeartbeat = setTimeout(() => {
+      //   this.onClose(4408, 'No heartbeat received - websocket timed out');
+      // }, HEARTBEAT_INTERVAL);
 
       try {
         const action = pb.Action.decode(new Uint8Array(data));
+        acknowledgement.id = action.id;
         const contextAction = {
           context: this.context,
           payload: action,
@@ -79,12 +80,12 @@ export class Device {
             break;
           case 'userJoin':
           case 'userLeave':
-            response.error =
+            acknowledgement.error =
               'This action type should be generated automatically, there should be no need to send this to the server';
             break;
           case 'endClass':
           default:
-            response.error = 'Unidentified action type provided';
+            acknowledgement.error = 'Unidentified action type provided';
             break;
         }
         if (actionToDispatch) {
@@ -92,9 +93,9 @@ export class Device {
         }
       } catch (e) {
         console.log(e);
-        response.error = 'Unexpected error occurred';
+        acknowledgement.error = 'Unexpected error occurred';
       } finally {
-        const receipt = pb.ActionAcknowledgement.encode(response).finish();
+        const receipt = pb.ActionAcknowledgement.encode(acknowledgement).finish();
         ws.send(receipt);
       }
     });
@@ -131,7 +132,7 @@ export class Device {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onClose(_close?: number, _reason?: string) {
-    this.room.disconnectDevice(this);
+    // this.room.disconnectDevice(this);
   }
 
   /*
