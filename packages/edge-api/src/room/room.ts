@@ -1,7 +1,5 @@
 import { debugResponse } from '../responses/debug';
-import { json } from '../responses/json';
 import { statusText } from '../responses/statusText';
-import { websocketUpgrade } from '../responses/websocket';
 import { parse as parseCookies } from 'cookie';
 import { createRemoteJWKSet } from 'jose-browser-runtime/jwks/remote';
 import { jwtVerify } from 'jose-browser-runtime/jwt/verify';
@@ -45,10 +43,6 @@ export class Room implements DurableObject {
   private fanOutDebounceTimeout: number | undefined = undefined;
   private lastFanOut = Date.now();
   private previousState = INITIAL_ROOM_STATE;
-
-  private numMessages = 0;
-
-  private websockets = new Map<number, CloudflareWebsocket>();
 
   public constructor(
     private state: DurableObjectState,
@@ -94,8 +88,6 @@ export class Room implements DurableObject {
   }
 
   public async fetch(request: Request): Promise<Response> {
-    console.log('hey');
-
     const { headers } = request;
     try {
       const cookieHeader = headers.get('Cookie');
@@ -121,13 +113,13 @@ export class Room implements DurableObject {
     }
   }
 
-//   public disconnectDevice(device: Device): void {
-//     const userDevices = this.getUserDevices(device.context.userId);
-//     userDevices.delete(device.deviceId);
-//   }
+  public disconnectDevice(device: Device): void {
+    const userDevices = this.getUserDevices(device.context.userId);
+    userDevices.delete(device.deviceId);
+  }
 
-  private async http(request: Request, token: Token): Promise<Response> {
-    return new Response('hey');
+  private async http(_request: Request, _token: Token): Promise<Response> {
+    return new Response('Please connect to this endpoint via websocket');
   }
 
   private async websocket(request: Request, token: Token): Promise<Response> {
@@ -140,42 +132,34 @@ export class Room implements DurableObject {
         : undefined;
 
     const ws = webSocketPair[1];
-    // ws.addEventListener('close', () => console.log('close'));
-    // ws.addEventListener('message', ({data}) => {
-    //   try {
-    //     pb.Action.decode(new Uint8Array(data));
-    //   } catch (e) {
-    //     console.error('decoding data failed');
-    //     return;
-    //   }
-    //   console.log(`message: ${data}`);
-    //   this.numMessages++;
-    //   const message = JSON.stringify({
-    //     id,
-    //     numMessages: this.numMessages,
-    //     state: [...Object.entries(this.state)],
-    //   });
-    //   ws.send(message);
-    // });
-    // ws.addEventListener('error', () => console.log('error'));
-    // ws.accept();
-
-    // const id = this.state.id.toString();
-    // const message = JSON.stringify({
-    //   id,
-    //   numMessages: this.numMessages,
-    //   state: [...Object.entries(this.state)],
-    // });
-    // ws.send(message);
 
     const context = tokenToContext(token);
-    new Device(
-      0,
+    const deviceId = this.deviceId++;
+    const { userId } = context;
+    const device = new Device(
+      deviceId,
       context,
       ws,
       this,
       this.env.ENVIRONMENT === 'dev'
     );
+
+    this.setUserDevice(userId, device);
+    const userJoinAction = {
+      context,
+      payload: {},
+    };
+
+    this.store.dispatch(Actions.userJoin(userJoinAction));
+
+    const setDeviceAction = {
+      context,
+      payload: {
+        deviceId: deviceId.toString(),
+        device: {},
+      },
+    };
+    this.store.dispatch(Actions.setDevice(setDeviceAction));
 
     return new Response(null, {
       status: 101,
@@ -189,10 +173,11 @@ export class Room implements DurableObject {
     const diff: pb.IStateChanges = {
       changes: generateStateDiff(this.previousState, latestState),
     };
+    const bytes = pb.StateChanges.encode(diff).finish();
 
-    Object.values(this.clients).forEach((devices: UserDevices) => {
-      Object.values(devices).forEach((device: Device) =>
-        device.sendStateDiff(diff)
+    [...this.clients.values()].forEach((devices: UserDevices) => {
+      [...devices.values()].forEach((device: Device) =>
+        device.sendStateDiff(bytes)
       );
     });
 
@@ -216,52 +201,14 @@ export class Room implements DurableObject {
     return (result.payload as unknown) as Token;
   }
 
-//   private getUserDevices(userId: string): UserDevices {
-//     const user = this.clients.get(userId);
-//     if (user === undefined) {
-//       const newUser = new Map();
-//       this.clients.set(userId, newUser);
-//       return newUser;
-//     }
-//     return user;
-//   }
+  private getUserDevices(userId: string): UserDevices {
+    if (!this.clients.has(userId)) this.clients.set(userId, new Map());
+    return this.clients.get(userId)!;
+  }
 
-//   private accept(token: Token): Response {
-//     const { response, ws } = websocketUpgrade('live');
-
-//     const userId = token.sub;
-//     const deviceId = this.deviceId++;
-//     const context = tokenToContext(token);
-//     const device = new Device(
-//       deviceId,
-//       context,
-//       ws,
-//       this,
-//       this.env.ENVIRONMENT === 'dev'
-//     );
-//     const userDevices = this.getUserDevices(userId);
-//     // @TODO can we make the device id deterministic somehow?
-//     // Eg. If a user connects with their iPad, then disconnects and reconnects,
-//     // is there a way we can ensure that that device is consistently assigned
-//     // the same ID. Eg. Mac Address? Keeping an ID in local storage?
-//     userDevices.set(deviceId, device);
-//     const userJoinAction = {
-//       context,
-//       payload: {},
-//     };
-
-//     this.store.dispatch(Actions.userJoin(userJoinAction));
-
-//     const setDeviceAction = {
-//       context,
-//       payload: {
-//         deviceId: deviceId.toString(),
-//       },
-//     };
-//     this.store.dispatch(Actions.setDevice(setDeviceAction));
-
-//     return response;
-//   }
+  private setUserDevice(userId: string, device: Device): void {
+    this.getUserDevices(userId).set(device.deviceId, device);
+  }
 
   private triggerFanOut(): void {
     this.fanOutDebounceTimeout = setTimeout(
@@ -269,21 +216,6 @@ export class Room implements DurableObject {
       DEBOUNCE_TIME
     );
   }
-
-//   /**
-//    THIS MUST BE DELETED
-//   */
-//   private status(request: Request, auth: Token) {
-//     const clients = [...this.clients.entries()].map(
-//       ([id, devices]) =>
-//         `${id}: ${[...devices.entries()].map(([id]) => `Device: ID ${id}\n`)}`
-//     );
-//     return json(
-//       { auth, clients, id: this.state.id.toString(), this: this, request },
-//       200,
-//       2
-//     );
-//   }
 }
 
 // A helper function until the code is re-written to use

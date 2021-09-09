@@ -3,29 +3,44 @@ import { Context, ContextPayload, Actions } from 'kidsloop-live-state';
 import pb from 'kidsloop-live-serialization';
 
 const HEARTBEAT_INTERVAL = 5000;
+const HEARTBEAT_RESPONSE_INTERVAL = 4;
 
 export class Device {
+  private heartbeatResponseCounter = 0;
+
   constructor(
     public readonly deviceId: number,
     public readonly context: Context,
     private ws: CloudflareWebsocket,
     private readonly room: Room,
     private readonly DEBUG: boolean,
-    // private lastHeartbeat: number | undefined = undefined
+    private lastHeartbeat: number | undefined = undefined
   ) {
     ws.accept();
+
+    // @TODO tidy this up.
+    // Essentially we need to send the current state of the server as soon as
+    // the socket is initialized
+    const message = { changes: [{ setState: this.room.currentState }] };
+    const bytes = pb.StateChanges.encode(message).finish();
+    ws.send(bytes);
+
     ws.addEventListener('message', async ({ data }) => {
       if (!(data instanceof ArrayBuffer)) {
         this.onClose(4401, 'Binary only protocol');
         return;
       }
+
       const acknowledgement: pb.IActionAcknowledgement = {
         id: 'Undefined Action ID',
       };
-      // clearTimeout(this.lastHeartbeat);
-      // this.lastHeartbeat = setTimeout(() => {
-      //   this.onClose(4408, 'No heartbeat received - websocket timed out');
-      // }, HEARTBEAT_INTERVAL);
+      let sendAcknowledgement = true;
+
+      // Manage the heartbeat
+      clearTimeout(this.lastHeartbeat);
+      this.lastHeartbeat = setTimeout(() => {
+        this.onClose(4408, 'No heartbeat received - websocket timed out');
+      }, HEARTBEAT_INTERVAL);
 
       try {
         const action = pb.Action.decode(new Uint8Array(data));
@@ -37,6 +52,16 @@ export class Device {
         let actionToDispatch = null;
         switch (action.action) {
           case 'heartbeat':
+            // We could respond to every heartbeat, however this would increase
+            // network traffic.
+            //
+            // So this responds to 1 in 5 heartbeats
+            if (this.heartbeatResponseCounter > 0) {
+              this.heartbeatResponseCounter -= 1;
+              sendAcknowledgement = false;
+            } else {
+              this.heartbeatResponseCounter = HEARTBEAT_RESPONSE_INTERVAL;
+            }
             break;
           case 'setDevice':
             actionToDispatch = Actions.setDevice(
@@ -84,6 +109,8 @@ export class Device {
               'This action type should be generated automatically, there should be no need to send this to the server';
             break;
           case 'endClass':
+            // @TODO
+            break;
           default:
             acknowledgement.error = 'Unidentified action type provided';
             break;
@@ -95,8 +122,10 @@ export class Device {
         console.log(e);
         acknowledgement.error = 'Unexpected error occurred';
       } finally {
-        const receipt = pb.ActionAcknowledgement.encode(acknowledgement).finish();
-        ws.send(receipt);
+        const receipt = pb.ActionAcknowledgement.encode(
+          acknowledgement
+        ).finish();
+        if (sendAcknowledgement) ws.send(receipt);
       }
     });
     ws.addEventListener('error', async (e) => {
@@ -105,53 +134,12 @@ export class Device {
     ws.addEventListener('close', async (c, r) => this.onClose(c, r));
   }
 
-  public sendStateDiff(diff: pb.IStateChanges): void {
-    const data = pb.StateChanges.encode(diff).finish();
-    this.ws.send(data);
+  public sendStateDiff(bytes: Uint8Array): void {
+    this.ws.send(bytes);
   }
 
-  /*
-  private onMessage(data: unknown) {
-    this.lastMessageTimestamp = Date.now();
-    if (!(data instanceof ArrayBuffer)) {
-      this.close(4401, "Binary only protocol");
-      return;
-    }
-    try {
-      const { chatMessages, activityStream, roomAction } = ClientMessage.decode(
-        new Uint8Array(data)
-      );
-      for (const text of chatMessages) {
-        this.room.chatMessage(this.userId, text);
-      }
-    } catch (e) {
-      this.close(4400, "Invalid message");
-    }
-  }
-  */
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onClose(_close?: number, _reason?: string) {
-    // this.room.disconnectDevice(this);
+    console.log('Disconnecting device', _close, _reason);
+    this.room.disconnectDevice(this);
   }
-
-  /*
-  // When does cloudflare invoke onError?
-  // At time of writting the docs are currently useless
-  // "An event indicating there was an error with the WebSocket."
-  // https://developers.cloudflare.com/workers/runtime-apis/websockets#events
-  private onError(e: unknown) {
-    let errorString = "Unknown Error";
-    try {
-      if (this.DEBUG) {
-        errorString = (e as any).toString();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.room.leave(this);
-      this.close(4500, errorString); // Is this neccessary?
-    }
-  }
-  */
 }
