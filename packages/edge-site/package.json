@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "publish": "wrangler publish --env dev"
+    "publish": "wrangler publish --env dev",
+    "logs": "wrangler tail --env dev | jq -r '.logs[] | .message[] as $m | \"[\\(.timestamp/1000|todate)] \\($m)\"'"
   },
   "dependencies": {
     "kidsloop-live-state": "file:../state",

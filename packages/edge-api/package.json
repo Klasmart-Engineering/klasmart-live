@@ -8,7 +8,8 @@
     "lint": "eslint --fix src/**/*.{ts,js}",
     "precommit": "lint-staged",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "wrangler publish --env dev"
+    "publish": "wrangler publish --env dev",
+    "logs": "wrangler tail --env dev | jq -r '.logs[] | .message[] as $m | \"[\\(.timestamp/1000|todate)] \\($m)\"'"
   },
   "lint-staged": {
     "src/**/*.{js,ts}": "eslint"
