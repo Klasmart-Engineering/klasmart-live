@@ -3,7 +3,7 @@ import { Context, ContextPayload, Actions } from 'kidsloop-live-state';
 import pb from 'kidsloop-live-serialization';
 
 const HEARTBEAT_INTERVAL = 5000;
-const HEARTBEAT_RESPONSE_INTERVAL = 4;
+const HEARTBEAT_RESPONSE_INTERVAL = 5;
 
 export class Device {
   private heartbeatResponseCounter = 0;
@@ -22,6 +22,7 @@ export class Device {
     // Essentially we need to send the current state of the server as soon as
     // the socket is initialized
     const message = { changes: [{ setState: this.room.currentState }] };
+    console.log(message);
     const bytes = pb.StateChanges.encode(message).finish();
     ws.send(bytes);
 
@@ -45,10 +46,6 @@ export class Device {
       try {
         const action = pb.Action.decode(new Uint8Array(data));
         acknowledgement.id = action.id;
-        const contextAction = {
-          context: this.context,
-          payload: action,
-        };
         let actionToDispatch = null;
         switch (action.action) {
           case 'heartbeat':
@@ -56,53 +53,33 @@ export class Device {
             // network traffic.
             //
             // So this responds to 1 in 5 heartbeats
-            if (this.heartbeatResponseCounter > 0) {
-              this.heartbeatResponseCounter -= 1;
+            if (this.heartbeatResponseCounter > 1) {
+              this.heartbeatResponseCounter--;
               sendAcknowledgement = false;
             } else {
               this.heartbeatResponseCounter = HEARTBEAT_RESPONSE_INTERVAL;
             }
             break;
           case 'setDevice':
-            actionToDispatch = Actions.setDevice(
-              contextAction as ContextPayload<pb.ISetDevice>
-            );
-            break;
           case 'removeDevice':
-            actionToDispatch = Actions.removeDevice(
-              contextAction as ContextPayload<pb.IRemoveDevice>
-            );
-            break;
           case 'setWebRtcStream':
-            actionToDispatch = Actions.setWebRtcStream(
-              contextAction as ContextPayload<pb.ISetDevice>
-            );
-            break;
           case 'setActivity':
-            actionToDispatch = Actions.setActivity(
-              contextAction as ContextPayload<pb.ISetActivity>
-            );
-            break;
           case 'setHost':
-            actionToDispatch = Actions.setHost(
-              contextAction as ContextPayload<pb.ISetHost>
-            );
-            break;
           case 'addTrophy':
-            actionToDispatch = Actions.addTrophy(
-              contextAction as ContextPayload<pb.IAddTrophy>
-            );
-            break;
           case 'setContent':
-            actionToDispatch = Actions.setContent(
-              contextAction as ContextPayload<pb.ISetContent>
-            );
+          case 'sendChatMessage': {
+            const actionKind = action.action;
+            const realAction = action[actionKind];
+            if (!realAction) {
+              throw Error(`Protobuf did not generate Action correctly. Expected ${actionKind} to exist on Action`);
+            }
+            const contextAction = {
+              context: this.context,
+              payload: realAction,
+            };
+            actionToDispatch = Actions[actionKind](contextAction);
             break;
-          case 'sendChatMessage':
-            actionToDispatch = Actions.sendChatMessage(
-              contextAction as ContextPayload<pb.ISendChatMessage>
-            );
-            break;
+          }
           case 'userJoin':
           case 'userLeave':
             acknowledgement.error =
@@ -125,7 +102,9 @@ export class Device {
         const receipt = pb.ActionAcknowledgement.encode(
           acknowledgement
         ).finish();
-        if (sendAcknowledgement) ws.send(receipt);
+        if (sendAcknowledgement) {
+          ws.send(receipt);
+        }
       }
     });
     ws.addEventListener('error', async (e) => {

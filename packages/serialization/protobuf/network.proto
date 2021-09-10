@@ -98,11 +98,12 @@ message Participant {
 }
 
 message State {
-    map<string, Participant> participants = 1;
-    string host = 2;
-    Content content = 3;
-    repeated ChatMessage chat_messages = 4;
-    uint32 endTimestamp = 5;
+    string room_id = 1;
+    map<string, Participant> participants = 2;
+    string host = 3;
+    Content content = 4;
+    repeated ChatMessage chat_messages = 5;
+    uint32 endTimestamp = 6;
 }
 
 message AddParticipants {

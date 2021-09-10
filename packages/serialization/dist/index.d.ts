@@ -1682,6 +1682,9 @@ export class Participant implements IParticipant {
 /** Properties of a State. */
 export interface IState {
 
+    /** State roomId */
+    roomId?: (string|null);
+
     /** State participants */
     participants?: ({ [k: string]: IParticipant }|null);
 
@@ -1706,6 +1709,9 @@ export class State implements IState {
      * @param [properties] Properties to set
      */
     constructor(properties?: IState);
+
+    /** State roomId. */
+    public roomId: string;
 
     /** State participants. */
     public participants: { [k: string]: IParticipant };

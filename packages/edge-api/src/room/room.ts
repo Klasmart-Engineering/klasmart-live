@@ -31,6 +31,13 @@ export interface Token {
   country: string;
 }
 
+const logger = (store: any) => (next: any) => (action: any) => {
+  console.log('dispatching: ' + JSON.stringify(action));
+  const result = next(action);
+  console.log('next state: ' + JSON.stringify(store.getState()));
+  return result;
+};
+
 const DEBOUNCE_TIME = 300;
 
 export class Room implements DurableObject {
@@ -42,7 +49,7 @@ export class Room implements DurableObject {
   private deviceId = 0;
   private fanOutDebounceTimeout: number | undefined = undefined;
   private lastFanOut = Date.now();
-  private previousState = INITIAL_ROOM_STATE;
+  private previousState: pb.IState;
 
   public constructor(
     private state: DurableObjectState,
@@ -54,24 +61,25 @@ export class Room implements DurableObject {
   ) {
     this.store = configureStore({
       middleware: [
+        logger,
         () => (next) => (action) => {
-          // Check that we haven't debounced for longer than 1 second already
-          if (
-            Date.now() - this.lastFanOut > 1000 &&
-            this.fanOutDebounceTimeout
-          ) {
-            next(action);
-            return;
-          }
-          // If we didn't previously have a fan out triggered, then trigger one
-          if (!this.fanOutDebounceTimeout) {
-            this.triggerFanOut();
-            next(action);
-            return;
-          }
+        //   // Check that we haven't debounced for longer than 1 second already
+        //   if (
+        //     Date.now() - this.lastFanOut > 1000 &&
+        //     this.fanOutDebounceTimeout
+        //   ) {
+        //     next(action);
+        //     return;
+        //   }
+        //   // If we didn't previously have a fan out triggered, then trigger one
+        //   if (!this.fanOutDebounceTimeout) {
+        //     this.triggerFanOut();
+        //     next(action);
+        //     return;
+        //   }
 
-          // If we have a timeout triggered then clear and restart the debounce
-          clearTimeout(this.fanOutDebounceTimeout);
+        //   // If we have a timeout triggered then clear and restart the debounce
+        //   clearTimeout(this.fanOutDebounceTimeout);
           next(action);
           this.triggerFanOut();
         },
@@ -79,6 +87,12 @@ export class Room implements DurableObject {
       reducer: {
         room: roomReducer,
       },
+      preloadedState: {
+        room: {
+          ...INITIAL_ROOM_STATE,
+          roomId: this.state.id.toString(),
+        }
+      }
     });
     this.previousState = this.currentState;
   }
@@ -173,14 +187,14 @@ export class Room implements DurableObject {
     const diff: pb.IStateChanges = {
       changes: generateStateDiff(this.previousState, latestState),
     };
-    const bytes = pb.StateChanges.encode(diff).finish();
-
-    [...this.clients.values()].forEach((devices: UserDevices) => {
-      [...devices.values()].forEach((device: Device) =>
-        device.sendStateDiff(bytes)
-      );
-    });
-
+    if ((diff.changes?.length || 0) > 0) {
+      const bytes = pb.StateChanges.encode(diff).finish();
+      [...this.clients.values()].forEach((devices: UserDevices) => {
+        [...devices.values()].forEach((device: Device) =>
+          device.sendStateDiff(bytes)
+        );
+      });
+    }
     this.previousState = latestState;
     this.lastFanOut = Date.now();
   }

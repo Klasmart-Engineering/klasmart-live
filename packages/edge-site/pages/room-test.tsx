@@ -1,11 +1,13 @@
-import Head from "next/head";
 import { GetStaticProps } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { useRef, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import pb from "kidsloop-live-serialization";
 import { nanoid } from "nanoid";
 
 const HEARTBEAT_INTERVAL = 3500;
+const BASE_URL = "wss://live.kidsloop.dev/api/room";
+
+const isBrowser = () => typeof window !== "undefined"
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
@@ -14,22 +16,40 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default function Home() {
-  let url = "wss://live.kidsloop.dev/api/room";
-  let acknowledgement: pb.IActionAcknowledgement = {};
-  let latestMessage: pb.IStateDiff[] = [];
-  let heartbeatHandler;
+  if (!isBrowser()) {
+    return '';
+  }
 
-  useEffect(() => {
-    if (window) url += `/${window.location.hash.slice(1)}`;
-  }, []);
+  const heartbeatHandler = useRef(null);
+
+  const [messageHistory, setMessageHistory] = useState([]);
+  const [newChat, setNewChat] = useState('');
+  const [state, setState] = useState<pb.IState>({
+    participants: {},
+    host: null,
+    content: {},
+    chatMessages: [],
+    endTimestamp: 0,
+  });
+  const id = window.location.hash.slice(1)
+  const url = new URL(BASE_URL);
+  if(id) {
+    url.pathname += `/${id}`;
+  }
+
+  if (state.roomId) {
+    location.hash = state.roomId;
+  }
 
   const { sendMessage, lastMessage, readyState, getWebSocket } = useWebSocket(
-    url,
+    url.toString(),
     {
       protocols: ["live"],
       onOpen: () => {
-        (getWebSocket() as WebSocket).binaryType = "arraybuffer";
-        heartbeatHandler = setInterval(() => {
+        const ws = getWebSocket() as WebSocket;
+        ws.binaryType = "arraybuffer"
+        console.log(`connected to ws at: ${ws.url}`)
+        heartbeatHandler.current = setInterval(() => {
           const message = pb.Action.encode({
             id: nanoid(),
             heartbeat: {},
@@ -37,15 +57,15 @@ export default function Home() {
           sendMessage(message);
         }, HEARTBEAT_INTERVAL);
       },
-      onMessage: ({ data }) => {
+      onMessage: ({data}) => {
         const bytes = new Uint8Array(data);
         try {
-          latestMessage = pb.StateChanges.decode(bytes).changes;
-          console.log("State Changes: ", latestMessage);
+          const changes = pb.StateChanges.decode(bytes).changes;
+          setMessageHistory([changes, ...messageHistory]);
+          setState(updateState(state, changes))
         } catch (_error) {
           try {
-            acknowledgement = pb.ActionAcknowledgement.decode(bytes);
-            console.log("Ack: ", acknowledgement);
+            const acknowledgement = pb.ActionAcknowledgement.decode(bytes);
             if (acknowledgement.error) {
               throw new Error(acknowledgement.error);
             }
@@ -55,7 +75,7 @@ export default function Home() {
         }
       },
       onClose: () => {
-        clearInterval(heartbeatHandler);
+        clearInterval(heartbeatHandler.current = null);
       },
     }
   );
@@ -68,15 +88,57 @@ export default function Home() {
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
 
+  const onChatInputChange = (e) => setNewChat(e.target.value);
+  const onChatInputKeyDown = (e) => {
+    if (e.key !== 'Enter') {
+      return;
+    }
+    const message = pb.Action.encode({
+      id: nanoid(),
+      sendChatMessage: {
+        message: newChat,
+      },
+    }).finish();
+    sendMessage(message);
+    setNewChat('');
+  }
+
   return (
     <>
-      Status: {connectionStatus}
-      <br />
-      Latest Acknowledgement:
-      {JSON.stringify(acknowledgement)}
-      <br />
-      Latest Message:
-      {JSON.stringify(latestMessage)}
+      <p>Status: {connectionStatus}</p>
+      <div style={{width: '50%', float: 'left'}}>
+        <h3>Chat:</h3>
+        <input value={newChat} onChange={onChatInputChange} onKeyDown={onChatInputKeyDown}/>
+        <ol reversed={true}>
+          {state.chatMessages.map(({fromUser, message}) =>
+            <li>{state.participants[fromUser]?.name || 'Anon'}: {message}</li>
+          )}
+        </ol>
+      </div>
+      <div style={{width: '50%', float: 'left'}}>
+        <h3>Message History:</h3>
+        <ol reversed={true}>
+          {messageHistory.map((message) => <li>{JSON.stringify(message)}</li>)}
+        </ol>
+      </div>
     </>
   );
+}
+
+const updateState = (state: pb.IState, diffs: pb.IStateDiff[]): pb.IState => {
+  const newState = diffs[0]?.setState || {};
+
+  const newChatMessages = diffs
+    .flatMap(diff => diff.appendChatMessage?.messages || [])
+    .sort((a, b) => b.timestamp - a.timestamp)
+
+  const newParticipants = diffs
+    .reduce((acc, diff) => ({...acc, ...diff.addParticipants?.participants || {}}), {} as { [k: string]: pb.IParticipant });
+
+  return {
+    ...state,
+    ...newState,
+    chatMessages: [...newChatMessages, ...state.chatMessages],
+    participants: {...newParticipants, ...state.participants},
+  };
 }

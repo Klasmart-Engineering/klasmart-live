@@ -6,6 +6,7 @@ import { getDevice, getDevices } from './util';
 type Reducer<T> = CaseReducer<pb.IState, PayloadAction<ContextPayload<T>>>;
 
 const initialState: pb.IState = {
+  roomId: null,
   participants: {},
   host: null,
   chatMessages: [],
