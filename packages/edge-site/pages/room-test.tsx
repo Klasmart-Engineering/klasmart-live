@@ -25,6 +25,7 @@ export default function Home() {
   const [messageHistory, setMessageHistory] = useState([]);
   const [newChat, setNewChat] = useState('');
   const [state, setState] = useState<pb.IState>({
+    roomId: null,
     participants: {},
     host: null,
     content: {},
@@ -33,7 +34,7 @@ export default function Home() {
   });
   const id = window.location.hash.slice(1);
   const url = new URL(BASE_URL);
-  if(id) {
+  if (id) {
     url.pathname += `/${id}`;
   }
 
@@ -57,7 +58,7 @@ export default function Home() {
           sendMessage(message);
         }, HEARTBEAT_INTERVAL);
       },
-      onMessage: ({data}) => {
+      onMessage: ({ data }) => {
         const bytes = new Uint8Array(data);
         try {
           const changes = pb.StateChanges.decode(bytes).changes;
@@ -75,7 +76,7 @@ export default function Home() {
         }
       },
       onClose: () => {
-        clearInterval(heartbeatHandler.current = null);
+        clearInterval((heartbeatHandler.current = null));
       },
     }
   );
@@ -106,19 +107,27 @@ export default function Home() {
   return (
     <>
       <p>Status: {connectionStatus}</p>
-      <div style={{width: '50%', float: 'left'}}>
+      <div style={{ width: '50%', float: 'left' }}>
         <h3>Chat:</h3>
-        <input value={newChat} onChange={onChatInputChange} onKeyDown={onChatInputKeyDown}/>
+        <input
+          value={newChat}
+          onChange={onChatInputChange}
+          onKeyDown={onChatInputKeyDown}
+        />
         <ol reversed={true}>
-          {state.chatMessages.map(({fromUser, message}) =>
-            <li>{state.participants[fromUser]?.name || 'Anon'}: {message}</li>
-          )}
+          {state.chatMessages.map(({ fromUser, message }) => (
+            <li>
+              {state.participants[fromUser]?.name || 'Anon'}: {message}
+            </li>
+          ))}
         </ol>
       </div>
-      <div style={{width: '50%', float: 'left'}}>
+      <div style={{ width: '50%', float: 'left' }}>
         <h3>Message History:</h3>
         <ol reversed={true}>
-          {messageHistory.map((message) => <li>{JSON.stringify(message)}</li>)}
+          {messageHistory.map((message) => (
+            <li>{JSON.stringify(message)}</li>
+          ))}
         </ol>
       </div>
     </>
@@ -129,16 +138,19 @@ const updateState = (state: pb.IState, diffs: pb.IStateDiff[]): pb.IState => {
   const newState = diffs[0]?.setState || {};
 
   const newChatMessages = diffs
-    .flatMap(diff => diff.appendChatMessage?.messages || [])
+    .flatMap((diff) => diff.appendChatMessage?.messages || [])
     .sort((a, b) => b.timestamp - a.timestamp);
 
-  const newParticipants = diffs
-    .reduce((acc, diff) => ({...acc, ...diff.addParticipants?.participants || {}}), {} as { [k: string]: pb.IParticipant });
+  const newParticipants = diffs.reduce(
+    (acc, diff) => ({ ...acc, ...(diff.addParticipants?.participants || {}) }),
+    {} as { [k: string]: pb.IParticipant }
+  );
 
   return {
     ...state,
     ...newState,
     chatMessages: [...newChatMessages, ...state.chatMessages],
-    participants: {...newParticipants, ...state.participants},
+    participants: { ...newParticipants, ...state.participants },
   };
 };
+

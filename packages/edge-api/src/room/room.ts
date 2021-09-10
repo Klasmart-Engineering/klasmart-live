@@ -10,14 +10,10 @@ import {
   EnhancedStore,
   Middleware,
 } from '@reduxjs/toolkit';
-import {
-  roomReducer,
-  Actions,
-  Context,
-  INITIAL_ROOM_STATE,
-  generateStateDiff,
-} from 'kidsloop-live-state';
+import { Server, Context } from 'kidsloop-live-state';
 import pb from 'kidsloop-live-serialization';
+
+const { roomReducer, Actions, INITIAL_ROOM_STATE, generateStateDiff } = Server;
 
 type UserDevices = Map<string, Device>;
 
@@ -142,7 +138,7 @@ export class Room implements DurableObject {
         const bytes = pb.StateChanges.encode(diff).finish();
         [...this.connectedDevices.values()].forEach((devices: UserDevices) => {
           [...devices.values()].forEach((device: Device) =>
-            device.sendStateDiff(bytes)
+            device.sendProtobufBytes(bytes)
           );
         });
       }

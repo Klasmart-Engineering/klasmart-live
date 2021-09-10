@@ -1,7 +1,7 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import pb from 'kidsloop-live-serialization';
-import { Context, ContextPayload, ID } from '../store';
+import { Context, ContextPayload, ID } from '../../';
 import {
   addTrophy,
   roomReducer,

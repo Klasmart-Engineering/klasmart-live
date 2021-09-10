@@ -1,5 +1,5 @@
 import pb from 'kidsloop-live-serialization';
-import { ID } from '../store';
+import { ID } from '../../';
 
 /**
  * Fetches the devices for a given user

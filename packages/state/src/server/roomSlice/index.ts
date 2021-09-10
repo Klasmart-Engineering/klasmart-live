@@ -1,6 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import pb from 'kidsloop-live-serialization';
-import { ContextPayload } from '../store';
+import { ContextPayload } from '../../';
 import { getDevice, getDevices } from './util';
 
 type Reducer<T> = CaseReducer<pb.IState, PayloadAction<ContextPayload<T>>>;

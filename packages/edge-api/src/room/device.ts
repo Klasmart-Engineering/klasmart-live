@@ -1,6 +1,8 @@
 import { Room } from './room';
-import { Context, ContextPayload, Actions } from 'kidsloop-live-state';
+import { Context, Server } from 'kidsloop-live-state';
 import pb from 'kidsloop-live-serialization';
+
+const { Actions } = Server;
 
 const HEARTBEAT_INTERVAL = 5000;
 const HEARTBEAT_RESPONSE_INTERVAL = 5;
@@ -114,7 +116,7 @@ export class Device {
     ws.addEventListener('close', async (c, r) => this.onClose(c, r));
   }
 
-  public sendStateDiff(bytes: Uint8Array): void {
+  public sendProtobufBytes(bytes: Uint8Array): void {
     this.ws.send(bytes);
   }
 

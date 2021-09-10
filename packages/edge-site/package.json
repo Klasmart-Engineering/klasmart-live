@@ -11,6 +11,8 @@
     "logs": "wrangler tail --env dev | jq -r '.logs[] | .message[] as $m | \"[\\(.timestamp/1000|todate)] \\($m)\"'"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@reduxjs/toolkit": "^1.6.1",
     "kidsloop-live-serialization": "file:../serialization",
     "kidsloop-live-state": "file:../state",
     "nanoid": "^3.1.25",
@@ -18,7 +20,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.4",
-    "react-use-websocket": "^2.7.1"
+    "react-use-websocket": "^2.7.1",
+    "redux": "^4.1.1"
   },
   "devDependencies": {
     "@cloudflare/wrangler": "^1.19.0",

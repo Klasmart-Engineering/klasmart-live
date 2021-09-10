@@ -1,27 +1,5 @@
 import pb from 'kidsloop-live-serialization';
 
-// Potential protocol flow
-//
-// Websocket
-// -> Accept Text
-// -> Accept Binary
-//
-// addEventListener('onmessage', msg => {
-//    const payload = Protobuf.Action.decode(msg);
-//    const action = wrapPayloadWithContext(payload, context);
-//
-//    const storeAction: PayloadAction;
-//    switch payload.type() {
-//      case "userJoin":
-//        storeAction = userJoin(action);
-//    };
-//
-//    store.dispatch(storeAction);
-//    epochCounter += 1;
-//
-//    ws.send(ActionReceipt { epoch, epochCounter, actionId })
-// })
-
 type ParticipantMap = { [k: string]: pb.IParticipant };
 
 export function generateStateDiff(

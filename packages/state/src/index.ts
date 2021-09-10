@@ -1,12 +1,8 @@
-export {
-  roomReducer,
-  Actions,
-  INITIAL_ROOM_STATE,
-  generateStateDiff,
-} from './roomSlice';
-export { RootState } from './store';
+export * as Server from './server';
+export * as Client from './client';
 
 export type ID = string;
+
 export interface Context {
   userId: ID;
   isTeacher: boolean;
