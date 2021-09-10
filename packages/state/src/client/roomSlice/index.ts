@@ -12,8 +12,11 @@ const initialState: pb.IState = {
   endTimestamp: null,
 };
 
-const setStateReducer: Reducer<pb.IState> = (_state, action) => {
-  return action.payload;
+const setStateReducer: Reducer<pb.IState> = (state, action) => {
+  return {
+    ...state,
+    ...action.payload,
+  };
 };
 
 const addParticipantsReducer: Reducer<pb.IAddParticipants> = (
@@ -98,6 +101,5 @@ export const {
 } = roomSlice.actions;
 
 export const Actions = roomSlice.actions;
-
 export const roomReducer = roomSlice.reducer;
 export const INITIAL_ROOM_STATE = initialState;

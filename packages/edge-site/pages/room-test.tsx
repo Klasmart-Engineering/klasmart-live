@@ -3,6 +3,12 @@ import { useRef, useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import pb from 'kidsloop-live-serialization';
 import { nanoid } from 'nanoid';
+import { selectRoom } from '../src/store';
+import { Client } from 'kidsloop-live-state';
+import { useAppDispatch, useAppSelector } from '../src/hooks';
+import { Divider } from '@material-ui/core';
+
+const { Actions } = Client;
 
 const HEARTBEAT_INTERVAL = 3500;
 const BASE_URL = 'wss://live.kidsloop.dev/api/room';
@@ -20,6 +26,9 @@ export default function Home() {
     return '';
   }
 
+  const room = useAppSelector(selectRoom);
+  const dispatch = useAppDispatch();
+
   const heartbeatHandler = useRef(null);
 
   const [messageHistory, setMessageHistory] = useState([]);
@@ -32,17 +41,16 @@ export default function Home() {
     chatMessages: [],
     endTimestamp: 0,
   });
+
   const id = window.location.hash.slice(1);
   const url = new URL(BASE_URL);
-  if (id) {
-    url.pathname += `/${id}`;
-  }
+  if (id) url.pathname += `/${id}`;
 
   if (state.roomId) {
     location.hash = state.roomId;
   }
 
-  const { sendMessage, lastMessage, readyState, getWebSocket } = useWebSocket(
+  const { sendMessage, readyState, getWebSocket } = useWebSocket(
     url.toString(),
     {
       protocols: ['live'],
@@ -61,7 +69,16 @@ export default function Home() {
       onMessage: ({ data }) => {
         const bytes = new Uint8Array(data);
         try {
-          const changes = pb.StateChanges.decode(bytes).changes;
+          const { changes } = pb.StateChanges.decode(bytes);
+          if (!changes) return;
+          changes.forEach((change) => {
+            const update = new pb.StateDiff(change);
+            // this is required to remove the internal protobuf data
+            const tempObject = pb.StateDiff.toObject(update);
+            const action = update.action;
+            const payload = tempObject[action];
+            dispatch(Actions[action](payload));
+          });
           setMessageHistory([changes, ...messageHistory]);
           setState(updateState(state, changes));
         } catch (_error) {
@@ -72,6 +89,8 @@ export default function Home() {
             }
           } catch (e) {
             console.error('Error: ', e);
+          } finally {
+            console.log('ROOM', room);
           }
         }
       },
@@ -117,7 +136,11 @@ export default function Home() {
         <ol reversed={true}>
           {state.chatMessages.map(({ fromUser, message }) => (
             <li>
-              {state.participants[fromUser]?.name || 'Anon'}: {message}
+              {state.participants[fromUser]?.name.replace(
+                '@kidsloop.live',
+                ''
+              ) || 'Anon'}
+              : {message}
             </li>
           ))}
         </ol>
@@ -153,4 +176,3 @@ const updateState = (state: pb.IState, diffs: pb.IStateDiff[]): pb.IState => {
     participants: { ...newParticipants, ...state.participants },
   };
 };
-

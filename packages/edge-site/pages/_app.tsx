@@ -6,6 +6,7 @@ import theme from '../src/theme';
 import { AppProps } from 'next/app';
 import { Container } from '@material-ui/core';
 import { Provider } from 'react-redux';
+import { store } from '../src/store';
 
 function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -21,13 +22,12 @@ function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        <Provider store = {store}>
-        <CssBaseline />
-        <Container maxWidth="lg">
-          <Component {...pageProps} />
-        </Container>
+        <Provider store={store}>
+          <CssBaseline />
+          <Container maxWidth="lg">
+            <Component {...pageProps} />
+          </Container>
         </Provider>
-
       </ThemeProvider>
     </React.Fragment>
   );
