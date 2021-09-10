@@ -9,7 +9,7 @@ export class Device {
   private heartbeatResponseCounter = 0;
 
   constructor(
-    public readonly deviceId: number,
+    public readonly deviceId: string,
     public readonly context: Context,
     private ws: CloudflareWebsocket,
     private readonly room: Room,
@@ -22,7 +22,6 @@ export class Device {
     // Essentially we need to send the current state of the server as soon as
     // the socket is initialized
     const message = { changes: [{ setState: this.room.currentState }] };
-    console.log(message);
     const bytes = pb.StateChanges.encode(message).finish();
     ws.send(bytes);
 
@@ -71,7 +70,9 @@ export class Device {
             const actionKind = action.action;
             const realAction = action[actionKind];
             if (!realAction) {
-              throw Error(`Protobuf did not generate Action correctly. Expected ${actionKind} to exist on Action`);
+              throw Error(
+                `Protobuf did not generate Action correctly. Expected ${actionKind} to exist on Action`
+              );
             }
             const contextAction = {
               context: this.context,

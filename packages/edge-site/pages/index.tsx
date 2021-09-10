@@ -1,21 +1,21 @@
-import Head from 'next/head'
-import { GetStaticProps } from 'next'
+import Head from 'next/head';
+import { GetStaticProps } from 'next';
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: { }
-  }
-}
+  };
+};
 
 export default function Home() {
   return (
     <div
       style={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        textAlign: "center",
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        textAlign: 'center',
       }}
     >
       <Head>
@@ -33,9 +33,9 @@ export default function Home() {
       />
       <h1
       style={{
-        fontFamily: "Noto Sans KR; sans-serif",
-        fontSize: "4em",
-        color: "#6ad",
+        fontFamily: 'Noto Sans KR; sans-serif',
+        fontSize: '4em',
+        color: '#6ad',
         margin: 0,
       }}
       >
@@ -44,12 +44,12 @@ export default function Home() {
       <h2
         style={{
           fontWeight: 300,
-          fontFamily: "Noto Sans KR, sans-serif",
-          color: "#555",
+          fontFamily: 'Noto Sans KR, sans-serif',
+          color: '#555',
         }}
       >
         Development test site
       </h2>
     </div>
-  )
+  );
 }

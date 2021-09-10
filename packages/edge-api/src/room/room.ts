@@ -4,7 +4,12 @@ import { parse as parseCookies } from 'cookie';
 import { createRemoteJWKSet } from 'jose-browser-runtime/jwks/remote';
 import { jwtVerify } from 'jose-browser-runtime/jwt/verify';
 import { Device } from './device';
-import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  Dispatch,
+  EnhancedStore,
+  Middleware,
+} from '@reduxjs/toolkit';
 import {
   roomReducer,
   Actions,
@@ -14,7 +19,7 @@ import {
 } from 'kidsloop-live-state';
 import pb from 'kidsloop-live-serialization';
 
-type UserDevices = Map<number, Device>;
+type UserDevices = Map<string, Device>;
 
 // move to auth.ts
 // can we move all the auth stuff there too?
@@ -31,24 +36,38 @@ export interface Token {
   country: string;
 }
 
-const logger = (store: any) => (next: any) => (action: any) => {
+const loggerMiddleware: Middleware<Dispatch> = (store) => (next) => (
+  action
+) => {
   console.log('dispatching: ' + JSON.stringify(action));
   const result = next(action);
-  console.log('next state: ' + JSON.stringify(store.getState()));
+  console.log('next state: ' + JSON.stringify(store.getState().room));
   return result;
+};
+
+const createFanOutMiddleware = (room: Room): Middleware<Dispatch> => {
+  const fanOutMiddleware: Middleware<Dispatch> = () => (next) => (action) => {
+    if (Date.now() - room.lastFanOut < 750) {
+      if (room.fanOutDebounceTimeout !== undefined)
+        clearTimeout(room.fanOutDebounceTimeout);
+    }
+    room.triggerFanOut();
+    next(action);
+  };
+  return fanOutMiddleware;
 };
 
 const DEBOUNCE_TIME = 300;
 
 export class Room implements DurableObject {
   public store: EnhancedStore;
+  public fanOutDebounceTimeout: number | undefined = undefined;
+  public lastFanOut = Date.now();
 
-  private clients = new Map<string, UserDevices>();
+  private connectedDevices = new Map<string, UserDevices>();
   private teachers = new Set<string>();
 
   private deviceId = 0;
-  private fanOutDebounceTimeout: number | undefined = undefined;
-  private lastFanOut = Date.now();
   private previousState: pb.IState;
 
   public constructor(
@@ -61,28 +80,8 @@ export class Room implements DurableObject {
   ) {
     this.store = configureStore({
       middleware: [
-        logger,
-        () => (next) => (action) => {
-        //   // Check that we haven't debounced for longer than 1 second already
-        //   if (
-        //     Date.now() - this.lastFanOut > 1000 &&
-        //     this.fanOutDebounceTimeout
-        //   ) {
-        //     next(action);
-        //     return;
-        //   }
-        //   // If we didn't previously have a fan out triggered, then trigger one
-        //   if (!this.fanOutDebounceTimeout) {
-        //     this.triggerFanOut();
-        //     next(action);
-        //     return;
-        //   }
-
-        //   // If we have a timeout triggered then clear and restart the debounce
-        //   clearTimeout(this.fanOutDebounceTimeout);
-          next(action);
-          this.triggerFanOut();
-        },
+        createFanOutMiddleware(this),
+        ...(DEBUG ? [loggerMiddleware] : []),
       ],
       reducer: {
         room: roomReducer,
@@ -91,8 +90,8 @@ export class Room implements DurableObject {
         room: {
           ...INITIAL_ROOM_STATE,
           roomId: this.state.id.toString(),
-        }
-      }
+        },
+      },
     });
     this.previousState = this.currentState;
   }
@@ -127,6 +126,32 @@ export class Room implements DurableObject {
     }
   }
 
+  /**
+   * Triggers the room to send out the latest state changes to all connected
+   * clients that have occurred since the last fan out
+   *
+   * The actual fan out is debounced
+   */
+  public triggerFanOut(): void {
+    this.fanOutDebounceTimeout = setTimeout(() => {
+      const latestState = this.currentState;
+      const diff: pb.IStateChanges = {
+        changes: generateStateDiff(this.previousState, latestState),
+      };
+      if ((diff.changes?.length || 0) > 0) {
+        const bytes = pb.StateChanges.encode(diff).finish();
+        [...this.connectedDevices.values()].forEach((devices: UserDevices) => {
+          [...devices.values()].forEach((device: Device) =>
+            device.sendStateDiff(bytes)
+          );
+        });
+      }
+      this.previousState = latestState;
+      this.lastFanOut = Date.now();
+      this.fanOutDebounceTimeout = undefined;
+    }, DEBOUNCE_TIME);
+  }
+
   public disconnectDevice(device: Device): void {
     const userDevices = this.getUserDevices(device.context.userId);
     userDevices.delete(device.deviceId);
@@ -146,57 +171,13 @@ export class Room implements DurableObject {
         : undefined;
 
     const ws = webSocketPair[1];
-
-    const context = tokenToContext(token);
-    const deviceId = this.deviceId++;
-    const { userId } = context;
-    const device = new Device(
-      deviceId,
-      context,
-      ws,
-      this,
-      this.env.ENVIRONMENT === 'dev'
-    );
-
-    this.setUserDevice(userId, device);
-    const userJoinAction = {
-      context,
-      payload: {},
-    };
-
-    this.store.dispatch(Actions.userJoin(userJoinAction));
-
-    const setDeviceAction = {
-      context,
-      payload: {
-        deviceId: deviceId.toString(),
-        device: {},
-      },
-    };
-    this.store.dispatch(Actions.setDevice(setDeviceAction));
+    this.addNewDevice(token, ws);
 
     return new Response(null, {
       status: 101,
       webSocket: webSocketPair[0],
       headers,
     });
-  }
-
-  private fanOutStateDiff(): void {
-    const latestState = this.currentState;
-    const diff: pb.IStateChanges = {
-      changes: generateStateDiff(this.previousState, latestState),
-    };
-    if ((diff.changes?.length || 0) > 0) {
-      const bytes = pb.StateChanges.encode(diff).finish();
-      [...this.clients.values()].forEach((devices: UserDevices) => {
-        [...devices.values()].forEach((device: Device) =>
-          device.sendStateDiff(bytes)
-        );
-      });
-    }
-    this.previousState = latestState;
-    this.lastFanOut = Date.now();
   }
 
   // move to auth.ts
@@ -215,20 +196,45 @@ export class Room implements DurableObject {
     return (result.payload as unknown) as Token;
   }
 
+  /**
+   * Creates and adds a new device to both the redux store and the internal list
+   * of connected client devices
+   */
+  private addNewDevice(token: Token, ws: CloudflareWebsocket): void {
+    const context = tokenToContext(token);
+    const deviceId = `${this.deviceId++}`;
+    const { userId } = context;
+    const device = new Device(deviceId, context, ws, this, this.DEBUG);
+
+    this.setUserDevice(userId, device);
+
+    const userJoinAction = {
+      context,
+      payload: {},
+    };
+
+    this.store.dispatch(Actions.userJoin(userJoinAction));
+
+    const setDeviceAction = {
+      context,
+      payload: {
+        deviceId,
+        device: {},
+      },
+    };
+    this.store.dispatch(Actions.setDevice(setDeviceAction));
+  }
+
   private getUserDevices(userId: string): UserDevices {
-    if (!this.clients.has(userId)) this.clients.set(userId, new Map());
-    return this.clients.get(userId)!;
+    if (!this.connectedDevices.has(userId)) {
+      this.connectedDevices.set(userId, new Map());
+    }
+    return this.connectedDevices.get(userId)!;
   }
 
   private setUserDevice(userId: string, device: Device): void {
-    this.getUserDevices(userId).set(device.deviceId, device);
-  }
-
-  private triggerFanOut(): void {
-    this.fanOutDebounceTimeout = setTimeout(
-      () => this.fanOutStateDiff(),
-      DEBOUNCE_TIME
-    );
+    const userDevices = this.getUserDevices(userId);
+    userDevices.set(device.deviceId, device);
   }
 }
 

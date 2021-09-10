@@ -1,13 +1,13 @@
-import { GetStaticProps } from "next";
-import { useRef, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import pb from "kidsloop-live-serialization";
-import { nanoid } from "nanoid";
+import { GetStaticProps } from 'next';
+import { useRef, useState } from 'react';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import pb from 'kidsloop-live-serialization';
+import { nanoid } from 'nanoid';
 
 const HEARTBEAT_INTERVAL = 3500;
-const BASE_URL = "wss://live.kidsloop.dev/api/room";
+const BASE_URL = 'wss://live.kidsloop.dev/api/room';
 
-const isBrowser = () => typeof window !== "undefined"
+const isBrowser = () => typeof window !== 'undefined';
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
@@ -31,7 +31,7 @@ export default function Home() {
     chatMessages: [],
     endTimestamp: 0,
   });
-  const id = window.location.hash.slice(1)
+  const id = window.location.hash.slice(1);
   const url = new URL(BASE_URL);
   if(id) {
     url.pathname += `/${id}`;
@@ -44,11 +44,11 @@ export default function Home() {
   const { sendMessage, lastMessage, readyState, getWebSocket } = useWebSocket(
     url.toString(),
     {
-      protocols: ["live"],
+      protocols: ['live'],
       onOpen: () => {
         const ws = getWebSocket() as WebSocket;
-        ws.binaryType = "arraybuffer"
-        console.log(`connected to ws at: ${ws.url}`)
+        ws.binaryType = 'arraybuffer';
+        console.log(`connected to ws at: ${ws.url}`);
         heartbeatHandler.current = setInterval(() => {
           const message = pb.Action.encode({
             id: nanoid(),
@@ -62,7 +62,7 @@ export default function Home() {
         try {
           const changes = pb.StateChanges.decode(bytes).changes;
           setMessageHistory([changes, ...messageHistory]);
-          setState(updateState(state, changes))
+          setState(updateState(state, changes));
         } catch (_error) {
           try {
             const acknowledgement = pb.ActionAcknowledgement.decode(bytes);
@@ -70,7 +70,7 @@ export default function Home() {
               throw new Error(acknowledgement.error);
             }
           } catch (e) {
-            console.error("Error: ", e);
+            console.error('Error: ', e);
           }
         }
       },
@@ -81,11 +81,11 @@ export default function Home() {
   );
 
   const connectionStatus = {
-    [ReadyState.CONNECTING]: "Connecting",
-    [ReadyState.OPEN]: "Open",
-    [ReadyState.CLOSING]: "Closing",
-    [ReadyState.CLOSED]: "Closed",
-    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
 
   const onChatInputChange = (e) => setNewChat(e.target.value);
@@ -101,7 +101,7 @@ export default function Home() {
     }).finish();
     sendMessage(message);
     setNewChat('');
-  }
+  };
 
   return (
     <>
@@ -130,7 +130,7 @@ const updateState = (state: pb.IState, diffs: pb.IStateDiff[]): pb.IState => {
 
   const newChatMessages = diffs
     .flatMap(diff => diff.appendChatMessage?.messages || [])
-    .sort((a, b) => b.timestamp - a.timestamp)
+    .sort((a, b) => b.timestamp - a.timestamp);
 
   const newParticipants = diffs
     .reduce((acc, diff) => ({...acc, ...diff.addParticipants?.participants || {}}), {} as { [k: string]: pb.IParticipant });
@@ -141,4 +141,4 @@ const updateState = (state: pb.IState, diffs: pb.IStateDiff[]): pb.IState => {
     chatMessages: [...newChatMessages, ...state.chatMessages],
     participants: {...newParticipants, ...state.participants},
   };
-}
+};
