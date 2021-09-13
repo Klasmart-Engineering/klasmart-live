@@ -26,21 +26,13 @@ export default function Home() {
     return '';
   }
 
-  const room = useAppSelector(selectRoom);
+  const state = useAppSelector(selectRoom);
   const dispatch = useAppDispatch();
 
   const heartbeatHandler = useRef(null);
 
   const [messageHistory, setMessageHistory] = useState([]);
   const [newChat, setNewChat] = useState('');
-  const [state, setState] = useState<pb.IState>({
-    roomId: null,
-    participants: {},
-    host: null,
-    content: {},
-    chatMessages: [],
-    endTimestamp: 0,
-  });
 
   const id = window.location.hash.slice(1);
   const url = new URL(BASE_URL);
@@ -80,7 +72,6 @@ export default function Home() {
             dispatch(Actions[action](payload));
           });
           setMessageHistory([changes, ...messageHistory]);
-          setState(updateState(state, changes));
         } catch (_error) {
           try {
             const acknowledgement = pb.ActionAcknowledgement.decode(bytes);
@@ -90,7 +81,7 @@ export default function Home() {
           } catch (e) {
             console.error('Error: ', e);
           } finally {
-            console.log('ROOM', room);
+            console.log('ROOM', state);
           }
         }
       },
@@ -123,6 +114,8 @@ export default function Home() {
     setNewChat('');
   };
 
+  const reversedMessages = [...state.chatMessages].reverse();
+
   return (
     <>
       <p>Status: {connectionStatus}</p>
@@ -134,7 +127,7 @@ export default function Home() {
           onKeyDown={onChatInputKeyDown}
         />
         <ol reversed={true}>
-          {state.chatMessages.map(({ fromUser, message }) => (
+          {reversedMessages.map(({ fromUser, message }) => (
             <li>
               {state.participants[fromUser]?.name.replace(
                 '@kidsloop.live',
@@ -156,23 +149,3 @@ export default function Home() {
     </>
   );
 }
-
-const updateState = (state: pb.IState, diffs: pb.IStateDiff[]): pb.IState => {
-  const newState = diffs[0]?.setState || {};
-
-  const newChatMessages = diffs
-    .flatMap((diff) => diff.appendChatMessage?.messages || [])
-    .sort((a, b) => b.timestamp - a.timestamp);
-
-  const newParticipants = diffs.reduce(
-    (acc, diff) => ({ ...acc, ...(diff.addParticipants?.participants || {}) }),
-    {} as { [k: string]: pb.IParticipant }
-  );
-
-  return {
-    ...state,
-    ...newState,
-    chatMessages: [...newChatMessages, ...state.chatMessages],
-    participants: { ...newParticipants, ...state.participants },
-  };
-};
