@@ -80,8 +80,6 @@ export default function Home() {
             }
           } catch (e) {
             console.error('Error: ', e);
-          } finally {
-            console.log('ROOM', state);
           }
         }
       },
@@ -139,6 +137,12 @@ export default function Home() {
         </ol>
       </div>
       <div style={{ width: '50%', float: 'left' }}>
+        <h3>Participants</h3>
+        <ol>
+          {Object.values(state.participants).map((user) => (
+            <li> {JSON.stringify(user.name.replace('@kidsloop.live', ''))} </li>
+          ))}
+        </ol>
         <h3>Message History:</h3>
         <ol reversed={true}>
           {messageHistory.map((message) => (
