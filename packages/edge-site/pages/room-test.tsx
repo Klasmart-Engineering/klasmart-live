@@ -6,12 +6,11 @@ import { nanoid } from 'nanoid';
 import { selectRoom } from '../src/store';
 import { Client } from 'kidsloop-live-state';
 import { useAppDispatch, useAppSelector } from '../src/hooks';
-import { Divider } from '@material-ui/core';
 
 const { Actions } = Client;
 
 const HEARTBEAT_INTERVAL = 3500;
-const BASE_URL = 'wss://live.kidsloop.dev/api/room';
+const URL_PATH = 'api/room';
 
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -21,9 +20,15 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default function Home() {
+function getWebSocketAddress(id?: string) {
+  const url = new URL(`wss://${window.location.host}/${URL_PATH}`);
+  if (id) url.pathname += `/${id}`;
+  return url.toString();
+}
+
+export const Home: React.FC = () => {
   if (!isBrowser()) {
-    return '';
+    return <></>;
   }
 
   const state = useAppSelector(selectRoom);
@@ -35,15 +40,13 @@ export default function Home() {
   const [newChat, setNewChat] = useState('');
 
   const id = window.location.hash.slice(1);
-  const url = new URL(BASE_URL);
-  if (id) url.pathname += `/${id}`;
 
   if (state.roomId) {
     location.hash = state.roomId;
   }
 
   const { sendMessage, readyState, getWebSocket } = useWebSocket(
-    url.toString(),
+    getWebSocketAddress(id),
     {
       protocols: ['live'],
       onOpen: () => {
@@ -152,4 +155,6 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+export default Home;
