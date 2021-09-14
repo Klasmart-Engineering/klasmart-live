@@ -20,9 +20,3 @@ export function isOk<T,E>(x: Result<T,E>): x is Ok<T> {
 export function isError<T,E>(x: Result<T,E>): x is Error<E> {
     return x.kind === 'error';
 }
-
-export function okOrUnderined<T,E>(x: Result<T,E>): T|undefined {
-    if(x.kind === 'ok') { return x.payload; }
-    return undefined;
-}
-

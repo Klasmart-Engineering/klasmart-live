@@ -1,6 +1,6 @@
 import { Context } from 'kidsloop-live-state';
 import { statusText } from '../responses/statusText';
-import { error, isError, ok, okOrUnderined, Result } from './result';
+import { error, isError, ok, Result } from './result';
 import { parse as parseCookies } from 'cookie';
 import { jwtVerify, JWTVerifyOptions } from 'jose-browser-runtime/jwt/verify';
 import { createRemoteJWKSet } from 'jose-browser-runtime/jwks/remote';
@@ -32,8 +32,8 @@ function getJWKS(urlString?: string): Result<JWKS,Response> {
 
 export async function authenticate(request: Request, JWKSUrl?: string, options?: JWTVerifyOptions ): Promise<Result<Context, Response>> {
   const jwksResult = getJWKS(JWKSUrl);
-  const jwks = okOrUnderined(jwksResult);
   if(isError(jwksResult)) { return jwksResult; }
+  const jwks = jwksResult.payload;
 
   const { headers } = request;
 
