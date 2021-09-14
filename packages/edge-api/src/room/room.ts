@@ -12,6 +12,7 @@ import pb from 'kidsloop-live-serialization';
 import { websocketUpgrade } from '../responses/websocket';
 import { authenticate } from '../utils/auth';
 import { isError } from '../utils/result';
+import { json } from '../responses/json';
 
 const { roomReducer, Actions, INITIAL_ROOM_STATE, generateStateDiff } = Server;
 
@@ -87,6 +88,7 @@ export class Room implements DurableObject {
     const { headers } = request;
     try {
       if (headers.get('Upgrade') !== 'websocket') {
+        if(this.DEBUG) { return json(this, 200, 2); }
         return statusText(400, 'Please connect to this endpoint via websocket');
       }
 
