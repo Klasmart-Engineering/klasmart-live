@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
+    "chai": "^4.3.4",
+    "deep-object-diff": "^1.1.0",
     "kidsloop-live-serialization": "file:../serialization",
     "kidsloop-live-state": "file:../state",
     "nanoid": "^3.1.25",
@@ -21,6 +23,7 @@
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-typescript": "^8.2.5",
+    "@types/chai": "^4.2.21",
     "@types/faker": "5.1.4",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.1",

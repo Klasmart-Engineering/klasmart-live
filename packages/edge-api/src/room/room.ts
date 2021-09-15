@@ -59,7 +59,7 @@ export class Room implements DurableObject {
     private readonly jwtOptions = {
       issuer: env.JKWS_ISSUER,
       audience: env.JKWS_AUDIENCE,
-    },
+    }
   ) {
     this.store = configureStore({
       middleware: [
@@ -90,13 +90,19 @@ export class Room implements DurableObject {
         return statusText(400, 'Please connect to this endpoint via websocket');
       }
 
-      const authenticationResult = await authenticate(request, this.JWKS_URL, this.jwtOptions);
-      if(isError(authenticationResult)) { return authenticationResult.payload; }
+      const authenticationResult = await authenticate(
+        request,
+        this.JWKS_URL,
+        this.jwtOptions
+      );
+      if (isError(authenticationResult)) {
+        return authenticationResult.payload;
+      }
       const context = authenticationResult.payload;
 
       const protocol = request.headers.get('Sec-WebSocket-Protocol');
       const { response, ws } = websocketUpgrade(protocol);
-      
+
       this.addNewDevice(context, ws);
       return response;
     } catch (e) {
@@ -134,7 +140,6 @@ export class Room implements DurableObject {
     const userDevices = this.getUserDevices(device.context.userId);
     userDevices.delete(device.deviceId);
   }
-
 
   /**
    * Creates and adds a new device to both the redux store and the internal list
@@ -176,4 +181,3 @@ export class Room implements DurableObject {
     userDevices.set(device.deviceId, device);
   }
 }
-
