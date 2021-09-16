@@ -102,4 +102,15 @@ export const {
 
 export const Actions = roomSlice.actions;
 export const roomReducer = roomSlice.reducer;
+export type RoomState = ReturnType<typeof roomReducer>
 export const INITIAL_ROOM_STATE = initialState;
+// Is there a neater way to do this?
+export type RoomActions =
+  | ReturnType<typeof roomSlice.actions.addParticipants>
+  | ReturnType<typeof roomSlice.actions.appendChatMessage>
+  | ReturnType<typeof roomSlice.actions.changeContent>
+  | ReturnType<typeof roomSlice.actions.changeHost>
+  | ReturnType<typeof roomSlice.actions.classEnded>
+  | ReturnType<typeof roomSlice.actions.receiveTrophy>
+  | ReturnType<typeof roomSlice.actions.removeParticipants>
+  | ReturnType<typeof roomSlice.actions.setState>
