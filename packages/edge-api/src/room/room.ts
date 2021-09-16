@@ -1,8 +1,5 @@
 import { debugResponse } from '../responses/debug';
 import { statusText } from '../responses/statusText';
-import { parse as parseCookies } from 'cookie';
-import { createRemoteJWKSet } from 'jose-browser-runtime/jwks/remote';
-import { jwtVerify } from 'jose-browser-runtime/jwt/verify';
 import { Device } from './device';
 import {
   configureStore,
@@ -12,25 +9,13 @@ import {
 } from '@reduxjs/toolkit';
 import { Server, Context } from 'kidsloop-live-state';
 import pb from 'kidsloop-live-serialization';
+import { websocketUpgrade } from '../responses/websocket';
+import { authenticate } from '../utils/auth';
+import { isError } from '../utils/result';
 
 const { roomReducer, Actions, INITIAL_ROOM_STATE, generateStateDiff } = Server;
 
 type UserDevices = Map<string, Device>;
-
-// move to auth.ts
-// can we move all the auth stuff there too?
-export interface Token {
-  aud: string[];
-  email: string;
-  exp: number;
-  iat: number;
-  nbf: number;
-  iss: string;
-  type: string;
-  identity_nonce: string;
-  sub: string;
-  country: string;
-}
 
 const loggerMiddleware: Middleware<Dispatch> = (store) => (next) => (
   action
@@ -67,12 +52,14 @@ export class Room implements DurableObject {
   private previousState: pb.IState;
 
   public constructor(
-    private state: DurableObjectState,
-    private env: CloudflareEnvironment,
-    private DEBUG = env.ENVIRONMENT === 'dev',
-    private JWKS = env.JKWS_URL
-      ? createRemoteJWKSet(new URL(env.JKWS_URL))
-      : undefined
+    private readonly state: DurableObjectState,
+    private readonly env: CloudflareEnvironment,
+    private readonly DEBUG = env.ENVIRONMENT === 'dev',
+    private readonly JWKS_URL = env.JKWS_URL,
+    private readonly jwtOptions = {
+      issuer: env.JKWS_ISSUER,
+      audience: env.JKWS_AUDIENCE,
+    },
   ) {
     this.store = configureStore({
       middleware: [
@@ -99,24 +86,19 @@ export class Room implements DurableObject {
   public async fetch(request: Request): Promise<Response> {
     const { headers } = request;
     try {
-      const cookieHeader = headers.get('Cookie');
-      if (!cookieHeader) {
-        return statusText(401);
+      if (headers.get('Upgrade') !== 'websocket') {
+        return statusText(400, 'Please connect to this endpoint via websocket');
       }
-      const cookies = parseCookies(cookieHeader);
 
-      const token = await this.authenticate(cookies['CF_Authorization']);
-      if (!token) {
-        return statusText(403);
-      }
-      const { email } = token;
-      if (typeof email !== 'string') {
-        return statusText(400);
-      }
-      if (headers.get('Upgrade') === 'websocket') {
-        return this.websocket(request, token);
-      }
-      return this.http(request, token);
+      const authenticationResult = await authenticate(request, this.JWKS_URL, this.jwtOptions);
+      if(isError(authenticationResult)) { return authenticationResult.payload; }
+      const context = authenticationResult.payload;
+
+      const protocol = request.headers.get('Sec-WebSocket-Protocol');
+      const { response, ws } = websocketUpgrade(protocol);
+      
+      this.addNewDevice(context, ws);
+      return response;
     } catch (e) {
       return debugResponse(headers, e, this.DEBUG);
     }
@@ -153,51 +135,12 @@ export class Room implements DurableObject {
     userDevices.delete(device.deviceId);
   }
 
-  private async http(_request: Request, _token: Token): Promise<Response> {
-    return new Response('Please connect to this endpoint via websocket');
-  }
-
-  private async websocket(request: Request, token: Token): Promise<Response> {
-    const protocol = request.headers.get('Sec-WebSocket-Protocol');
-
-    const webSocketPair = new WebSocketPair();
-    const headers =
-      typeof protocol === 'string'
-        ? { 'Sec-WebSocket-Protocol': protocol }
-        : undefined;
-
-    const ws = webSocketPair[1];
-    this.addNewDevice(token, ws);
-
-    return new Response(null, {
-      status: 101,
-      webSocket: webSocketPair[0],
-      headers,
-    });
-  }
-
-  // move to auth.ts
-  private async authenticate(jwt?: string): Promise<Token> {
-    if (!jwt) {
-      throw new Error('No JWT provided');
-    }
-    if (!this.JWKS) {
-      throw new Error('JWT Decoding information not found');
-    }
-
-    const result = await jwtVerify(jwt, this.JWKS, {
-      issuer: this.env.JKWS_ISSUER,
-      audience: this.env.JKWS_AUDIENCE,
-    });
-    return (result.payload as unknown) as Token;
-  }
 
   /**
    * Creates and adds a new device to both the redux store and the internal list
    * of connected client devices
    */
-  private addNewDevice(token: Token, ws: CloudflareWebsocket): void {
-    const context = tokenToContext(token);
+  private addNewDevice(context: Context, ws: CloudflareWebsocket): void {
     const deviceId = `${this.deviceId++}`;
     const { userId } = context;
     const device = new Device(deviceId, context, ws, this, this.DEBUG);
@@ -234,12 +177,3 @@ export class Room implements DurableObject {
   }
 }
 
-// A helper function until the code is re-written to use
-// Kidsloop Authentication token
-function tokenToContext(token: Token): Context {
-  return {
-    userId: token.sub,
-    isTeacher: false,
-    name: token.email,
-  };
-}
