@@ -1,6 +1,4 @@
-import { combineReducers } from '@reduxjs/toolkit';
-import { createAction } from '@reduxjs/toolkit/dist/createAction';
-import { createReducer } from '@reduxjs/toolkit/dist/createReducer';
+import { combineReducers, createAction, createReducer } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
 import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';

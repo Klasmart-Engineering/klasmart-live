@@ -23,6 +23,8 @@ export declare const Actions: import("@reduxjs/toolkit").CaseReducerActions<{
     classEnded: Reducer<pb.IClassEnded>;
 }>;
 export declare const roomReducer: import("redux").Reducer<pb.IState, import("redux").AnyAction>;
+export declare type RoomState = ReturnType<typeof roomReducer>;
 export declare const INITIAL_ROOM_STATE: pb.IState;
+export declare type RoomActions = ReturnType<typeof roomSlice.actions.addParticipants> | ReturnType<typeof roomSlice.actions.appendChatMessage> | ReturnType<typeof roomSlice.actions.changeContent> | ReturnType<typeof roomSlice.actions.changeHost> | ReturnType<typeof roomSlice.actions.classEnded> | ReturnType<typeof roomSlice.actions.receiveTrophy> | ReturnType<typeof roomSlice.actions.removeParticipants> | ReturnType<typeof roomSlice.actions.setState>;
 export {};
 //# sourceMappingURL=index.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"useJoinClass.d.ts","sourceRoot":"","sources":["../src/react/useJoinClass.ts"],"names":[],"mappings":"AAIA,MAAM,WAAW,aAAa;IAC1B,MAAM,EAAE,OAAO,CAAC;IAChB,OAAO,EAAE,OAAO,CAAC;IACjB,SAAS,EAAE,CAAC,GAAG,EAAE,MAAM,KAAK,OAAO,CAAC,IAAI,CAAC,CAAA;CAC5C;AAED,wBAAgB,YAAY,IAAI,aAAa,CAkB5C"}
