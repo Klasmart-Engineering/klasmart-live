@@ -1,17 +1,17 @@
-import React, { useMemo, ReactNode } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { FC, useMemo, ReactNode } from 'react';
+import { DefaultRootState, useDispatch } from 'react-redux';
 import { Network } from '../client/network';
 import { State } from '../client';
 import NetworkContext from './context';
 
 
 export interface NetworkProviderProps {
-    children?: ReactNode,
-    selector: (state: unknown) => State
+    children?: ReactNode
+    selector: (state: DefaultRootState) => State
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const NetworkProvider = ({children, selector}: NetworkProviderProps) => {
+export const NetworkProvider: FC<NetworkProviderProps> = ({children, selector}) => {
     const dispatch = useDispatch();
     const value = useMemo(() => new Network(dispatch, selector), []);
     return (

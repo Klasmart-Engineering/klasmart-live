@@ -1,13 +1,16 @@
-import { Dispatch } from 'react';
+import { Dispatch } from '@reduxjs/toolkit';
 import { DefaultRootState } from 'react-redux';
-import { State } from '.';
+import { Actions, State } from '.';
+import * as pb from 'kidsloop-live-serialization';
 export declare class Network {
-    readonly dispatch: Dispatch<NetworkActions>;
+    readonly dispatch: Dispatch<Actions>;
     readonly selector: (s: DefaultRootState) => State;
     private ws?;
-    constructor(dispatch: Dispatch<NetworkActions>, selector: (s: DefaultRootState) => State, ws?: Promise<WebSocket> | undefined);
+    constructor(dispatch: Dispatch<Actions>, selector: (s: DefaultRootState) => State, ws?: Promise<WebSocket> | undefined);
     initWs(url: string): Promise<WebSocket>;
-    private networkMessage;
+    send(actionProperties: pb.IAction): Promise<void>;
+    close(reason?: string): Promise<void>;
+    private onNetworkMessage;
     private sendHeartbeat;
 }
 export declare const setConnectionState: import("@reduxjs/toolkit").ActionCreatorWithPayload<boolean, string>;

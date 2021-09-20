@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
+import { DefaultRootState } from 'react-redux';
 import { State } from '../client';
 export interface NetworkProviderProps {
     children?: ReactNode;
-    selector: (state: unknown) => State;
+    selector: (state: DefaultRootState) => State;
 }
-export declare const NetworkProvider: ({ children, selector }: NetworkProviderProps) => JSX.Element;
+export declare const NetworkProvider: FC<NetworkProviderProps>;
 //# sourceMappingURL=provider.d.ts.map

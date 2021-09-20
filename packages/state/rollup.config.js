@@ -1,20 +1,32 @@
 import { terser } from 'rollup-plugin-terser';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const packageJson = require('./package.json');
 
 export default [
   {
     input: 'src/index.ts',
-    output: {
-      exports: 'named',
-      file: 'dist/index.js',
-      format: 'cjs',
-      sourcemap: true,
-    },
+    output: [
+      {
+        file: packageJson.main,
+        format: 'cjs',
+        sourcemap: true
+      },
+      {
+        file: packageJson.module,
+        format: 'esm',
+        sourcemap: true
+      }
+    ],
     plugins: [
+      peerDepsExternal(),
       typescript({ tsconfig: './tsconfig.json' }),
-      nodeResolve({ browser: true }),
+      resolve({ browser: true }),
       commonjs(),
       terser(),
     ],

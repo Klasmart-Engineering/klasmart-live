@@ -4,7 +4,6 @@ import { RoomActions, roomReducer } from './roomSlice';
 export { roomReducer, Actions, INITIAL_ROOM_STATE } from './roomSlice';
 
 export const reducer = combineReducers({
-    room: roomReducer,
     network: networkReducer,
 });
 

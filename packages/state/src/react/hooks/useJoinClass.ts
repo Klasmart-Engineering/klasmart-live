@@ -1,4 +1,3 @@
-
 import { useContext, useState } from 'react';
 import NetworkContext from '../context';
 
