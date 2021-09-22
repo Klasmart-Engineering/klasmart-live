@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import pb from 'kidsloop-live-serialization';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { Client } from 'kidsloop-live-state';
@@ -7,70 +6,26 @@ import { Scenario, SCENARIOS } from './scenarios';
 import { diff } from 'deep-object-diff';
 import type Chai from 'chai';
 
-const { roomReducer, Actions } = Client;
+import { createWebsocket } from './websocket';
+import { JWT } from './auth';
 
-const HEARTBEAT_INTERVAL = 3500;
-const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-const NUMBER_OF_CLIENTS = 2;
+const { roomReducer } = Client;
 
-let url = `${BASE_URL}/`;
+export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
+const NUMBER_OF_CLIENTS = 1;
 
-const websockets: WebSocket[] = [];
-const stores: EnhancedStore[] = [];
-const scenarios: Scenario[] = [...SCENARIOS];
-const scenarioTimings: ScenarioTimings[] = [];
-const results: Result[][] = [];
-const failures: Difference[][] = [];
+let roomId = '';
 
-let currentScenario = 0;
+export const tokens: JWT[] = [];
+export const websockets: WebSocket[] = [];
+export const stores: EnhancedStore[] = [];
+export let scenarios: Scenario[] = [];
+export const scenarioTimings: ScenarioTimings[] = [];
+export const results: Result[][] = [];
+export const failures: Difference[][] = [];
+
+export let currentScenario = 0;
 let currentState: pb.IState;
-
-async function createWebsocket(i: number): Promise<WebSocket> {
-  const socket = new WebSocket(url, ['live'], {
-    headers: {
-      Cookie:
-        'CF_Authorization=eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjM2JmZmVmNzFiYjBhOTBjOWNiZWYzYjdjMGQ0YTFjN2I0YjhiNzZiODAyOTJhNjIzYWZkOWRhYzQ1ZDFjNjUifQ.eyJhdWQiOlsiYWY5NzU4NDFmOThhZDg3ZTgzZmFkMTBlZjhhZTU2ODc2ZTQzMzA5Y2VhNjdlMDRhNDcyMmZlYjk5ZmFlYzFjYyJdLCJlbWFpbCI6Im5jdXJ0aXNAa2lkc2xvb3AubGl2ZSIsImV4cCI6MTYzMTgxMTkxMywiaWF0IjoxNjMxNzI1NTEzLCJuYmYiOjE2MzE3MjU1MTMsImlzcyI6Imh0dHBzOi8va2lkc2xvb3AuY2xvdWRmbGFyZWFjY2Vzcy5jb20iLCJ0eXBlIjoiYXBwIiwiaWRlbnRpdHlfbm9uY2UiOiJoSnlLRHVEaVI2SFFkM2NQIiwic3ViIjoiMTVjNTI4MTItMzQwNi00NWRlLWEwYTEtZTliMzQ4NWY3OWUzIiwiY291bnRyeSI6IkdCIn0.UydOvAXcEZOsPT7WkmgDwPnvDgSo5vSwrp0LJsu_QHd7vuDQkgRNajcjczhx1jDdxwLrGgcj5Cce_TafW3ycLT-veN3DZCGOdZ3Kj3KRmZhPCTmVPNoZ3kU0gSjNB0ys5pc1ViPcJElRTdg2Z_QeZ_uaevzMWMs_AhyT7KEGJq73TF-gYzeV5CND4cLBTu5In783K-e7AmVlEBWIem9yxuNz_50bJMOhKU8fGYB6AnTTfnFZr9_k4o6Io77HkfKfx8aWimt5Fx31dwnGI-2LDWdy-rvcs1eKF-DGqEbgvchzbLLnhF5oZb7KU1-9O4R2EVczfCuhjfwThT66IckOTA',
-    },
-  });
-  socket.binaryType = 'arraybuffer';
-  socket.addEventListener('open', () => {
-    setInterval(() => {
-      const message = pb.Action.encode({
-        id: nanoid(),
-        heartbeat: {},
-      }).finish();
-      socket.send(message);
-    }, HEARTBEAT_INTERVAL);
-  });
-
-  socket.addEventListener('message', ({ data }) => {
-    const bytes = new Uint8Array(data);
-    try {
-      const { changes } = pb.StateChanges.decode(bytes);
-      if (!changes) return;
-      for (const change of changes) {
-        const update = new pb.StateDiff(change);
-        // this is required to remove the internal protobuf data
-        const tempObject = pb.StateDiff.toObject(update);
-        const action = update.action;
-        if (!action) continue;
-
-        const payload = tempObject[action];
-        stores[i].dispatch(Actions[action](payload));
-
-        if (results[i] === undefined) results[i] = [];
-        results[i][currentScenario] = {
-          name: scenarioTimings[currentScenario].name,
-          time: new Date().getTime() - scenarioTimings[currentScenario].time,
-        };
-      }
-    } catch (e) {}
-  });
-  socket.addEventListener('error', (error) => {
-    console.error('Error connecting to websocket:', error);
-  });
-  return socket;
-}
 
 async function main() {
   console.log('=== Starting Testing ===');
@@ -83,17 +38,17 @@ async function main() {
     });
     stores.push(store);
 
-    const socket = await createWebsocket(i);
-    websockets.push(socket);
+    const { token, ws } = await createWebsocket(i, roomId);
+    websockets.push(ws);
+    tokens.push(token);
 
     if (i === 0) {
-      let roomId = undefined;
-      while (roomId === undefined || roomId === null) {
+      while (roomId === '') {
         await sleep(250);
         roomId = stores[i].getState().room.roomId;
       }
       console.log(`Room ID has been assigned: ${roomId}`);
-      url += roomId;
+      roomId += roomId;
     }
   }
 
@@ -105,22 +60,25 @@ async function main() {
     if (attempts > 5) throw new Error('Unable to get all websockets connected');
   }
   console.log('=== Starting Scenarios ===');
+  // Initialize senarios
+  scenarios = [...SCENARIOS.map((scenario) => scenario())];
 
   for (currentScenario; currentScenario < scenarios.length; currentScenario++) {
     const scenario = scenarios[currentScenario];
+    console.log(`Running scenario ${currentScenario}: ${scenario.name}`);
     processScenario(scenario);
     if (scenario.delay) await sleep(scenario.delay);
     runAssertions(scenario);
   }
+
+  console.log('=== Finished Scenarios ===');
 
   let hasFailed = false;
   for (let i = 0; i < failures.length; i++) {
     const fails = failures[i];
     if (fails.length > 0) {
       console.log();
-      console.log(
-        `Scenario '${scenarios[i].name}': had failures from sockets:`
-      );
+      console.log(`Scenario ${i} '${scenarios[i].name}' had failures:`);
       console.log(fails);
       hasFailed = true;
     }
@@ -149,7 +107,7 @@ const processScenario = async ({
       const i = Math.floor(Math.random() * NUMBER_OF_CLIENTS);
       websockets[i].send(bytes);
     } else {
-      websockets[target].send(action);
+      websockets[target].send(bytes);
     }
   }
   scenarioTimings.push({ name: name, time: new Date().getTime() });

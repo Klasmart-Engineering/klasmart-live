@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "chai": "^4.3.4",
     "deep-object-diff": "^1.1.0",
+    "jose": "^3.17.0",
     "kidsloop-live-serialization": "file:../serialization",
     "kidsloop-live-state": "file:../state",
     "nanoid": "^3.1.25",
