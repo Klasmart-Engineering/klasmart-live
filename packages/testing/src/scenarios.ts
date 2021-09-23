@@ -1,9 +1,13 @@
 import pb from 'kidsloop-live-serialization';
 import { nanoid } from 'nanoid';
 import Chai, { expect } from 'chai';
-import { tokens } from './index';
+import { tokens, NUMBER_OF_CLIENTS } from './index';
 
 export const STANDARD_PROPAGATION_DELAY = 2500;
+
+function generateRandomClientIndex(): number {
+  return Math.floor(Math.random() * NUMBER_OF_CLIENTS);
+}
 
 export interface Scenario {
   name: string;
@@ -12,7 +16,9 @@ export interface Scenario {
   // The changes you expect MUST be made to the state object
   expected?: (state: pb.IState) => Chai.Assertion[];
 
-  // -2 = random, -1 = all, <= 0 is a specific entry
+  // If target == -1, send to all clients, if >= 0 then index into the connected
+  // clients at that index and send it from that client
+  // For now, teacher == index 0
   target: number;
   delay: number;
 
@@ -50,7 +56,7 @@ export const SCENARIOS: (() => Scenario)[] = [
         sendChatMessage: { message },
       }),
       delay: STANDARD_PROPAGATION_DELAY,
-      target: -2,
+      target: -1,
       expected: (state: pb.IState): Chai.Assertion[] => {
         const assertions = [];
         try {
@@ -60,6 +66,30 @@ export const SCENARIOS: (() => Scenario)[] = [
         }
         try {
           expect(state.chatMessages![0]).include({ message });
+        } catch (e) {
+          assertions.push(e.toString());
+        }
+        return assertions;
+      },
+    };
+  },
+  (): Scenario => {
+    const content = {
+      type: pb.ContentType.H5P,
+      id: 'Test Content 1',
+      url: 'test.content.com/test-1',
+    };
+    return {
+      name: 'Set Content',
+      action: wrapAction({
+        setContent: { content },
+      }),
+      delay: STANDARD_PROPAGATION_DELAY,
+      target: 0,
+      expected: (state: pb.IState): Chai.Assertion[] => {
+        const assertions = [];
+        try {
+          expect(state.content).to.equal(content);
         } catch (e) {
           assertions.push(e.toString());
         }

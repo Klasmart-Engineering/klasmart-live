@@ -12,7 +12,7 @@ import { JWT } from './auth';
 const { roomReducer } = Client;
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-const NUMBER_OF_CLIENTS = 1;
+export const NUMBER_OF_CLIENTS = 1;
 
 let roomId = '';
 
@@ -103,9 +103,6 @@ const processScenario = async ({
       websockets.forEach((socket) => {
         socket.send(bytes);
       });
-    } else if (target === -2) {
-      const i = Math.floor(Math.random() * NUMBER_OF_CLIENTS);
-      websockets[i].send(bytes);
     } else {
       websockets[target].send(bytes);
     }
