@@ -3,14 +3,16 @@ import { createAction } from '@reduxjs/toolkit/dist/createAction';
 import { createReducer } from '@reduxjs/toolkit/dist/createReducer';
 import { Dispatch } from 'react';
 import { DefaultRootState } from 'react-redux';
-import { State } from '.';
+import { nanoid } from 'nanoid';
+import { Actions, State } from '.';
+import * as pb from 'kidsloop-live-serialization';
 
 
 
 export class Network {
     constructor (
         /* eslint-disable no-unused-vars */
-        public readonly dispatch: Dispatch<NetworkActions>,
+        public readonly dispatch: Dispatch<Actions>,
         public readonly selector: (s: DefaultRootState) => State,
         private ws?: Promise<WebSocket>,
         /* eslint-enable no-unused-vars */
@@ -33,12 +35,28 @@ export class Network {
                 this.dispatch(setConnectionState(false));
             });
             ws.addEventListener('error', (e) => reject(e));
-            ws.addEventListener('message', ({ data }) => this.networkMessage(ws, data));
+            ws.addEventListener('message', ({ data }) => this.onNetworkMessage(ws, data));
         });
         return this.ws;
     }
 
-    private networkMessage(ws: WebSocket, data: unknown) {
+    public async send(actionProperties: pb.IAction): Promise<void> {
+        if (!this.ws) {
+            throw Error('websocket has not been initialised');
+        }
+        const bytes = pb.Action.encode({id: nanoid(), ...actionProperties}).finish();
+        (await this.ws).send(bytes);
+        // Eventually await for an action acknowledgement, but for now just send the message
+        
+        // Also, need to discuss client side state structure
+        // dispatch(... what?)
+    }
+
+    public async close(reason?: string): Promise<void> {
+        (await this.ws)?.close(200, reason);
+    }
+
+    private onNetworkMessage(ws: WebSocket, data: unknown) {
         if (!(data instanceof ArrayBuffer)) {
             ws.close(4401, 'Binary only protocol');
             return;
