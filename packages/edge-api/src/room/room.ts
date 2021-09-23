@@ -10,7 +10,7 @@ import {
 import { Server, Context } from 'kidsloop-live-state';
 import pb from 'kidsloop-live-serialization';
 import { websocketUpgrade } from '../responses/websocket';
-import { authenticate } from '../utils/auth';
+import { authenticate, getAuthToken } from '../utils/auth';
 import { isError } from '../utils/result';
 
 const { roomReducer, Actions, INITIAL_ROOM_STATE, generateStateDiff } = Server;
@@ -77,6 +77,7 @@ export class Room implements DurableObject {
       },
     });
     this.previousState = this.currentState;
+    console.log(`Currently deployed in environment: ${env.ENVIRONMENT}`);
   }
 
   get currentState(): pb.IState {
@@ -84,16 +85,21 @@ export class Room implements DurableObject {
   }
 
   public async fetch(request: Request): Promise<Response> {
+    console.log('Processing Room request');
     const { headers } = request;
     try {
       if (headers.get('Upgrade') !== 'websocket') {
         return statusText(400, 'Please connect to this endpoint via websocket');
       }
 
+      const jwtInfo = getAuthToken(request, this.env.ENVIRONMENT);
+      if (isError(jwtInfo)) return jwtInfo.payload;
+
       const authenticationResult = await authenticate(
-        request,
+        jwtInfo.payload,
         this.JWKS_URL,
-        this.jwtOptions
+        this.jwtOptions,
+        this.env.ENVIRONMENT
       );
       if (isError(authenticationResult)) {
         return authenticationResult.payload;
