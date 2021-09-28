@@ -1,9 +1,12 @@
+import { ConnectionStatus } from './client/network';
+
 export * as Server from './server';
 export * as Client from './client';
 export { NetworkContext } from './react/context';
 export { NetworkProvider } from './react/provider';
-export { useIsConnected } from './react/hooks/useIsConnected';
+export { ConnectionState, useConnectionState } from './react/hooks/useConnectionState';
 export { JoinClassHook, useJoinClass } from './react/hooks/useJoinClass';
+ConnectionStatus
 
 export type ID = string;
 

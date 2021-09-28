@@ -3,6 +3,7 @@ import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { Actions, State } from '.';
 import * as pb from 'kidsloop-live-serialization';
+import { ValueOf } from '../types';
 
 
 
@@ -19,19 +20,25 @@ export class Network {
     public async initWs (url: string): Promise<WebSocket> {
         if(this.ws) { return this.ws; }
         this.ws = new Promise<WebSocket>((resolve, reject) => {
+            this.dispatch(setConnectionStatus(ConnectionStatus.Connecting));
+
             const ws = new WebSocket(url, [ 'live' ]);
             ws.binaryType = 'arraybuffer';
             ws.addEventListener('open', (e) => {
                 resolve(ws);
-                this.dispatch(setConnectionState(true));
+                this.dispatch(setConnectionError(false));
+                this.dispatch(setConnectionStatus(ConnectionStatus.Connected));
                 this.sendHeartbeat(ws);
             });
             ws.addEventListener('close', (e) => {
                 this.ws = undefined;
                 reject(e);
-                this.dispatch(setConnectionState(false));
+                this.dispatch(setConnectionStatus(ConnectionStatus.Disconnected));
             });
-            ws.addEventListener('error', (e) => reject(e));
+            ws.addEventListener('error', (e) => {
+                reject(e);
+                this.dispatch(setConnectionError(true));
+            });
             ws.addEventListener('message', ({ data }) => this.onNetworkMessage(ws, data));
         });
         return this.ws;
@@ -74,14 +81,33 @@ export class Network {
     }
 }
 
-export const setConnectionState = createAction<boolean>('setConnectionState');
-export const connectionState = createReducer<boolean>(
-    false,
-    (builder) =>
-        builder.addCase(setConnectionState, (state, {payload}) => payload)
+/* eslint-disable no-unused-vars */
+export enum ConnectionStatus {
+    Connecting,
+    Connected,
+    Disconnected,
+}
+/* eslint-enable no-unused-vars */
+
+export const setConnectionError = createAction<boolean>('setConnectionError');
+export const connectionError = createReducer<boolean>(
+    false, (builder) => builder.addCase(setConnectionError, (_, {payload}) => payload)
 );
-export type NetworkActions = ReturnType<typeof setConnectionState>
+
+export const setConnectionStatus = createAction<ConnectionStatus>('setConnectionState');
+export const connectionStatus = createReducer<ConnectionStatus>(
+    ConnectionStatus.Disconnected,
+    (builder) => builder.addCase(setConnectionStatus, (_, {payload}) => payload)
+);
 
 export const networkReducer = combineReducers({
-    connectionState,
+    connectionStatus,
+    connectionError,
 });
+
+const networkActions = {
+    setConnectionError,
+    setConnectionState: setConnectionStatus
+};
+
+export type NetworkActions = ReturnType<ValueOf<typeof networkActions>>

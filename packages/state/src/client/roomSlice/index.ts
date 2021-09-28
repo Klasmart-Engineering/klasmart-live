@@ -1,5 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import pb from 'kidsloop-live-serialization';
+import { ValueOf } from '../../types';
 
 type Reducer<T> = CaseReducer<pb.IState, PayloadAction<T>>;
 
@@ -104,5 +105,4 @@ export const Actions = roomSlice.actions;
 export const roomReducer = roomSlice.reducer;
 export type RoomState = ReturnType<typeof roomReducer>
 export const INITIAL_ROOM_STATE = initialState;
-type ValueOf<T> = T[keyof T];
 export type RoomActions = ReturnType<ValueOf<typeof roomSlice.actions>>
