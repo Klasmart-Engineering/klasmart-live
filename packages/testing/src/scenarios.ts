@@ -56,7 +56,7 @@ export const SCENARIOS: (() => Scenario)[] = [
         sendChatMessage: { message },
       }),
       delay: STANDARD_PROPAGATION_DELAY,
-      target: -1,
+      target: generateRandomClientIndex(),
       expected: (state: pb.IState): Chai.Assertion[] => {
         const assertions = [];
         try {

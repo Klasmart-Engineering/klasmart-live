@@ -12,7 +12,7 @@ import { JWT } from './auth';
 const { roomReducer } = Client;
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-export const NUMBER_OF_CLIENTS = 2;
+export const NUMBER_OF_CLIENTS = 50;
 
 let roomId = '';
 
@@ -52,14 +52,14 @@ async function main() {
         }
       }
       console.log(`Room ID has been assigned: ${roomId}`);
-      roomId += roomId;
     }
+    await sleep(750);
   }
 
   console.log('=== Initialized websockets ===');
   let attempts = 0;
   while (websockets.filter((socket) => socket.readyState !== 1).length > 0) {
-    await sleep(500); // Give the connections a chance to connect
+    await sleep(1000); // Give the connections a chance to connect
     attempts += 1;
     if (attempts > 5) throw new Error('Unable to get all websockets connected');
   }
@@ -75,6 +75,7 @@ async function main() {
     runAssertions(scenario);
   }
   console.log('=== Finished Scenarios ===');
+  console.log(stores[0].getState().room);
 
   let hasFailed = false;
   for (let i = 0; i < failures.length; i++) {
