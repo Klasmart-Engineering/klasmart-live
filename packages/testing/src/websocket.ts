@@ -28,8 +28,6 @@ export async function createWebsocket(
       'CF-Access-Client-Id': '8e19dcadfebf0845b3b558f360082dea.access',
       'CF-Access-Client-Secret':
         'b0c2e2a5d206276fe5c7c02fa6581cf2c701ffb03d3c3dd3c1f186ce1144c507',
-      Cookie:
-        'CF_Authorization=eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjM2JmZmVmNzFiYjBhOTBjOWNiZWYzYjdjMGQ0YTFjN2I0YjhiNzZiODAyOTJhNjIzYWZkOWRhYzQ1ZDFjNjUifQ.eyJhdWQiOlsiYWY5NzU4NDFmOThhZDg3ZTgzZmFkMTBlZjhhZTU2ODc2ZTQzMzA5Y2VhNjdlMDRhNDcyMmZlYjk5ZmFlYzFjYyJdLCJlbWFpbCI6Im5jdXJ0aXNAa2lkc2xvb3AubGl2ZSIsImV4cCI6MTYzMjQ2ODU2MywiaWF0IjoxNjMyMzgyMTYzLCJuYmYiOjE2MzIzODIxNjMsImlzcyI6Imh0dHBzOi8va2lkc2xvb3AuY2xvdWRmbGFyZWFjY2Vzcy5jb20iLCJ0eXBlIjoiYXBwIiwiaWRlbnRpdHlfbm9uY2UiOiJhMlNhUVZkUWxhbjVaYzVtIiwic3ViIjoiMTVjNTI4MTItMzQwNi00NWRlLWEwYTEtZTliMzQ4NWY3OWUzIiwiY291bnRyeSI6IkdCIn0.S8bkth0ZbySv-048zdCNqgmvCT5oEctHSatolLvnAg-XBI7wVzeTwQzlmEZetYpDZ04dROtcmjQPlFYgedG3eVeim1_j8iMT2McztunET_rVntzBnocongYqPSwMwGW2FlYATOLPbRbOzRtHWp7H9YSHyJDODmw6HV-rGAeDyEy2wLVbr6iTmrZ_kA22Q5eag7Rlu87QIZhkzdV-W9CHKKU6tqVqgLZppDTW4hhkXRvlzlTSrqPaDCTXPVoZmyCqR8dsI8W9B9Tw_yzSY6Uafli26ybnn-Yh7iF58N1E-Z-Jplp5eVNMT0Qe4STKVbH5Gv01A1upLcKaiKEREH9KOA',
     },
   });
   socket.binaryType = 'arraybuffer';
@@ -60,6 +58,7 @@ export async function createWebsocket(
 
         if (results[i] === undefined) results[i] = [];
         results[i][currentScenario] = {
+          scenario: currentScenario,
           name: scenarioTimings[currentScenario].name,
           time: new Date().getTime() - scenarioTimings[currentScenario].time,
         };

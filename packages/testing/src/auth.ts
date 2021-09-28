@@ -1,6 +1,8 @@
-import { SignJWT } from 'jose/jwt/sign';
-import { createSecretKey } from 'crypto';
+import { KeyLike, SignJWT } from 'jose/jwt/sign';
 import { v4 as uuid } from 'uuid';
+import { JWK, parseJwk } from 'jose/jwk/parse';
+
+let SIGNING_KEY: KeyLike;
 
 export type JWT = {
   aud: string;
@@ -15,15 +17,25 @@ export type JWT = {
   materials?: unknown;
 };
 
-const DEBUG_AUTH_OPTIONS = {
+const DEBUG_AUTH_SECRETS: { options: { issuer: string }; jwk: JWK } = {
   options: {
-    issuer: 'calmid-debug',
-    algorithms: ['HS512', 'HS384', 'HS256'],
+    issuer: 'kidsloop-debug',
   },
-  secretOrPublicKey: createSecretKey(
-    Buffer.from('iXtZx1D5AqEB0B9pfn+hRQiojeU83jjfoAijfSejamWFa==')
-  ),
+  jwk: {
+    alg: 'HS256',
+    ext: true,
+    k:
+      '-Io3UrkUPqvSjgwg2H8UB5O3ZugA_Z4l2kzsDdUL1EA2BMAJaoij6HwYyYzgL0K1HZEydGL4sgP3Sk1doLgUIQ',
+    key_ops: ['sign', 'verify'],
+    kty: 'oct',
+  },
 };
+
+async function getKey() {
+  if (SIGNING_KEY) return SIGNING_KEY;
+  SIGNING_KEY = await parseJwk(DEBUG_AUTH_SECRETS.jwk);
+  return SIGNING_KEY;
+}
 
 export async function signToken(token: JWT): Promise<string> {
   const { roomid, userid, name, teacher, materials } = token;
@@ -36,14 +48,13 @@ export async function signToken(token: JWT): Promise<string> {
   };
   const jwt = await new SignJWT(payload)
     .setProtectedHeader({
-      alg:
-        DEBUG_AUTH_OPTIONS.options.algorithms[2] || 'Failed to find algorithm',
+      alg: DEBUG_AUTH_SECRETS.jwk.alg,
     })
     .setIssuedAt(token.iat)
-    .setIssuer(DEBUG_AUTH_OPTIONS.options.issuer)
+    .setIssuer(DEBUG_AUTH_SECRETS.options.issuer)
     .setSubject(userid)
     .setExpirationTime('2h')
-    .sign(DEBUG_AUTH_OPTIONS.secretOrPublicKey!);
+    .sign(await getKey());
   return jwt;
 }
 
@@ -56,7 +67,7 @@ export async function generateToken(
     aud: 'KidsLoop',
     exp: Date.now() + 7200,
     iat: Date.now(),
-    iss: 'calmid-debug',
+    iss: 'kidsloop-debug',
     sub: userid,
     roomid: roomid || '',
     userid,

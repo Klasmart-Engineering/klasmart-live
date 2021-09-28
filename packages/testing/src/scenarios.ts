@@ -32,7 +32,7 @@ export const SCENARIOS: (() => Scenario)[] = [
     return {
       name: 'Set host',
       action: wrapAction({
-        setHost: { hostId: id },
+        setHost: { id },
       }),
       delay: STANDARD_PROPAGATION_DELAY,
       target: 0,
@@ -89,7 +89,7 @@ export const SCENARIOS: (() => Scenario)[] = [
       expected: (state: pb.IState): Chai.Assertion[] => {
         const assertions = [];
         try {
-          expect(state.content).to.equal(content);
+          expect(state.content).to.deep.equal(content);
         } catch (e) {
           assertions.push(e.toString());
         }

@@ -12,7 +12,7 @@ import { JWT } from './auth';
 const { roomReducer } = Client;
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-export const NUMBER_OF_CLIENTS = 1;
+export const NUMBER_OF_CLIENTS = 2;
 
 let roomId = '';
 
@@ -43,9 +43,13 @@ async function main() {
     tokens.push(token);
 
     if (i === 0) {
-      while (roomId === '') {
+      while (roomId === '' || roomId === null) {
         await sleep(250);
         roomId = stores[i].getState().room.roomId;
+        if (ws.readyState > 1) {
+          console.log(`Failed to connect socket ${i}`);
+          process.exit(1);
+        }
       }
       console.log(`Room ID has been assigned: ${roomId}`);
       roomId += roomId;
@@ -70,13 +74,12 @@ async function main() {
     if (scenario.delay) await sleep(scenario.delay);
     runAssertions(scenario);
   }
-
   console.log('=== Finished Scenarios ===');
 
   let hasFailed = false;
   for (let i = 0; i < failures.length; i++) {
     const fails = failures[i];
-    if (fails.length > 0) {
+    if (fails?.length > 0) {
       console.log();
       console.log(`Scenario ${i} '${scenarios[i].name}' had failures:`);
       console.log(fails);
@@ -86,6 +89,7 @@ async function main() {
   if (hasFailed) process.exit(1);
 
   console.log('=== Finished running scenarios. Tests Passed ===');
+  console.log(results);
   process.exit(0);
 }
 
@@ -156,6 +160,7 @@ interface Difference {
 }
 
 interface Result {
+  scenario: number;
   name: string;
   time: number;
 }

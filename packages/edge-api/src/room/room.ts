@@ -85,7 +85,6 @@ export class Room implements DurableObject {
   }
 
   public async fetch(request: Request): Promise<Response> {
-    console.log('Processing Room request');
     const { headers } = request;
     try {
       if (headers.get('Upgrade') !== 'websocket') {
