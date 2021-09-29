@@ -25,9 +25,8 @@ export async function createWebsocket(
   const socket = new WebSocket(url, ['live'], {
     headers: {
       Authorization: `Bearer ${jwt}`,
-      'CF-Access-Client-Id': '8e19dcadfebf0845b3b558f360082dea.access',
-      'CF-Access-Client-Secret':
-        'b0c2e2a5d206276fe5c7c02fa6581cf2c701ffb03d3c3dd3c1f186ce1144c507',
+      'CF-Access-Client-Id': process.env.CF_CLIENT_ID,
+      'CF-Access-Client-Secret': process.env.CF_CLIENT_SECRET,
     },
   });
   socket.binaryType = 'arraybuffer';

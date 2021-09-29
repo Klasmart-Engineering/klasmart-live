@@ -14,12 +14,16 @@ export interface Scenario {
   action?: pb.IAction;
 
   // The changes you expect MUST be made to the state object
+  // Each assertion should be within a try/catch block and
+  // errors should be pushed into an array which is returned
   expected?: (state: pb.IState) => Chai.Assertion[];
 
   // If target == -1, send to all clients, if >= 0 then index into the connected
   // clients at that index and send it from that client
   // For now, teacher == index 0
-  target: number;
+  // If an array is passed, then send the message from the clients at the index
+  // of each array
+  target: number | number[];
   delay: number;
 
   before?: () => Promise<void>;
