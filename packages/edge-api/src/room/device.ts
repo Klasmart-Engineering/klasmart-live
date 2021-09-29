@@ -111,7 +111,7 @@ export class Device {
       }
     });
     ws.addEventListener('error', async (e) => {
-      console.error(e);
+      this.onClose(1002, `Encountered error: ${e}`);
     });
     ws.addEventListener('close', async (c, r) => this.onClose(c, r));
   }
@@ -120,8 +120,13 @@ export class Device {
     this.ws.send(bytes);
   }
 
-  private onClose(_close?: number, _reason?: string) {
-    console.log('Disconnecting device', _close, _reason);
+  private onClose(close?: number, reason?: string) {
+    console.log('Disconnecting device', close, reason);
+    const action = {
+      context: this.context,
+      payload: { id: this.deviceId },
+    };
+    this.room.store.dispatch(Actions.removeDevice(action));
     this.room.disconnectDevice(this);
   }
 }

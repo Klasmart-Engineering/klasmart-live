@@ -13,7 +13,7 @@ import { JWT } from './auth';
 const { roomReducer } = Client;
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-export const NUMBER_OF_CLIENTS = 100;
+export const NUMBER_OF_CLIENTS = 3;
 
 let roomId = '';
 
@@ -83,7 +83,7 @@ const initializeClients = async () => {
     attempts += 1;
     pendingSockets = websockets.filter(({ readyState }) => readyState !== 1)
       .length;
-    console.log(`Waiting for ${pendingSockets} to connect`);
+    console.log(`Waiting for ${pendingSockets} websockets to connect`);
     if (attempts > 5) throw new Error('Unable to get all websockets connected');
   }
 };
@@ -92,6 +92,7 @@ const processScenarios = async () => {
   console.log('=== Starting Scenarios ===');
   // Initialize senarios
   scenarios = [...SCENARIOS.map((scenario) => scenario())];
+  results.fill([], 0, NUMBER_OF_CLIENTS);
 
   for (currentScenario; currentScenario < scenarios.length; currentScenario++) {
     const scenario = scenarios[currentScenario];
@@ -141,8 +142,17 @@ const processScenario = async ({
  * As such, this function takes the first sockets room state
  * as the base for the assertion
  */
-const runAssertions = ({ expected }: Scenario): void => {
+const runAssertions = ({
+  expected,
+  ignoreAssertions,
+  target,
+}: Scenario): void => {
   for (let i = 0; i < websockets.length; i++) {
+    if (
+      ignoreAssertions &&
+      (i === target || (Array.isArray(target) && target.includes(i)))
+    )
+      continue;
     if (i === 0) {
       currentState = {
         ...stores[i].getState().room,
@@ -160,7 +170,7 @@ const runAssertions = ({ expected }: Scenario): void => {
   }
 };
 
-async function sleep(ms: number): Promise<null> {
+export async function sleep(ms: number): Promise<null> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -168,11 +178,20 @@ const performStatisticalAnalysis = (): Stats[] => {
   console.log();
   console.log('=== Statistics (in milliseconds) ===');
   const statResults: Stats[] = [];
+  console.log(results);
   for (let i = 0; i < scenarios.length; i++) {
     const { name } = scenarios[i];
-    const scenarioResults = results.flatMap((sockets) => {
-      return sockets[i].time;
-    });
+    const scenarioResults = results
+      .filter(
+        (sockets) =>
+          sockets[i] &&
+          sockets[i].time &&
+          typeof sockets[i].time === 'number' &&
+          !isNaN(sockets[i].time)
+      )
+      .flatMap((sockets) => {
+        return sockets[i].time;
+      });
     const [min, max] = extent(scenarioResults);
     const p95 = quantile(scenarioResults, 0.95);
     const avg = mean(scenarioResults);

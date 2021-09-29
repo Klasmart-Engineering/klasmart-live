@@ -1,9 +1,18 @@
 import pb from 'kidsloop-live-serialization';
 import { nanoid } from 'nanoid';
 import Chai, { expect } from 'chai';
-import { tokens, NUMBER_OF_CLIENTS } from './index';
+import {
+  tokens,
+  NUMBER_OF_CLIENTS,
+  websockets,
+  results,
+  currentScenario,
+  scenarioTimings,
+} from './index';
 
 export const STANDARD_PROPAGATION_DELAY = 2500;
+
+const CLIENT_QUEUE = [];
 
 function generateRandomClientIndex(): number {
   return Math.floor(Math.random() * NUMBER_OF_CLIENTS);
@@ -25,6 +34,9 @@ export interface Scenario {
   // of each array
   target: number | number[];
   delay: number;
+
+  // If the assertions should be ignored on the targets, then set this to true
+  ignoreAssertions?: boolean;
 
   before?: () => Promise<void>;
   after?: () => Promise<void>;
@@ -94,6 +106,71 @@ export const SCENARIOS: (() => Scenario)[] = [
         const assertions = [];
         try {
           expect(state.content).to.deep.equal(content);
+        } catch (e) {
+          assertions.push(e.toString());
+        }
+        return assertions;
+      },
+    };
+  },
+  (): Scenario => {
+    const message = `Concurrent message ${nanoid()}`;
+    return {
+      name: 'Send concurrent chat messages',
+      action: wrapAction({
+        sendChatMessage: { message },
+      }),
+      delay: STANDARD_PROPAGATION_DELAY,
+      target: [generateRandomClientIndex(), generateRandomClientIndex()],
+      expected: (state: pb.IState): Chai.Assertion[] => {
+        const assertions = [];
+        try {
+          expect(state.chatMessages).to.have.lengthOf(3);
+        } catch (e) {
+          assertions.push(e.toString());
+        }
+        try {
+          const counter = state.chatMessages?.filter(
+            (msg) => msg.message === message
+          ).length;
+          expect(counter).equals(2);
+        } catch (e) {
+          assertions.push(e.toString());
+        }
+        return assertions;
+      },
+    };
+  },
+  (): Scenario => {
+    let target = generateRandomClientIndex();
+    const name = 'Random user disconnects';
+    // Don't want to disconnect the teacher
+    target = target === 0 ? 1 : target;
+    CLIENT_QUEUE.push(target);
+    const userId = tokens[target].userid;
+    return {
+      name,
+      delay: STANDARD_PROPAGATION_DELAY,
+      target,
+      ignoreAssertions: true,
+      before: async () => {
+        // This is needed because we don't send a websocket request here
+        // so this doesn't automatically get updated
+        scenarioTimings[currentScenario] = { name, time: new Date().getTime() };
+        websockets[target].terminate();
+        delete websockets[target];
+        // Need to update this, as the websocket won't automatically update it
+        // as there is no longer a websocket instance
+        results[target][currentScenario] = {
+          scenario: currentScenario,
+          name,
+          time: NaN,
+        };
+      },
+      expected: (state: pb.IState): Chai.Assertion[] => {
+        const assertions = [];
+        try {
+          expect(state.participants![userId].devices).to.be.undefined;
         } catch (e) {
           assertions.push(e.toString());
         }

@@ -8,7 +8,7 @@ export function generateStateDiff(
 ): pb.IStateDiff[] {
   const differences = parseParticipants(
     old.participants || {},
-    latest.participants || {},
+    latest.participants || {}
   );
 
   if ((old.chatMessages || []).length < (latest.chatMessages || []).length) {
