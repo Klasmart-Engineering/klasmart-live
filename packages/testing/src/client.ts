@@ -5,14 +5,9 @@ import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { Client } from 'kidsloop-live-state';
 
 import { JWT, generateToken } from './auth';
-import {
-  BASE_URL,
-  currentScenario,
-  DISCONNECTED_CLIENTS,
-  scenarioTimings,
-} from '.';
+import { BASE_URL } from '.';
 
-import { Result } from './types';
+import { Context, Result } from './types';
 
 const { roomReducer, Actions } = Client;
 
@@ -29,7 +24,11 @@ export class WebsocketClient {
 
   private hasCalledSetup = false;
 
-  constructor(public index: number, private roomId: string) {
+  constructor(
+    public index: number,
+    private roomId: string,
+    private ctx: Context
+  ) {
     this.store = configureStore({
       middleware: [],
       reducer: {
@@ -107,10 +106,12 @@ export class WebsocketClient {
           const payload = tempObject[action];
           this.store.dispatch(Actions[action](payload));
 
-          this._results[currentScenario] = {
-            scenario: currentScenario,
-            name: scenarioTimings[currentScenario].name,
-            time: new Date().getTime() - scenarioTimings[currentScenario].time,
+          this._results[this.ctx.currentScenario] = {
+            scenario: this.ctx.currentScenario,
+            name: this.ctx.scenarioTimings[this.ctx.currentScenario].name,
+            time:
+              new Date().getTime() -
+              this.ctx.scenarioTimings[this.ctx.currentScenario].time,
           };
         }
       } catch (e) {
@@ -126,10 +127,10 @@ export class WebsocketClient {
   public terminateWebsocket(): void {
     this._ws?.terminate();
     this._ws = null;
-    DISCONNECTED_CLIENTS.add(this.index);
+    this.ctx.disconnectedClients.add(this.index);
   }
 
   public addResults(results: Result): void {
-    this.results[currentScenario] = results;
+    this.results[this.ctx.currentScenario] = results;
   }
 }

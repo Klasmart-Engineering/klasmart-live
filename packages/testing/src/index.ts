@@ -1,47 +1,48 @@
 import pb from 'kidsloop-live-serialization';
-import { Scenario, SCENARIOS } from './scenarios';
 import { diff } from 'deep-object-diff';
 import { extent, quantile, mean } from 'simple-statistics';
 
 import { WebsocketClient } from './client';
 import { sleep } from './util';
-import { Difference, ScenarioTimings, Stats } from './types';
+import { Context, Difference, Stats } from './types';
+import { Scenario, SCENARIOS } from './scenarios';
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-let roomId = '';
-
-export const NUMBER_OF_CLIENTS = 3;
-
-export const CLIENTS: WebsocketClient[] = [];
-export let scenarios: Scenario[] = [];
-export const scenarioTimings: ScenarioTimings[] = [];
-export const failures: Difference[][] = [];
-
-export const DISCONNECTED_CLIENTS = new Set();
-
-export let currentScenario = 0;
-let currentState: pb.IState;
+export const NUMBER_OF_CLIENTS = [3];
 
 async function main() {
   console.log('=== Starting Testing ===');
+  for (const numOfClients of NUMBER_OF_CLIENTS) {
+    console.log(`=== Starting Scenario with ${numOfClients} clients ===`);
+    const context: Context = {
+      clients: [],
+      disconnectedClients: new Set<number>(),
+      scenarios: [],
+      scenarioTimings: [],
+      currentScenario: 0,
+    };
 
-  await initializeClients();
+    await initializeClients(numOfClients, context);
 
-  await processScenarios();
+    const failures = await processScenarios(context);
 
-  const _stats = performStatisticalAnalysis();
+    const stats = performStatisticalAnalysis(context);
 
-  processFailures();
+    processFailures(context, failures);
+    console.log(`=== Finished Scenario with ${numOfClients} clients ===`);
+  }
 
-  console.log('=== Finished running scenarios. Tests Passed ===');
+  console.log('=== Finished running all scenarios. Tests Passed ===');
   process.exit(0);
 }
 
-const initializeClients = async () => {
-  for (let i = 0; i < NUMBER_OF_CLIENTS; i++) {
-    const ws = new WebsocketClient(i, roomId);
+const initializeClients = async (numOfClients: number, context: Context) => {
+  let roomId = '';
+  const { clients } = context;
+  for (let i = 0; i < numOfClients; i++) {
+    const ws = new WebsocketClient(i, roomId, context);
     await ws.setup();
-    CLIENTS[i] = ws;
+    clients[i] = ws;
 
     if (i === 0) {
       while (roomId === '' || roomId === null) {
@@ -62,59 +63,65 @@ const initializeClients = async () => {
 
   console.log('=== Initialized websockets ===');
   let attempts = 0;
-  let pendingSockets = CLIENTS.filter(({ readyState }) => readyState !== 1)
+  let pendingSockets = clients.filter(({ readyState }) => readyState !== 1)
     .length;
   while (pendingSockets > 0) {
     await sleep(1000); // Give the connections a chance to connect
     attempts += 1;
-    pendingSockets = CLIENTS.filter(({ readyState }) => readyState !== 1)
+    pendingSockets = clients.filter(({ readyState }) => readyState !== 1)
       .length;
     console.log(`Waiting for ${pendingSockets} websockets to connect`);
     if (attempts > 5) throw new Error('Unable to get all websockets connected');
   }
 };
 
-const processScenarios = async () => {
+const processScenarios = async (context: Context): Promise<Difference[][]> => {
   console.log('=== Starting Scenarios ===');
   // Initialize senarios
-  scenarios = [...SCENARIOS.map((scenario) => scenario())];
+  context.scenarios = [...SCENARIOS.map((scenario) => scenario(context))];
+  const failures = [];
 
-  for (currentScenario; currentScenario < scenarios.length; currentScenario++) {
-    const scenario = scenarios[currentScenario];
-    console.log(`Running scenario ${currentScenario}: ${scenario.name}`);
-    processScenario(scenario);
+  for (
+    context.currentScenario;
+    context.currentScenario < context.scenarios.length;
+    context.currentScenario++
+  ) {
+    const scenario = context.scenarios[context.currentScenario];
+    console.log(
+      `Running scenario ${context.currentScenario}: ${scenario.name}`
+    );
+    await processScenario(context, scenario);
     if (scenario.delay) await sleep(scenario.delay);
-    runAssertions(scenario);
+    failures[context.currentScenario] = runAssertions(context, scenario);
   }
   console.log('=== Finished Scenarios ===');
+  return failures;
 };
 
-const processScenario = async ({
-  name,
-  action,
-  target,
-  before,
-  after,
-}: Scenario): Promise<void> => {
-  if (before !== undefined) await before();
+const processScenario = async (
+  context: Context,
+  { name, action, target, before, after }: Scenario
+): Promise<void> => {
+  const { clients } = context;
+  if (before !== undefined) await before(context);
   if (action) {
     const bytes = pb.Action.encode(action).finish();
     if (typeof target === 'number') {
       if (target === -1) {
-        CLIENTS.forEach((socket) => {
+        clients.forEach((socket) => {
           socket.send(bytes);
         });
       } else {
-        CLIENTS[target].send(bytes);
+        clients[target].send(bytes);
       }
     } else {
       target.forEach((idx) => {
-        CLIENTS[idx].send(bytes);
+        clients[idx].send(bytes);
       });
     }
   }
-  scenarioTimings.push({ name: name, time: new Date().getTime() });
-  if (after !== undefined) await after();
+  context.scenarioTimings.push({ name: name, time: new Date().getTime() });
+  if (after !== undefined) await after(context);
 };
 
 /**
@@ -127,40 +134,45 @@ const processScenario = async ({
  * As such, this function takes the first sockets room state
  * as the base for the assertion
  */
-const runAssertions = ({
-  expected,
-  ignoreAssertions,
-  target,
-}: Scenario): void => {
-  for (let i = 0; i < CLIENTS.length; i++) {
+const runAssertions = (
+  context: Context,
+  { expected, ignoreAssertions, target }: Scenario
+): Difference[] => {
+  const { clients, disconnectedClients } = context;
+  const failures = [];
+  let currentState: pb.IState = {};
+  for (let i = 0; i < clients.length; i++) {
     if (
       (ignoreAssertions &&
         (i === target || (Array.isArray(target) && target.includes(i)))) ||
-      DISCONNECTED_CLIENTS.has(i)
+      disconnectedClients.has(i)
     )
       continue;
-    if (i === 0) currentState = { ...CLIENTS[0].state };
+    if (i === 0) currentState = { ...clients[0].state };
 
-    const socketState = CLIENTS[i].state;
+    const socketState = clients[i].state;
     const difference = diff(currentState, socketState);
     const assertions = expected ? expected(socketState) : [];
 
     if (Object.keys(difference).length > 0 || assertions.length > 0) {
-      if (!failures[currentScenario]) failures[currentScenario] = [];
-      failures[currentScenario].push({ socket: i, difference, assertions });
+      failures.push({ socket: i, difference, assertions });
     }
   }
+  return failures;
 };
 
-const performStatisticalAnalysis = (): Stats[] => {
+const performStatisticalAnalysis = ({
+  clients,
+  scenarios,
+}: Context): Stats[] => {
   console.log();
   console.log('=== Statistics (in milliseconds) ===');
   const statResults: Stats[] = [];
   for (let i = 0; i < scenarios.length; i++) {
     const { name } = scenarios[i];
-    const scenarioResults = CLIENTS.flatMap(
-      (socket) => socket.results[i].time
-    ).filter((result) => typeof result === 'number' && !isNaN(result));
+    const scenarioResults = clients
+      .flatMap((socket) => socket.results[i].time)
+      .filter((result) => typeof result === 'number' && !isNaN(result));
     const [min, max] = extent(scenarioResults);
     const p95 = quantile(scenarioResults, 0.95);
     const avg = mean(scenarioResults);
@@ -178,18 +190,15 @@ const performStatisticalAnalysis = (): Stats[] => {
   return statResults;
 };
 
-const processFailures = () => {
-  let hasFailed = false;
+const processFailures = ({ scenarios }: Context, failures: Difference[][]) => {
   for (let i = 0; i < failures.length; i++) {
     const fails = failures[i];
     if (fails?.length > 0) {
       console.log();
       console.log(`Scenario ${i} '${scenarios[i].name}' had failures:`);
       console.log(fails);
-      hasFailed = true;
     }
   }
-  if (hasFailed) process.exit(1);
 };
 
 main();

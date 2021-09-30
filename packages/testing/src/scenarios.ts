@@ -1,18 +1,12 @@
 import pb from 'kidsloop-live-serialization';
 import { nanoid } from 'nanoid';
 import Chai, { expect } from 'chai';
-import {
-  NUMBER_OF_CLIENTS,
-  currentScenario,
-  scenarioTimings,
-  DISCONNECTED_CLIENTS,
-  CLIENTS,
-} from './index';
+import { Context } from './types';
 
 export const STANDARD_PROPAGATION_DELAY = 2500;
 
-function generateRandomClientIndex(): number {
-  return Math.floor(Math.random() * NUMBER_OF_CLIENTS);
+function generateRandomClientIndex(numOfClients: number): number {
+  return Math.floor(Math.random() * numOfClients);
 }
 
 export interface Scenario {
@@ -35,13 +29,13 @@ export interface Scenario {
   // If the assertions should be ignored on the targets, then set this to true
   ignoreAssertions?: boolean;
 
-  before?: () => Promise<void>;
-  after?: () => Promise<void>;
+  before?: (context: Context) => Promise<void>;
+  after?: (context: Context) => Promise<void>;
 }
 
-export const SCENARIOS: (() => Scenario)[] = [
-  (): Scenario => {
-    const id = CLIENTS[0].token.userid;
+export const SCENARIOS: ((context: Context) => Scenario)[] = [
+  ({ clients }: Context): Scenario => {
+    const id = clients[0].token.userid;
     return {
       name: 'Set host',
       action: wrapAction({
@@ -60,7 +54,7 @@ export const SCENARIOS: (() => Scenario)[] = [
       },
     };
   },
-  (): Scenario => {
+  ({ clients }: Context): Scenario => {
     const id = nanoid();
     const message = `Test Message: ${id}`;
     return {
@@ -69,7 +63,7 @@ export const SCENARIOS: (() => Scenario)[] = [
         sendChatMessage: { message },
       }),
       delay: STANDARD_PROPAGATION_DELAY,
-      target: generateRandomClientIndex(),
+      target: generateRandomClientIndex(clients.length),
       expected: (state: pb.IState): Chai.Assertion[] => {
         const assertions = [];
         try {
@@ -110,7 +104,7 @@ export const SCENARIOS: (() => Scenario)[] = [
       },
     };
   },
-  (): Scenario => {
+  ({ clients }: Context): Scenario => {
     const message = `Concurrent message ${nanoid()}`;
     return {
       name: 'Send concurrent chat messages',
@@ -118,7 +112,10 @@ export const SCENARIOS: (() => Scenario)[] = [
         sendChatMessage: { message },
       }),
       delay: STANDARD_PROPAGATION_DELAY,
-      target: [generateRandomClientIndex(), generateRandomClientIndex()],
+      target: [
+        generateRandomClientIndex(clients.length),
+        generateRandomClientIndex(clients.length),
+      ],
       expected: (state: pb.IState): Chai.Assertion[] => {
         const assertions = [];
         try {
@@ -138,25 +135,27 @@ export const SCENARIOS: (() => Scenario)[] = [
       },
     };
   },
-  (): Scenario => {
-    let target = generateRandomClientIndex();
+  (context: Context): Scenario => {
+    const { clients } = context;
+    let target = generateRandomClientIndex(clients.length);
     const name = 'Random user disconnects';
     // Don't want to disconnect the teacher
     target = target === 0 ? 1 : target;
-    const userId = CLIENTS[target].token.userid;
+    const userId = context.clients[target].token.userid;
     return {
       name,
       delay: STANDARD_PROPAGATION_DELAY,
       target,
       ignoreAssertions: true,
-      before: async () => {
+      before: async (context: Context) => {
+        const { clients, scenarioTimings, currentScenario } = context;
         // This is needed because we don't send a websocket request here
         // so this doesn't automatically get updated
         scenarioTimings[currentScenario] = { name, time: new Date().getTime() };
-        CLIENTS[target].terminateWebsocket();
+        clients[target].terminateWebsocket();
         // Need to update this, as the websocket won't automatically update it
         // as there is no longer a websocket instance
-        CLIENTS[target].addResults({
+        clients[target].addResults({
           scenario: currentScenario,
           name,
           time: NaN,
