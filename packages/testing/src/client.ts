@@ -87,7 +87,7 @@ export class WebsocketClient {
           id: uuid(),
           heartbeat: {},
         }).finish();
-        this._ws?.send(message);
+        if (this._ws?.readyState === 1) this._ws?.send(message);
       }, HEARTBEAT_INTERVAL);
     });
 

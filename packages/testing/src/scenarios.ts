@@ -29,11 +29,11 @@ export interface Scenario {
   // If the assertions should be ignored on the targets, then set this to true
   ignoreAssertions?: boolean;
 
-  before?: (context: Context) => Promise<void>;
-  after?: (context: Context) => Promise<void>;
+  before?: (ctx: Context) => Promise<void>;
+  after?: (ctx: Context) => Promise<void>;
 }
 
-export const SCENARIOS: ((context: Context) => Scenario)[] = [
+export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
   ({ clients }: Context): Scenario => {
     const id = clients[0].token.userid;
     return {
@@ -135,23 +135,20 @@ export const SCENARIOS: ((context: Context) => Scenario)[] = [
       },
     };
   },
-  (context: Context): Scenario => {
-    const { clients } = context;
+  (ctx: Context): Scenario => {
+    const { clients } = ctx;
     let target = generateRandomClientIndex(clients.length);
     const name = 'Random user disconnects';
     // Don't want to disconnect the teacher
     target = target === 0 ? 1 : target;
-    const userId = context.clients[target].token.userid;
+    const userId = clients[target].token.userid;
     return {
       name,
       delay: STANDARD_PROPAGATION_DELAY,
       target,
       ignoreAssertions: true,
       before: async (context: Context) => {
-        const { clients, scenarioTimings, currentScenario } = context;
-        // This is needed because we don't send a websocket request here
-        // so this doesn't automatically get updated
-        scenarioTimings[currentScenario] = { name, time: new Date().getTime() };
+        const { clients, currentScenario } = context;
         clients[target].terminateWebsocket();
         // Need to update this, as the websocket won't automatically update it
         // as there is no longer a websocket instance
@@ -165,6 +162,57 @@ export const SCENARIOS: ((context: Context) => Scenario)[] = [
         const assertions = [];
         try {
           expect(state.participants![userId].devices).to.be.undefined;
+        } catch (e) {
+          assertions.push(e.toString());
+        }
+        return assertions;
+      },
+    };
+  },
+  (): Scenario => {
+    const content = {
+      type: pb.ContentType.Video,
+      id: 'Test Content 2',
+      url: 'test.content.com/test-2',
+    };
+    return {
+      name: 'Set content with missing student',
+      action: wrapAction({
+        setContent: { content },
+      }),
+      delay: STANDARD_PROPAGATION_DELAY,
+      target: 0,
+      expected: (state: pb.IState): Chai.Assertion[] => {
+        const assertions = [];
+        try {
+          expect(state.content).to.deep.equal(content);
+        } catch (e) {
+          assertions.push(e.toString());
+        }
+        return assertions;
+      },
+    };
+  },
+  (ctx: Context): Scenario => {
+    const { clients } = ctx;
+    return {
+      name: 'Random user reconnects',
+      delay: STANDARD_PROPAGATION_DELAY,
+      target: [],
+      ignoreAssertions: true,
+      before: async (ctx: Context) => {
+        const sockets = [...ctx.disconnectedClients];
+        for (const idx of sockets) {
+          clients[idx].initializeWebsocket();
+          ctx.disconnectedClients.delete(idx);
+        }
+      },
+      expected: (state: pb.IState): Chai.Assertion[] => {
+        const assertions = [];
+        try {
+          for (const participant of Object.values(state.participants!)) {
+            expect(Object.keys(participant.devices!)).to.have.lengthOf(1);
+          }
         } catch (e) {
           assertions.push(e.toString());
         }

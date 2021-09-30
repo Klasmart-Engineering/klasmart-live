@@ -26,9 +26,19 @@ export interface Result {
   time: number;
 }
 
+export interface InterimStatistics extends InternalStats {
+  name: string;
+  scenario: number;
+}
+
 export interface Stats {
   name: string;
   scenario: number;
+  // K: NumberOfClients, V: Stats
+  stats: Record<number, InternalStats>;
+}
+
+interface InternalStats {
   min: number;
   max: number;
   p95: number;
