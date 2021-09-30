@@ -2,17 +2,14 @@ import pb from 'kidsloop-live-serialization';
 import { nanoid } from 'nanoid';
 import Chai, { expect } from 'chai';
 import {
-  tokens,
   NUMBER_OF_CLIENTS,
-  websockets,
-  results,
   currentScenario,
   scenarioTimings,
+  DISCONNECTED_CLIENTS,
+  CLIENTS,
 } from './index';
 
 export const STANDARD_PROPAGATION_DELAY = 2500;
-
-const CLIENT_QUEUE = [];
 
 function generateRandomClientIndex(): number {
   return Math.floor(Math.random() * NUMBER_OF_CLIENTS);
@@ -44,7 +41,7 @@ export interface Scenario {
 
 export const SCENARIOS: (() => Scenario)[] = [
   (): Scenario => {
-    const id = tokens[0].sub;
+    const id = CLIENTS[0].token.userid;
     return {
       name: 'Set host',
       action: wrapAction({
@@ -146,8 +143,7 @@ export const SCENARIOS: (() => Scenario)[] = [
     const name = 'Random user disconnects';
     // Don't want to disconnect the teacher
     target = target === 0 ? 1 : target;
-    CLIENT_QUEUE.push(target);
-    const userId = tokens[target].userid;
+    const userId = CLIENTS[target].token.userid;
     return {
       name,
       delay: STANDARD_PROPAGATION_DELAY,
@@ -157,15 +153,14 @@ export const SCENARIOS: (() => Scenario)[] = [
         // This is needed because we don't send a websocket request here
         // so this doesn't automatically get updated
         scenarioTimings[currentScenario] = { name, time: new Date().getTime() };
-        websockets[target].terminate();
-        delete websockets[target];
+        CLIENTS[target].terminateWebsocket();
         // Need to update this, as the websocket won't automatically update it
         // as there is no longer a websocket instance
-        results[target][currentScenario] = {
+        CLIENTS[target].addResults({
           scenario: currentScenario,
           name,
           time: NaN,
-        };
+        });
       },
       expected: (state: pb.IState): Chai.Assertion[] => {
         const assertions = [];

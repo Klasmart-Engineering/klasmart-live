@@ -1,29 +1,23 @@
 import pb from 'kidsloop-live-serialization';
-import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
-import { Client } from 'kidsloop-live-state';
-import WebSocket from 'ws';
 import { Scenario, SCENARIOS } from './scenarios';
 import { diff } from 'deep-object-diff';
 import { extent, quantile, mean } from 'simple-statistics';
-import type Chai from 'chai';
 
-import { createWebsocket } from './websocket';
-import { JWT } from './auth';
-
-const { roomReducer } = Client;
+import { WebsocketClient } from './client';
+import { sleep } from './util';
+import { Difference, ScenarioTimings, Stats } from './types';
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-export const NUMBER_OF_CLIENTS = 3;
-
 let roomId = '';
 
-export const tokens: JWT[] = [];
-export const websockets: WebSocket[] = [];
-export const stores: EnhancedStore[] = [];
+export const NUMBER_OF_CLIENTS = 3;
+
+export const CLIENTS: WebsocketClient[] = [];
 export let scenarios: Scenario[] = [];
 export const scenarioTimings: ScenarioTimings[] = [];
-export const results: Result[][] = [];
 export const failures: Difference[][] = [];
+
+export const DISCONNECTED_CLIENTS = new Set();
 
 export let currentScenario = 0;
 let currentState: pb.IState;
@@ -45,23 +39,15 @@ async function main() {
 
 const initializeClients = async () => {
   for (let i = 0; i < NUMBER_OF_CLIENTS; i++) {
-    const store = configureStore({
-      middleware: [],
-      reducer: {
-        room: roomReducer,
-      },
-    });
-    stores.push(store);
-
-    const { token, ws } = await createWebsocket(i, roomId);
-    websockets.push(ws);
-    tokens.push(token);
+    const ws = new WebsocketClient(i, roomId);
+    await ws.setup();
+    CLIENTS[i] = ws;
 
     if (i === 0) {
       while (roomId === '' || roomId === null) {
         await sleep(250);
-        roomId = stores[i].getState().room.roomId;
-        if (ws.readyState > 1) {
+        roomId = ws.state.roomId || '';
+        if (ws.readyState !== undefined && ws.readyState > 1) {
           console.log(`Failed to connect socket ${i}`);
           process.exit(1);
         }
@@ -76,12 +62,12 @@ const initializeClients = async () => {
 
   console.log('=== Initialized websockets ===');
   let attempts = 0;
-  let pendingSockets = websockets.filter(({ readyState }) => readyState !== 1)
+  let pendingSockets = CLIENTS.filter(({ readyState }) => readyState !== 1)
     .length;
   while (pendingSockets > 0) {
     await sleep(1000); // Give the connections a chance to connect
     attempts += 1;
-    pendingSockets = websockets.filter(({ readyState }) => readyState !== 1)
+    pendingSockets = CLIENTS.filter(({ readyState }) => readyState !== 1)
       .length;
     console.log(`Waiting for ${pendingSockets} websockets to connect`);
     if (attempts > 5) throw new Error('Unable to get all websockets connected');
@@ -92,7 +78,6 @@ const processScenarios = async () => {
   console.log('=== Starting Scenarios ===');
   // Initialize senarios
   scenarios = [...SCENARIOS.map((scenario) => scenario())];
-  results.fill([], 0, NUMBER_OF_CLIENTS);
 
   for (currentScenario; currentScenario < scenarios.length; currentScenario++) {
     const scenario = scenarios[currentScenario];
@@ -116,15 +101,15 @@ const processScenario = async ({
     const bytes = pb.Action.encode(action).finish();
     if (typeof target === 'number') {
       if (target === -1) {
-        websockets.forEach((socket) => {
+        CLIENTS.forEach((socket) => {
           socket.send(bytes);
         });
       } else {
-        websockets[target].send(bytes);
+        CLIENTS[target].send(bytes);
       }
     } else {
       target.forEach((idx) => {
-        websockets[idx].send(bytes);
+        CLIENTS[idx].send(bytes);
       });
     }
   }
@@ -147,19 +132,16 @@ const runAssertions = ({
   ignoreAssertions,
   target,
 }: Scenario): void => {
-  for (let i = 0; i < websockets.length; i++) {
+  for (let i = 0; i < CLIENTS.length; i++) {
     if (
-      ignoreAssertions &&
-      (i === target || (Array.isArray(target) && target.includes(i)))
+      (ignoreAssertions &&
+        (i === target || (Array.isArray(target) && target.includes(i)))) ||
+      DISCONNECTED_CLIENTS.has(i)
     )
       continue;
-    if (i === 0) {
-      currentState = {
-        ...stores[i].getState().room,
-        ...expected,
-      };
-    }
-    const socketState = stores[i].getState().room;
+    if (i === 0) currentState = { ...CLIENTS[0].state };
+
+    const socketState = CLIENTS[i].state;
     const difference = diff(currentState, socketState);
     const assertions = expected ? expected(socketState) : [];
 
@@ -170,28 +152,15 @@ const runAssertions = ({
   }
 };
 
-export async function sleep(ms: number): Promise<null> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 const performStatisticalAnalysis = (): Stats[] => {
   console.log();
   console.log('=== Statistics (in milliseconds) ===');
   const statResults: Stats[] = [];
-  console.log(results);
   for (let i = 0; i < scenarios.length; i++) {
     const { name } = scenarios[i];
-    const scenarioResults = results
-      .filter(
-        (sockets) =>
-          sockets[i] &&
-          sockets[i].time &&
-          typeof sockets[i].time === 'number' &&
-          !isNaN(sockets[i].time)
-      )
-      .flatMap((sockets) => {
-        return sockets[i].time;
-      });
+    const scenarioResults = CLIENTS.flatMap(
+      (socket) => socket.results[i].time
+    ).filter((result) => typeof result === 'number' && !isNaN(result));
     const [min, max] = extent(scenarioResults);
     const p95 = quantile(scenarioResults, 0.95);
     const avg = mean(scenarioResults);
@@ -222,31 +191,5 @@ const processFailures = () => {
   }
   if (hasFailed) process.exit(1);
 };
-
-interface ScenarioTimings {
-  name: string;
-  time: number;
-}
-
-interface Difference {
-  socket: number;
-  difference: { [k: string]: any };
-  assertions: Chai.Assertion[];
-}
-
-interface Result {
-  scenario: number;
-  name: string;
-  time: number;
-}
-
-interface Stats {
-  name: string;
-  scenario: number;
-  min: number;
-  max: number;
-  p95: number;
-  mean: number;
-}
 
 main();
