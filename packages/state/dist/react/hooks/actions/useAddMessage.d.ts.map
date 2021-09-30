@@ -1,0 +1,1 @@
+{"version":3,"file":"useAddMessage.d.ts","sourceRoot":"","sources":["../../../src/react/hooks/actions/useAddMessage.ts"],"names":[],"mappings":"AAGA,MAAM,WAAW,cAAc;IAC3B,UAAU,EAAE,CAAC,OAAO,EAAE,MAAM,KAAK,OAAO,CAAC,IAAI,CAAC,CAAA;IAC9C,MAAM,EAAE,OAAO,CAAC;IAChB,OAAO,EAAE,OAAO,CAAC;IACjB,KAAK,EAAE,OAAO,CAAC;CAClB;AAED,wBAAgB,aAAa,IAAI,cAAc,CAsB9C"}

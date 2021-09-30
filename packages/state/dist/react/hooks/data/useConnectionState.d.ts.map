@@ -1,0 +1,1 @@
+{"version":3,"file":"useConnectionState.d.ts","sourceRoot":"","sources":["../../../src/react/hooks/data/useConnectionState.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,gBAAgB,EAAE,MAAM,yBAAyB,CAAC;AAI3D,MAAM,WAAW,eAAe;IAC5B,gBAAgB,EAAE,gBAAgB,CAAC;IACnC,eAAe,EAAE,OAAO,CAAC;CAC5B;AAED,wBAAgB,kBAAkB,CAAC,cAAc,CAAC,EAAE,MAAM,GAAG,eAAe,CAc3E"}

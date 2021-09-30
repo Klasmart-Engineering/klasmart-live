@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import NetworkContext from '../context';
+import NetworkContext from '../../context';
 import * as pb from 'kidsloop-live-serialization';
 
 export interface SetContentHook {
@@ -9,7 +9,7 @@ export interface SetContentHook {
     error: unknown,
 };
 
-export function useAddMessage(): SetContentHook {
+export function useSetContent(): SetContentHook {
     const network = useContext(NetworkContext);
     const [result, setResult] = useState(false);
     const [error, setError] = useState<unknown>();

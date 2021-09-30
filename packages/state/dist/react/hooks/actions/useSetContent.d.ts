@@ -5,5 +5,5 @@ export interface SetContentHook {
     loading: boolean;
     error: unknown;
 }
-export declare function useAddMessage(): SetContentHook;
+export declare function useSetContent(): SetContentHook;
 //# sourceMappingURL=useSetContent.d.ts.map

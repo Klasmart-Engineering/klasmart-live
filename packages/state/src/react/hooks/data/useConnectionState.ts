@@ -1,8 +1,8 @@
 
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { ConnectionStatus } from '../../client/network';
-import NetworkContext from '../context';
+import { ConnectionStatus } from '../../../client/network';
+import NetworkContext from '../../context';
 
 
 export interface ConnectionState {

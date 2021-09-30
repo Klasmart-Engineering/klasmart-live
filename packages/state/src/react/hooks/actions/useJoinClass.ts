@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import NetworkContext from '../context';
+import NetworkContext from '../../context';
 
 export interface JoinClassHook {
     joinClass: (url: string) => Promise<void>
