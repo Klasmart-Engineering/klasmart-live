@@ -1,5 +1,6 @@
 import { diff } from 'deep-object-diff';
 import { extent, quantile, mean } from 'simple-statistics';
+import { writeFileSync } from 'fs';
 
 import pb from 'kidsloop-live-serialization';
 
@@ -200,18 +201,46 @@ const transformStats = (stats: InterimStatistics[][]): Stats[] => {
   for (let i = 0; i < stats.length; i++) {
     const numOfClients = NUMBER_OF_CLIENTS[i];
     for (let j = 0; j < stats[i].length; j++) {
-      const k = `Number of users: ${numOfClients}`;
       const { scenario, name, p95, max, min, mean } = stats[i][j];
       if (!results[j]) results[j] = { scenario, name, stats: {} };
       results[j] = {
         ...results[j],
-        stats: { ...results[j].stats, [k]: { p95, max, min, mean } },
+        stats: { ...results[j].stats, [numOfClients]: { p95, max, min, mean } },
       };
     }
   }
-  console.log('=== Final Statistics for test runs (milliseconds) ===');
-  console.log(JSON.stringify(results, null, 2));
+  writeStatsFile(results);
+  printStats(results);
   return results;
+};
+
+const writeStatsFile = (stats: Stats[]): void => {
+  console.log('WRITE FILE?: ', process.env.WRITE_STATS_FILE);
+  if (process.env.WRITE_STATS_FILE !== 'true') return;
+  const jsonStats = JSON.stringify(stats, null, 2);
+  writeFileSync('stats/testResults.json', jsonStats, 'utf8');
+};
+
+const printStats = (stats: Stats[]): void => {
+  console.log();
+  console.log('=== Final Statistics for test runs (milliseconds) ===');
+  for (const scenario of stats) {
+    console.log(
+      `======== Scenario: ${scenario.scenario}: ${scenario.name} ========`
+    );
+    Object.entries(scenario.stats).forEach(([k, v]) => {
+      const { p95, min, max, mean } = v;
+      console.log(
+        `Number of Clients: ${k}: p95: ${p95}ms. min: ${min}ms. max: ${max}ms, mean: ${mean.toFixed(
+          2
+        )}ms`
+      );
+    });
+    console.log(
+      '================================================================'
+    );
+    console.log();
+  }
 };
 
 const processFailures = ({ scenarios }: Context, failures: Difference[][]) => {

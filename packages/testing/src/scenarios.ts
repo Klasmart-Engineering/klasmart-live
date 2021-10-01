@@ -220,6 +220,43 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
       },
     };
   },
+  ...((): ((ctx: Context) => Scenario)[] => {
+    const numOfMessages = 3;
+    return [...Array(25).keys()].map((i) => {
+      return ({ clients }: Context): Scenario => {
+        const message = `Concurrent message ${nanoid()}`;
+        return {
+          name: `Send concurrent chat messages ${i + 1}`,
+          action: wrapAction({
+            sendChatMessage: { message },
+          }),
+          delay: STANDARD_PROPAGATION_DELAY,
+          target: [
+            generateRandomClientIndex(clients.length),
+            generateRandomClientIndex(clients.length),
+          ],
+          expected: (state: pb.IState): Chai.Assertion[] => {
+            const numMessages = (i + 1) * 2 + numOfMessages;
+            const assertions = [];
+            try {
+              expect(state.chatMessages).to.have.lengthOf(numMessages);
+            } catch (e) {
+              assertions.push(e.toString());
+            }
+            try {
+              const counter = state.chatMessages?.filter(
+                (msg) => msg.message === message
+              ).length;
+              expect(counter).equals(2);
+            } catch (e) {
+              assertions.push(e.toString());
+            }
+            return assertions;
+          },
+        };
+      };
+    });
+  })(),
 ];
 
 function wrapAction<T>(payload: T): pb.IAction {
