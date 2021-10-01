@@ -1,6 +1,6 @@
 import { Room } from './room';
 import { Context, Server } from 'kidsloop-live-state';
-import pb from 'kidsloop-live-serialization';
+import * as pb from 'kidsloop-live-state/dist/protobuf';
 
 const { Actions } = Server;
 

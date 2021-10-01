@@ -1,5 +1,5 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import pb from 'kidsloop-live-serialization';
+import * as pb from '../../protobuf';
 import { ContextPayload } from '../../';
 import { getDevice, getDevices } from './util';
 

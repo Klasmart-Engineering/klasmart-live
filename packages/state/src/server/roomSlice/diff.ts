@@ -1,4 +1,4 @@
-import pb from 'kidsloop-live-serialization';
+import * as pb from '../../protobuf';
 
 type ParticipantMap = { [k: string]: pb.IParticipant };
 

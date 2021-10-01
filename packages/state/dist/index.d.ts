@@ -9,6 +9,7 @@ export { LeaveClassHook, useLeaveClass } from './react/hooks/actions/useLeaveCla
 export { SetContentHook, useSetContent } from './react/hooks/actions/useSetContent';
 export { ConnectionState, useConnectionState } from './react/hooks/data/useConnectionState';
 export { useMessages } from './react/hooks/data/useMessages';
+export * as models from './models';
 export declare type ID = string;
 export interface Context {
     userId: ID;

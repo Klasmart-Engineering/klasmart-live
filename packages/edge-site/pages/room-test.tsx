@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import { useRef, useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import pb from 'kidsloop-live-serialization';
+import * as pb from 'kidsloop-live-state/dist/protobuf';
 import { nanoid } from 'nanoid';
 import { selectRoom } from '../src/store';
 import { Client } from 'kidsloop-live-state';

@@ -2,7 +2,7 @@ import { combineReducers, createAction, createReducer, Dispatch } from '@reduxjs
 import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { Actions, State } from '.';
-import * as pb from 'kidsloop-live-serialization';
+import * as pb from '../protobuf';
 import { ValueOf } from '../types';
 
 

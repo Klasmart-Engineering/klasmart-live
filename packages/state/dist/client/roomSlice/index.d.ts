@@ -1,5 +1,5 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import pb from 'kidsloop-live-serialization';
+import * as pb from '../../protobuf';
 import { ValueOf } from '../../types';
 declare type Reducer<T> = CaseReducer<pb.IState, PayloadAction<T>>;
 export declare const roomSlice: import("@reduxjs/toolkit").Slice<pb.IState, {

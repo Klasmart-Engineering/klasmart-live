@@ -8,7 +8,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist && rollup -c",
+    "build": "rm -rf dist && mkdir -p src/protobuf && npm run protobuf && rollup -c",
+    "protobuf": "npm run protobuf-js && npm run protobuf-ts",
+    "protobuf-js": "pbjs -w commonjs -t static-module -o src/protobuf/index.js protobuf/network.proto;",
+    "protobuf-ts": "pbts -o src/protobuf/index.d.ts src/protobuf/index.js",
     "lint": "eslint --fix src/**/*.{ts,js}",
     "test": "jest"
   },
@@ -22,7 +25,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
     "immer": "^9.0.6",
-    "kidsloop-live-serialization": "file:../serialization",
     "nanoid": "^3.1.25",
     "redux": "^4.1.1",
     "redux-immutable": "^4.0.0"
@@ -45,7 +47,9 @@
     "eslint-plugin-promise": "^5.1.0",
     "jest": "^27.0.6",
     "prettier": "2.2.1",
+    "protobufjs": "^6.11.2",
     "rollup": "^2.56.3",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^27.0.5",

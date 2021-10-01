@@ -1,4 +1,4 @@
-import * as pb from 'kidsloop-live-serialization';
+import * as pb from '../../../protobuf';
 export interface SetContentHook {
     setContent: (content: pb.Content) => Promise<void>;
     result: boolean;

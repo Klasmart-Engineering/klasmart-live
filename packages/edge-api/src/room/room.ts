@@ -8,7 +8,7 @@ import {
   Middleware,
 } from '@reduxjs/toolkit';
 import { Server, Context } from 'kidsloop-live-state';
-import pb from 'kidsloop-live-serialization';
+import * as pb from 'kidsloop-live-state/dist/protobuf';
 import { websocketUpgrade } from '../responses/websocket';
 import { authenticate } from '../utils/auth';
 import { isError } from '../utils/result';
