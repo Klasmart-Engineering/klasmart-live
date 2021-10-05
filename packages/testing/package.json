@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "lint": "eslint --fix src/**/*.{ts,js}"
+    "lint": "eslint --fix src/**/*.{ts,js}",
+    "webpage": "ts-node src/stats.ts"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "kidsloop-live-serialization": "file:../serialization",
     "kidsloop-live-state": "file:../state",
     "nanoid": "^3.1.25",
+    "open": "^8.2.1",
     "redux": "^4.1.1",
     "simple-statistics": "^7.7.0",
     "ws": "^8.2.2"

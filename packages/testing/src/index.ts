@@ -1,13 +1,12 @@
 import { diff } from 'deep-object-diff';
-import { extent, quantile, mean } from 'simple-statistics';
-import { writeFileSync } from 'fs';
 
 import pb from 'kidsloop-live-serialization';
 
 import { WebsocketClient } from './client';
 import { sleep } from './util';
-import { Context, Difference, InterimStatistics, Stats } from './types';
+import { Context, Difference } from './types';
 import { Scenario, SCENARIOS } from './scenarios';
+import { performStatisticalAnalysis, transformStats } from './stats';
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
 export const NUMBER_OF_CLIENTS = [3, 10, 50, 200];
@@ -34,7 +33,7 @@ async function main() {
     processFailures(ctx, failures);
     console.log(`=== Finished tests with ${numOfClients} clients ===\n`);
   }
-  const finalStats = transformStats(stats);
+  const [rawData, finalStats] = await transformStats(stats);
 
   console.log('=== Finished running all scenarios. Tests Passed ===');
   process.exit(0);
@@ -161,86 +160,6 @@ const runAssertions = (
     }
   }
   return failures;
-};
-
-const performStatisticalAnalysis = ({
-  clients,
-  scenarios,
-}: Context): InterimStatistics[] => {
-  const statResults: InterimStatistics[] = [];
-  for (let i = 0; i < scenarios.length; i++) {
-    const { name } = scenarios[i];
-    const scenarioResults = clients
-      .flatMap((socket) => socket.results[i])
-      .filter(
-        (result) =>
-          result && typeof result.time === 'number' && !isNaN(result.time)
-      )
-      .map((result) => result.time);
-    const [min, max] = extent(scenarioResults);
-    const p95 = quantile(scenarioResults, 0.95);
-    const avg = mean(scenarioResults);
-    statResults.push({
-      name,
-      scenario: i,
-      min,
-      max,
-      p95,
-      mean: avg,
-    });
-  }
-  return statResults;
-};
-
-const transformStats = (stats: InterimStatistics[][]): Stats[] => {
-  if (stats.length !== NUMBER_OF_CLIENTS.length)
-    throw new Error(
-      'Expected status to have been generated for each set of clients'
-    );
-  const results = [];
-  for (let i = 0; i < stats.length; i++) {
-    const numOfClients = NUMBER_OF_CLIENTS[i];
-    for (let j = 0; j < stats[i].length; j++) {
-      const { scenario, name, p95, max, min, mean } = stats[i][j];
-      if (!results[j]) results[j] = { scenario, name, stats: {} };
-      results[j] = {
-        ...results[j],
-        stats: { ...results[j].stats, [numOfClients]: { p95, max, min, mean } },
-      };
-    }
-  }
-  writeStatsFile(results);
-  printStats(results);
-  return results;
-};
-
-const writeStatsFile = (stats: Stats[]): void => {
-  console.log('WRITE FILE?: ', process.env.WRITE_STATS_FILE);
-  if (process.env.WRITE_STATS_FILE !== 'true') return;
-  const jsonStats = JSON.stringify(stats, null, 2);
-  writeFileSync('stats/testResults.json', jsonStats, 'utf8');
-};
-
-const printStats = (stats: Stats[]): void => {
-  console.log();
-  console.log('=== Final Statistics for test runs (milliseconds) ===');
-  for (const scenario of stats) {
-    console.log(
-      `======== Scenario: ${scenario.scenario}: ${scenario.name} ========`
-    );
-    Object.entries(scenario.stats).forEach(([k, v]) => {
-      const { p95, min, max, mean } = v;
-      console.log(
-        `Number of Clients: ${k}: p95: ${p95}ms. min: ${min}ms. max: ${max}ms, mean: ${mean.toFixed(
-          2
-        )}ms`
-      );
-    });
-    console.log(
-      '================================================================'
-    );
-    console.log();
-  }
 };
 
 const processFailures = ({ scenarios }: Context, failures: Difference[][]) => {
