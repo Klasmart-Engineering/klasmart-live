@@ -1,8 +1,7 @@
 import { combineReducers, createAction, createReducer, Dispatch } from '@reduxjs/toolkit';
 import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { Actions, State } from '.';
-import * as pb from '../protobuf';
+import { Action, RoomAction, State } from '.';
 import { ValueOf } from '../types';
 
 
@@ -10,7 +9,7 @@ import { ValueOf } from '../types';
 export class Network {
     constructor (
         /* eslint-disable no-unused-vars */
-        public readonly dispatch: Dispatch<Actions>,
+        public readonly dispatch: Dispatch<Action>,
         public readonly selector: (s: DefaultRootState) => State,
         private ws?: Promise<WebSocket>,
         /* eslint-enable no-unused-vars */
@@ -44,12 +43,13 @@ export class Network {
         return this.ws;
     }
 
-    public async send(actionProperties: pb.IAction): Promise<void> {
+    public async send(action: RoomAction): Promise<void> {
         if (!this.ws) {
             throw Error('websocket has not been initialised');
         }
-        const bytes = pb.Action.encode({id: nanoid(), ...actionProperties}).finish();
-        (await this.ws).send(bytes);
+        // encode 
+        // const bytes = pb.Action.encode({id: nanoid(), ...actionProperties}).finish();
+        // (await this.ws).send(bytes);
         // Eventually await for an action acknowledgement, but for now just send the message
         
         // Also, need to discuss client side state structure
@@ -110,4 +110,4 @@ const networkActions = {
     setConnectionState: setConnectionStatus
 };
 
-export type NetworkActions = ReturnType<ValueOf<typeof networkActions>>
+export type NetworkAction = ReturnType<ValueOf<typeof networkActions>>

@@ -1,20 +1,20 @@
 import { useContext, useState } from 'react';
 import NetworkContext from '../../context';
 
-export interface AddMessageHook {
-    addMessage: (message: string) => Promise<void>
+export interface SendMessageHook {
+    sendMessage: (message: string) => Promise<void>
     result: boolean,
     loading: boolean,
     error: unknown,
 };
 
-export function useAddMessage(): AddMessageHook {
+export function useAddMessage(): SendMessageHook {
     const network = useContext(NetworkContext);
     const [result, setResult] = useState(false);
     const [error, setError] = useState<unknown>();
     const [loading, setLoading] = useState(false);
 
-    const addMessage = async (message: string) => {
+    const sendMessage = async (message: string) => {
         try {
             setLoading(true);
             await network.send({
@@ -29,5 +29,5 @@ export function useAddMessage(): AddMessageHook {
             setLoading(false);
         }
     };
-    return { addMessage, result, loading, error };
+    return { sendMessage, result, loading, error };
 };

@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
+import { Content } from '../../../models';
 import NetworkContext from '../../context';
-import * as pb from '../../../protobuf';
 
 export interface SetContentHook {
-    setContent: (content: pb.Content) => Promise<void>
+    setContent: (content: Content) => Promise<void>
     result: boolean,
     loading: boolean,
     error: unknown,
@@ -15,7 +15,7 @@ export function useSetContent(): SetContentHook {
     const [error, setError] = useState<unknown>();
     const [loading, setLoading] = useState(false);
 
-    const setContent = async (content: pb.Content) => {
+    const setContent = async (content: Content) => {
         try {
             setLoading(true);
             await network.send({

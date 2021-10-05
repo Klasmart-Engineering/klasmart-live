@@ -1,108 +1,107 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import * as pb from '../../protobuf';
-import { ValueOf } from '../../types';
+import { ContentType, RoomState as State, UserID, UserState, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
+import { keys, ValueOf } from '../../types';
 
-type Reducer<T> = CaseReducer<pb.IState, PayloadAction<T>>;
+type Reducer<T> = CaseReducer<State, PayloadAction<T>>;
 
-const initialState: pb.IState = {
-  roomId: null,
-  participants: {},
-  host: null,
+export const INITIAL_ROOM_STATE: State = {
+  users: {},
+  devices: {},
   chatMessages: [],
-  content: pb.ContentType.Blank,
-  endTimestamp: null,
+  content: {
+    type: ContentType.Blank,
+  },
+  hostUserId: userId(),
+  classEndTime: timestamp(),
 };
 
-const setStateReducer: Reducer<pb.IState> = (state, action) => {
-  return {
-    ...state,
-    ...action.payload,
-  };
+const setState: Reducer<State> = (state, action) => {
+  return action.payload;
 };
 
-const addParticipantsReducer: Reducer<pb.IAddParticipants> = (
+const endClass: Reducer<undefined> = (state) => {
+  state.classEndTime = timestamp(Date.now());
+};
+
+const joinClass: Reducer<{user: UserState, device: DeviceState}> = (
   state,
   action
 ) => {
-  const { participants } = action.payload;
-  if (!participants) return state;
-  Object.entries(participants).forEach(([id, participant]) => {
-    state.participants![id] = participant;
+  const { user, device } = action.payload;
+  state.users[user.id] = user;
+  state.devices[device.id] = device;
+};
+
+const leaveClass: Reducer<UserID> = (
+  state,
+  action
+) => {
+  const userId = action.payload;
+  delete state.users[userId];
+};
+
+const setHost: Reducer<UserID> = (state, action) => {
+  state.hostUserId = action.payload;
+};
+
+const setContent: Reducer<Content> = (state, action) => {
+  state.content = action.payload;
+};
+
+const addChatMessage: Reducer<ChatMessageState[]> = (
+  state,
+  action
+) => {
+  const chatMessages = action.payload;
+  chatMessages.forEach((chatMessage) => {
+    state.chatMessages.push(chatMessage);
   });
-  return state;
 };
 
-const removeParticipantsReducer: Reducer<pb.IRemoveParticipants> = (
+const setActivityStreamId: Reducer<{deviceId: DeviceID, activityStreamId: ActivityStreamID}> = (
   state,
   action
 ) => {
-  const { participants } = action.payload;
-  if (!participants) return state;
-  participants.forEach((id) => {
-    delete state.participants![id];
+  const { deviceId, activityStreamId } = action.payload;
+  state.devices[deviceId].activityStreamID = activityStreamId;
+};
+
+const rewardTrophyToUser: Reducer<{userId: UserID, trophy: Trophy}> = (
+  state,
+  action
+) => {
+  const { userId, trophy } = action.payload;
+  state.users[userId].trophies.push(trophy);
+};
+
+const rewardTrophyToAll: Reducer<{trophy: Trophy}> = (
+  state,
+  action
+) => {
+  const { trophy } = action.payload;
+  keys(state.users).forEach((id) => {
+    state.users[id].trophies.push(trophy);
   });
-  return state;
-};
-
-const changeContentReducer: Reducer<pb.IChangeContent> = (state, action) => {
-  state.content = action.payload.content;
-  return state;
-};
-
-const changeHostReducer: Reducer<pb.IChangeHost> = (state, action) => {
-  state.host = action.payload.hostId;
-  return state;
-};
-
-const appendChatMessageReducer: Reducer<pb.IAppendChatMessage> = (
-  state,
-  action
-) => {
-  state.chatMessages = [
-    ...(state.chatMessages ?? []),
-    ...(action.payload.messages ?? []),
-  ];
-  return state;
-};
-
-// @TODO - This requires an ID somehow?
-const receiveTrophyReducer: Reducer<pb.IReceiveTrophy> = (state, _action) => {
-  return state;
-};
-
-const classEndedReducer: Reducer<pb.IClassEnded> = (state, _action) => {
-  state.endTimestamp = Date.now();
-  return state;
 };
 
 export const roomSlice = createSlice({
   name: 'room',
-  initialState,
+  initialState: INITIAL_ROOM_STATE,
   reducers: {
-    setState: setStateReducer,
-    addParticipants: addParticipantsReducer,
-    removeParticipants: removeParticipantsReducer,
-    changeContent: changeContentReducer,
-    changeHost: changeHostReducer,
-    appendChatMessage: appendChatMessageReducer,
-    receiveTrophy: receiveTrophyReducer,
-    classEnded: classEndedReducer,
+    setState,
+    endClass,
+    joinClass,
+    leaveClass, 
+    setHost,
+    setContent,
+    addChatMessage,
+    setActivityStreamId,
+    rewardTrophyToUser,
+    rewardTrophyToAll,
   },
 });
 
-export const {
-  setState,
-  addParticipants,
-  removeParticipants,
-  changeContent,
-  changeHost,
-  appendChatMessage,
-  receiveTrophy,
-  classEnded,
-} = roomSlice.actions;
-
-export const Actions = roomSlice.actions;
 export const roomReducer = roomSlice.reducer;
 export type RoomState = ReturnType<typeof roomReducer>
-export const INITIAL_ROOM_STATE = initialState;
-export type RoomActions = ReturnType<ValueOf<typeof roomSlice.actions>>
+export const roomActions = roomSlice.actions;
+export type RoomAction = ReturnType<ValueOf<typeof roomActions>>
