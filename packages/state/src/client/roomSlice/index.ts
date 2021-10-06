@@ -1,5 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ContentType, ClassState, UserID, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
+import { WritableDraft } from 'immer/dist/internal';
+import { ContentType, ClassState, UserID, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy, deviceId, UserState } from '../../models';
 import { keys, ValueOf } from '../../types';
 
 type Reducer<T=undefined> = CaseReducer<ClassState, PayloadAction<T>>;
@@ -23,11 +24,15 @@ const endClass: Reducer = (state) => {
   state.classEndTime = timestamp(Date.now());
 };
 
-const joinClass: Reducer<{userId: UserID, name: string, device: DeviceState}> = (
+const deviceConnect: Reducer<{name: string, device: DeviceState}> = (
   state,
   action
 ) => {
-  const { userId, name, device } = action.payload;
+  const { name, device } = action.payload;
+  //Device
+  state.devices[device.id] = device;
+  //User
+  const userId = device.user_id;
   if(userId in state.users) {
     state.users[userId].deviceIds.push(device.id);
   } else {
@@ -39,16 +44,18 @@ const joinClass: Reducer<{userId: UserID, name: string, device: DeviceState}> = 
     };
   }
 
-  state.devices[device.id] = device;
 };
 
-const leaveClass: Reducer<{userId: UserID, deviceId: DeviceID}> = (
+const deviceDisconnect: Reducer<{deviceId: DeviceID}> = (
   state,
   action
 ) => {
-  const { deviceId, userId } = action.payload;
+  const { deviceId } = action.payload;
+  const device = state.devices[deviceId] as WritableDraft<DeviceState> | undefined;
   delete state.devices[deviceId];
-  const user = state.users[userId];
+  if(!device) { return; }
+  const user = state.users[device.user_id] as WritableDraft<UserState> | undefined;
+  if(!user) { return; }
   user.deviceIds = user.deviceIds.filter((id) => id !== deviceId);
 };
 
@@ -100,8 +107,8 @@ export const classSlice = createSlice({
   reducers: {
     setState,
     endClass,
-    joinClass,
-    leaveClass, 
+    deviceConnect,
+    deviceDisconnect, 
     setHost,
     setContent,
     addChatMessage,

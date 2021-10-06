@@ -68,7 +68,7 @@ export interface Content {
 }
 
 export interface Trophy {
-  time: Timestamp
+  timestamp: Timestamp
   type: TrophyType
 }
 
@@ -81,7 +81,8 @@ export interface UserState {
 
 export interface DeviceState {
   id: DeviceID
-  activityStreamID: ActivityStreamID
+  userId: UserID
+  activityStreamID?: ActivityStreamID
   webRTCStreamIDs: WebRTCStreamID[]
 }
 

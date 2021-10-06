@@ -1,67 +1,67 @@
 syntax = "proto3";
 
-message Command {
+message ClassRequest {
     string id = 1;
-    oneof command {
-        EndClassCommand end_class = 2;
-        SetHostCommand set_host = 3;
-        SetContentCommand set_content = 4;
-        SetActivityStreamIdCommand set_actvity_stream_id = 5;
-        RewardTrophyToUserCommand reward_trophy_to_user = 6;
-        RewardTrophyToAllCommand reward_trophy_to_all = 7;
-        SendChatMessageCommand send_chat_message = 8;
+    oneof type {
+        EndClassRequest end_class = 2;
+        SetHostRequest set_host = 3;
+        SetContentRequest set_content = 4;
+        SetActivityStreamIdRequest set_actvity_stream_id = 5;
+        RewardTrophyToUserRequest reward_trophy_to_user = 6;
+        RewardTrophyToAllRequest reward_trophy_to_all = 7;
+        SendChatMessageRequest send_chat_message = 8;
     }
 }
 
-message CommandAcknowledgement {
+message ClassResponse {
     string id = 1;
     string error = 2;
-    uint32 code = 3;
 }
 
-message Event {
+message ClassEvent {
     string id = 1;
-    oneof event {
-        SetClassStateEvent set_room_state = 2;
-        ClassEndedEvent class_ended = 3;
-        UserJoinedClassEvent user_joined_class = 4;
-        UserLeftClassEvent user_left_class = 5;
-        HostChangedEvent host_changed = 6;
-        ContentChangedEvent content_changed = 7;
-        NewChatMessageEvent new_chat_message = 8;
-        ActivityStreamIdChangedEvent actvity_stream_id_changed = 9;
-        TrophyRewardedToUserEvent trophy_rewarded_to_user = 10;
-        TrophyRewardedToAllEvent trophy_rewarded_to_all = 11;
+    oneof type {
+        ClassResponse acknowledge = 2;
+        SetClassStateEvent set_room_state = 3;
+        ClassEndedEvent class_ended = 4;
+        DeviceConnectedEvent device_connected = 5;
+        DeviceDisconnectedEvent device_disconnected = 6;
+        HostChangedEvent host_changed = 7;
+        ContentChangedEvent content_changed = 8;
+        NewChatMessageEvent new_chat_message = 9;
+        ActivityStreamIdChangedEvent actvity_stream_id_changed = 10;
+        TrophyRewardedToUserEvent trophy_rewarded_to_user = 11;
+        TrophyRewardedToAllEvent trophy_rewarded_to_all = 12;
     }
 }
 
 /* ======= COMMANDS ======= */
 
-message EndClassCommand {}
+message EndClassRequest {}
 
-message SetHostCommand {
+message SetHostRequest {
     string host_user_id = 1;
 }
 
-message SetContentCommand {
+message SetContentRequest {
     Content content = 1;
 }
 
-message SetActivityStreamIdCommand {
+message SetActivityStreamIdRequest {
     string device_id = 1;
     string activity_stream_id = 2;
 }
 
-message RewardTrophyToUserCommand {
+message RewardTrophyToUserRequest {
     string user_id = 1;
     Trophy trophy = 2;
 }
 
-message RewardTrophyToAllCommand {
+message RewardTrophyToAllRequest {
     Trophy trophy = 1;
 }
 
-message SendChatMessageCommand {
+message SendChatMessageRequest {
     string message = 1;
 }
 
@@ -79,13 +79,13 @@ message ClassEndedEvent {
     uint64 timestamp = 1;
 }
 
-message UserJoinedClassEvent {
-    User user = 1;
+message DeviceConnectedEvent {
+    string name = 1;
     Device device = 2;
 }
 
-message UserLeftClassEvent {
-    string user_id = 1;
+message DeviceDisconnectedEvent {
+    string device_id = 1;
 }
 
 message HostChangedEvent {
@@ -144,14 +144,15 @@ message Trophy {
 
 message Device {
     string id = 1;
-    string activity_stream_id = 2;
-    repeated string web_rtc_stream_ids = 3;
+    string user_id = 2;
+    string activity_stream_id = 3;
+    repeated string web_rtc_stream_ids = 4;
 }
 
 message ChatMessage {
     string user_id = 1;
     uint64 timestamp = 2;
-    repeated Trophy trophies = 3;
+    string text = 3;
 }
 
 message Content {
