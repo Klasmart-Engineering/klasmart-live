@@ -3,10 +3,16 @@ import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { Action, ClassAction, State } from '.';
 import { ValueOf } from '../types';
+import { Command, CommandAcknowledgement, ICommand } from '../protobuf';
 
 
-
+interface NetworkPromise {
+    resolve:() => unknown,
+    reject: (reason?: string) => unknown
+}
 export class Network {
+    private pendingRequests = new Map<string,NetworkPromise>()
+
     constructor (
         /* eslint-disable no-unused-vars */
         public readonly dispatch: Dispatch<Action>,
@@ -43,21 +49,18 @@ export class Network {
         return this.ws;
     }
 
-    public async send(action: ClassAction): Promise<void> {
+    public async close(reason?: string): Promise<void> {
+        (await this.ws)?.close(200, reason);
+    }
+
+    private async send(command: ICommand): Promise<void> {
         if (!this.ws) {
             throw Error('websocket has not been initialised');
         }
-        // encode 
-        // const bytes = pb.Action.encode({id: nanoid(), ...actionProperties}).finish();
-        // (await this.ws).send(bytes);
-        // Eventually await for an action acknowledgement, but for now just send the message
-        
-        // Also, need to discuss client side state structure
-        // dispatch(... what?)
-    }
-
-    public async close(reason?: string): Promise<void> {
-        (await this.ws)?.close(200, reason);
+        const id = nanoid();
+        const bytes = Command.encode({id, ...command}).finish();
+        (await this.ws).send(bytes);
+        return new Promise<void>((resolve, reject) => this.pendingRequests.set(id, {resolve, reject}));
     }
 
     private onNetworkMessage(ws: WebSocket, data: unknown) {
@@ -66,8 +69,15 @@ export class Network {
             return;
         }
         try {
-            //...
-            console.log(data);
+            const {id, code, error } = CommandAcknowledgement.decode(new Uint8Array(data));
+            const pendingPromise = this.pendingRequests.get(id);
+            if(!pendingPromise) { console.error(`Recieved aknowledge(${id}) for unknown request`); return; }
+            this.pendingRequests.delete(id);
+            if(error) {
+                pendingPromise.reject(error);
+            } else {
+                pendingPromise.resolve();
+            }
         } catch (e) {
             ws.close(4400, 'Parse error');
         }

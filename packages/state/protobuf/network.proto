@@ -134,6 +134,7 @@ message User {
     string id = 1;
     string name = 2;
     repeated Trophy trophies = 3;
+    repeated string device_ids = 4;
 }
 
 message Trophy {

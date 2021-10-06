@@ -1,10 +1,10 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ContentType, ClassState as State, UserID, UserState, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
+import { ContentType, ClassState, UserID, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
 import { keys, ValueOf } from '../../types';
 
-type Reducer<T> = CaseReducer<State, PayloadAction<T>>;
+type Reducer<T=undefined> = CaseReducer<ClassState, PayloadAction<T>>;
 
-export const INITIAL_ROOM_STATE: State = {
+export const INITIAL_ROOM_STATE: ClassState = {
   users: {},
   devices: {},
   chatMessages: [],
@@ -15,29 +15,41 @@ export const INITIAL_ROOM_STATE: State = {
   classEndTime: timestamp(),
 };
 
-const setState: Reducer<State> = (state, action) => {
+const setState: Reducer<ClassState> = (state, action) => {
   return action.payload;
 };
 
-const endClass: Reducer<undefined> = (state) => {
+const endClass: Reducer = (state) => {
   state.classEndTime = timestamp(Date.now());
 };
 
-const joinClass: Reducer<{user: UserState, device: DeviceState}> = (
+const joinClass: Reducer<{userId: UserID, name: string, device: DeviceState}> = (
   state,
   action
 ) => {
-  const { user, device } = action.payload;
-  state.users[user.id] = user;
+  const { userId, name, device } = action.payload;
+  if(userId in state.users) {
+    state.users[userId].deviceIds.push(device.id);
+  } else {
+    state.users[userId] = {
+      id: userId,
+      name,
+      deviceIds: [device.id],
+      trophies: [],
+    };
+  }
+
   state.devices[device.id] = device;
 };
 
-const leaveClass: Reducer<UserID> = (
+const leaveClass: Reducer<{userId: UserID, deviceId: DeviceID}> = (
   state,
   action
 ) => {
-  const userId = action.payload;
-  delete state.users[userId];
+  const { deviceId, userId } = action.payload;
+  delete state.devices[deviceId];
+  const user = state.users[userId];
+  user.deviceIds = user.deviceIds.filter((id) => id !== deviceId);
 };
 
 const setHost: Reducer<UserID> = (state, action) => {
@@ -100,6 +112,5 @@ export const classSlice = createSlice({
 });
 
 export const classReducer = classSlice.reducer;
-export type ClassState = ReturnType<typeof classReducer>
 export const classActions = classSlice.actions;
 export type ClassAction = ReturnType<ValueOf<typeof classActions>>

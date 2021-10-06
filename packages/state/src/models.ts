@@ -76,6 +76,7 @@ export interface UserState {
   id: UserID
   name: string
   trophies: Trophy[]
+  deviceIds: DeviceID[] 
 }
 
 export interface DeviceState {

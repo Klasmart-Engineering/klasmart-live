@@ -1,6 +1,11 @@
 export type ValueOf<T> = T[keyof T];
 
-export type NewType<T, NewTypeName> = T & { __TYPE__: NewTypeName };
+export type NewType<T, NewTypeName> = T & {
+  /**
+   * This is not available at runtime
+   */
+  __COMPILETIME_TYPE__: NewTypeName
+};
 
 export const keys = <O>(o: O): (keyof O)[] => {
   return Object.keys(o) as (keyof O)[];

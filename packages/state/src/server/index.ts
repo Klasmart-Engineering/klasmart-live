@@ -3,4 +3,4 @@ export {
     Actions,
     INITIAL_ROOM_STATE,
     generateStateDiff,
-  } from './roomSlice';
+} from './roomSlice';

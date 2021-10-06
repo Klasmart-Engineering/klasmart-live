@@ -4983,6 +4983,7 @@ $root.User = (function() {
      * @property {string|null} [id] User id
      * @property {string|null} [name] User name
      * @property {Array.<ITrophy>|null} [trophies] User trophies
+     * @property {Array.<string>|null} [deviceIds] User deviceIds
      */
 
     /**
@@ -4995,6 +4996,7 @@ $root.User = (function() {
      */
     function User(properties) {
         this.trophies = [];
+        this.deviceIds = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -5024,6 +5026,14 @@ $root.User = (function() {
      * @instance
      */
     User.prototype.trophies = $util.emptyArray;
+
+    /**
+     * User deviceIds.
+     * @member {Array.<string>} deviceIds
+     * @memberof User
+     * @instance
+     */
+    User.prototype.deviceIds = $util.emptyArray;
 
     /**
      * Creates a new User instance using the specified properties.
@@ -5056,6 +5066,9 @@ $root.User = (function() {
         if (message.trophies != null && message.trophies.length)
             for (var i = 0; i < message.trophies.length; ++i)
                 $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.deviceIds != null && message.deviceIds.length)
+            for (var i = 0; i < message.deviceIds.length; ++i)
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.deviceIds[i]);
         return writer;
     };
 
@@ -5100,6 +5113,11 @@ $root.User = (function() {
                 if (!(message.trophies && message.trophies.length))
                     message.trophies = [];
                 message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
+                break;
+            case 4:
+                if (!(message.deviceIds && message.deviceIds.length))
+                    message.deviceIds = [];
+                message.deviceIds.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5151,6 +5169,13 @@ $root.User = (function() {
                     return "trophies." + error;
             }
         }
+        if (message.deviceIds != null && message.hasOwnProperty("deviceIds")) {
+            if (!Array.isArray(message.deviceIds))
+                return "deviceIds: array expected";
+            for (var i = 0; i < message.deviceIds.length; ++i)
+                if (!$util.isString(message.deviceIds[i]))
+                    return "deviceIds: string[] expected";
+        }
         return null;
     };
 
@@ -5180,6 +5205,13 @@ $root.User = (function() {
                 message.trophies[i] = $root.Trophy.fromObject(object.trophies[i]);
             }
         }
+        if (object.deviceIds) {
+            if (!Array.isArray(object.deviceIds))
+                throw TypeError(".User.deviceIds: array expected");
+            message.deviceIds = [];
+            for (var i = 0; i < object.deviceIds.length; ++i)
+                message.deviceIds[i] = String(object.deviceIds[i]);
+        }
         return message;
     };
 
@@ -5196,8 +5228,10 @@ $root.User = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
+        if (options.arrays || options.defaults) {
             object.trophies = [];
+            object.deviceIds = [];
+        }
         if (options.defaults) {
             object.id = "";
             object.name = "";
@@ -5210,6 +5244,11 @@ $root.User = (function() {
             object.trophies = [];
             for (var j = 0; j < message.trophies.length; ++j)
                 object.trophies[j] = $root.Trophy.toObject(message.trophies[j], options);
+        }
+        if (message.deviceIds && message.deviceIds.length) {
+            object.deviceIds = [];
+            for (var j = 0; j < message.deviceIds.length; ++j)
+                object.deviceIds[j] = message.deviceIds[j];
         }
         return object;
     };
