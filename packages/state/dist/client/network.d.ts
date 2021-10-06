@@ -1,15 +1,14 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { DefaultRootState } from 'react-redux';
-import { Actions, State } from '.';
-import * as pb from '../protobuf';
+import { Action, ClassAction, State } from '.';
 import { ValueOf } from '../types';
 export declare class Network {
-    readonly dispatch: Dispatch<Actions>;
+    readonly dispatch: Dispatch<Action>;
     readonly selector: (s: DefaultRootState) => State;
     private ws?;
-    constructor(dispatch: Dispatch<Actions>, selector: (s: DefaultRootState) => State, ws?: Promise<WebSocket> | undefined);
+    constructor(dispatch: Dispatch<Action>, selector: (s: DefaultRootState) => State, ws?: Promise<WebSocket> | undefined);
     initWs(url: string): Promise<WebSocket>;
-    send(actionProperties: pb.IAction): Promise<void>;
+    send(action: ClassAction): Promise<void>;
     close(reason?: string): Promise<void>;
     private onNetworkMessage;
     private sendHeartbeat;
@@ -31,6 +30,6 @@ declare const networkActions: {
     setConnectionError: import("@reduxjs/toolkit").ActionCreatorWithPayload<boolean, string>;
     setConnectionState: import("@reduxjs/toolkit").ActionCreatorWithPayload<ConnectionStatus, string>;
 };
-export declare type NetworkActions = ReturnType<ValueOf<typeof networkActions>>;
+export declare type NetworkAction = ReturnType<ValueOf<typeof networkActions>>;
 export {};
 //# sourceMappingURL=network.d.ts.map

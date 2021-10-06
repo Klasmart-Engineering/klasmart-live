@@ -60,7 +60,7 @@ export type TrophyType = NewType<string, 'TrophyType'>
 export const trophyType = (value?: string): TrophyType => (value || '') as TrophyType;
 
 
-//Room State
+// Class State
 // Change to Union
 export interface Content {
   type: ContentType
@@ -68,8 +68,8 @@ export interface Content {
 }
 
 export interface Trophy {
-  trophyTime: Timestamp
-  trophyType: TrophyType
+  time: Timestamp
+  type: TrophyType
 }
 
 export interface UserState {
@@ -90,7 +90,7 @@ export interface ChatMessageState {
   text: string
 }
 
-export interface RoomState {
+export interface ClassState {
   users: Record<UserID, UserState>
   devices: Record<DeviceID, DeviceState>
 
@@ -133,7 +133,7 @@ export interface TrophyNotification {
 export interface VideoSynchronize { }
 export interface WhiteboardStateOut { }
 export interface WhiteboardEventOut { }
-export interface RoomNotification {
+export interface ClassNotification {
   chatMessage: ChatMessageNotification
   join: Session
   leave: Session

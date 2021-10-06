@@ -1,31 +1,56 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import * as pb from '../../protobuf';
+import { ClassState as State, UserID, UserState, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
 import { ValueOf } from '../../types';
-declare type Reducer<T> = CaseReducer<pb.IState, PayloadAction<T>>;
-export declare const roomSlice: import("@reduxjs/toolkit").Slice<pb.IState, {
-    setState: Reducer<pb.IState>;
-    addParticipants: Reducer<pb.IAddParticipants>;
-    removeParticipants: Reducer<pb.IRemoveParticipants>;
-    changeContent: Reducer<pb.IChangeContent>;
-    changeHost: Reducer<pb.IChangeHost>;
-    appendChatMessage: Reducer<pb.IAppendChatMessage>;
-    receiveTrophy: Reducer<pb.IReceiveTrophy>;
-    classEnded: Reducer<pb.IClassEnded>;
-}, "room">;
-export declare const setState: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IState, string>, addParticipants: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IAddParticipants, string>, removeParticipants: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IRemoveParticipants, string>, changeContent: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IChangeContent, string>, changeHost: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IChangeHost, string>, appendChatMessage: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IAppendChatMessage, string>, receiveTrophy: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IReceiveTrophy, string>, classEnded: import("@reduxjs/toolkit").ActionCreatorWithPayload<pb.IClassEnded, string>;
-export declare const Actions: import("@reduxjs/toolkit").CaseReducerActions<{
-    setState: Reducer<pb.IState>;
-    addParticipants: Reducer<pb.IAddParticipants>;
-    removeParticipants: Reducer<pb.IRemoveParticipants>;
-    changeContent: Reducer<pb.IChangeContent>;
-    changeHost: Reducer<pb.IChangeHost>;
-    appendChatMessage: Reducer<pb.IAppendChatMessage>;
-    receiveTrophy: Reducer<pb.IReceiveTrophy>;
-    classEnded: Reducer<pb.IClassEnded>;
+declare type Reducer<T> = CaseReducer<State, PayloadAction<T>>;
+export declare const INITIAL_ROOM_STATE: State;
+export declare const classSlice: import("@reduxjs/toolkit").Slice<State, {
+    setState: Reducer<State>;
+    endClass: Reducer<undefined>;
+    joinClass: Reducer<{
+        user: UserState;
+        device: DeviceState;
+    }>;
+    leaveClass: Reducer<UserID>;
+    setHost: Reducer<UserID>;
+    setContent: Reducer<Content>;
+    addChatMessage: Reducer<ChatMessageState>;
+    setActivityStreamId: Reducer<{
+        deviceId: DeviceID;
+        activityStreamId: ActivityStreamID;
+    }>;
+    rewardTrophyToUser: Reducer<{
+        userId: UserID;
+        trophy: Trophy;
+    }>;
+    rewardTrophyToAll: Reducer<{
+        trophy: Trophy;
+    }>;
+}, "class">;
+export declare const classReducer: import("redux").Reducer<State, import("redux").AnyAction>;
+export declare type ClassState = ReturnType<typeof classReducer>;
+export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions<{
+    setState: Reducer<State>;
+    endClass: Reducer<undefined>;
+    joinClass: Reducer<{
+        user: UserState;
+        device: DeviceState;
+    }>;
+    leaveClass: Reducer<UserID>;
+    setHost: Reducer<UserID>;
+    setContent: Reducer<Content>;
+    addChatMessage: Reducer<ChatMessageState>;
+    setActivityStreamId: Reducer<{
+        deviceId: DeviceID;
+        activityStreamId: ActivityStreamID;
+    }>;
+    rewardTrophyToUser: Reducer<{
+        userId: UserID;
+        trophy: Trophy;
+    }>;
+    rewardTrophyToAll: Reducer<{
+        trophy: Trophy;
+    }>;
 }>;
-export declare const roomReducer: import("redux").Reducer<pb.IState, import("redux").AnyAction>;
-export declare type RoomState = ReturnType<typeof roomReducer>;
-export declare const INITIAL_ROOM_STATE: pb.IState;
-export declare type RoomActions = ReturnType<ValueOf<typeof roomSlice.actions>>;
+export declare type ClassAction = ReturnType<ValueOf<typeof classActions>>;
 export {};
 //# sourceMappingURL=index.d.ts.map

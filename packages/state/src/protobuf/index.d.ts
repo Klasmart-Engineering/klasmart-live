@@ -1,2813 +1,2165 @@
 import * as $protobuf from "protobufjs";
-/** Properties of an Action. */
-export interface IAction {
+/** Properties of a Command. */
+export interface ICommand {
 
-    /** Action id */
+    /** Command id */
     id?: (string|null);
 
-    /** Action setDevice */
-    setDevice?: (ISetDevice|null);
+    /** Command endClass */
+    endClass?: (IEndClassCommand|null);
 
-    /** Action removeDevice */
-    removeDevice?: (IRemoveDevice|null);
+    /** Command setHost */
+    setHost?: (ISetHostCommand|null);
 
-    /** Action setWebRtcStream */
-    setWebRtcStream?: (ISetWebRTCStream|null);
+    /** Command setContent */
+    setContent?: (ISetContentCommand|null);
 
-    /** Action setActivity */
-    setActivity?: (ISetActivity|null);
+    /** Command setActvityStreamId */
+    setActvityStreamId?: (ISetActivityStreamIdCommand|null);
 
-    /** Action setHost */
-    setHost?: (ISetHost|null);
+    /** Command rewardTrophyToUser */
+    rewardTrophyToUser?: (IRewardTrophyToUserCommand|null);
 
-    /** Action addTrophy */
-    addTrophy?: (IAddTrophy|null);
+    /** Command rewardTrophyToAll */
+    rewardTrophyToAll?: (IRewardTrophyToAllCommand|null);
 
-    /** Action setContent */
-    setContent?: (ISetContent|null);
-
-    /** Action sendChatMessage */
-    sendChatMessage?: (ISendChatMessage|null);
-
-    /** Action userJoin */
-    userJoin?: (IUserJoin|null);
-
-    /** Action userLeave */
-    userLeave?: (IUserLeave|null);
-
-    /** Action endClass */
-    endClass?: (IEndClass|null);
-
-    /** Action heartbeat */
-    heartbeat?: (IHeartbeat|null);
+    /** Command sendChatMessage */
+    sendChatMessage?: (ISendChatMessageCommand|null);
 }
 
-/** Represents an Action. */
-export class Action implements IAction {
+/** Represents a Command. */
+export class Command implements ICommand {
 
     /**
-     * Constructs a new Action.
+     * Constructs a new Command.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IAction);
+    constructor(properties?: ICommand);
 
-    /** Action id. */
+    /** Command id. */
     public id: string;
 
-    /** Action setDevice. */
-    public setDevice?: (ISetDevice|null);
+    /** Command endClass. */
+    public endClass?: (IEndClassCommand|null);
 
-    /** Action removeDevice. */
-    public removeDevice?: (IRemoveDevice|null);
+    /** Command setHost. */
+    public setHost?: (ISetHostCommand|null);
 
-    /** Action setWebRtcStream. */
-    public setWebRtcStream?: (ISetWebRTCStream|null);
+    /** Command setContent. */
+    public setContent?: (ISetContentCommand|null);
 
-    /** Action setActivity. */
-    public setActivity?: (ISetActivity|null);
+    /** Command setActvityStreamId. */
+    public setActvityStreamId?: (ISetActivityStreamIdCommand|null);
 
-    /** Action setHost. */
-    public setHost?: (ISetHost|null);
+    /** Command rewardTrophyToUser. */
+    public rewardTrophyToUser?: (IRewardTrophyToUserCommand|null);
 
-    /** Action addTrophy. */
-    public addTrophy?: (IAddTrophy|null);
+    /** Command rewardTrophyToAll. */
+    public rewardTrophyToAll?: (IRewardTrophyToAllCommand|null);
 
-    /** Action setContent. */
-    public setContent?: (ISetContent|null);
+    /** Command sendChatMessage. */
+    public sendChatMessage?: (ISendChatMessageCommand|null);
 
-    /** Action sendChatMessage. */
-    public sendChatMessage?: (ISendChatMessage|null);
-
-    /** Action userJoin. */
-    public userJoin?: (IUserJoin|null);
-
-    /** Action userLeave. */
-    public userLeave?: (IUserLeave|null);
-
-    /** Action endClass. */
-    public endClass?: (IEndClass|null);
-
-    /** Action heartbeat. */
-    public heartbeat?: (IHeartbeat|null);
-
-    /** Action action. */
-    public action?: ("setDevice"|"removeDevice"|"setWebRtcStream"|"setActivity"|"setHost"|"addTrophy"|"setContent"|"sendChatMessage"|"userJoin"|"userLeave"|"endClass"|"heartbeat");
+    /** Command command. */
+    public command?: ("endClass"|"setHost"|"setContent"|"setActvityStreamId"|"rewardTrophyToUser"|"rewardTrophyToAll"|"sendChatMessage");
 
     /**
-     * Creates a new Action instance using the specified properties.
+     * Creates a new Command instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns Action instance
+     * @returns Command instance
      */
-    public static create(properties?: IAction): Action;
+    public static create(properties?: ICommand): Command;
 
     /**
-     * Encodes the specified Action message. Does not implicitly {@link Action.verify|verify} messages.
-     * @param message Action message or plain object to encode
+     * Encodes the specified Command message. Does not implicitly {@link Command.verify|verify} messages.
+     * @param message Command message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IAction, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ICommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified Action message, length delimited. Does not implicitly {@link Action.verify|verify} messages.
-     * @param message Action message or plain object to encode
+     * Encodes the specified Command message, length delimited. Does not implicitly {@link Command.verify|verify} messages.
+     * @param message Command message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IAction, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ICommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes an Action message from the specified reader or buffer.
+     * Decodes a Command message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns Action
+     * @returns Command
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Action;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Command;
 
     /**
-     * Decodes an Action message from the specified reader or buffer, length delimited.
+     * Decodes a Command message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns Action
+     * @returns Command
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Action;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Command;
 
     /**
-     * Verifies an Action message.
+     * Verifies a Command message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates an Action message from a plain object. Also converts values to their respective internal types.
+     * Creates a Command message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns Action
+     * @returns Command
      */
-    public static fromObject(object: { [k: string]: any }): Action;
+    public static fromObject(object: { [k: string]: any }): Command;
 
     /**
-     * Creates a plain object from an Action message. Also converts values to other types if specified.
-     * @param message Action
+     * Creates a plain object from a Command message. Also converts values to other types if specified.
+     * @param message Command
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Action, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: Command, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this Action to JSON.
+     * Converts this Command to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of an ActionAcknowledgement. */
-export interface IActionAcknowledgement {
+/** Properties of a CommandAcknowledgement. */
+export interface ICommandAcknowledgement {
 
-    /** ActionAcknowledgement id */
+    /** CommandAcknowledgement id */
     id?: (string|null);
 
-    /** ActionAcknowledgement error */
+    /** CommandAcknowledgement error */
     error?: (string|null);
 
-    /** ActionAcknowledgement code */
+    /** CommandAcknowledgement code */
     code?: (number|null);
 }
 
-/** Represents an ActionAcknowledgement. */
-export class ActionAcknowledgement implements IActionAcknowledgement {
+/** Represents a CommandAcknowledgement. */
+export class CommandAcknowledgement implements ICommandAcknowledgement {
 
     /**
-     * Constructs a new ActionAcknowledgement.
+     * Constructs a new CommandAcknowledgement.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IActionAcknowledgement);
+    constructor(properties?: ICommandAcknowledgement);
 
-    /** ActionAcknowledgement id. */
+    /** CommandAcknowledgement id. */
     public id: string;
 
-    /** ActionAcknowledgement error. */
+    /** CommandAcknowledgement error. */
     public error: string;
 
-    /** ActionAcknowledgement code. */
+    /** CommandAcknowledgement code. */
     public code: number;
 
     /**
-     * Creates a new ActionAcknowledgement instance using the specified properties.
+     * Creates a new CommandAcknowledgement instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns ActionAcknowledgement instance
+     * @returns CommandAcknowledgement instance
      */
-    public static create(properties?: IActionAcknowledgement): ActionAcknowledgement;
+    public static create(properties?: ICommandAcknowledgement): CommandAcknowledgement;
 
     /**
-     * Encodes the specified ActionAcknowledgement message. Does not implicitly {@link ActionAcknowledgement.verify|verify} messages.
-     * @param message ActionAcknowledgement message or plain object to encode
+     * Encodes the specified CommandAcknowledgement message. Does not implicitly {@link CommandAcknowledgement.verify|verify} messages.
+     * @param message CommandAcknowledgement message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IActionAcknowledgement, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ICommandAcknowledgement, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified ActionAcknowledgement message, length delimited. Does not implicitly {@link ActionAcknowledgement.verify|verify} messages.
-     * @param message ActionAcknowledgement message or plain object to encode
+     * Encodes the specified CommandAcknowledgement message, length delimited. Does not implicitly {@link CommandAcknowledgement.verify|verify} messages.
+     * @param message CommandAcknowledgement message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IActionAcknowledgement, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ICommandAcknowledgement, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes an ActionAcknowledgement message from the specified reader or buffer.
+     * Decodes a CommandAcknowledgement message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns ActionAcknowledgement
+     * @returns CommandAcknowledgement
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ActionAcknowledgement;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CommandAcknowledgement;
 
     /**
-     * Decodes an ActionAcknowledgement message from the specified reader or buffer, length delimited.
+     * Decodes a CommandAcknowledgement message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns ActionAcknowledgement
+     * @returns CommandAcknowledgement
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ActionAcknowledgement;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CommandAcknowledgement;
 
     /**
-     * Verifies an ActionAcknowledgement message.
+     * Verifies a CommandAcknowledgement message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates an ActionAcknowledgement message from a plain object. Also converts values to their respective internal types.
+     * Creates a CommandAcknowledgement message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns ActionAcknowledgement
+     * @returns CommandAcknowledgement
      */
-    public static fromObject(object: { [k: string]: any }): ActionAcknowledgement;
+    public static fromObject(object: { [k: string]: any }): CommandAcknowledgement;
 
     /**
-     * Creates a plain object from an ActionAcknowledgement message. Also converts values to other types if specified.
-     * @param message ActionAcknowledgement
+     * Creates a plain object from a CommandAcknowledgement message. Also converts values to other types if specified.
+     * @param message CommandAcknowledgement
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ActionAcknowledgement, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: CommandAcknowledgement, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this ActionAcknowledgement to JSON.
+     * Converts this CommandAcknowledgement to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a UserJoin. */
-export interface IUserJoin {
-}
+/** Properties of an Event. */
+export interface IEvent {
 
-/** Represents a UserJoin. */
-export class UserJoin implements IUserJoin {
-
-    /**
-     * Constructs a new UserJoin.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IUserJoin);
-
-    /**
-     * Creates a new UserJoin instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns UserJoin instance
-     */
-    public static create(properties?: IUserJoin): UserJoin;
-
-    /**
-     * Encodes the specified UserJoin message. Does not implicitly {@link UserJoin.verify|verify} messages.
-     * @param message UserJoin message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IUserJoin, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified UserJoin message, length delimited. Does not implicitly {@link UserJoin.verify|verify} messages.
-     * @param message UserJoin message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IUserJoin, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a UserJoin message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns UserJoin
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): UserJoin;
-
-    /**
-     * Decodes a UserJoin message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns UserJoin
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): UserJoin;
-
-    /**
-     * Verifies a UserJoin message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a UserJoin message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns UserJoin
-     */
-    public static fromObject(object: { [k: string]: any }): UserJoin;
-
-    /**
-     * Creates a plain object from a UserJoin message. Also converts values to other types if specified.
-     * @param message UserJoin
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: UserJoin, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this UserJoin to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a UserLeave. */
-export interface IUserLeave {
-}
-
-/** Represents a UserLeave. */
-export class UserLeave implements IUserLeave {
-
-    /**
-     * Constructs a new UserLeave.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IUserLeave);
-
-    /**
-     * Creates a new UserLeave instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns UserLeave instance
-     */
-    public static create(properties?: IUserLeave): UserLeave;
-
-    /**
-     * Encodes the specified UserLeave message. Does not implicitly {@link UserLeave.verify|verify} messages.
-     * @param message UserLeave message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IUserLeave, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified UserLeave message, length delimited. Does not implicitly {@link UserLeave.verify|verify} messages.
-     * @param message UserLeave message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IUserLeave, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a UserLeave message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns UserLeave
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): UserLeave;
-
-    /**
-     * Decodes a UserLeave message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns UserLeave
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): UserLeave;
-
-    /**
-     * Verifies a UserLeave message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a UserLeave message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns UserLeave
-     */
-    public static fromObject(object: { [k: string]: any }): UserLeave;
-
-    /**
-     * Creates a plain object from a UserLeave message. Also converts values to other types if specified.
-     * @param message UserLeave
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: UserLeave, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this UserLeave to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of an EndClass. */
-export interface IEndClass {
-}
-
-/** Represents an EndClass. */
-export class EndClass implements IEndClass {
-
-    /**
-     * Constructs a new EndClass.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IEndClass);
-
-    /**
-     * Creates a new EndClass instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns EndClass instance
-     */
-    public static create(properties?: IEndClass): EndClass;
-
-    /**
-     * Encodes the specified EndClass message. Does not implicitly {@link EndClass.verify|verify} messages.
-     * @param message EndClass message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IEndClass, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified EndClass message, length delimited. Does not implicitly {@link EndClass.verify|verify} messages.
-     * @param message EndClass message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IEndClass, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes an EndClass message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns EndClass
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): EndClass;
-
-    /**
-     * Decodes an EndClass message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns EndClass
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): EndClass;
-
-    /**
-     * Verifies an EndClass message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates an EndClass message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns EndClass
-     */
-    public static fromObject(object: { [k: string]: any }): EndClass;
-
-    /**
-     * Creates a plain object from an EndClass message. Also converts values to other types if specified.
-     * @param message EndClass
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: EndClass, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this EndClass to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a Heartbeat. */
-export interface IHeartbeat {
-}
-
-/** Represents a Heartbeat. */
-export class Heartbeat implements IHeartbeat {
-
-    /**
-     * Constructs a new Heartbeat.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IHeartbeat);
-
-    /**
-     * Creates a new Heartbeat instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns Heartbeat instance
-     */
-    public static create(properties?: IHeartbeat): Heartbeat;
-
-    /**
-     * Encodes the specified Heartbeat message. Does not implicitly {@link Heartbeat.verify|verify} messages.
-     * @param message Heartbeat message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IHeartbeat, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified Heartbeat message, length delimited. Does not implicitly {@link Heartbeat.verify|verify} messages.
-     * @param message Heartbeat message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IHeartbeat, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a Heartbeat message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns Heartbeat
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Heartbeat;
-
-    /**
-     * Decodes a Heartbeat message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns Heartbeat
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Heartbeat;
-
-    /**
-     * Verifies a Heartbeat message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a Heartbeat message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns Heartbeat
-     */
-    public static fromObject(object: { [k: string]: any }): Heartbeat;
-
-    /**
-     * Creates a plain object from a Heartbeat message. Also converts values to other types if specified.
-     * @param message Heartbeat
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: Heartbeat, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this Heartbeat to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a SetDevice. */
-export interface ISetDevice {
-
-    /** SetDevice deviceId */
-    deviceId?: (string|null);
-
-    /** SetDevice device */
-    device?: (IDevice|null);
-}
-
-/** Represents a SetDevice. */
-export class SetDevice implements ISetDevice {
-
-    /**
-     * Constructs a new SetDevice.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: ISetDevice);
-
-    /** SetDevice deviceId. */
-    public deviceId: string;
-
-    /** SetDevice device. */
-    public device?: (IDevice|null);
-
-    /**
-     * Creates a new SetDevice instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns SetDevice instance
-     */
-    public static create(properties?: ISetDevice): SetDevice;
-
-    /**
-     * Encodes the specified SetDevice message. Does not implicitly {@link SetDevice.verify|verify} messages.
-     * @param message SetDevice message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: ISetDevice, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified SetDevice message, length delimited. Does not implicitly {@link SetDevice.verify|verify} messages.
-     * @param message SetDevice message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: ISetDevice, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a SetDevice message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns SetDevice
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetDevice;
-
-    /**
-     * Decodes a SetDevice message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns SetDevice
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetDevice;
-
-    /**
-     * Verifies a SetDevice message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a SetDevice message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns SetDevice
-     */
-    public static fromObject(object: { [k: string]: any }): SetDevice;
-
-    /**
-     * Creates a plain object from a SetDevice message. Also converts values to other types if specified.
-     * @param message SetDevice
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: SetDevice, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this SetDevice to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a RemoveDevice. */
-export interface IRemoveDevice {
-
-    /** RemoveDevice id */
+    /** Event id */
     id?: (string|null);
+
+    /** Event setRoomState */
+    setRoomState?: (ISetClassStateEvent|null);
+
+    /** Event classEnded */
+    classEnded?: (IClassEndedEvent|null);
+
+    /** Event userJoinedClass */
+    userJoinedClass?: (IUserJoinedClassEvent|null);
+
+    /** Event userLeftClass */
+    userLeftClass?: (IUserLeftClassEvent|null);
+
+    /** Event hostChanged */
+    hostChanged?: (IHostChangedEvent|null);
+
+    /** Event contentChanged */
+    contentChanged?: (IContentChangedEvent|null);
+
+    /** Event newChatMessage */
+    newChatMessage?: (INewChatMessageEvent|null);
+
+    /** Event actvityStreamIdChanged */
+    actvityStreamIdChanged?: (IActivityStreamIdChangedEvent|null);
+
+    /** Event trophyRewardedToUser */
+    trophyRewardedToUser?: (ITrophyRewardedToUserEvent|null);
+
+    /** Event trophyRewardedToAll */
+    trophyRewardedToAll?: (ITrophyRewardedToAllEvent|null);
 }
 
-/** Represents a RemoveDevice. */
-export class RemoveDevice implements IRemoveDevice {
+/** Represents an Event. */
+export class Event implements IEvent {
 
     /**
-     * Constructs a new RemoveDevice.
+     * Constructs a new Event.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IRemoveDevice);
+    constructor(properties?: IEvent);
 
-    /** RemoveDevice id. */
+    /** Event id. */
     public id: string;
 
+    /** Event setRoomState. */
+    public setRoomState?: (ISetClassStateEvent|null);
+
+    /** Event classEnded. */
+    public classEnded?: (IClassEndedEvent|null);
+
+    /** Event userJoinedClass. */
+    public userJoinedClass?: (IUserJoinedClassEvent|null);
+
+    /** Event userLeftClass. */
+    public userLeftClass?: (IUserLeftClassEvent|null);
+
+    /** Event hostChanged. */
+    public hostChanged?: (IHostChangedEvent|null);
+
+    /** Event contentChanged. */
+    public contentChanged?: (IContentChangedEvent|null);
+
+    /** Event newChatMessage. */
+    public newChatMessage?: (INewChatMessageEvent|null);
+
+    /** Event actvityStreamIdChanged. */
+    public actvityStreamIdChanged?: (IActivityStreamIdChangedEvent|null);
+
+    /** Event trophyRewardedToUser. */
+    public trophyRewardedToUser?: (ITrophyRewardedToUserEvent|null);
+
+    /** Event trophyRewardedToAll. */
+    public trophyRewardedToAll?: (ITrophyRewardedToAllEvent|null);
+
+    /** Event event. */
+    public event?: ("setRoomState"|"classEnded"|"userJoinedClass"|"userLeftClass"|"hostChanged"|"contentChanged"|"newChatMessage"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll");
+
     /**
-     * Creates a new RemoveDevice instance using the specified properties.
+     * Creates a new Event instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns RemoveDevice instance
+     * @returns Event instance
      */
-    public static create(properties?: IRemoveDevice): RemoveDevice;
+    public static create(properties?: IEvent): Event;
 
     /**
-     * Encodes the specified RemoveDevice message. Does not implicitly {@link RemoveDevice.verify|verify} messages.
-     * @param message RemoveDevice message or plain object to encode
+     * Encodes the specified Event message. Does not implicitly {@link Event.verify|verify} messages.
+     * @param message Event message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IRemoveDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IEvent, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified RemoveDevice message, length delimited. Does not implicitly {@link RemoveDevice.verify|verify} messages.
-     * @param message RemoveDevice message or plain object to encode
+     * Encodes the specified Event message, length delimited. Does not implicitly {@link Event.verify|verify} messages.
+     * @param message Event message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IRemoveDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IEvent, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a RemoveDevice message from the specified reader or buffer.
+     * Decodes an Event message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns RemoveDevice
+     * @returns Event
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RemoveDevice;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Event;
 
     /**
-     * Decodes a RemoveDevice message from the specified reader or buffer, length delimited.
+     * Decodes an Event message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns RemoveDevice
+     * @returns Event
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RemoveDevice;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Event;
 
     /**
-     * Verifies a RemoveDevice message.
+     * Verifies an Event message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a RemoveDevice message from a plain object. Also converts values to their respective internal types.
+     * Creates an Event message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns RemoveDevice
+     * @returns Event
      */
-    public static fromObject(object: { [k: string]: any }): RemoveDevice;
+    public static fromObject(object: { [k: string]: any }): Event;
 
     /**
-     * Creates a plain object from a RemoveDevice message. Also converts values to other types if specified.
-     * @param message RemoveDevice
+     * Creates a plain object from an Event message. Also converts values to other types if specified.
+     * @param message Event
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: RemoveDevice, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: Event, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this RemoveDevice to JSON.
+     * Converts this Event to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a SetWebRTCStream. */
-export interface ISetWebRTCStream {
+/** Properties of an EndClassCommand. */
+export interface IEndClassCommand {
+}
 
-    /** SetWebRTCStream deviceId */
+/** Represents an EndClassCommand. */
+export class EndClassCommand implements IEndClassCommand {
+
+    /**
+     * Constructs a new EndClassCommand.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IEndClassCommand);
+
+    /**
+     * Creates a new EndClassCommand instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns EndClassCommand instance
+     */
+    public static create(properties?: IEndClassCommand): EndClassCommand;
+
+    /**
+     * Encodes the specified EndClassCommand message. Does not implicitly {@link EndClassCommand.verify|verify} messages.
+     * @param message EndClassCommand message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IEndClassCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified EndClassCommand message, length delimited. Does not implicitly {@link EndClassCommand.verify|verify} messages.
+     * @param message EndClassCommand message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IEndClassCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an EndClassCommand message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns EndClassCommand
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): EndClassCommand;
+
+    /**
+     * Decodes an EndClassCommand message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns EndClassCommand
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): EndClassCommand;
+
+    /**
+     * Verifies an EndClassCommand message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an EndClassCommand message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns EndClassCommand
+     */
+    public static fromObject(object: { [k: string]: any }): EndClassCommand;
+
+    /**
+     * Creates a plain object from an EndClassCommand message. Also converts values to other types if specified.
+     * @param message EndClassCommand
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: EndClassCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this EndClassCommand to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a SetHostCommand. */
+export interface ISetHostCommand {
+
+    /** SetHostCommand hostUserId */
+    hostUserId?: (string|null);
+}
+
+/** Represents a SetHostCommand. */
+export class SetHostCommand implements ISetHostCommand {
+
+    /**
+     * Constructs a new SetHostCommand.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ISetHostCommand);
+
+    /** SetHostCommand hostUserId. */
+    public hostUserId: string;
+
+    /**
+     * Creates a new SetHostCommand instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns SetHostCommand instance
+     */
+    public static create(properties?: ISetHostCommand): SetHostCommand;
+
+    /**
+     * Encodes the specified SetHostCommand message. Does not implicitly {@link SetHostCommand.verify|verify} messages.
+     * @param message SetHostCommand message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ISetHostCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified SetHostCommand message, length delimited. Does not implicitly {@link SetHostCommand.verify|verify} messages.
+     * @param message SetHostCommand message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ISetHostCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a SetHostCommand message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns SetHostCommand
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetHostCommand;
+
+    /**
+     * Decodes a SetHostCommand message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns SetHostCommand
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetHostCommand;
+
+    /**
+     * Verifies a SetHostCommand message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a SetHostCommand message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns SetHostCommand
+     */
+    public static fromObject(object: { [k: string]: any }): SetHostCommand;
+
+    /**
+     * Creates a plain object from a SetHostCommand message. Also converts values to other types if specified.
+     * @param message SetHostCommand
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: SetHostCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this SetHostCommand to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a SetContentCommand. */
+export interface ISetContentCommand {
+
+    /** SetContentCommand content */
+    content?: (IContent|null);
+}
+
+/** Represents a SetContentCommand. */
+export class SetContentCommand implements ISetContentCommand {
+
+    /**
+     * Constructs a new SetContentCommand.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ISetContentCommand);
+
+    /** SetContentCommand content. */
+    public content?: (IContent|null);
+
+    /**
+     * Creates a new SetContentCommand instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns SetContentCommand instance
+     */
+    public static create(properties?: ISetContentCommand): SetContentCommand;
+
+    /**
+     * Encodes the specified SetContentCommand message. Does not implicitly {@link SetContentCommand.verify|verify} messages.
+     * @param message SetContentCommand message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ISetContentCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified SetContentCommand message, length delimited. Does not implicitly {@link SetContentCommand.verify|verify} messages.
+     * @param message SetContentCommand message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ISetContentCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a SetContentCommand message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns SetContentCommand
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetContentCommand;
+
+    /**
+     * Decodes a SetContentCommand message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns SetContentCommand
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetContentCommand;
+
+    /**
+     * Verifies a SetContentCommand message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a SetContentCommand message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns SetContentCommand
+     */
+    public static fromObject(object: { [k: string]: any }): SetContentCommand;
+
+    /**
+     * Creates a plain object from a SetContentCommand message. Also converts values to other types if specified.
+     * @param message SetContentCommand
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: SetContentCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this SetContentCommand to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a SetActivityStreamIdCommand. */
+export interface ISetActivityStreamIdCommand {
+
+    /** SetActivityStreamIdCommand deviceId */
     deviceId?: (string|null);
 
-    /** SetWebRTCStream streams */
-    streams?: (IWebRTCStream[]|null);
+    /** SetActivityStreamIdCommand activityStreamId */
+    activityStreamId?: (string|null);
 }
 
-/** Represents a SetWebRTCStream. */
-export class SetWebRTCStream implements ISetWebRTCStream {
+/** Represents a SetActivityStreamIdCommand. */
+export class SetActivityStreamIdCommand implements ISetActivityStreamIdCommand {
 
     /**
-     * Constructs a new SetWebRTCStream.
+     * Constructs a new SetActivityStreamIdCommand.
      * @param [properties] Properties to set
      */
-    constructor(properties?: ISetWebRTCStream);
+    constructor(properties?: ISetActivityStreamIdCommand);
 
-    /** SetWebRTCStream deviceId. */
+    /** SetActivityStreamIdCommand deviceId. */
     public deviceId: string;
 
-    /** SetWebRTCStream streams. */
-    public streams: IWebRTCStream[];
+    /** SetActivityStreamIdCommand activityStreamId. */
+    public activityStreamId: string;
 
     /**
-     * Creates a new SetWebRTCStream instance using the specified properties.
+     * Creates a new SetActivityStreamIdCommand instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns SetWebRTCStream instance
+     * @returns SetActivityStreamIdCommand instance
      */
-    public static create(properties?: ISetWebRTCStream): SetWebRTCStream;
+    public static create(properties?: ISetActivityStreamIdCommand): SetActivityStreamIdCommand;
 
     /**
-     * Encodes the specified SetWebRTCStream message. Does not implicitly {@link SetWebRTCStream.verify|verify} messages.
-     * @param message SetWebRTCStream message or plain object to encode
+     * Encodes the specified SetActivityStreamIdCommand message. Does not implicitly {@link SetActivityStreamIdCommand.verify|verify} messages.
+     * @param message SetActivityStreamIdCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: ISetWebRTCStream, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ISetActivityStreamIdCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified SetWebRTCStream message, length delimited. Does not implicitly {@link SetWebRTCStream.verify|verify} messages.
-     * @param message SetWebRTCStream message or plain object to encode
+     * Encodes the specified SetActivityStreamIdCommand message, length delimited. Does not implicitly {@link SetActivityStreamIdCommand.verify|verify} messages.
+     * @param message SetActivityStreamIdCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: ISetWebRTCStream, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ISetActivityStreamIdCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a SetWebRTCStream message from the specified reader or buffer.
+     * Decodes a SetActivityStreamIdCommand message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns SetWebRTCStream
+     * @returns SetActivityStreamIdCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetWebRTCStream;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetActivityStreamIdCommand;
 
     /**
-     * Decodes a SetWebRTCStream message from the specified reader or buffer, length delimited.
+     * Decodes a SetActivityStreamIdCommand message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns SetWebRTCStream
+     * @returns SetActivityStreamIdCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetWebRTCStream;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetActivityStreamIdCommand;
 
     /**
-     * Verifies a SetWebRTCStream message.
+     * Verifies a SetActivityStreamIdCommand message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a SetWebRTCStream message from a plain object. Also converts values to their respective internal types.
+     * Creates a SetActivityStreamIdCommand message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns SetWebRTCStream
+     * @returns SetActivityStreamIdCommand
      */
-    public static fromObject(object: { [k: string]: any }): SetWebRTCStream;
+    public static fromObject(object: { [k: string]: any }): SetActivityStreamIdCommand;
 
     /**
-     * Creates a plain object from a SetWebRTCStream message. Also converts values to other types if specified.
-     * @param message SetWebRTCStream
+     * Creates a plain object from a SetActivityStreamIdCommand message. Also converts values to other types if specified.
+     * @param message SetActivityStreamIdCommand
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: SetWebRTCStream, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: SetActivityStreamIdCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this SetWebRTCStream to JSON.
+     * Converts this SetActivityStreamIdCommand to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a SetActivity. */
-export interface ISetActivity {
+/** Properties of a RewardTrophyToUserCommand. */
+export interface IRewardTrophyToUserCommand {
 
-    /** SetActivity deviceId */
-    deviceId?: (string|null);
-
-    /** SetActivity activity */
-    activity?: (IActivity|null);
-}
-
-/** Represents a SetActivity. */
-export class SetActivity implements ISetActivity {
-
-    /**
-     * Constructs a new SetActivity.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: ISetActivity);
-
-    /** SetActivity deviceId. */
-    public deviceId: string;
-
-    /** SetActivity activity. */
-    public activity?: (IActivity|null);
-
-    /**
-     * Creates a new SetActivity instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns SetActivity instance
-     */
-    public static create(properties?: ISetActivity): SetActivity;
-
-    /**
-     * Encodes the specified SetActivity message. Does not implicitly {@link SetActivity.verify|verify} messages.
-     * @param message SetActivity message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: ISetActivity, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified SetActivity message, length delimited. Does not implicitly {@link SetActivity.verify|verify} messages.
-     * @param message SetActivity message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: ISetActivity, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a SetActivity message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns SetActivity
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetActivity;
-
-    /**
-     * Decodes a SetActivity message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns SetActivity
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetActivity;
-
-    /**
-     * Verifies a SetActivity message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a SetActivity message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns SetActivity
-     */
-    public static fromObject(object: { [k: string]: any }): SetActivity;
-
-    /**
-     * Creates a plain object from a SetActivity message. Also converts values to other types if specified.
-     * @param message SetActivity
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: SetActivity, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this SetActivity to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a SetHost. */
-export interface ISetHost {
-
-    /** SetHost id */
-    id?: (string|null);
-}
-
-/** Represents a SetHost. */
-export class SetHost implements ISetHost {
-
-    /**
-     * Constructs a new SetHost.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: ISetHost);
-
-    /** SetHost id. */
-    public id: string;
-
-    /**
-     * Creates a new SetHost instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns SetHost instance
-     */
-    public static create(properties?: ISetHost): SetHost;
-
-    /**
-     * Encodes the specified SetHost message. Does not implicitly {@link SetHost.verify|verify} messages.
-     * @param message SetHost message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: ISetHost, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified SetHost message, length delimited. Does not implicitly {@link SetHost.verify|verify} messages.
-     * @param message SetHost message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: ISetHost, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a SetHost message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns SetHost
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetHost;
-
-    /**
-     * Decodes a SetHost message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns SetHost
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetHost;
-
-    /**
-     * Verifies a SetHost message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a SetHost message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns SetHost
-     */
-    public static fromObject(object: { [k: string]: any }): SetHost;
-
-    /**
-     * Creates a plain object from a SetHost message. Also converts values to other types if specified.
-     * @param message SetHost
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: SetHost, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this SetHost to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of an AddTrophy. */
-export interface IAddTrophy {
-
-    /** AddTrophy trophyId */
-    trophyId?: (string|null);
-
-    /** AddTrophy timestamp */
-    timestamp?: (number|Long|null);
-
-    /** AddTrophy userId */
+    /** RewardTrophyToUserCommand userId */
     userId?: (string|null);
-}
 
-/** Represents an AddTrophy. */
-export class AddTrophy implements IAddTrophy {
-
-    /**
-     * Constructs a new AddTrophy.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IAddTrophy);
-
-    /** AddTrophy trophyId. */
-    public trophyId: string;
-
-    /** AddTrophy timestamp. */
-    public timestamp: (number|Long);
-
-    /** AddTrophy userId. */
-    public userId: string;
-
-    /**
-     * Creates a new AddTrophy instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns AddTrophy instance
-     */
-    public static create(properties?: IAddTrophy): AddTrophy;
-
-    /**
-     * Encodes the specified AddTrophy message. Does not implicitly {@link AddTrophy.verify|verify} messages.
-     * @param message AddTrophy message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IAddTrophy, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified AddTrophy message, length delimited. Does not implicitly {@link AddTrophy.verify|verify} messages.
-     * @param message AddTrophy message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IAddTrophy, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes an AddTrophy message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns AddTrophy
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): AddTrophy;
-
-    /**
-     * Decodes an AddTrophy message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns AddTrophy
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): AddTrophy;
-
-    /**
-     * Verifies an AddTrophy message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates an AddTrophy message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns AddTrophy
-     */
-    public static fromObject(object: { [k: string]: any }): AddTrophy;
-
-    /**
-     * Creates a plain object from an AddTrophy message. Also converts values to other types if specified.
-     * @param message AddTrophy
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: AddTrophy, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this AddTrophy to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a SetContent. */
-export interface ISetContent {
-
-    /** SetContent content */
-    content?: (IContent|null);
-}
-
-/** Represents a SetContent. */
-export class SetContent implements ISetContent {
-
-    /**
-     * Constructs a new SetContent.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: ISetContent);
-
-    /** SetContent content. */
-    public content?: (IContent|null);
-
-    /**
-     * Creates a new SetContent instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns SetContent instance
-     */
-    public static create(properties?: ISetContent): SetContent;
-
-    /**
-     * Encodes the specified SetContent message. Does not implicitly {@link SetContent.verify|verify} messages.
-     * @param message SetContent message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: ISetContent, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified SetContent message, length delimited. Does not implicitly {@link SetContent.verify|verify} messages.
-     * @param message SetContent message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: ISetContent, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a SetContent message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns SetContent
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetContent;
-
-    /**
-     * Decodes a SetContent message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns SetContent
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetContent;
-
-    /**
-     * Verifies a SetContent message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a SetContent message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns SetContent
-     */
-    public static fromObject(object: { [k: string]: any }): SetContent;
-
-    /**
-     * Creates a plain object from a SetContent message. Also converts values to other types if specified.
-     * @param message SetContent
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: SetContent, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this SetContent to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a SendChatMessage. */
-export interface ISendChatMessage {
-
-    /** SendChatMessage message */
-    message?: (string|null);
-}
-
-/** Represents a SendChatMessage. */
-export class SendChatMessage implements ISendChatMessage {
-
-    /**
-     * Constructs a new SendChatMessage.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: ISendChatMessage);
-
-    /** SendChatMessage message. */
-    public message: string;
-
-    /**
-     * Creates a new SendChatMessage instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns SendChatMessage instance
-     */
-    public static create(properties?: ISendChatMessage): SendChatMessage;
-
-    /**
-     * Encodes the specified SendChatMessage message. Does not implicitly {@link SendChatMessage.verify|verify} messages.
-     * @param message SendChatMessage message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: ISendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified SendChatMessage message, length delimited. Does not implicitly {@link SendChatMessage.verify|verify} messages.
-     * @param message SendChatMessage message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: ISendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a SendChatMessage message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns SendChatMessage
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SendChatMessage;
-
-    /**
-     * Decodes a SendChatMessage message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns SendChatMessage
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SendChatMessage;
-
-    /**
-     * Verifies a SendChatMessage message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a SendChatMessage message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns SendChatMessage
-     */
-    public static fromObject(object: { [k: string]: any }): SendChatMessage;
-
-    /**
-     * Creates a plain object from a SendChatMessage message. Also converts values to other types if specified.
-     * @param message SendChatMessage
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: SendChatMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this SendChatMessage to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a StateChanges. */
-export interface IStateChanges {
-
-    /** StateChanges changes */
-    changes?: (IStateDiff[]|null);
-}
-
-/** Represents a StateChanges. */
-export class StateChanges implements IStateChanges {
-
-    /**
-     * Constructs a new StateChanges.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IStateChanges);
-
-    /** StateChanges changes. */
-    public changes: IStateDiff[];
-
-    /**
-     * Creates a new StateChanges instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns StateChanges instance
-     */
-    public static create(properties?: IStateChanges): StateChanges;
-
-    /**
-     * Encodes the specified StateChanges message. Does not implicitly {@link StateChanges.verify|verify} messages.
-     * @param message StateChanges message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IStateChanges, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified StateChanges message, length delimited. Does not implicitly {@link StateChanges.verify|verify} messages.
-     * @param message StateChanges message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IStateChanges, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a StateChanges message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns StateChanges
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): StateChanges;
-
-    /**
-     * Decodes a StateChanges message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns StateChanges
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): StateChanges;
-
-    /**
-     * Verifies a StateChanges message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a StateChanges message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns StateChanges
-     */
-    public static fromObject(object: { [k: string]: any }): StateChanges;
-
-    /**
-     * Creates a plain object from a StateChanges message. Also converts values to other types if specified.
-     * @param message StateChanges
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: StateChanges, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this StateChanges to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a StateDiff. */
-export interface IStateDiff {
-
-    /** StateDiff setState */
-    setState?: (IState|null);
-
-    /** StateDiff addParticipants */
-    addParticipants?: (IAddParticipants|null);
-
-    /** StateDiff removeParticipants */
-    removeParticipants?: (IRemoveParticipants|null);
-
-    /** StateDiff changeContent */
-    changeContent?: (IChangeContent|null);
-
-    /** StateDiff changeHost */
-    changeHost?: (IChangeHost|null);
-
-    /** StateDiff appendChatMessage */
-    appendChatMessage?: (IAppendChatMessage|null);
-
-    /** StateDiff receiveTrophy */
-    receiveTrophy?: (IReceiveTrophy|null);
-
-    /** StateDiff classEnded */
-    classEnded?: (IClassEnded|null);
-}
-
-/** Represents a StateDiff. */
-export class StateDiff implements IStateDiff {
-
-    /**
-     * Constructs a new StateDiff.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IStateDiff);
-
-    /** StateDiff setState. */
-    public setState?: (IState|null);
-
-    /** StateDiff addParticipants. */
-    public addParticipants?: (IAddParticipants|null);
-
-    /** StateDiff removeParticipants. */
-    public removeParticipants?: (IRemoveParticipants|null);
-
-    /** StateDiff changeContent. */
-    public changeContent?: (IChangeContent|null);
-
-    /** StateDiff changeHost. */
-    public changeHost?: (IChangeHost|null);
-
-    /** StateDiff appendChatMessage. */
-    public appendChatMessage?: (IAppendChatMessage|null);
-
-    /** StateDiff receiveTrophy. */
-    public receiveTrophy?: (IReceiveTrophy|null);
-
-    /** StateDiff classEnded. */
-    public classEnded?: (IClassEnded|null);
-
-    /** StateDiff action. */
-    public action?: ("setState"|"addParticipants"|"removeParticipants"|"changeContent"|"changeHost"|"appendChatMessage"|"receiveTrophy"|"classEnded");
-
-    /**
-     * Creates a new StateDiff instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns StateDiff instance
-     */
-    public static create(properties?: IStateDiff): StateDiff;
-
-    /**
-     * Encodes the specified StateDiff message. Does not implicitly {@link StateDiff.verify|verify} messages.
-     * @param message StateDiff message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IStateDiff, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified StateDiff message, length delimited. Does not implicitly {@link StateDiff.verify|verify} messages.
-     * @param message StateDiff message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IStateDiff, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a StateDiff message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns StateDiff
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): StateDiff;
-
-    /**
-     * Decodes a StateDiff message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns StateDiff
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): StateDiff;
-
-    /**
-     * Verifies a StateDiff message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a StateDiff message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns StateDiff
-     */
-    public static fromObject(object: { [k: string]: any }): StateDiff;
-
-    /**
-     * Creates a plain object from a StateDiff message. Also converts values to other types if specified.
-     * @param message StateDiff
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: StateDiff, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this StateDiff to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a Participant. */
-export interface IParticipant {
-
-    /** Participant name */
-    name?: (string|null);
-
-    /** Participant devices */
-    devices?: ({ [k: string]: IDevice }|null);
-
-    /** Participant trophies */
-    trophies?: (ITrophy[]|null);
-}
-
-/** Represents a Participant. */
-export class Participant implements IParticipant {
-
-    /**
-     * Constructs a new Participant.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IParticipant);
-
-    /** Participant name. */
-    public name: string;
-
-    /** Participant devices. */
-    public devices: { [k: string]: IDevice };
-
-    /** Participant trophies. */
-    public trophies: ITrophy[];
-
-    /**
-     * Creates a new Participant instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns Participant instance
-     */
-    public static create(properties?: IParticipant): Participant;
-
-    /**
-     * Encodes the specified Participant message. Does not implicitly {@link Participant.verify|verify} messages.
-     * @param message Participant message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IParticipant, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified Participant message, length delimited. Does not implicitly {@link Participant.verify|verify} messages.
-     * @param message Participant message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IParticipant, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a Participant message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns Participant
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Participant;
-
-    /**
-     * Decodes a Participant message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns Participant
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Participant;
-
-    /**
-     * Verifies a Participant message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a Participant message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns Participant
-     */
-    public static fromObject(object: { [k: string]: any }): Participant;
-
-    /**
-     * Creates a plain object from a Participant message. Also converts values to other types if specified.
-     * @param message Participant
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: Participant, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this Participant to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a State. */
-export interface IState {
-
-    /** State roomId */
-    roomId?: (string|null);
-
-    /** State participants */
-    participants?: ({ [k: string]: IParticipant }|null);
-
-    /** State host */
-    host?: (string|null);
-
-    /** State content */
-    content?: (IContent|null);
-
-    /** State chatMessages */
-    chatMessages?: (IChatMessage[]|null);
-
-    /** State endTimestamp */
-    endTimestamp?: (number|null);
-}
-
-/** Represents a State. */
-export class State implements IState {
-
-    /**
-     * Constructs a new State.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IState);
-
-    /** State roomId. */
-    public roomId: string;
-
-    /** State participants. */
-    public participants: { [k: string]: IParticipant };
-
-    /** State host. */
-    public host: string;
-
-    /** State content. */
-    public content?: (IContent|null);
-
-    /** State chatMessages. */
-    public chatMessages: IChatMessage[];
-
-    /** State endTimestamp. */
-    public endTimestamp: number;
-
-    /**
-     * Creates a new State instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns State instance
-     */
-    public static create(properties?: IState): State;
-
-    /**
-     * Encodes the specified State message. Does not implicitly {@link State.verify|verify} messages.
-     * @param message State message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IState, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified State message, length delimited. Does not implicitly {@link State.verify|verify} messages.
-     * @param message State message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IState, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a State message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns State
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): State;
-
-    /**
-     * Decodes a State message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns State
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): State;
-
-    /**
-     * Verifies a State message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a State message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns State
-     */
-    public static fromObject(object: { [k: string]: any }): State;
-
-    /**
-     * Creates a plain object from a State message. Also converts values to other types if specified.
-     * @param message State
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: State, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this State to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of an AddParticipants. */
-export interface IAddParticipants {
-
-    /** AddParticipants participants */
-    participants?: ({ [k: string]: IParticipant }|null);
-}
-
-/** Represents an AddParticipants. */
-export class AddParticipants implements IAddParticipants {
-
-    /**
-     * Constructs a new AddParticipants.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IAddParticipants);
-
-    /** AddParticipants participants. */
-    public participants: { [k: string]: IParticipant };
-
-    /**
-     * Creates a new AddParticipants instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns AddParticipants instance
-     */
-    public static create(properties?: IAddParticipants): AddParticipants;
-
-    /**
-     * Encodes the specified AddParticipants message. Does not implicitly {@link AddParticipants.verify|verify} messages.
-     * @param message AddParticipants message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IAddParticipants, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified AddParticipants message, length delimited. Does not implicitly {@link AddParticipants.verify|verify} messages.
-     * @param message AddParticipants message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IAddParticipants, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes an AddParticipants message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns AddParticipants
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): AddParticipants;
-
-    /**
-     * Decodes an AddParticipants message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns AddParticipants
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): AddParticipants;
-
-    /**
-     * Verifies an AddParticipants message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates an AddParticipants message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns AddParticipants
-     */
-    public static fromObject(object: { [k: string]: any }): AddParticipants;
-
-    /**
-     * Creates a plain object from an AddParticipants message. Also converts values to other types if specified.
-     * @param message AddParticipants
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: AddParticipants, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this AddParticipants to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a RemoveParticipants. */
-export interface IRemoveParticipants {
-
-    /** RemoveParticipants participants */
-    participants?: (string[]|null);
-}
-
-/** Represents a RemoveParticipants. */
-export class RemoveParticipants implements IRemoveParticipants {
-
-    /**
-     * Constructs a new RemoveParticipants.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IRemoveParticipants);
-
-    /** RemoveParticipants participants. */
-    public participants: string[];
-
-    /**
-     * Creates a new RemoveParticipants instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns RemoveParticipants instance
-     */
-    public static create(properties?: IRemoveParticipants): RemoveParticipants;
-
-    /**
-     * Encodes the specified RemoveParticipants message. Does not implicitly {@link RemoveParticipants.verify|verify} messages.
-     * @param message RemoveParticipants message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IRemoveParticipants, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified RemoveParticipants message, length delimited. Does not implicitly {@link RemoveParticipants.verify|verify} messages.
-     * @param message RemoveParticipants message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IRemoveParticipants, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a RemoveParticipants message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns RemoveParticipants
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RemoveParticipants;
-
-    /**
-     * Decodes a RemoveParticipants message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns RemoveParticipants
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RemoveParticipants;
-
-    /**
-     * Verifies a RemoveParticipants message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a RemoveParticipants message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns RemoveParticipants
-     */
-    public static fromObject(object: { [k: string]: any }): RemoveParticipants;
-
-    /**
-     * Creates a plain object from a RemoveParticipants message. Also converts values to other types if specified.
-     * @param message RemoveParticipants
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: RemoveParticipants, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this RemoveParticipants to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a ChangeContent. */
-export interface IChangeContent {
-
-    /** ChangeContent content */
-    content?: (IContent|null);
-}
-
-/** Represents a ChangeContent. */
-export class ChangeContent implements IChangeContent {
-
-    /**
-     * Constructs a new ChangeContent.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IChangeContent);
-
-    /** ChangeContent content. */
-    public content?: (IContent|null);
-
-    /**
-     * Creates a new ChangeContent instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns ChangeContent instance
-     */
-    public static create(properties?: IChangeContent): ChangeContent;
-
-    /**
-     * Encodes the specified ChangeContent message. Does not implicitly {@link ChangeContent.verify|verify} messages.
-     * @param message ChangeContent message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IChangeContent, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified ChangeContent message, length delimited. Does not implicitly {@link ChangeContent.verify|verify} messages.
-     * @param message ChangeContent message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IChangeContent, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a ChangeContent message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns ChangeContent
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ChangeContent;
-
-    /**
-     * Decodes a ChangeContent message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns ChangeContent
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ChangeContent;
-
-    /**
-     * Verifies a ChangeContent message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a ChangeContent message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns ChangeContent
-     */
-    public static fromObject(object: { [k: string]: any }): ChangeContent;
-
-    /**
-     * Creates a plain object from a ChangeContent message. Also converts values to other types if specified.
-     * @param message ChangeContent
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: ChangeContent, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this ChangeContent to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a ChangeHost. */
-export interface IChangeHost {
-
-    /** ChangeHost hostId */
-    hostId?: (string|null);
-}
-
-/** Represents a ChangeHost. */
-export class ChangeHost implements IChangeHost {
-
-    /**
-     * Constructs a new ChangeHost.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IChangeHost);
-
-    /** ChangeHost hostId. */
-    public hostId: string;
-
-    /**
-     * Creates a new ChangeHost instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns ChangeHost instance
-     */
-    public static create(properties?: IChangeHost): ChangeHost;
-
-    /**
-     * Encodes the specified ChangeHost message. Does not implicitly {@link ChangeHost.verify|verify} messages.
-     * @param message ChangeHost message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IChangeHost, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified ChangeHost message, length delimited. Does not implicitly {@link ChangeHost.verify|verify} messages.
-     * @param message ChangeHost message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IChangeHost, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a ChangeHost message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns ChangeHost
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ChangeHost;
-
-    /**
-     * Decodes a ChangeHost message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns ChangeHost
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ChangeHost;
-
-    /**
-     * Verifies a ChangeHost message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a ChangeHost message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns ChangeHost
-     */
-    public static fromObject(object: { [k: string]: any }): ChangeHost;
-
-    /**
-     * Creates a plain object from a ChangeHost message. Also converts values to other types if specified.
-     * @param message ChangeHost
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: ChangeHost, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this ChangeHost to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of an AppendChatMessage. */
-export interface IAppendChatMessage {
-
-    /** AppendChatMessage messages */
-    messages?: (IChatMessage[]|null);
-}
-
-/** Represents an AppendChatMessage. */
-export class AppendChatMessage implements IAppendChatMessage {
-
-    /**
-     * Constructs a new AppendChatMessage.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IAppendChatMessage);
-
-    /** AppendChatMessage messages. */
-    public messages: IChatMessage[];
-
-    /**
-     * Creates a new AppendChatMessage instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns AppendChatMessage instance
-     */
-    public static create(properties?: IAppendChatMessage): AppendChatMessage;
-
-    /**
-     * Encodes the specified AppendChatMessage message. Does not implicitly {@link AppendChatMessage.verify|verify} messages.
-     * @param message AppendChatMessage message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IAppendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified AppendChatMessage message, length delimited. Does not implicitly {@link AppendChatMessage.verify|verify} messages.
-     * @param message AppendChatMessage message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IAppendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes an AppendChatMessage message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns AppendChatMessage
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): AppendChatMessage;
-
-    /**
-     * Decodes an AppendChatMessage message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns AppendChatMessage
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): AppendChatMessage;
-
-    /**
-     * Verifies an AppendChatMessage message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates an AppendChatMessage message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns AppendChatMessage
-     */
-    public static fromObject(object: { [k: string]: any }): AppendChatMessage;
-
-    /**
-     * Creates a plain object from an AppendChatMessage message. Also converts values to other types if specified.
-     * @param message AppendChatMessage
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: AppendChatMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this AppendChatMessage to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a ReceiveTrophy. */
-export interface IReceiveTrophy {
-
-    /** ReceiveTrophy trophy */
+    /** RewardTrophyToUserCommand trophy */
     trophy?: (ITrophy|null);
 }
 
-/** Represents a ReceiveTrophy. */
-export class ReceiveTrophy implements IReceiveTrophy {
+/** Represents a RewardTrophyToUserCommand. */
+export class RewardTrophyToUserCommand implements IRewardTrophyToUserCommand {
 
     /**
-     * Constructs a new ReceiveTrophy.
+     * Constructs a new RewardTrophyToUserCommand.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IReceiveTrophy);
+    constructor(properties?: IRewardTrophyToUserCommand);
 
-    /** ReceiveTrophy trophy. */
+    /** RewardTrophyToUserCommand userId. */
+    public userId: string;
+
+    /** RewardTrophyToUserCommand trophy. */
     public trophy?: (ITrophy|null);
 
     /**
-     * Creates a new ReceiveTrophy instance using the specified properties.
+     * Creates a new RewardTrophyToUserCommand instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns ReceiveTrophy instance
+     * @returns RewardTrophyToUserCommand instance
      */
-    public static create(properties?: IReceiveTrophy): ReceiveTrophy;
+    public static create(properties?: IRewardTrophyToUserCommand): RewardTrophyToUserCommand;
 
     /**
-     * Encodes the specified ReceiveTrophy message. Does not implicitly {@link ReceiveTrophy.verify|verify} messages.
-     * @param message ReceiveTrophy message or plain object to encode
+     * Encodes the specified RewardTrophyToUserCommand message. Does not implicitly {@link RewardTrophyToUserCommand.verify|verify} messages.
+     * @param message RewardTrophyToUserCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IReceiveTrophy, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IRewardTrophyToUserCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified ReceiveTrophy message, length delimited. Does not implicitly {@link ReceiveTrophy.verify|verify} messages.
-     * @param message ReceiveTrophy message or plain object to encode
+     * Encodes the specified RewardTrophyToUserCommand message, length delimited. Does not implicitly {@link RewardTrophyToUserCommand.verify|verify} messages.
+     * @param message RewardTrophyToUserCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IReceiveTrophy, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IRewardTrophyToUserCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a ReceiveTrophy message from the specified reader or buffer.
+     * Decodes a RewardTrophyToUserCommand message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns ReceiveTrophy
+     * @returns RewardTrophyToUserCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ReceiveTrophy;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RewardTrophyToUserCommand;
 
     /**
-     * Decodes a ReceiveTrophy message from the specified reader or buffer, length delimited.
+     * Decodes a RewardTrophyToUserCommand message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns ReceiveTrophy
+     * @returns RewardTrophyToUserCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ReceiveTrophy;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RewardTrophyToUserCommand;
 
     /**
-     * Verifies a ReceiveTrophy message.
+     * Verifies a RewardTrophyToUserCommand message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a ReceiveTrophy message from a plain object. Also converts values to their respective internal types.
+     * Creates a RewardTrophyToUserCommand message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns ReceiveTrophy
+     * @returns RewardTrophyToUserCommand
      */
-    public static fromObject(object: { [k: string]: any }): ReceiveTrophy;
+    public static fromObject(object: { [k: string]: any }): RewardTrophyToUserCommand;
 
     /**
-     * Creates a plain object from a ReceiveTrophy message. Also converts values to other types if specified.
-     * @param message ReceiveTrophy
+     * Creates a plain object from a RewardTrophyToUserCommand message. Also converts values to other types if specified.
+     * @param message RewardTrophyToUserCommand
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ReceiveTrophy, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: RewardTrophyToUserCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this ReceiveTrophy to JSON.
+     * Converts this RewardTrophyToUserCommand to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a ClassEnded. */
-export interface IClassEnded {
+/** Properties of a RewardTrophyToAllCommand. */
+export interface IRewardTrophyToAllCommand {
+
+    /** RewardTrophyToAllCommand trophy */
+    trophy?: (ITrophy|null);
 }
 
-/** Represents a ClassEnded. */
-export class ClassEnded implements IClassEnded {
+/** Represents a RewardTrophyToAllCommand. */
+export class RewardTrophyToAllCommand implements IRewardTrophyToAllCommand {
 
     /**
-     * Constructs a new ClassEnded.
+     * Constructs a new RewardTrophyToAllCommand.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IClassEnded);
+    constructor(properties?: IRewardTrophyToAllCommand);
+
+    /** RewardTrophyToAllCommand trophy. */
+    public trophy?: (ITrophy|null);
 
     /**
-     * Creates a new ClassEnded instance using the specified properties.
+     * Creates a new RewardTrophyToAllCommand instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns ClassEnded instance
+     * @returns RewardTrophyToAllCommand instance
      */
-    public static create(properties?: IClassEnded): ClassEnded;
+    public static create(properties?: IRewardTrophyToAllCommand): RewardTrophyToAllCommand;
 
     /**
-     * Encodes the specified ClassEnded message. Does not implicitly {@link ClassEnded.verify|verify} messages.
-     * @param message ClassEnded message or plain object to encode
+     * Encodes the specified RewardTrophyToAllCommand message. Does not implicitly {@link RewardTrophyToAllCommand.verify|verify} messages.
+     * @param message RewardTrophyToAllCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IClassEnded, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IRewardTrophyToAllCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified ClassEnded message, length delimited. Does not implicitly {@link ClassEnded.verify|verify} messages.
-     * @param message ClassEnded message or plain object to encode
+     * Encodes the specified RewardTrophyToAllCommand message, length delimited. Does not implicitly {@link RewardTrophyToAllCommand.verify|verify} messages.
+     * @param message RewardTrophyToAllCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IClassEnded, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IRewardTrophyToAllCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a ClassEnded message from the specified reader or buffer.
+     * Decodes a RewardTrophyToAllCommand message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns ClassEnded
+     * @returns RewardTrophyToAllCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ClassEnded;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): RewardTrophyToAllCommand;
 
     /**
-     * Decodes a ClassEnded message from the specified reader or buffer, length delimited.
+     * Decodes a RewardTrophyToAllCommand message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns ClassEnded
+     * @returns RewardTrophyToAllCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ClassEnded;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): RewardTrophyToAllCommand;
 
     /**
-     * Verifies a ClassEnded message.
+     * Verifies a RewardTrophyToAllCommand message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a ClassEnded message from a plain object. Also converts values to their respective internal types.
+     * Creates a RewardTrophyToAllCommand message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns ClassEnded
+     * @returns RewardTrophyToAllCommand
      */
-    public static fromObject(object: { [k: string]: any }): ClassEnded;
+    public static fromObject(object: { [k: string]: any }): RewardTrophyToAllCommand;
 
     /**
-     * Creates a plain object from a ClassEnded message. Also converts values to other types if specified.
-     * @param message ClassEnded
+     * Creates a plain object from a RewardTrophyToAllCommand message. Also converts values to other types if specified.
+     * @param message RewardTrophyToAllCommand
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ClassEnded, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: RewardTrophyToAllCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this ClassEnded to JSON.
+     * Converts this RewardTrophyToAllCommand to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a Device. */
-export interface IDevice {
+/** Properties of a SendChatMessageCommand. */
+export interface ISendChatMessageCommand {
 
-    /** Device activity */
-    activity?: (IActivity|null);
-
-    /** Device webRTCStreams */
-    webRTCStreams?: (IWebRTCStream[]|null);
+    /** SendChatMessageCommand message */
+    message?: (string|null);
 }
 
-/** Represents a Device. */
-export class Device implements IDevice {
+/** Represents a SendChatMessageCommand. */
+export class SendChatMessageCommand implements ISendChatMessageCommand {
 
     /**
-     * Constructs a new Device.
+     * Constructs a new SendChatMessageCommand.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IDevice);
+    constructor(properties?: ISendChatMessageCommand);
 
-    /** Device activity. */
-    public activity?: (IActivity|null);
-
-    /** Device webRTCStreams. */
-    public webRTCStreams: IWebRTCStream[];
+    /** SendChatMessageCommand message. */
+    public message: string;
 
     /**
-     * Creates a new Device instance using the specified properties.
+     * Creates a new SendChatMessageCommand instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns Device instance
+     * @returns SendChatMessageCommand instance
      */
-    public static create(properties?: IDevice): Device;
+    public static create(properties?: ISendChatMessageCommand): SendChatMessageCommand;
 
     /**
-     * Encodes the specified Device message. Does not implicitly {@link Device.verify|verify} messages.
-     * @param message Device message or plain object to encode
+     * Encodes the specified SendChatMessageCommand message. Does not implicitly {@link SendChatMessageCommand.verify|verify} messages.
+     * @param message SendChatMessageCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ISendChatMessageCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified Device message, length delimited. Does not implicitly {@link Device.verify|verify} messages.
-     * @param message Device message or plain object to encode
+     * Encodes the specified SendChatMessageCommand message, length delimited. Does not implicitly {@link SendChatMessageCommand.verify|verify} messages.
+     * @param message SendChatMessageCommand message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ISendChatMessageCommand, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a Device message from the specified reader or buffer.
+     * Decodes a SendChatMessageCommand message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns Device
+     * @returns SendChatMessageCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Device;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SendChatMessageCommand;
 
     /**
-     * Decodes a Device message from the specified reader or buffer, length delimited.
+     * Decodes a SendChatMessageCommand message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns Device
+     * @returns SendChatMessageCommand
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Device;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SendChatMessageCommand;
 
     /**
-     * Verifies a Device message.
+     * Verifies a SendChatMessageCommand message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a Device message from a plain object. Also converts values to their respective internal types.
+     * Creates a SendChatMessageCommand message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns Device
+     * @returns SendChatMessageCommand
      */
-    public static fromObject(object: { [k: string]: any }): Device;
+    public static fromObject(object: { [k: string]: any }): SendChatMessageCommand;
 
     /**
-     * Creates a plain object from a Device message. Also converts values to other types if specified.
-     * @param message Device
+     * Creates a plain object from a SendChatMessageCommand message. Also converts values to other types if specified.
+     * @param message SendChatMessageCommand
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Device, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: SendChatMessageCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this Device to JSON.
+     * Converts this SendChatMessageCommand to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of an Activity. */
-export interface IActivity {
+/** Properties of a SetClassStateEvent. */
+export interface ISetClassStateEvent {
 
-    /** Activity id */
+    /** SetClassStateEvent state */
+    state?: (IClassState|null);
+}
+
+/** Represents a SetClassStateEvent. */
+export class SetClassStateEvent implements ISetClassStateEvent {
+
+    /**
+     * Constructs a new SetClassStateEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ISetClassStateEvent);
+
+    /** SetClassStateEvent state. */
+    public state?: (IClassState|null);
+
+    /**
+     * Creates a new SetClassStateEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns SetClassStateEvent instance
+     */
+    public static create(properties?: ISetClassStateEvent): SetClassStateEvent;
+
+    /**
+     * Encodes the specified SetClassStateEvent message. Does not implicitly {@link SetClassStateEvent.verify|verify} messages.
+     * @param message SetClassStateEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ISetClassStateEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified SetClassStateEvent message, length delimited. Does not implicitly {@link SetClassStateEvent.verify|verify} messages.
+     * @param message SetClassStateEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ISetClassStateEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a SetClassStateEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns SetClassStateEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetClassStateEvent;
+
+    /**
+     * Decodes a SetClassStateEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns SetClassStateEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetClassStateEvent;
+
+    /**
+     * Verifies a SetClassStateEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a SetClassStateEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns SetClassStateEvent
+     */
+    public static fromObject(object: { [k: string]: any }): SetClassStateEvent;
+
+    /**
+     * Creates a plain object from a SetClassStateEvent message. Also converts values to other types if specified.
+     * @param message SetClassStateEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: SetClassStateEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this SetClassStateEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ClassEndedEvent. */
+export interface IClassEndedEvent {
+
+    /** ClassEndedEvent timestamp */
+    timestamp?: (number|Long|null);
+}
+
+/** Represents a ClassEndedEvent. */
+export class ClassEndedEvent implements IClassEndedEvent {
+
+    /**
+     * Constructs a new ClassEndedEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IClassEndedEvent);
+
+    /** ClassEndedEvent timestamp. */
+    public timestamp: (number|Long);
+
+    /**
+     * Creates a new ClassEndedEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ClassEndedEvent instance
+     */
+    public static create(properties?: IClassEndedEvent): ClassEndedEvent;
+
+    /**
+     * Encodes the specified ClassEndedEvent message. Does not implicitly {@link ClassEndedEvent.verify|verify} messages.
+     * @param message ClassEndedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IClassEndedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ClassEndedEvent message, length delimited. Does not implicitly {@link ClassEndedEvent.verify|verify} messages.
+     * @param message ClassEndedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IClassEndedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ClassEndedEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ClassEndedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ClassEndedEvent;
+
+    /**
+     * Decodes a ClassEndedEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ClassEndedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ClassEndedEvent;
+
+    /**
+     * Verifies a ClassEndedEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ClassEndedEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ClassEndedEvent
+     */
+    public static fromObject(object: { [k: string]: any }): ClassEndedEvent;
+
+    /**
+     * Creates a plain object from a ClassEndedEvent message. Also converts values to other types if specified.
+     * @param message ClassEndedEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ClassEndedEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ClassEndedEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a UserJoinedClassEvent. */
+export interface IUserJoinedClassEvent {
+
+    /** UserJoinedClassEvent user */
+    user?: (IUser|null);
+
+    /** UserJoinedClassEvent device */
+    device?: (IDevice|null);
+}
+
+/** Represents a UserJoinedClassEvent. */
+export class UserJoinedClassEvent implements IUserJoinedClassEvent {
+
+    /**
+     * Constructs a new UserJoinedClassEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IUserJoinedClassEvent);
+
+    /** UserJoinedClassEvent user. */
+    public user?: (IUser|null);
+
+    /** UserJoinedClassEvent device. */
+    public device?: (IDevice|null);
+
+    /**
+     * Creates a new UserJoinedClassEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns UserJoinedClassEvent instance
+     */
+    public static create(properties?: IUserJoinedClassEvent): UserJoinedClassEvent;
+
+    /**
+     * Encodes the specified UserJoinedClassEvent message. Does not implicitly {@link UserJoinedClassEvent.verify|verify} messages.
+     * @param message UserJoinedClassEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IUserJoinedClassEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified UserJoinedClassEvent message, length delimited. Does not implicitly {@link UserJoinedClassEvent.verify|verify} messages.
+     * @param message UserJoinedClassEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IUserJoinedClassEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a UserJoinedClassEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns UserJoinedClassEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): UserJoinedClassEvent;
+
+    /**
+     * Decodes a UserJoinedClassEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns UserJoinedClassEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): UserJoinedClassEvent;
+
+    /**
+     * Verifies a UserJoinedClassEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a UserJoinedClassEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns UserJoinedClassEvent
+     */
+    public static fromObject(object: { [k: string]: any }): UserJoinedClassEvent;
+
+    /**
+     * Creates a plain object from a UserJoinedClassEvent message. Also converts values to other types if specified.
+     * @param message UserJoinedClassEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: UserJoinedClassEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this UserJoinedClassEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a UserLeftClassEvent. */
+export interface IUserLeftClassEvent {
+
+    /** UserLeftClassEvent userId */
+    userId?: (string|null);
+}
+
+/** Represents a UserLeftClassEvent. */
+export class UserLeftClassEvent implements IUserLeftClassEvent {
+
+    /**
+     * Constructs a new UserLeftClassEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IUserLeftClassEvent);
+
+    /** UserLeftClassEvent userId. */
+    public userId: string;
+
+    /**
+     * Creates a new UserLeftClassEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns UserLeftClassEvent instance
+     */
+    public static create(properties?: IUserLeftClassEvent): UserLeftClassEvent;
+
+    /**
+     * Encodes the specified UserLeftClassEvent message. Does not implicitly {@link UserLeftClassEvent.verify|verify} messages.
+     * @param message UserLeftClassEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IUserLeftClassEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified UserLeftClassEvent message, length delimited. Does not implicitly {@link UserLeftClassEvent.verify|verify} messages.
+     * @param message UserLeftClassEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IUserLeftClassEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a UserLeftClassEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns UserLeftClassEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): UserLeftClassEvent;
+
+    /**
+     * Decodes a UserLeftClassEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns UserLeftClassEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): UserLeftClassEvent;
+
+    /**
+     * Verifies a UserLeftClassEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a UserLeftClassEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns UserLeftClassEvent
+     */
+    public static fromObject(object: { [k: string]: any }): UserLeftClassEvent;
+
+    /**
+     * Creates a plain object from a UserLeftClassEvent message. Also converts values to other types if specified.
+     * @param message UserLeftClassEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: UserLeftClassEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this UserLeftClassEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a HostChangedEvent. */
+export interface IHostChangedEvent {
+
+    /** HostChangedEvent hostUserId */
+    hostUserId?: (string|null);
+}
+
+/** Represents a HostChangedEvent. */
+export class HostChangedEvent implements IHostChangedEvent {
+
+    /**
+     * Constructs a new HostChangedEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IHostChangedEvent);
+
+    /** HostChangedEvent hostUserId. */
+    public hostUserId: string;
+
+    /**
+     * Creates a new HostChangedEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns HostChangedEvent instance
+     */
+    public static create(properties?: IHostChangedEvent): HostChangedEvent;
+
+    /**
+     * Encodes the specified HostChangedEvent message. Does not implicitly {@link HostChangedEvent.verify|verify} messages.
+     * @param message HostChangedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IHostChangedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified HostChangedEvent message, length delimited. Does not implicitly {@link HostChangedEvent.verify|verify} messages.
+     * @param message HostChangedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IHostChangedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a HostChangedEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns HostChangedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): HostChangedEvent;
+
+    /**
+     * Decodes a HostChangedEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns HostChangedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): HostChangedEvent;
+
+    /**
+     * Verifies a HostChangedEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a HostChangedEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns HostChangedEvent
+     */
+    public static fromObject(object: { [k: string]: any }): HostChangedEvent;
+
+    /**
+     * Creates a plain object from a HostChangedEvent message. Also converts values to other types if specified.
+     * @param message HostChangedEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: HostChangedEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this HostChangedEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ContentChangedEvent. */
+export interface IContentChangedEvent {
+
+    /** ContentChangedEvent content */
+    content?: (IContent|null);
+}
+
+/** Represents a ContentChangedEvent. */
+export class ContentChangedEvent implements IContentChangedEvent {
+
+    /**
+     * Constructs a new ContentChangedEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IContentChangedEvent);
+
+    /** ContentChangedEvent content. */
+    public content?: (IContent|null);
+
+    /**
+     * Creates a new ContentChangedEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ContentChangedEvent instance
+     */
+    public static create(properties?: IContentChangedEvent): ContentChangedEvent;
+
+    /**
+     * Encodes the specified ContentChangedEvent message. Does not implicitly {@link ContentChangedEvent.verify|verify} messages.
+     * @param message ContentChangedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IContentChangedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ContentChangedEvent message, length delimited. Does not implicitly {@link ContentChangedEvent.verify|verify} messages.
+     * @param message ContentChangedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IContentChangedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ContentChangedEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ContentChangedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ContentChangedEvent;
+
+    /**
+     * Decodes a ContentChangedEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ContentChangedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ContentChangedEvent;
+
+    /**
+     * Verifies a ContentChangedEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ContentChangedEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ContentChangedEvent
+     */
+    public static fromObject(object: { [k: string]: any }): ContentChangedEvent;
+
+    /**
+     * Creates a plain object from a ContentChangedEvent message. Also converts values to other types if specified.
+     * @param message ContentChangedEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ContentChangedEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ContentChangedEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of an ActivityStreamIdChangedEvent. */
+export interface IActivityStreamIdChangedEvent {
+
+    /** ActivityStreamIdChangedEvent deviceId */
+    deviceId?: (string|null);
+
+    /** ActivityStreamIdChangedEvent activityStreamId */
+    activityStreamId?: (string|null);
+}
+
+/** Represents an ActivityStreamIdChangedEvent. */
+export class ActivityStreamIdChangedEvent implements IActivityStreamIdChangedEvent {
+
+    /**
+     * Constructs a new ActivityStreamIdChangedEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IActivityStreamIdChangedEvent);
+
+    /** ActivityStreamIdChangedEvent deviceId. */
+    public deviceId: string;
+
+    /** ActivityStreamIdChangedEvent activityStreamId. */
+    public activityStreamId: string;
+
+    /**
+     * Creates a new ActivityStreamIdChangedEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ActivityStreamIdChangedEvent instance
+     */
+    public static create(properties?: IActivityStreamIdChangedEvent): ActivityStreamIdChangedEvent;
+
+    /**
+     * Encodes the specified ActivityStreamIdChangedEvent message. Does not implicitly {@link ActivityStreamIdChangedEvent.verify|verify} messages.
+     * @param message ActivityStreamIdChangedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IActivityStreamIdChangedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ActivityStreamIdChangedEvent message, length delimited. Does not implicitly {@link ActivityStreamIdChangedEvent.verify|verify} messages.
+     * @param message ActivityStreamIdChangedEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IActivityStreamIdChangedEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an ActivityStreamIdChangedEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ActivityStreamIdChangedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ActivityStreamIdChangedEvent;
+
+    /**
+     * Decodes an ActivityStreamIdChangedEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ActivityStreamIdChangedEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ActivityStreamIdChangedEvent;
+
+    /**
+     * Verifies an ActivityStreamIdChangedEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an ActivityStreamIdChangedEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ActivityStreamIdChangedEvent
+     */
+    public static fromObject(object: { [k: string]: any }): ActivityStreamIdChangedEvent;
+
+    /**
+     * Creates a plain object from an ActivityStreamIdChangedEvent message. Also converts values to other types if specified.
+     * @param message ActivityStreamIdChangedEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ActivityStreamIdChangedEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ActivityStreamIdChangedEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a TrophyRewardedToUserEvent. */
+export interface ITrophyRewardedToUserEvent {
+
+    /** TrophyRewardedToUserEvent userId */
+    userId?: (string|null);
+
+    /** TrophyRewardedToUserEvent trophy */
+    trophy?: (ITrophy|null);
+}
+
+/** Represents a TrophyRewardedToUserEvent. */
+export class TrophyRewardedToUserEvent implements ITrophyRewardedToUserEvent {
+
+    /**
+     * Constructs a new TrophyRewardedToUserEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ITrophyRewardedToUserEvent);
+
+    /** TrophyRewardedToUserEvent userId. */
+    public userId: string;
+
+    /** TrophyRewardedToUserEvent trophy. */
+    public trophy?: (ITrophy|null);
+
+    /**
+     * Creates a new TrophyRewardedToUserEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns TrophyRewardedToUserEvent instance
+     */
+    public static create(properties?: ITrophyRewardedToUserEvent): TrophyRewardedToUserEvent;
+
+    /**
+     * Encodes the specified TrophyRewardedToUserEvent message. Does not implicitly {@link TrophyRewardedToUserEvent.verify|verify} messages.
+     * @param message TrophyRewardedToUserEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ITrophyRewardedToUserEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified TrophyRewardedToUserEvent message, length delimited. Does not implicitly {@link TrophyRewardedToUserEvent.verify|verify} messages.
+     * @param message TrophyRewardedToUserEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ITrophyRewardedToUserEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a TrophyRewardedToUserEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns TrophyRewardedToUserEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): TrophyRewardedToUserEvent;
+
+    /**
+     * Decodes a TrophyRewardedToUserEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns TrophyRewardedToUserEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): TrophyRewardedToUserEvent;
+
+    /**
+     * Verifies a TrophyRewardedToUserEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a TrophyRewardedToUserEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns TrophyRewardedToUserEvent
+     */
+    public static fromObject(object: { [k: string]: any }): TrophyRewardedToUserEvent;
+
+    /**
+     * Creates a plain object from a TrophyRewardedToUserEvent message. Also converts values to other types if specified.
+     * @param message TrophyRewardedToUserEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: TrophyRewardedToUserEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this TrophyRewardedToUserEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a TrophyRewardedToAllEvent. */
+export interface ITrophyRewardedToAllEvent {
+
+    /** TrophyRewardedToAllEvent trophy */
+    trophy?: (ITrophy|null);
+}
+
+/** Represents a TrophyRewardedToAllEvent. */
+export class TrophyRewardedToAllEvent implements ITrophyRewardedToAllEvent {
+
+    /**
+     * Constructs a new TrophyRewardedToAllEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ITrophyRewardedToAllEvent);
+
+    /** TrophyRewardedToAllEvent trophy. */
+    public trophy?: (ITrophy|null);
+
+    /**
+     * Creates a new TrophyRewardedToAllEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns TrophyRewardedToAllEvent instance
+     */
+    public static create(properties?: ITrophyRewardedToAllEvent): TrophyRewardedToAllEvent;
+
+    /**
+     * Encodes the specified TrophyRewardedToAllEvent message. Does not implicitly {@link TrophyRewardedToAllEvent.verify|verify} messages.
+     * @param message TrophyRewardedToAllEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ITrophyRewardedToAllEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified TrophyRewardedToAllEvent message, length delimited. Does not implicitly {@link TrophyRewardedToAllEvent.verify|verify} messages.
+     * @param message TrophyRewardedToAllEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ITrophyRewardedToAllEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a TrophyRewardedToAllEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns TrophyRewardedToAllEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): TrophyRewardedToAllEvent;
+
+    /**
+     * Decodes a TrophyRewardedToAllEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns TrophyRewardedToAllEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): TrophyRewardedToAllEvent;
+
+    /**
+     * Verifies a TrophyRewardedToAllEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a TrophyRewardedToAllEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns TrophyRewardedToAllEvent
+     */
+    public static fromObject(object: { [k: string]: any }): TrophyRewardedToAllEvent;
+
+    /**
+     * Creates a plain object from a TrophyRewardedToAllEvent message. Also converts values to other types if specified.
+     * @param message TrophyRewardedToAllEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: TrophyRewardedToAllEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this TrophyRewardedToAllEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a NewChatMessageEvent. */
+export interface INewChatMessageEvent {
+
+    /** NewChatMessageEvent chatMessage */
+    chatMessage?: (IChatMessage|null);
+}
+
+/** Represents a NewChatMessageEvent. */
+export class NewChatMessageEvent implements INewChatMessageEvent {
+
+    /**
+     * Constructs a new NewChatMessageEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: INewChatMessageEvent);
+
+    /** NewChatMessageEvent chatMessage. */
+    public chatMessage?: (IChatMessage|null);
+
+    /**
+     * Creates a new NewChatMessageEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns NewChatMessageEvent instance
+     */
+    public static create(properties?: INewChatMessageEvent): NewChatMessageEvent;
+
+    /**
+     * Encodes the specified NewChatMessageEvent message. Does not implicitly {@link NewChatMessageEvent.verify|verify} messages.
+     * @param message NewChatMessageEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: INewChatMessageEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified NewChatMessageEvent message, length delimited. Does not implicitly {@link NewChatMessageEvent.verify|verify} messages.
+     * @param message NewChatMessageEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: INewChatMessageEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a NewChatMessageEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns NewChatMessageEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): NewChatMessageEvent;
+
+    /**
+     * Decodes a NewChatMessageEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns NewChatMessageEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): NewChatMessageEvent;
+
+    /**
+     * Verifies a NewChatMessageEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a NewChatMessageEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns NewChatMessageEvent
+     */
+    public static fromObject(object: { [k: string]: any }): NewChatMessageEvent;
+
+    /**
+     * Creates a plain object from a NewChatMessageEvent message. Also converts values to other types if specified.
+     * @param message NewChatMessageEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: NewChatMessageEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this NewChatMessageEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ClassState. */
+export interface IClassState {
+
+    /** ClassState users */
+    users?: ({ [k: string]: IUser }|null);
+
+    /** ClassState devices */
+    devices?: ({ [k: string]: IDevice }|null);
+
+    /** ClassState chatMessages */
+    chatMessages?: (IChatMessage[]|null);
+
+    /** ClassState content */
+    content?: (IContent|null);
+
+    /** ClassState hostUserId */
+    hostUserId?: (string|null);
+
+    /** ClassState classEndedTime */
+    classEndedTime?: (number|Long|null);
+}
+
+/** Represents a ClassState. */
+export class ClassState implements IClassState {
+
+    /**
+     * Constructs a new ClassState.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IClassState);
+
+    /** ClassState users. */
+    public users: { [k: string]: IUser };
+
+    /** ClassState devices. */
+    public devices: { [k: string]: IDevice };
+
+    /** ClassState chatMessages. */
+    public chatMessages: IChatMessage[];
+
+    /** ClassState content. */
+    public content?: (IContent|null);
+
+    /** ClassState hostUserId. */
+    public hostUserId: string;
+
+    /** ClassState classEndedTime. */
+    public classEndedTime: (number|Long);
+
+    /**
+     * Creates a new ClassState instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ClassState instance
+     */
+    public static create(properties?: IClassState): ClassState;
+
+    /**
+     * Encodes the specified ClassState message. Does not implicitly {@link ClassState.verify|verify} messages.
+     * @param message ClassState message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IClassState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ClassState message, length delimited. Does not implicitly {@link ClassState.verify|verify} messages.
+     * @param message ClassState message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IClassState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ClassState message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ClassState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ClassState;
+
+    /**
+     * Decodes a ClassState message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ClassState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ClassState;
+
+    /**
+     * Verifies a ClassState message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ClassState message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ClassState
+     */
+    public static fromObject(object: { [k: string]: any }): ClassState;
+
+    /**
+     * Creates a plain object from a ClassState message. Also converts values to other types if specified.
+     * @param message ClassState
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ClassState, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ClassState to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a User. */
+export interface IUser {
+
+    /** User id */
     id?: (string|null);
 
-    /** Activity streamId */
-    streamId?: (string|null);
+    /** User name */
+    name?: (string|null);
+
+    /** User trophies */
+    trophies?: (ITrophy[]|null);
 }
 
-/** Represents an Activity. */
-export class Activity implements IActivity {
+/** Represents a User. */
+export class User implements IUser {
 
     /**
-     * Constructs a new Activity.
+     * Constructs a new User.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IActivity);
+    constructor(properties?: IUser);
 
-    /** Activity id. */
+    /** User id. */
     public id: string;
 
-    /** Activity streamId. */
-    public streamId: string;
+    /** User name. */
+    public name: string;
+
+    /** User trophies. */
+    public trophies: ITrophy[];
 
     /**
-     * Creates a new Activity instance using the specified properties.
+     * Creates a new User instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns Activity instance
+     * @returns User instance
      */
-    public static create(properties?: IActivity): Activity;
+    public static create(properties?: IUser): User;
 
     /**
-     * Encodes the specified Activity message. Does not implicitly {@link Activity.verify|verify} messages.
-     * @param message Activity message or plain object to encode
+     * Encodes the specified User message. Does not implicitly {@link User.verify|verify} messages.
+     * @param message User message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IActivity, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IUser, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified Activity message, length delimited. Does not implicitly {@link Activity.verify|verify} messages.
-     * @param message Activity message or plain object to encode
+     * Encodes the specified User message, length delimited. Does not implicitly {@link User.verify|verify} messages.
+     * @param message User message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IActivity, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IUser, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes an Activity message from the specified reader or buffer.
+     * Decodes a User message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns Activity
+     * @returns User
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Activity;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): User;
 
     /**
-     * Decodes an Activity message from the specified reader or buffer, length delimited.
+     * Decodes a User message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns Activity
+     * @returns User
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Activity;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): User;
 
     /**
-     * Verifies an Activity message.
+     * Verifies a User message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates an Activity message from a plain object. Also converts values to their respective internal types.
+     * Creates a User message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns Activity
+     * @returns User
      */
-    public static fromObject(object: { [k: string]: any }): Activity;
+    public static fromObject(object: { [k: string]: any }): User;
 
     /**
-     * Creates a plain object from an Activity message. Also converts values to other types if specified.
-     * @param message Activity
+     * Creates a plain object from a User message. Also converts values to other types if specified.
+     * @param message User
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Activity, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: User, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this Activity to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a WebRTCStream. */
-export interface IWebRTCStream {
-
-    /** WebRTCStream id */
-    id?: (string|null);
-
-    /** WebRTCStream label */
-    label?: (string|null);
-
-    /** WebRTCStream tracks */
-    tracks?: (IWebRTCTrack[]|null);
-}
-
-/** Represents a WebRTCStream. */
-export class WebRTCStream implements IWebRTCStream {
-
-    /**
-     * Constructs a new WebRTCStream.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IWebRTCStream);
-
-    /** WebRTCStream id. */
-    public id: string;
-
-    /** WebRTCStream label. */
-    public label: string;
-
-    /** WebRTCStream tracks. */
-    public tracks: IWebRTCTrack[];
-
-    /**
-     * Creates a new WebRTCStream instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns WebRTCStream instance
-     */
-    public static create(properties?: IWebRTCStream): WebRTCStream;
-
-    /**
-     * Encodes the specified WebRTCStream message. Does not implicitly {@link WebRTCStream.verify|verify} messages.
-     * @param message WebRTCStream message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IWebRTCStream, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified WebRTCStream message, length delimited. Does not implicitly {@link WebRTCStream.verify|verify} messages.
-     * @param message WebRTCStream message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IWebRTCStream, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a WebRTCStream message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns WebRTCStream
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): WebRTCStream;
-
-    /**
-     * Decodes a WebRTCStream message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns WebRTCStream
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): WebRTCStream;
-
-    /**
-     * Verifies a WebRTCStream message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a WebRTCStream message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns WebRTCStream
-     */
-    public static fromObject(object: { [k: string]: any }): WebRTCStream;
-
-    /**
-     * Creates a plain object from a WebRTCStream message. Also converts values to other types if specified.
-     * @param message WebRTCStream
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: WebRTCStream, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this WebRTCStream to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
-/** Properties of a WebRTCTrack. */
-export interface IWebRTCTrack {
-
-    /** WebRTCTrack id */
-    id?: (string|null);
-
-    /** WebRTCTrack sfu */
-    sfu?: (string|null);
-}
-
-/** Represents a WebRTCTrack. */
-export class WebRTCTrack implements IWebRTCTrack {
-
-    /**
-     * Constructs a new WebRTCTrack.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IWebRTCTrack);
-
-    /** WebRTCTrack id. */
-    public id: string;
-
-    /** WebRTCTrack sfu. */
-    public sfu: string;
-
-    /**
-     * Creates a new WebRTCTrack instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns WebRTCTrack instance
-     */
-    public static create(properties?: IWebRTCTrack): WebRTCTrack;
-
-    /**
-     * Encodes the specified WebRTCTrack message. Does not implicitly {@link WebRTCTrack.verify|verify} messages.
-     * @param message WebRTCTrack message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IWebRTCTrack, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified WebRTCTrack message, length delimited. Does not implicitly {@link WebRTCTrack.verify|verify} messages.
-     * @param message WebRTCTrack message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IWebRTCTrack, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a WebRTCTrack message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns WebRTCTrack
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): WebRTCTrack;
-
-    /**
-     * Decodes a WebRTCTrack message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns WebRTCTrack
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): WebRTCTrack;
-
-    /**
-     * Verifies a WebRTCTrack message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a WebRTCTrack message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns WebRTCTrack
-     */
-    public static fromObject(object: { [k: string]: any }): WebRTCTrack;
-
-    /**
-     * Creates a plain object from a WebRTCTrack message. Also converts values to other types if specified.
-     * @param message WebRTCTrack
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: WebRTCTrack, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this WebRTCTrack to JSON.
+     * Converts this User to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -2816,11 +2168,11 @@ export class WebRTCTrack implements IWebRTCTrack {
 /** Properties of a Trophy. */
 export interface ITrophy {
 
-    /** Trophy trophy */
-    trophy?: (string|null);
-
     /** Trophy timestamp */
-    timestamp?: (number|null);
+    timestamp?: (number|Long|null);
+
+    /** Trophy type */
+    type?: (string|null);
 }
 
 /** Represents a Trophy. */
@@ -2832,11 +2184,11 @@ export class Trophy implements ITrophy {
      */
     constructor(properties?: ITrophy);
 
-    /** Trophy trophy. */
-    public trophy: string;
-
     /** Trophy timestamp. */
-    public timestamp: number;
+    public timestamp: (number|Long);
+
+    /** Trophy type. */
+    public type: string;
 
     /**
      * Creates a new Trophy instance using the specified properties.
@@ -2909,17 +2261,119 @@ export class Trophy implements ITrophy {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a Device. */
+export interface IDevice {
+
+    /** Device id */
+    id?: (string|null);
+
+    /** Device activityStreamId */
+    activityStreamId?: (string|null);
+
+    /** Device webRtcStreamIds */
+    webRtcStreamIds?: (string[]|null);
+}
+
+/** Represents a Device. */
+export class Device implements IDevice {
+
+    /**
+     * Constructs a new Device.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IDevice);
+
+    /** Device id. */
+    public id: string;
+
+    /** Device activityStreamId. */
+    public activityStreamId: string;
+
+    /** Device webRtcStreamIds. */
+    public webRtcStreamIds: string[];
+
+    /**
+     * Creates a new Device instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns Device instance
+     */
+    public static create(properties?: IDevice): Device;
+
+    /**
+     * Encodes the specified Device message. Does not implicitly {@link Device.verify|verify} messages.
+     * @param message Device message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified Device message, length delimited. Does not implicitly {@link Device.verify|verify} messages.
+     * @param message Device message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a Device message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns Device
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Device;
+
+    /**
+     * Decodes a Device message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns Device
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Device;
+
+    /**
+     * Verifies a Device message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a Device message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns Device
+     */
+    public static fromObject(object: { [k: string]: any }): Device;
+
+    /**
+     * Creates a plain object from a Device message. Also converts values to other types if specified.
+     * @param message Device
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: Device, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this Device to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a ChatMessage. */
 export interface IChatMessage {
 
-    /** ChatMessage message */
-    message?: (string|null);
-
-    /** ChatMessage fromUser */
-    fromUser?: (string|null);
+    /** ChatMessage userId */
+    userId?: (string|null);
 
     /** ChatMessage timestamp */
-    timestamp?: (number|null);
+    timestamp?: (number|Long|null);
+
+    /** ChatMessage trophies */
+    trophies?: (ITrophy[]|null);
 }
 
 /** Represents a ChatMessage. */
@@ -2931,14 +2385,14 @@ export class ChatMessage implements IChatMessage {
      */
     constructor(properties?: IChatMessage);
 
-    /** ChatMessage message. */
-    public message: string;
-
-    /** ChatMessage fromUser. */
-    public fromUser: string;
+    /** ChatMessage userId. */
+    public userId: string;
 
     /** ChatMessage timestamp. */
-    public timestamp: number;
+    public timestamp: (number|Long);
+
+    /** ChatMessage trophies. */
+    public trophies: ITrophy[];
 
     /**
      * Creates a new ChatMessage instance using the specified properties.
@@ -3011,15 +2465,14 @@ export class ChatMessage implements IChatMessage {
     public toJSON(): { [k: string]: any };
 }
 
-/** ContentType enum. */
-export enum ContentType {
-    Blank = 0,
-    WebRtcStream = 1,
-    ActivityStream = 2,
-    H5P = 3,
-    Image = 4,
-    Video = 5,
-    Audio = 6
+/** Properties of a Content. */
+export interface IContent {
+
+    /** Content type */
+    type?: (ContentType|null);
+
+    /** Content contentLocation */
+    contentLocation?: (string|null);
 }
 
 /** Represents a Content. */
@@ -3034,11 +2487,8 @@ export class Content implements IContent {
     /** Content type. */
     public type: ContentType;
 
-    /** Content id. */
-    public id: string;
-
-    /** Content url. */
-    public url: string;
+    /** Content contentLocation. */
+    public contentLocation: string;
 
     /**
      * Creates a new Content instance using the specified properties.
@@ -3109,4 +2559,16 @@ export class Content implements IContent {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+}
+
+/** ContentType enum. */
+export enum ContentType {
+    Blank = 0,
+    Stream = 1,
+    Activity = 2,
+    Video = 3,
+    Audio = 4,
+    Image = 5,
+    Camera = 6,
+    Screen = 7
 }

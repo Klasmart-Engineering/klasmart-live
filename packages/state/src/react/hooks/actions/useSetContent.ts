@@ -18,11 +18,11 @@ export function useSetContent(): SetContentHook {
     const setContent = async (content: Content) => {
         try {
             setLoading(true);
-            await network.send({
-              setContent: {
-                content
-              }
-            });
+            // await network.send({
+            //   setContent: {
+            //     content
+            //   }
+            // });
             setResult(true);
         } catch(e) {
             setError(e);

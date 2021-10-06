@@ -1,5 +1,5 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ContentType, RoomState as State, UserID, UserState, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
+import { ContentType, ClassState as State, UserID, UserState, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
 import { keys, ValueOf } from '../../types';
 
 type Reducer<T> = CaseReducer<State, PayloadAction<T>>;
@@ -48,14 +48,12 @@ const setContent: Reducer<Content> = (state, action) => {
   state.content = action.payload;
 };
 
-const addChatMessage: Reducer<ChatMessageState[]> = (
+const addChatMessage: Reducer<ChatMessageState> = (
   state,
   action
 ) => {
-  const chatMessages = action.payload;
-  chatMessages.forEach((chatMessage) => {
-    state.chatMessages.push(chatMessage);
-  });
+  const chatMessage = action.payload;
+  state.chatMessages.push(chatMessage);
 };
 
 const setActivityStreamId: Reducer<{deviceId: DeviceID, activityStreamId: ActivityStreamID}> = (
@@ -84,8 +82,8 @@ const rewardTrophyToAll: Reducer<{trophy: Trophy}> = (
   });
 };
 
-export const roomSlice = createSlice({
-  name: 'room',
+export const classSlice = createSlice({
+  name: 'class',
   initialState: INITIAL_ROOM_STATE,
   reducers: {
     setState,
@@ -101,7 +99,7 @@ export const roomSlice = createSlice({
   },
 });
 
-export const roomReducer = roomSlice.reducer;
-export type RoomState = ReturnType<typeof roomReducer>
-export const roomActions = roomSlice.actions;
-export type RoomAction = ReturnType<ValueOf<typeof roomActions>>
+export const classReducer = classSlice.reducer;
+export type ClassState = ReturnType<typeof classReducer>
+export const classActions = classSlice.actions;
+export type ClassAction = ReturnType<ValueOf<typeof classActions>>

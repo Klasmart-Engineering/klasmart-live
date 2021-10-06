@@ -2,13 +2,13 @@ export * from './roomSlice';
 export * from './network';
 
 import { combineReducers } from 'redux';
-import {  NetworkAction, networkReducer } from './network';
-import { roomReducer, RoomAction } from './roomSlice';
+import { networkReducer, NetworkAction } from './network';
+import { classReducer, ClassAction } from './roomSlice';
 
 export const reducer = combineReducers({
     network: networkReducer,
-    room: roomReducer,
+    room: classReducer,
 });
 
 export type State = ReturnType<typeof reducer> 
-export type Action =  NetworkAction | RoomAction
+export type Action =  NetworkAction | ClassAction

@@ -1,13 +1,14 @@
-export { roomReducer, Actions, INITIAL_ROOM_STATE } from './roomSlice';
+export * from './roomSlice';
 export * from './network';
-import { NetworkActions } from './network';
-import { RoomActions } from './roomSlice';
+import { NetworkAction } from './network';
+import { ClassAction } from './roomSlice';
 export declare const reducer: import("redux").Reducer<import("redux").CombinedState<{
     network: import("redux").CombinedState<{
         connectionStatus: import("./network").ConnectionStatus;
         connectionError: boolean;
     }>;
+    room: import("../models").ClassState;
 }>, import("redux").AnyAction>;
 export declare type State = ReturnType<typeof reducer>;
-export declare type Actions = NetworkActions | RoomActions;
+export declare type Action = NetworkAction | ClassAction;
 //# sourceMappingURL=index.d.ts.map

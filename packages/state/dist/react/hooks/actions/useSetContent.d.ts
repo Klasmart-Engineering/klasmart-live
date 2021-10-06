@@ -1,6 +1,6 @@
-import * as pb from '../../../protobuf';
+import { Content } from '../../../models';
 export interface SetContentHook {
-    setContent: (content: pb.Content) => Promise<void>;
+    setContent: (content: Content) => Promise<void>;
     result: boolean;
     loading: boolean;
     error: unknown;

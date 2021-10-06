@@ -1,7 +1,7 @@
 import { combineReducers, createAction, createReducer, Dispatch } from '@reduxjs/toolkit';
 import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { Action, RoomAction, State } from '.';
+import { Action, ClassAction, State } from '.';
 import { ValueOf } from '../types';
 
 
@@ -43,7 +43,7 @@ export class Network {
         return this.ws;
     }
 
-    public async send(action: RoomAction): Promise<void> {
+    public async send(action: ClassAction): Promise<void> {
         if (!this.ws) {
             throw Error('websocket has not been initialised');
         }

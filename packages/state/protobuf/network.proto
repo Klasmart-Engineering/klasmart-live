@@ -1,183 +1,172 @@
 syntax = "proto3";
 
-message Action {
+message Command {
     string id = 1;
-    oneof action {
-        SetDevice set_device = 3;
-        RemoveDevice remove_device = 4;
-        SetWebRTCStream set_web_rtc_stream = 5;
-        SetActivity set_activity = 6;
-        SetHost set_host = 7;
-        AddTrophy add_trophy = 8;
-        SetContent set_content = 9;
-        SendChatMessage send_chat_message = 10;
-        UserJoin user_join = 11;
-        UserLeave user_leave = 12;
-        EndClass end_class = 13;
-
-        Heartbeat heartbeat = 2;
+    oneof command {
+        EndClassCommand end_class = 2;
+        SetHostCommand set_host = 3;
+        SetContentCommand set_content = 4;
+        SetActivityStreamIdCommand set_actvity_stream_id = 5;
+        RewardTrophyToUserCommand reward_trophy_to_user = 6;
+        RewardTrophyToAllCommand reward_trophy_to_all = 7;
+        SendChatMessageCommand send_chat_message = 8;
     }
 }
 
-message ActionAcknowledgement {
+message CommandAcknowledgement {
     string id = 1;
     string error = 2;
     uint32 code = 3;
 }
 
-message UserJoin {}
-
-message UserLeave {}
-
-message EndClass {}
-
-message Heartbeat {}
-
-message SetDevice {
-    string device_id = 1;
-    Device device = 2;
-}
-
-message RemoveDevice {
+message Event {
     string id = 1;
-}
-
-message SetWebRTCStream {
-    string device_id = 1;
-    repeated WebRTCStream streams = 2;
-}
-
-message SetActivity {
-    string device_id = 1;
-    Activity activity = 2;
-}
-
-message SetHost {
-    string id = 1;
-}
-
-message AddTrophy {
-    string trophy_id = 1;
-    uint64 timestamp = 2;
-    string user_id = 3;
-}
-
-message SetContent {
-    Content content = 1;
-}
-
-message SendChatMessage {
-    string message = 1;
-}
-
-message StateChanges {
-    repeated StateDiff changes = 1;
-}
-
-message StateDiff {
-    oneof action {
-        State set_state = 1;
-
-        AddParticipants add_participants = 2;
-        RemoveParticipants remove_participants = 3;
-
-        ChangeContent change_content = 4;
-        ChangeHost change_host = 5;
-
-        AppendChatMessage append_chat_message = 6;
-        ReceiveTrophy receive_trophy = 7;
-
-        ClassEnded class_ended = 16;
+    oneof event {
+        SetClassStateEvent set_room_state = 2;
+        ClassEndedEvent class_ended = 3;
+        UserJoinedClassEvent user_joined_class = 4;
+        UserLeftClassEvent user_left_class = 5;
+        HostChangedEvent host_changed = 6;
+        ContentChangedEvent content_changed = 7;
+        NewChatMessageEvent new_chat_message = 8;
+        ActivityStreamIdChangedEvent actvity_stream_id_changed = 9;
+        TrophyRewardedToUserEvent trophy_rewarded_to_user = 10;
+        TrophyRewardedToAllEvent trophy_rewarded_to_all = 11;
     }
 }
 
-message Participant {
-    string name = 1;
-    map<uint32, Device> devices = 2;
-    repeated Trophy trophies = 3;
+/* ======= COMMANDS ======= */
+
+message EndClassCommand {}
+
+message SetHostCommand {
+    string host_user_id = 1;
 }
 
-message State {
-    string room_id = 1;
-    map<string, Participant> participants = 2;
-    string host = 3;
-    Content content = 4;
-    repeated ChatMessage chat_messages = 5;
-    uint32 endTimestamp = 6;
-}
-
-message AddParticipants {
-    map<string, Participant> participants = 1;
-}
-
-// Array of IDs
-message RemoveParticipants {
-    repeated string participants = 1;
-}
-
-message ChangeContent {
+message SetContentCommand {
     Content content = 1;
 }
 
-message ChangeHost {
-    string host_id = 1;
+message SetActivityStreamIdCommand {
+    string device_id = 1;
+    string activity_stream_id = 2;
 }
 
-message AppendChatMessage {
-    repeated ChatMessage messages = 1;
+message RewardTrophyToUserCommand {
+    string user_id = 1;
+    Trophy trophy = 2;
 }
 
-message ReceiveTrophy {
+message RewardTrophyToAllCommand {
     Trophy trophy = 1;
 }
 
-message ClassEnded {}
-
-message Device {
-    Activity activity = 1;
-    repeated WebRTCStream webRTCStreams = 2;
+message SendChatMessageCommand {
+    string message = 1;
 }
 
-message Activity {
-    string id = 1;
-    string streamId = 2;
+/* ======= END COMMANDS ======= */
+
+
+
+/* ======= EVENTS ======= */
+
+message SetClassStateEvent {
+    ClassState state = 1;
 }
 
-message WebRTCStream {
-    string id = 1;
-    string label = 2;
-    repeated WebRTCTrack tracks = 3;
+message ClassEndedEvent {
+    uint64 timestamp = 1;
 }
 
-message WebRTCTrack {
+message UserJoinedClassEvent {
+    User user = 1;
+    Device device = 2;
+}
+
+message UserLeftClassEvent {
+    string user_id = 1;
+}
+
+message HostChangedEvent {
+    string host_user_id = 1;
+}
+
+message ContentChangedEvent {
+    Content content = 1;
+}
+
+message ActivityStreamIdChangedEvent {
+    string device_id = 1;
+    string activity_stream_id = 2;
+}
+
+message TrophyRewardedToUserEvent {
+    string user_id = 1;
+    Trophy trophy = 2;
+}
+
+message TrophyRewardedToAllEvent {
+    Trophy trophy = 1;
+}
+
+message NewChatMessageEvent {
+    ChatMessage chat_message = 1;
+}
+
+/* ======= END EVENTS ======= */
+
+
+
+
+/* ======= DATA ======= */
+
+message ClassState {
+    map<string, User> users = 1;
+    map<string, Device> devices = 2;
+    repeated ChatMessage chat_messages = 3;
+    Content content = 4;
+    string host_user_id = 5;
+    uint64 class_ended_time = 6; 
+}
+
+message User {
     string id = 1;
-    string sfu = 2;
+    string name = 2;
+    repeated Trophy trophies = 3;
 }
 
 message Trophy {
-    string trophy = 1;
-    uint32 timestamp = 2;
+    uint64 timestamp = 1;
+    string type = 2;
+}
+
+message Device {
+    string id = 1;
+    string activity_stream_id = 2;
+    repeated string web_rtc_stream_ids = 3;
 }
 
 message ChatMessage {
-    string message = 1;
-    string from_user = 2;
-    uint32 timestamp = 3;
-}
-
-enum ContentType {
-    Blank = 0;
-    WebRtcStream = 1;
-    ActivityStream = 2;
-    H5P = 3;
-    Image = 4;
-    Video = 5;
-    Audio = 6;
+    string user_id = 1;
+    uint64 timestamp = 2;
+    repeated Trophy trophies = 3;
 }
 
 message Content {
     ContentType type = 1;
-    string id = 2;
-    string url = 3;
+    string content_location = 2;
 }
 
+enum ContentType {
+    Blank = 0;
+    Stream = 1; // Consume a DOM (Activity) stream
+    Activity = 2; //Produce a DOM (Activity) Stream
+    Video = 3;
+    Audio = 4;
+    Image = 5;
+    Camera = 6;
+    Screen = 7;
+}
+
+/* ======= END DATA ======= */
