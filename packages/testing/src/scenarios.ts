@@ -170,7 +170,7 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
       },
     };
   },
-  (): Scenario => {
+  (ctx: Context): Scenario => {
     const content = {
       type: pb.ContentType.Video,
       id: 'Test Content 2',
@@ -181,6 +181,18 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
       action: wrapAction({
         setContent: { content },
       }),
+      before: async (ctx: Context) => {
+        // For any disconnected clients make sure they have
+        // dummy results so they aren't flagged as an error
+        for (const id of ctx.disconnectedClients) {
+          ctx.clients[id].addResults({
+            scenario: ctx.currentScenario,
+            name: ctx.scenarios[ctx.currentScenario].name,
+            time: NaN,
+            errors: [],
+          });
+        }
+      },
       delay: STANDARD_PROPAGATION_DELAY,
       target: 0,
       expected: (state: pb.IState): string[] => {

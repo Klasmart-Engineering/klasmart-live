@@ -1,4 +1,4 @@
-function scatterplot(stats) {
+function errorBarChart(stats) {
   const margin = { top: 30, right: 50, bottom: 70, left: 50 };
   const width = 1200 - margin.left - margin.right;
   const height = 800 - margin.top - margin.bottom;
@@ -10,32 +10,29 @@ function scatterplot(stats) {
 
   d3.select('body').append('div').attr('id', id);
 
+  // Index === Scenario number
   const data = [];
-  const p95 = {};
   const tempClients = new Set();
-  for (const { scenario, data: scenarioData, name } of stats) {
-    for (const [numOfClients, d] of Object.entries(scenarioData)) {
-      for (const time of d) {
-        data.push({
-          scenario,
-          numOfClients,
-          time,
-          name,
-        });
-        if (time < min) min = time;
-        if (time > max) max = time;
-      }
-      tempClients.add(parseInt(numOfClients));
-      if (p95[numOfClients] === undefined) p95[numOfClients] = [];
-      p95[numOfClients].push({
+  for (const { scenario, name, errors: scenarioErrors } of stats) {
+    const dataForScenario = {};
+    for (const [numOfClients, e] of Object.entries(scenarioErrors)) {
+      const count = e.length;
+      dataForScenario[numOfClients] = {
         scenario,
-        numOfClients: parseInt(numOfClients),
-        time: d3.quantile(d, 0.95) || NaN,
         name,
-      });
+        numOfClients,
+        count,
+        errors: e,
+      };
+      if (count < min) min = count;
+      if (count > max) max = count;
+      tempClients.add(numOfClients);
     }
+    data.push(dataForScenario);
   }
   const clients = [...tempClients].sort((a, b) => a - b);
+
+  const subgroups = [...clients];
 
   const svg = d3
     .select('#' + id)
@@ -46,16 +43,7 @@ function scatterplot(stats) {
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   // Set up the tooltip
-  const Tooltip = d3
-    .select('body')
-    .append('div')
-    .style('opacity', 0)
-    .attr('class', 'tooltip')
-    .style('background-color', 'white')
-    .style('border', 'solid')
-    .style('border-width', '2px')
-    .style('border-radius', '5px')
-    .style('padding', '5px');
+  const Tooltip = d3.select('.tooltip');
 
   const mouseover = function (d) {
     Tooltip.style('opacity', 1);
@@ -64,15 +52,16 @@ function scatterplot(stats) {
   const mousemove = function (event, d) {
     Tooltip.html(
       'Number of clients: ' +
-        d.numOfClients +
+        d.key +
         '<br/>Scenario: ' +
         d.name +
-        '<br/>Time: ' +
-        d.time +
-        'ms'
+        '<br/>Number of errors: ' +
+        d.value
     )
-      .style('left', d3.pointer(event)[0] + 70 + 'px')
-      .style('top', d3.pointer(event)[1] + 'px');
+      .style('left', `${event.pageX}px`)
+      .style('top', `${event.pageY}px`);
+    // .style('left', d3.pointer(event)[0] + 70 + 'px')
+    // .style('top', d3.pointer(event)[1] + event.pageY + 'px');
   };
   const mouseleave = function (d) {
     Tooltip.style('opacity', 0);
@@ -86,11 +75,23 @@ function scatterplot(stats) {
     stats.map((n, i) => segments * i + 10)
   );
 
+  const x0 = d3
+    .scaleBand()
+    .domain(data.map((d, i) => i))
+    .rangeRound([0, width])
+    .paddingInner(0.1);
+
+  const x1 = d3
+    .scaleBand()
+    .domain(clients)
+    .rangeRound([0, x0.bandwidth()])
+    .padding(0.05);
+
   // the y-axis
   const y = d3
     .scaleLinear()
     .domain([min, max])
-    .range([height + margin.top, 0 + margin.top]);
+    .rangeRound([height + margin.top, 0 + margin.top]);
 
   const domainColors = [
     '#00DA5C',
@@ -106,7 +107,7 @@ function scatterplot(stats) {
 
   const color = d3.scaleOrdinal().domain(clients).range(domainColors);
 
-  const title = 'Scenario timings';
+  const title = 'Scenario errors';
   // add a title
   svg
     .append('text')
@@ -145,7 +146,7 @@ function scatterplot(stats) {
     .attr('x', 0 - height / 2)
     .attr('dy', '0.75em')
     .style('text-anchor', 'middle')
-    .text('Time to propagate (ms)');
+    .text('Number of errors');
 
   // Set up the legend
   const legendSize = 10;
@@ -178,37 +179,52 @@ function scatterplot(stats) {
     .attr('text-anchor', 'left')
     .style('alignment-baseline', 'middle');
 
-  // Add dots to graph
   svg
     .append('g')
-    .selectAll('dot')
+    .selectAll('g')
     .data(data)
-    .enter()
-    .append('circle')
-    .attr('cx', function (d) {
-      return x(d.scenario.toString());
-    })
-    .attr('cy', function (d) {
-      return y(d.time);
-    })
-    .attr('r', 2)
-    .attr('fill', (d) => color(d.numOfClients))
+    .join('g')
+    .attr('transform', (d, i) => `translate(${x0(i)},0)`)
+    .selectAll('rect')
+    .data((d) =>
+      subgroups.map((key) => ({
+        key,
+        value: d[key].count,
+        numClients: key,
+        scenario: d[key].scenario,
+        name: d[key].name,
+      }))
+    )
+    .join('rect')
+    .attr('x', (d) => x1(d.key))
+    .attr('y', (d) => y(d.value))
+    .attr('width', x1.bandwidth())
+    .attr('height', (d) => y(0) - y(d.value))
+    .attr('fill', (d) => color(d.key))
     .on('mouseover', mouseover)
     .on('mousemove', mousemove)
     .on('mouseleave', mouseleave);
 
-  // Add line chart
-  for (const n of clients) {
-    const line = d3
-      .line()
-      .x((d) => x(d.scenario))
-      .y((d) => y(d.time));
-
-    svg
-      .append('path')
-      .datum(p95[n])
-      .attr('class', 'line')
-      .attr('stroke', (d) => color(n))
-      .attr('d', line);
-  }
+  // svg
+  //   .append('g')
+  //   .selectAll('g')
+  //   .data(data)
+  //   .enter()
+  //   .append('g')
+  //   .attr('transform', function (d) {
+  //     return 'translate(' + x(d.numOfClients) + ',0)';
+  //   })
+  //   .selectAll('rect')
+  //   .data(function (d) {
+  //     return subgroups.map(function (key) {
+  //       return { key, value: d[key].count };
+  //     });
+  //   })
+  //   .enter()
+  //   .append('rect')
+  //   .attr('x', (d) => xSubgroup(d.key))
+  //   .attr('y', (d) => y(d.value))
+  //   .attr('width', xSubgroup.bandwidth())
+  //   .attr('height', (d) => height - y(d.value))
+  //   .attr('fill', (d) => color(d.key));
 }

@@ -10,29 +10,38 @@ import { performStatisticalAnalysis, transformStats } from './stats';
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
 // export const NUMBER_OF_CLIENTS = [10, 30, 50, 100, 150, 200, 300, 400, 500];
-export const NUMBER_OF_CLIENTS = [10, 30];
+export const NUMBER_OF_CLIENTS = [10, 30, 50, 100, 150, 200, 250];
 
 async function main() {
   const stats: InterimStatistics[][] = [];
   console.log('=== Starting Testing ===');
   for (const numOfClients of NUMBER_OF_CLIENTS) {
-    console.log(`\n=== Starting Scenario with ${numOfClients} clients ===`);
-    const ctx: Context = {
-      clients: [],
-      disconnectedClients: new Set<number>(),
-      scenarios: [],
-      scenarioTimings: [],
-      currentScenario: 0,
-    };
+    try {
+      console.log(`\n=== Starting Scenario with ${numOfClients} clients ===`);
+      const ctx: Context = {
+        clients: [],
+        disconnectedClients: new Set<number>(),
+        scenarios: [],
+        scenarioTimings: [],
+        currentScenario: 0,
+      };
 
-    await initializeClients(numOfClients, ctx);
+      await initializeClients(numOfClients, ctx);
 
-    const failures = await processScenarios(ctx);
+      const failures = await processScenarios(ctx);
 
-    stats.push(performStatisticalAnalysis(ctx));
+      stats.push(performStatisticalAnalysis(ctx));
 
-    processFailures(ctx, failures);
-    console.log(`=== Finished tests with ${numOfClients} clients ===\n`);
+      processFailures(ctx, failures);
+      cleanUp(ctx);
+      console.log(`=== Finished tests with ${numOfClients} clients ===\n`);
+    } catch (e) {
+      console.log(e);
+      console.error(
+        `An error occurred within node that wasn't caught, as such the iteration with ${numOfClients} has been skipped`
+      );
+      continue;
+    }
   }
   const [rawData, finalStats] = await transformStats(stats);
 
@@ -182,6 +191,10 @@ const processFailures = ({ scenarios }: Context, failures: Difference[][]) => {
       console.log(fails);
     }
   }
+};
+
+const cleanUp = ({ clients }: Context) => {
+  clients.forEach((ws) => ws.terminateWebsocket());
 };
 
 main();

@@ -4,12 +4,6 @@ import open from 'open';
 import fs from 'fs';
 
 import { Context, InterimStatistics, RawData, Stats } from './types';
-import {
-  PLOT_SUMMARY_GRAPHS,
-  BOX_SCRIPT,
-  PLOT_INDIVIDUAL_SCENARIO,
-  ERROR_BAR_CHART,
-} from '../scripts';
 import { NUMBER_OF_CLIENTS } from '.';
 
 const html = String.raw;
@@ -228,16 +222,15 @@ export const createGraphicalResults = async (
         <title>KidsLoop Live Room State</title>
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
+        <script src="../../scripts/box.js"></script>
         <script src="../../scripts/scatterplot.js"></script>
+        <script src="../../scripts/errorBarChart.js"></script>
+        <script src="../../scripts/plotSummaryGraphs.js"></script>
+        <script src="../../scripts/plotIndividualScenario.js"></script>
         ${CSS}
       </head>
       <body>
         <script>
-          ${BOX_SCRIPT};
-          ${PLOT_INDIVIDUAL_SCENARIO};
-          ${PLOT_SUMMARY_GRAPHS};
-          ${ERROR_BAR_CHART};
-
           function generateHtmlId() {
             const { v4 } = uuid;
             let id = v4().toString();

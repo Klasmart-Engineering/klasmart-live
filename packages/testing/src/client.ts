@@ -11,7 +11,7 @@ import { Context, Result } from './types';
 
 const { roomReducer, Actions } = Client;
 
-const HEARTBEAT_INTERVAL = 3500;
+const HEARTBEAT_INTERVAL = 3750;
 
 export class WebsocketClient {
   private _ws: WebSocket | null = null;
@@ -83,18 +83,26 @@ export class WebsocketClient {
     this._ws.binaryType = 'arraybuffer';
     this._ws.addEventListener('open', () => {
       setInterval(() => {
+        // Manage the heartbeat here
         const message = pb.Action.encode({
           id: uuid(),
           heartbeat: {},
         }).finish();
         if (this._ws?.readyState === 1) this._ws?.send(message);
+
         // If the websocket has disconnected and it shouldn't be
         // attempt to reconnect
         if (
-          this._ws?.readyState !== 1 &&
+          this._ws &&
+          this._ws.readyState > 1 &&
           !this.ctx.disconnectedClients.has(this.index)
-        )
+        ) {
+          this.terminateWebsocket();
           this.initializeWebsocket();
+        }
+
+        // If we've moved on to the next scenario but never published results
+        // for the previous one, add an error
         if (
           this.ctx.currentScenario - 1 > 0 &&
           this.results[this.ctx.currentScenario - 1] === undefined
@@ -148,6 +156,7 @@ export class WebsocketClient {
 
   public terminateWebsocket(): void {
     this._ws?.terminate();
+    this._ws?.removeAllListeners();
     this._ws = null;
     this.ctx.disconnectedClients.add(this.index);
   }
@@ -157,8 +166,17 @@ export class WebsocketClient {
   }
 
   public setErrorOnResult(error: string[], scenario: number): void {
+    if (this._results[scenario] === undefined)
+      this._results[scenario] = {
+        scenario,
+        name: this.ctx.scenarios[scenario].name,
+        time: NaN,
+        errors: [],
+      };
+    if (this._results[scenario].errors === undefined)
+      this._results[scenario].errors = [];
     this._results[scenario].errors = [
-      ...this.results[scenario].errors,
+      ...this._results[scenario].errors,
       ...error,
     ];
   }
