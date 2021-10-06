@@ -4,7 +4,7 @@ function plotIndividualGraph(stats) {
 
   var margin = {top: 30, right: 50, bottom: 70, left: 50};
   var width = 800 - margin.left - margin.right;
-  var height = 400 - margin.top - margin.bottom;
+  var height = 600 - margin.top - margin.bottom;
     
   const completeDataSet = Object.values(stats.data).flatMap(data => data);
   var min = d3.min(completeDataSet),
@@ -34,7 +34,7 @@ function plotIndividualGraph(stats) {
     
     // the x-axis
     var x = d3.scale.ordinal()	   
-      .domain( data.map(function(d) { console.log(d); return d[0] } ) )	    
+      .domain(data.map(function(d) { return d[0] }))
       .rangeRoundBands([0 , width], 0.7, 0.3); 		
 
     var xAxis = d3.svg.axis()

@@ -4,15 +4,16 @@ import pb from 'kidsloop-live-serialization';
 
 import { WebsocketClient } from './client';
 import { sleep } from './util';
-import { Context, Difference } from './types';
+import { Context, Difference, InterimStatistics } from './types';
 import { Scenario, SCENARIOS } from './scenarios';
 import { performStatisticalAnalysis, transformStats } from './stats';
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-export const NUMBER_OF_CLIENTS = [3, 10, 50, 200];
+// export const NUMBER_OF_CLIENTS = [10, 30, 50, 100, 150, 200, 300, 400, 500];
+export const NUMBER_OF_CLIENTS = [10, 30];
 
 async function main() {
-  const stats = [];
+  const stats: InterimStatistics[][] = [];
   console.log('=== Starting Testing ===');
   for (const numOfClients of NUMBER_OF_CLIENTS) {
     console.log(`\n=== Starting Scenario with ${numOfClients} clients ===`);
@@ -61,7 +62,7 @@ const initializeClients = async (numOfClients: number, ctx: Context) => {
       console.log(`Initializing Client ${i + 1}`);
     }
 
-    await sleep(750);
+    await sleep(1000);
   }
 
   console.log('=== Initialized websockets ===');
@@ -82,7 +83,7 @@ const processScenarios = async (ctx: Context): Promise<Difference[][]> => {
   console.log('=== Starting Scenarios ===');
   // Initialize senarios
   ctx.scenarios = [...SCENARIOS.map((scenario) => scenario(ctx))];
-  const failures = [];
+  const failures: Difference[][] = [];
 
   for (
     ctx.currentScenario;
@@ -139,8 +140,8 @@ const runAssertions = (
   ctx: Context,
   { expected, ignoreAssertions, target }: Scenario
 ): Difference[] => {
-  const { clients, disconnectedClients } = ctx;
-  const failures = [];
+  const { clients, disconnectedClients, currentScenario } = ctx;
+  const failures: Difference[] = [];
   let currentState: pb.IState = {};
   for (let i = 0; i < clients.length; i++) {
     if (
@@ -156,6 +157,16 @@ const runAssertions = (
     const assertions = expected ? expected(socketState) : [];
 
     if (Object.keys(difference).length > 0 || assertions.length > 0) {
+      let errors: string[] = [];
+      if (Object.keys(difference).length > 0) {
+        errors.push(
+          `Found difference between states ${JSON.stringify(difference)}`
+        );
+      }
+      if (assertions.length > 0) {
+        errors = [...errors, ...assertions.map((e) => e.toString())];
+      }
+      clients[i].setErrorOnResult(errors, currentScenario);
       failures.push({ socket: i, difference, assertions });
     }
   }

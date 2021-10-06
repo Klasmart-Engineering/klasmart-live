@@ -88,6 +88,27 @@ export class WebsocketClient {
           heartbeat: {},
         }).finish();
         if (this._ws?.readyState === 1) this._ws?.send(message);
+        // If the websocket has disconnected and it shouldn't be
+        // attempt to reconnect
+        if (
+          this._ws?.readyState !== 1 &&
+          !this.ctx.disconnectedClients.has(this.index)
+        )
+          this.initializeWebsocket();
+        if (
+          this.ctx.currentScenario - 1 > 0 &&
+          this.results[this.ctx.currentScenario - 1] === undefined
+        ) {
+          const prevScenario = this.ctx.currentScenario - 1;
+          this._results[prevScenario] = {
+            scenario: prevScenario,
+            name: this.ctx.scenarioTimings[prevScenario].name,
+            time: NaN,
+            errors: [
+              'Expected to find a result in the previous scenario, but none was found',
+            ],
+          };
+        }
       }, HEARTBEAT_INTERVAL);
     });
 
@@ -112,6 +133,7 @@ export class WebsocketClient {
             time:
               new Date().getTime() -
               this.ctx.scenarioTimings[this.ctx.currentScenario].time,
+            errors: [],
           };
         }
       } catch (e) {
@@ -120,7 +142,7 @@ export class WebsocketClient {
       }
     });
     this._ws.addEventListener('error', (error) => {
-      console.error('Error connecting to websocket:', error);
+      console.error('Error within websocket:', error);
     });
   }
 
@@ -132,5 +154,12 @@ export class WebsocketClient {
 
   public addResults(results: Result): void {
     this.results[this.ctx.currentScenario] = results;
+  }
+
+  public setErrorOnResult(error: string[], scenario: number): void {
+    this._results[scenario].errors = [
+      ...this.results[scenario].errors,
+      ...error,
+    ];
   }
 }

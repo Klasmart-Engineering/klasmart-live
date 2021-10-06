@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import Chai, { expect } from 'chai';
 import { Context } from './types';
 
-export const STANDARD_PROPAGATION_DELAY = 2500;
+export const STANDARD_PROPAGATION_DELAY = 4000;
 
 function generateRandomClientIndex(numOfClients: number): number {
   return Math.floor(Math.random() * numOfClients);
@@ -16,7 +16,7 @@ export interface Scenario {
   // The changes you expect MUST be made to the state object
   // Each assertion should be within a try/catch block and
   // errors should be pushed into an array which is returned
-  expected?: (state: pb.IState) => Chai.Assertion[];
+  expected?: (state: pb.IState) => string[];
 
   // If target == -1, send to all clients, if >= 0 then index into the connected
   // clients at that index and send it from that client
@@ -43,8 +43,8 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
       }),
       delay: STANDARD_PROPAGATION_DELAY,
       target: 0,
-      expected: (state: pb.IState): Chai.Assertion[] => {
-        const assertions = [];
+      expected: (state: pb.IState): string[] => {
+        const assertions: string[] = [];
         try {
           expect(state.host).equals(id);
         } catch (e) {
@@ -64,8 +64,8 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
       }),
       delay: STANDARD_PROPAGATION_DELAY,
       target: generateRandomClientIndex(clients.length),
-      expected: (state: pb.IState): Chai.Assertion[] => {
-        const assertions = [];
+      expected: (state: pb.IState): string[] => {
+        const assertions: string[] = [];
         try {
           expect(state.chatMessages).to.have.lengthOf(1);
         } catch (e) {
@@ -93,8 +93,8 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
       }),
       delay: STANDARD_PROPAGATION_DELAY,
       target: 0,
-      expected: (state: pb.IState): Chai.Assertion[] => {
-        const assertions = [];
+      expected: (state: pb.IState): string[] => {
+        const assertions: string[] = [];
         try {
           expect(state.content).to.deep.equal(content);
         } catch (e) {
@@ -116,8 +116,8 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
         generateRandomClientIndex(clients.length),
         generateRandomClientIndex(clients.length),
       ],
-      expected: (state: pb.IState): Chai.Assertion[] => {
-        const assertions = [];
+      expected: (state: pb.IState): string[] => {
+        const assertions: string[] = [];
         try {
           expect(state.chatMessages).to.have.lengthOf(3);
         } catch (e) {
@@ -156,10 +156,11 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
           scenario: currentScenario,
           name,
           time: NaN,
+          errors: [],
         });
       },
-      expected: (state: pb.IState): Chai.Assertion[] => {
-        const assertions = [];
+      expected: (state: pb.IState): string[] => {
+        const assertions: string[] = [];
         try {
           expect(state.participants![userId].devices).to.be.undefined;
         } catch (e) {
@@ -182,8 +183,8 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
       }),
       delay: STANDARD_PROPAGATION_DELAY,
       target: 0,
-      expected: (state: pb.IState): Chai.Assertion[] => {
-        const assertions = [];
+      expected: (state: pb.IState): string[] => {
+        const assertions: string[] = [];
         try {
           expect(state.content).to.deep.equal(content);
         } catch (e) {
@@ -207,8 +208,8 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
           ctx.disconnectedClients.delete(idx);
         }
       },
-      expected: (state: pb.IState): Chai.Assertion[] => {
-        const assertions = [];
+      expected: (state: pb.IState): string[] => {
+        const assertions: string[] = [];
         try {
           for (const participant of Object.values(state.participants!)) {
             expect(Object.keys(participant.devices!)).to.have.lengthOf(1);
@@ -235,9 +236,9 @@ export const SCENARIOS: ((ctx: Context) => Scenario)[] = [
             generateRandomClientIndex(clients.length),
             generateRandomClientIndex(clients.length),
           ],
-          expected: (state: pb.IState): Chai.Assertion[] => {
+          expected: (state: pb.IState): string[] => {
             const numMessages = (i + 1) * 2 + numOfMessages;
-            const assertions = [];
+            const assertions: string[] = [];
             try {
               expect(state.chatMessages).to.have.lengthOf(numMessages);
             } catch (e) {
