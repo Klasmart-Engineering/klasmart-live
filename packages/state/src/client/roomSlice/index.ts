@@ -1,6 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WritableDraft } from 'immer/dist/internal';
-import { ContentType, ClassState, UserID, Content, ChatMessageState, userId, timestamp, DeviceID, ActivityStreamID, DeviceState, Trophy, deviceId, UserState } from '../../models';
+import { ContentType, ClassState, UserID, Content, ChatMessageState, newUserId, newTimestamp, DeviceID, ActivityStreamID, DeviceState, Trophy, newDeviceId, UserState } from '../../models';
 import { keys, ValueOf } from '../../types';
 
 type Reducer<T=undefined> = CaseReducer<ClassState, PayloadAction<T>>;
@@ -12,8 +12,8 @@ export const INITIAL_ROOM_STATE: ClassState = {
   content: {
     type: ContentType.Blank,
   },
-  hostUserId: userId(),
-  classEndTime: timestamp(),
+  hostUserId: newUserId(),
+  classEndTime: newTimestamp(),
 };
 
 const setState: Reducer<ClassState> = (state, action) => {
@@ -21,7 +21,7 @@ const setState: Reducer<ClassState> = (state, action) => {
 };
 
 const endClass: Reducer = (state) => {
-  state.classEndTime = timestamp(Date.now());
+  state.classEndTime = newTimestamp(Date.now());
 };
 
 const deviceConnect: Reducer<{name: string, device: DeviceState}> = (
@@ -32,7 +32,7 @@ const deviceConnect: Reducer<{name: string, device: DeviceState}> = (
   //Device
   state.devices[device.id] = device;
   //User
-  const userId = device.user_id;
+  const userId = device.userId;
   if(userId in state.users) {
     state.users[userId].deviceIds.push(device.id);
   } else {
@@ -54,7 +54,7 @@ const deviceDisconnect: Reducer<{deviceId: DeviceID}> = (
   const device = state.devices[deviceId] as WritableDraft<DeviceState> | undefined;
   delete state.devices[deviceId];
   if(!device) { return; }
-  const user = state.users[device.user_id] as WritableDraft<UserState> | undefined;
+  const user = state.users[device.userId] as WritableDraft<UserState> | undefined;
   if(!user) { return; }
   user.deviceIds = user.deviceIds.filter((id) => id !== deviceId);
 };

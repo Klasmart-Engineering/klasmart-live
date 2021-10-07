@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
+    "eventemitter3": "^4.0.7",
     "immer": "^9.0.6",
     "nanoid": "^3.1.25",
     "redux": "^4.1.1",

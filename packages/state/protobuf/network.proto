@@ -13,11 +13,6 @@ message ClassRequest {
     }
 }
 
-message ClassResponse {
-    string id = 1;
-    string error = 2;
-}
-
 message ClassEvent {
     string id = 1;
     oneof type {
@@ -70,6 +65,11 @@ message SendChatMessageRequest {
 
 
 /* ======= EVENTS ======= */
+
+message ClassResponseEvent {
+    string id = 1;
+    string error = 2;
+}
 
 message SetClassStateEvent {
     ClassState state = 1;

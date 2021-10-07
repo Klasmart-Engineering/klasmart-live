@@ -1,11 +1,11 @@
 import { combineReducers, createAction, createReducer, Dispatch } from '@reduxjs/toolkit';
 import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { Action, classActions, State } from '.';
+import { Action, State } from '.';
 import { NewType, ValueOf } from '../types';
 import { ClassRequest, ClassEvent, IClassRequest, IClassResponse, IActivityStreamIdChangedEvent, ITrophyRewardedToUserEvent, ITrophyRewardedToAllEvent, ISetClassStateEvent, INewChatMessageEvent, IHostChangedEvent, IDeviceDisconnectedEvent, IDeviceConnectedEvent, IContentChangedEvent, IClassEndedEvent } from '../protobuf';
-import { ActivityStreamID, DeviceID, DeviceState, TrophyType, UserID, WebRTCStreamID } from '../models';
-
+import { actvityStreamIdChangedAction, classEndedAction, contentChangedAction, deviceConnectedAction, deviceDisconnectedAction, hostChangedAction, newChatMessageAction, trophyRewardedToAllAction, trophyRewardedToUserAction } from '../protobuf/actions';
+import { EventEmitter } from 'eventemitter3';
 
 type RequestID = NewType<string, 'RequestID'>
 interface NetworkPromise {
@@ -13,6 +13,7 @@ interface NetworkPromise {
     reject: (reason?: string) => unknown
 }
 export class Network {
+    private emitter = new EventEmitter();
     // Maintains a map of promises to be resolved/rejected on receipt of a future network message
     private pendingRequests = new Map<RequestID, NetworkPromise>()
     //Stores the return value of setTimeout for next keepalive messages
@@ -77,19 +78,45 @@ export class Network {
         try {
             const event = ClassEvent.decode(new Uint8Array(data));
             if(event.acknowledge) { this.acknowledge(event.acknowledge); }
-            if(event.actvityStreamIdChanged) { this.actvityStreamIdChanged(event.actvityStreamIdChanged); }
-            if(event.classEnded) { this.classEnded(event.classEnded); }
-            if(event.contentChanged) { this.contentChanged(event.contentChanged); }
-            if(event.deviceConnected) { this.deviceConnected(event.deviceConnected); }
-            if(event.deviceDisconnected) { this.deviceDisconnected(event.deviceDisconnected); }
-            if(event.hostChanged) { this.hostChanged(event.hostChanged); }
-            if(event.newChatMessage) { this.newChatMessage(event.newChatMessage); }
-            if(event.setRoomState) { this.setRoomState(event.setRoomState); }
-            if(event.trophyRewardedToAll) { this.trophyRewardedToAll(event.trophyRewardedToAll); }
-            if(event.trophyRewardedToUser) { this.trophyRewardedToUser(event.trophyRewardedToUser); }
+            if(event.actvityStreamIdChanged) {
+                this.dispatchEvent('actvityStreamIdChanged', actvityStreamIdChangedAction(event.actvityStreamIdChanged));
+            }
+            if(event.classEnded) {
+                this.dispatchEvent('classEnded', classEndedAction(event.classEnded));
+            }
+            if(event.contentChanged) {
+                this.dispatchEvent('contentChanged', contentChangedAction(event.contentChanged));
+            }
+            if(event.deviceConnected) {
+                this.dispatchEvent('deviceConnected', deviceConnectedAction(event.deviceConnected));
+            }
+            if(event.deviceDisconnected) {
+                this.dispatchEvent('deviceDisconnected', deviceDisconnectedAction(event.deviceDisconnected));
+            }
+            if(event.hostChanged) {
+                this.dispatchEvent('hostChanged', hostChangedAction(event.hostChanged));
+            }
+            if(event.newChatMessage) {
+                this.dispatchEvent('newChatMessage', newChatMessageAction(event.newChatMessage));
+            }
+            if(event.setRoomState) {
+                this.dispatchEvent('setRoomState', setRoomStateAction(event.setRoomState));
+            }
+            if(event.trophyRewardedToAll) {
+                this.dispatchEvent('trophyRewardedToAll', trophyRewardedToAllAction(event.trophyRewardedToAll));
+            }
+            if(event.trophyRewardedToUser) {
+                this.dispatchEvent('trophyRewardedToUser', trophyRewardedToUserAction(event.trophyRewardedToUser));
+            }
         } catch (e) {
             ws.close(4400, 'Parse error');
         }
+    }
+
+    private dispatchEvent(key: string, action?: Action) {
+        if(!action) { return; }
+        this.emitter.emit('actvityStreamIdChanged', action);
+        this.dispatch(action);
     }
 
     private acknowledge(event: IClassResponse) {
@@ -108,92 +135,39 @@ export class Network {
     }
 
     private actvityStreamIdChanged(event: IActivityStreamIdChangedEvent) {
-        if(!event.deviceId) { console.error('IActivityStreamIdChangedEvent missing deviceId'); return; }
-        if(!event.activityStreamId) { console.error('IActivityStreamIdChangedEvent missing activityStreamId'); return; }
-        
-        const deviceId = event.deviceId as DeviceID;
-        const activityStreamId =  event.activityStreamId as ActivityStreamID;
-        const action = classActions.setActivityStreamId({deviceId, activityStreamId});
-        
+        const action = actvityStreamIdChangedAction(event);
+        if(!action) { return; }
+        this.emitter.emit('actvityStreamIdChanged', action);
         this.dispatch(action);
     }
     private classEnded(event: IClassEndedEvent) {
-        //TODO: handle uint64?
-        if(!event.timestamp) { console.error('IClassEndedEvent is missing timestamp'); return; }
-
-        const action = classActions.endClass();
-        
+        const action = classEndedAction(event);
+        if(!action) { return; }
         this.dispatch(action);
     }
     private contentChanged(event: IContentChangedEvent) {
-        if(!event.content) { console.error('IContentChangedEvent is missing content'); return; }
-        if(!event.content.type) { console.error('IContentChangedEvent is missing type'); return; }
-        if(!event.content.contentLocation) { console.error('IContentChangedEvent is missing contentLocation'); return; }
-        
-        // TODO: type conversion
-        const type = event.content.type;
-        const contentLocation = event.content.contentLocation;
-        
-        throw new Error('Method not implemented.');
-        /*
-        const action = classActions.setContent({type, contentLocation});
-        
+        const action = contentChangedAction(event);
+        if(!action) { return; }
         this.dispatch(action);
-        */
     }
     private deviceConnected(event: IDeviceConnectedEvent) {
-        if(!event.name) { console.error('IDeviceConnectedEvent is missing name'); return; }
-        if(!event.device) { console.error('IDeviceConnectedEvent is missing device'); return; }
-        if(!event.device.id) { console.error('IDeviceConnectedEvent is missing device.id'); return; }
-        if(!event.device.userId) { console.error('IDeviceConnectedEvent is missing device.userId'); return; }
-        
-        //Required
-        const name = event.name;
-        const id = event.device.userId as DeviceID;
-        const userId = event.device.userId as UserID;
-        //Defaults provided
-        const activityStreamID = (event.device.activityStreamId as ActivityStreamID) || undefined;
-        const webRTCStreamIDs = (event.device.webRtcStreamIds || []) as WebRTCStreamID[];
-        const action = classActions.deviceConnect({
-            name,
-            device: {
-                id,
-                userId,
-                activityStreamID,
-                webRTCStreamIDs,
-            },
-        });
-        
+        const action = deviceConnectedAction(event);
+        if(!action) { return; }
         this.dispatch(action);
     }
     private deviceDisconnected(event: IDeviceDisconnectedEvent) {
-        if(!event.deviceId) { console.error('IDeviceDisconnectedEvent is missing deviceId'); return; }
-
-        const deviceId = event.deviceId as DeviceID;
-        const action = classActions.deviceDisconnect({deviceId});
-        
+        const action = deviceDisconnectedAction(event);
+        if(!action) { return; }
         this.dispatch(action);
     }
     private hostChanged(event: IHostChangedEvent) {
-        if(!event.hostUserId) { console.error('IHostChangedEvent is missing hostUserId'); return; }
-
-        const hostUserId = event.hostUserId as UserID;
-        const action = classActions.setHost(hostUserId);
-        
+        const action = hostChangedAction(event);
+        if(!action) { return; }
         this.dispatch(action);
     }
     private newChatMessage(event: INewChatMessageEvent) {
-        if(!event.chatMessage) { console.error('INewChatMessageEvent is missing chatMessage'); return; }
-        if(!event.chatMessage.text) { console.error('INewChatMessageEvent is missing chatMessage.text'); return; }
-        if(!event.chatMessage.timestamp) { console.error('INewChatMessageEvent is missing chatMessage.timestamp'); return; }
-        if(!event.chatMessage.userId) { console.error('INewChatMessageEvent is missing chatMessage.userId'); return; }
-
-        const text = event.chatMessage.text;
-        //TODO: handle uint64?
-        const timestamp = event.chatMessage.timestamp;
-        const userId = event.chatMessage.userId as UserID;
-        const action = classActions.addChatMessage({text,timestamp,userId});
-        
+        const action = newChatMessageAction(event);
+        if(!action) { return; }
         this.dispatch(action);
     }
     private setRoomState(event: ISetClassStateEvent) {
@@ -201,32 +175,13 @@ export class Network {
         throw new Error('Method not implemented.');
     }
     private trophyRewardedToAll(event: ITrophyRewardedToAllEvent) {
-        if(!event.trophy) { console.error('ITrophyRewardedToAllEvent is missing trophy'); return; }
-        if(!event.trophy.timestamp) { console.error('ITrophyRewardedToAllEvent is missing trophy.timestamp'); return; }
-        if(!event.trophy.type) { console.error('ITrophyRewardedToAllEvent is missing trophy.type'); return; }
-
-        const timestamp = event.trophy.timestamp;
-        const type = event.trophy.type as TrophyType;
-        const action = classActions.rewardTrophyToAll({
-            trophy: { timestamp, type }
-        });
-        
+        const action = trophyRewardedToAllAction(event);
+        if(!action) { return; }
         this.dispatch(action);
     }
     private trophyRewardedToUser(event: ITrophyRewardedToUserEvent) {
-        if(!event.userId) { console.error('ITrophyRewardedToAllEvent is missing userId'); return; }
-        if(!event.trophy) { console.error('ITrophyRewardedToAllEvent is missing trophy'); return; }
-        if(!event.trophy.timestamp) { console.error('ITrophyRewardedToAllEvent is missing trophy.timestamp'); return; }
-        if(!event.trophy.type) { console.error('ITrophyRewardedToAllEvent is missing trophy.type'); return; }
-
-        const userId = event.userId as UserID;
-        const timestamp = event.trophy.timestamp;
-        const type = event.trophy.type as TrophyType;
-        const action = classActions.rewardTrophyToUser({
-            userId,
-            trophy: { timestamp, type },
-        });
-        
+        const action = trophyRewardedToUserAction(event);
+        if(!action) { return; }
         this.dispatch(action);
     }
 

@@ -42,22 +42,22 @@ export enum ContentType {
 }
 
 export type UserID = NewType<string, 'UserID'>;
-export const userId = (value?: string): UserID => (value || '') as UserID;
+export const newUserId = (value?: string): UserID => (value || '') as UserID;
 
 export type DeviceID = NewType<string, 'DeviceID'>
-export const deviceId = (value?: string): DeviceID => (value || '') as DeviceID;
+export const newDeviceId = (value?: string): DeviceID => (value || '') as DeviceID;
 
 export type ActivityStreamID = NewType<string, 'ActivityStreamID'>
-export const activityStreamId = (value?: string): ActivityStreamID => (value || '') as ActivityStreamID;
+export const newActivityStreamId = (value?: string): ActivityStreamID => (value || '') as ActivityStreamID;
 
 export type WebRTCStreamID = NewType<string, 'WebRTCStreamID'>
-export const webRtcStreamId = (value?: string): WebRTCStreamID => (value || '') as WebRTCStreamID;
+export const newWebRtcStreamId = (value?: string): WebRTCStreamID => (value || '') as WebRTCStreamID;
 
 export type Timestamp = NewType<number, 'Timestamp'>
-export const timestamp = (value?: number): Timestamp => (value || Date.now()) as Timestamp;
+export const newTimestamp = (value?: number): Timestamp => (value || Date.now()) as Timestamp;
 
 export type TrophyType = NewType<string, 'TrophyType'>
-export const trophyType = (value?: string): TrophyType => (value || '') as TrophyType;
+export const newTrophyType = (value?: string): TrophyType => (value || '') as TrophyType;
 
 
 // Class State
