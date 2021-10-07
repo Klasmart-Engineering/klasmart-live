@@ -1,5 +1,5 @@
 import { extent, quantile, mean } from 'simple-statistics';
-import { writeFileSync, readFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import open from 'open';
 
 import { Context, InterimStatistics, RawData, Stats } from './types';
@@ -263,15 +263,3 @@ export const createGraphicalResults = async (
   await open(fileName, { wait: true });
   return page;
 };
-
-// const loadFile = () => {
-//   const name = './stats/data/rawData-1633593341838.json';
-//   const file = readFileSync(name).toString();
-//   return JSON.parse(file);
-// };
-
-// async function main() {
-//   const file = loadFile();
-//   await createGraphicalResults(file);
-// }
-// main();
