@@ -1,10 +1,8 @@
 import { extent, quantile, mean } from 'simple-statistics';
-import { writeFileSync } from 'fs';
+import { writeFileSync, readFileSync } from 'fs';
 import open from 'open';
-import fs from 'fs';
 
 import { Context, InterimStatistics, RawData, Stats } from './types';
-import { NUMBER_OF_CLIENTS } from '.';
 
 const html = String.raw;
 
@@ -33,14 +31,17 @@ export const performStatisticalAnalysis = ({
 };
 
 export const transformStats = async (
-  stats: InterimStatistics[][]
+  stats: Record<number, InterimStatistics[]>
 ): Promise<[RawData[], Stats[]]> => {
   const calculatedStats: Stats[] = [];
   const rawData: RawData[] = [];
-  for (let i = 0; i < stats.length; i++) {
-    const numOfClients = NUMBER_OF_CLIENTS[i];
-    for (let j = 0; j < stats[i].length; j++) {
-      const { scenario, name, data } = stats[i][j];
+  const keys: number[] = Object.keys(stats)
+    .map((n) => parseInt(n))
+    .sort((a, b) => a - b);
+  for (const key of keys) {
+    const numOfClients = key;
+    for (let j = 0; j < stats[key].length; j++) {
+      const { scenario, name, data } = stats[key][j];
       const responseTimes = data
         .filter(({ time, errors }) => {
           if (isNaN(time) || errors.length > 0) return false;
@@ -69,22 +70,26 @@ export const transformStats = async (
         },
       };
 
-      const [min, max] = extent(responseTimes);
-      const p95 = quantile(responseTimes, 0.95);
-      const avg = mean(responseTimes);
-      if (!calculatedStats[j])
-        calculatedStats[j] = { scenario, name, stats: {}, errors: {} };
-      calculatedStats[j] = {
-        ...calculatedStats[j],
-        stats: {
-          ...calculatedStats[j].stats,
-          [numOfClients]: { p95, max, min, mean: avg },
-        },
-        errors: {
-          ...calculatedStats[j].errors,
-          [numOfClients]: errors.length,
-        },
-      };
+      try {
+        const [min, max] = extent(responseTimes);
+        const p95 = quantile(responseTimes, 0.95);
+        const avg = mean(responseTimes);
+        if (!calculatedStats[j])
+          calculatedStats[j] = { scenario, name, stats: {}, errors: {} };
+        calculatedStats[j] = {
+          ...calculatedStats[j],
+          stats: {
+            ...calculatedStats[j].stats,
+            [numOfClients]: { p95, max, min, mean: avg },
+          },
+          errors: {
+            ...calculatedStats[j].errors,
+            [numOfClients]: errors.length,
+          },
+        };
+      } catch (e) {
+        console.error('Failed to calculate statistics', e);
+      }
     }
   }
   const now = new Date().getTime();
@@ -211,6 +216,7 @@ const CSS = html`
 export const createGraphicalResults = async (
   stats: RawData[]
 ): Promise<string> => {
+  if (process.env.WRITE_STATS_HTML !== 'true') return '';
   const data = JSON.stringify(stats);
   const page = html`
     <!DOCTYPE html>
@@ -258,14 +264,14 @@ export const createGraphicalResults = async (
   return page;
 };
 
-const loadFile = () => {
-  const name = './stats/data/rawData-1633530228591.json';
-  const file = fs.readFileSync(name).toString();
-  return JSON.parse(file);
-};
+// const loadFile = () => {
+//   const name = './stats/data/rawData-1633593341838.json';
+//   const file = readFileSync(name).toString();
+//   return JSON.parse(file);
+// };
 
-async function main() {
-  const file = loadFile();
-  await createGraphicalResults(file);
-}
-main();
+// async function main() {
+//   const file = loadFile();
+//   await createGraphicalResults(file);
+// }
+// main();

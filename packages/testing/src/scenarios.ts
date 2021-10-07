@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import Chai, { expect } from 'chai';
 import { Context } from './types';
 
-export const STANDARD_PROPAGATION_DELAY = 4000;
+export const STANDARD_PROPAGATION_DELAY = 4500;
 
 function generateRandomClientIndex(numOfClients: number): number {
   return Math.floor(Math.random() * numOfClients);

@@ -20,17 +20,22 @@ export interface Difference {
   assertions: string[];
 }
 
+export interface Errors {
+  socketNumber: number;
+  error: string;
+}
+
 export interface Result {
   scenario: number;
   name: string;
   time: number;
-  errors: string[];
+  errors: Errors[];
 }
 
 export interface InterimStatistics {
   name: string;
   scenario: number;
-  data: { time: number; errors: string[] }[];
+  data: { time: number; errors: Errors[] }[];
 }
 
 export interface Stats {
@@ -48,7 +53,7 @@ export interface RawData {
   // K: NumberOfClients, V: time in milliseconds
   data: Record<number, number[]>;
   // K: NumberOfClients, V: Error messages
-  errors: Record<number, string[]>;
+  errors: Record<number, Errors[]>;
 }
 
 interface InternalStats {

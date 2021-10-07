@@ -7,7 +7,7 @@ import { Client } from 'kidsloop-live-state';
 import { JWT, generateToken } from './auth';
 import { BASE_URL } from '.';
 
-import { Context, Result } from './types';
+import { Context, Errors, Result } from './types';
 
 const { roomReducer, Actions } = Client;
 
@@ -113,7 +113,11 @@ export class WebsocketClient {
             name: this.ctx.scenarioTimings[prevScenario].name,
             time: NaN,
             errors: [
-              'Expected to find a result in the previous scenario, but none was found',
+              {
+                socketNumber: this.index,
+                error:
+                  'Expected to find a result in the previous scenario, but none was found',
+              },
             ],
           };
         }
@@ -165,7 +169,7 @@ export class WebsocketClient {
     this.results[this.ctx.currentScenario] = results;
   }
 
-  public setErrorOnResult(error: string[], scenario: number): void {
+  public setErrorOnResult(error: Errors[], scenario: number): void {
     if (this._results[scenario] === undefined)
       this._results[scenario] = {
         scenario,

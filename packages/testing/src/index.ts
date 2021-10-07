@@ -4,16 +4,16 @@ import pb from 'kidsloop-live-serialization';
 
 import { WebsocketClient } from './client';
 import { sleep } from './util';
-import { Context, Difference, InterimStatistics } from './types';
+import { Context, Difference, Errors, InterimStatistics } from './types';
 import { Scenario, SCENARIOS } from './scenarios';
 import { performStatisticalAnalysis, transformStats } from './stats';
 
 export const BASE_URL = 'wss://live.kidsloop.dev/api/room';
-// export const NUMBER_OF_CLIENTS = [10, 30, 50, 100, 150, 200, 300, 400, 500];
 export const NUMBER_OF_CLIENTS = [10, 30, 50, 100, 150, 200, 250];
+// export const NUMBER_OF_CLIENTS = [10, 30, 50];
 
 async function main() {
-  const stats: InterimStatistics[][] = [];
+  const stats: Record<number, InterimStatistics[]> = {};
   console.log('=== Starting Testing ===');
   for (const numOfClients of NUMBER_OF_CLIENTS) {
     try {
@@ -30,7 +30,7 @@ async function main() {
 
       const failures = await processScenarios(ctx);
 
-      stats.push(performStatisticalAnalysis(ctx));
+      stats[numOfClients] = performStatisticalAnalysis(ctx);
 
       processFailures(ctx, failures);
       cleanUp(ctx);
@@ -166,14 +166,20 @@ const runAssertions = (
     const assertions = expected ? expected(socketState) : [];
 
     if (Object.keys(difference).length > 0 || assertions.length > 0) {
-      let errors: string[] = [];
+      let errors: Errors[] = [];
       if (Object.keys(difference).length > 0) {
-        errors.push(
-          `Found difference between states ${JSON.stringify(difference)}`
-        );
+        errors.push({
+          socketNumber: i,
+          error: `Found difference between states ${JSON.stringify(
+            difference
+          )}`,
+        });
       }
       if (assertions.length > 0) {
-        errors = [...errors, ...assertions.map((e) => e.toString())];
+        errors = [
+          ...errors,
+          ...assertions.map((e) => ({ socketNumber: i, error: e.toString() })),
+        ];
       }
       clients[i].setErrorOnResult(errors, currentScenario);
       failures.push({ socket: i, difference, assertions });

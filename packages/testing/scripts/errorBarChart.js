@@ -3,8 +3,8 @@ function errorBarChart(stats) {
   const width = 1200 - margin.left - margin.right;
   const height = 800 - margin.top - margin.bottom;
 
-  let min = Infinity;
-  let max = -Infinity;
+  const min = 0;
+  let max = 0;
 
   const id = generateHtmlId();
 
@@ -16,17 +16,31 @@ function errorBarChart(stats) {
   for (const { scenario, name, errors: scenarioErrors } of stats) {
     const dataForScenario = {};
     for (const [numOfClients, e] of Object.entries(scenarioErrors)) {
-      const count = e.length;
+      const socketsWithErrors = new Set();
+      const errorTypes = {
+        sync: new Set(),
+        assertion: new Set(),
+      };
+      for (const { error, socketNumber } of e) {
+        socketsWithErrors.add(socketNumber);
+        if (error.includes('Found difference')) {
+          errorTypes.sync.add(socketNumber);
+        } else {
+          errorTypes.assertion.add(socketNumber);
+        }
+      }
       dataForScenario[numOfClients] = {
         scenario,
         name,
         numOfClients,
-        count,
-        errors: e,
+        count: socketsWithErrors.size,
+        errors: {
+          sync: errorTypes.sync.size,
+          assertion: errorTypes.assertion.size,
+        },
       };
-      if (count < min) min = count;
-      if (count > max) max = count;
       tempClients.add(numOfClients);
+      max = Math.max(max, socketsWithErrors.size);
     }
     data.push(dataForScenario);
   }
@@ -50,19 +64,23 @@ function errorBarChart(stats) {
     d3.select(this).style('stroke', 'black').style('opacity', 1);
   };
   const mousemove = function (event, d) {
+    const { errors } = d;
     Tooltip.html(
       'Number of clients: ' +
         d.key +
         '<br/>Scenario: ' +
         d.name +
-        '<br/>Number of errors: ' +
-        d.value
+        '<br/>Number of clients with errors: ' +
+        d.value +
+        '<br />State sync errors: ' +
+        errors.sync +
+        '<br />State assertion errors: ' +
+        errors.assertion
     )
       .style('left', `${event.pageX}px`)
       .style('top', `${event.pageY}px`);
-    // .style('left', d3.pointer(event)[0] + 70 + 'px')
-    // .style('top', d3.pointer(event)[1] + event.pageY + 'px');
   };
+
   const mouseleave = function (d) {
     Tooltip.style('opacity', 0);
     d3.select(this).style('stroke', 'none').style('opacity', 0.8);
@@ -156,9 +174,7 @@ function errorBarChart(stats) {
     .enter()
     .append('rect')
     .attr('x', 50)
-    .attr('y', function (d, i) {
-      return 50 + i * (legendSize + 5);
-    }) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr('y', (d, i) => 50 + i * (legendSize + 5))
     .attr('width', legendSize)
     .attr('height', legendSize)
     .style('fill', (d) => color(d.toString()));
@@ -169,13 +185,9 @@ function errorBarChart(stats) {
     .enter()
     .append('text')
     .attr('x', 50 + legendSize * 1.2)
-    .attr('y', function (d, i) {
-      return 50 + i * (legendSize + 5) + legendSize / 2;
-    }) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr('y', (d, i) => 50 + i * (legendSize + 5) + legendSize / 2) // 100 is where the first dot appears. 25 is the distance between dots
     .style('fill', (d) => color(d.toString()))
-    .text(function (d) {
-      return d + ' users';
-    })
+    .text((d) => d + ' users')
     .attr('text-anchor', 'left')
     .style('alignment-baseline', 'middle');
 
@@ -193,6 +205,7 @@ function errorBarChart(stats) {
         numClients: key,
         scenario: d[key].scenario,
         name: d[key].name,
+        errors: d[key].errors,
       }))
     )
     .join('rect')
@@ -204,27 +217,4 @@ function errorBarChart(stats) {
     .on('mouseover', mouseover)
     .on('mousemove', mousemove)
     .on('mouseleave', mouseleave);
-
-  // svg
-  //   .append('g')
-  //   .selectAll('g')
-  //   .data(data)
-  //   .enter()
-  //   .append('g')
-  //   .attr('transform', function (d) {
-  //     return 'translate(' + x(d.numOfClients) + ',0)';
-  //   })
-  //   .selectAll('rect')
-  //   .data(function (d) {
-  //     return subgroups.map(function (key) {
-  //       return { key, value: d[key].count };
-  //     });
-  //   })
-  //   .enter()
-  //   .append('rect')
-  //   .attr('x', (d) => xSubgroup(d.key))
-  //   .attr('y', (d) => y(d.value))
-  //   .attr('width', xSubgroup.bandwidth())
-  //   .attr('height', (d) => height - y(d.value))
-  //   .attr('fill', (d) => color(d.key));
 }
