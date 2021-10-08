@@ -30,33 +30,35 @@ export declare enum ContentType {
     Screen = "Screen"
 }
 export declare type UserID = NewType<string, 'UserID'>;
-export declare const userId: (value?: string | undefined) => UserID;
+export declare const newUserId: (value?: string | undefined) => UserID;
 export declare type DeviceID = NewType<string, 'DeviceID'>;
-export declare const deviceId: (value?: string | undefined) => DeviceID;
+export declare const newDeviceId: (value?: string | undefined) => DeviceID;
 export declare type ActivityStreamID = NewType<string, 'ActivityStreamID'>;
-export declare const activityStreamId: (value?: string | undefined) => ActivityStreamID;
+export declare const newActivityStreamId: (value?: string | undefined) => ActivityStreamID;
 export declare type WebRTCStreamID = NewType<string, 'WebRTCStreamID'>;
-export declare const webRtcStreamId: (value?: string | undefined) => WebRTCStreamID;
+export declare const newWebRtcStreamId: (value?: string | undefined) => WebRTCStreamID;
 export declare type Timestamp = NewType<number, 'Timestamp'>;
-export declare const timestamp: (value?: number | undefined) => Timestamp;
+export declare const newTimestamp: (value?: number | undefined) => Timestamp;
 export declare type TrophyType = NewType<string, 'TrophyType'>;
-export declare const trophyType: (value?: string | undefined) => TrophyType;
+export declare const newTrophyType: (value?: string | undefined) => TrophyType;
 export interface Content {
     type: ContentType;
     contentLocation?: string;
 }
 export interface Trophy {
-    time: Timestamp;
+    timestamp: Timestamp;
     type: TrophyType;
 }
 export interface UserState {
     id: UserID;
     name: string;
     trophies: Trophy[];
+    deviceIds: DeviceID[];
 }
 export interface DeviceState {
     id: DeviceID;
-    activityStreamID: ActivityStreamID;
+    userId: UserID;
+    activityStreamID?: ActivityStreamID;
     webRTCStreamIDs: WebRTCStreamID[];
 }
 export interface ChatMessageState {

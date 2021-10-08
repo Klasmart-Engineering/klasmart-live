@@ -16,7 +16,7 @@ message ClassRequest {
 message ClassEvent {
     string id = 1;
     oneof type {
-        ClassResponse acknowledge = 2;
+        ClassResponseEvent action_response = 2;
         SetClassStateEvent set_room_state = 3;
         ClassEndedEvent class_ended = 4;
         DeviceConnectedEvent device_connected = 5;

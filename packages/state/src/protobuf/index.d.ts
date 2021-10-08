@@ -134,110 +134,14 @@ export class ClassRequest implements IClassRequest {
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a ClassResponse. */
-export interface IClassResponse {
-
-    /** ClassResponse id */
-    id?: (string|null);
-
-    /** ClassResponse error */
-    error?: (string|null);
-}
-
-/** Represents a ClassResponse. */
-export class ClassResponse implements IClassResponse {
-
-    /**
-     * Constructs a new ClassResponse.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IClassResponse);
-
-    /** ClassResponse id. */
-    public id: string;
-
-    /** ClassResponse error. */
-    public error: string;
-
-    /**
-     * Creates a new ClassResponse instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns ClassResponse instance
-     */
-    public static create(properties?: IClassResponse): ClassResponse;
-
-    /**
-     * Encodes the specified ClassResponse message. Does not implicitly {@link ClassResponse.verify|verify} messages.
-     * @param message ClassResponse message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IClassResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified ClassResponse message, length delimited. Does not implicitly {@link ClassResponse.verify|verify} messages.
-     * @param message ClassResponse message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IClassResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a ClassResponse message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns ClassResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ClassResponse;
-
-    /**
-     * Decodes a ClassResponse message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns ClassResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ClassResponse;
-
-    /**
-     * Verifies a ClassResponse message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: { [k: string]: any }): (string|null);
-
-    /**
-     * Creates a ClassResponse message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns ClassResponse
-     */
-    public static fromObject(object: { [k: string]: any }): ClassResponse;
-
-    /**
-     * Creates a plain object from a ClassResponse message. Also converts values to other types if specified.
-     * @param message ClassResponse
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: ClassResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-    /**
-     * Converts this ClassResponse to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): { [k: string]: any };
-}
-
 /** Properties of a ClassEvent. */
 export interface IClassEvent {
 
     /** ClassEvent id */
     id?: (string|null);
 
-    /** ClassEvent acknowledge */
-    acknowledge?: (IClassResponse|null);
+    /** ClassEvent actionResponse */
+    actionResponse?: (IClassResponseEvent|null);
 
     /** ClassEvent setRoomState */
     setRoomState?: (ISetClassStateEvent|null);
@@ -282,8 +186,8 @@ export class ClassEvent implements IClassEvent {
     /** ClassEvent id. */
     public id: string;
 
-    /** ClassEvent acknowledge. */
-    public acknowledge?: (IClassResponse|null);
+    /** ClassEvent actionResponse. */
+    public actionResponse?: (IClassResponseEvent|null);
 
     /** ClassEvent setRoomState. */
     public setRoomState?: (ISetClassStateEvent|null);
@@ -316,7 +220,7 @@ export class ClassEvent implements IClassEvent {
     public trophyRewardedToAll?: (ITrophyRewardedToAllEvent|null);
 
     /** ClassEvent type. */
-    public type?: ("acknowledge"|"setRoomState"|"classEnded"|"deviceConnected"|"deviceDisconnected"|"hostChanged"|"contentChanged"|"newChatMessage"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll");
+    public type?: ("actionResponse"|"setRoomState"|"classEnded"|"deviceConnected"|"deviceDisconnected"|"hostChanged"|"contentChanged"|"newChatMessage"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll");
 
     /**
      * Creates a new ClassEvent instance using the specified properties.
@@ -1020,6 +924,102 @@ export class SendChatMessageRequest implements ISendChatMessageRequest {
 
     /**
      * Converts this SendChatMessageRequest to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ClassResponseEvent. */
+export interface IClassResponseEvent {
+
+    /** ClassResponseEvent id */
+    id?: (string|null);
+
+    /** ClassResponseEvent error */
+    error?: (string|null);
+}
+
+/** Represents a ClassResponseEvent. */
+export class ClassResponseEvent implements IClassResponseEvent {
+
+    /**
+     * Constructs a new ClassResponseEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IClassResponseEvent);
+
+    /** ClassResponseEvent id. */
+    public id: string;
+
+    /** ClassResponseEvent error. */
+    public error: string;
+
+    /**
+     * Creates a new ClassResponseEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ClassResponseEvent instance
+     */
+    public static create(properties?: IClassResponseEvent): ClassResponseEvent;
+
+    /**
+     * Encodes the specified ClassResponseEvent message. Does not implicitly {@link ClassResponseEvent.verify|verify} messages.
+     * @param message ClassResponseEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IClassResponseEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ClassResponseEvent message, length delimited. Does not implicitly {@link ClassResponseEvent.verify|verify} messages.
+     * @param message ClassResponseEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IClassResponseEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ClassResponseEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ClassResponseEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ClassResponseEvent;
+
+    /**
+     * Decodes a ClassResponseEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ClassResponseEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ClassResponseEvent;
+
+    /**
+     * Verifies a ClassResponseEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ClassResponseEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ClassResponseEvent
+     */
+    public static fromObject(object: { [k: string]: any }): ClassResponseEvent;
+
+    /**
+     * Creates a plain object from a ClassResponseEvent message. Also converts values to other types if specified.
+     * @param message ClassResponseEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ClassResponseEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ClassResponseEvent to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };

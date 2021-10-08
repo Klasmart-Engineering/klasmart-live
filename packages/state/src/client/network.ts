@@ -3,8 +3,8 @@ import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { Action, State } from '.';
 import { NewType, ValueOf } from '../types';
-import { ClassRequest, ClassEvent, IClassRequest, IClassResponse, IActivityStreamIdChangedEvent, ITrophyRewardedToUserEvent, ITrophyRewardedToAllEvent, ISetClassStateEvent, INewChatMessageEvent, IHostChangedEvent, IDeviceDisconnectedEvent, IDeviceConnectedEvent, IContentChangedEvent, IClassEndedEvent } from '../protobuf';
-import { actvityStreamIdChangedAction, classEndedAction, contentChangedAction, deviceConnectedAction, deviceDisconnectedAction, hostChangedAction, newChatMessageAction, trophyRewardedToAllAction, trophyRewardedToUserAction } from '../protobuf/actions';
+import { ClassRequest, ClassEvent, IClassRequest, IClassResponseEvent, IActivityStreamIdChangedEvent, ITrophyRewardedToUserEvent, ITrophyRewardedToAllEvent, ISetClassStateEvent, INewChatMessageEvent, IHostChangedEvent, IDeviceDisconnectedEvent, IDeviceConnectedEvent, IContentChangedEvent, IClassEndedEvent } from '../protobuf';
+import { actvityStreamIdChangedAction, classEndedAction, contentChangedAction, deviceConnectedAction, deviceDisconnectedAction, hostChangedAction, newChatMessageAction, setRoomStateAction, trophyRewardedToAllAction, trophyRewardedToUserAction } from '../protobuf/actions';
 import { EventEmitter } from 'eventemitter3';
 
 type RequestID = NewType<string, 'RequestID'>
@@ -77,7 +77,7 @@ export class Network {
         }
         try {
             const event = ClassEvent.decode(new Uint8Array(data));
-            if(event.acknowledge) { this.acknowledge(event.acknowledge); }
+            if(event.actionResponse) { this.actionResponse(event.actionResponse); }
             if(event.actvityStreamIdChanged) {
                 this.dispatchEvent('actvityStreamIdChanged', actvityStreamIdChangedAction(event.actvityStreamIdChanged));
             }
@@ -119,7 +119,7 @@ export class Network {
         this.dispatch(action);
     }
 
-    private acknowledge(event: IClassResponse) {
+    private actionResponse(event: IClassResponseEvent) {
         if(!event.id) { return; }
 
         const id = event.id as RequestID;

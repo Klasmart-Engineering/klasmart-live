@@ -447,216 +447,6 @@ $root.ClassRequest = (function() {
     return ClassRequest;
 })();
 
-$root.ClassResponse = (function() {
-
-    /**
-     * Properties of a ClassResponse.
-     * @exports IClassResponse
-     * @interface IClassResponse
-     * @property {string|null} [id] ClassResponse id
-     * @property {string|null} [error] ClassResponse error
-     */
-
-    /**
-     * Constructs a new ClassResponse.
-     * @exports ClassResponse
-     * @classdesc Represents a ClassResponse.
-     * @implements IClassResponse
-     * @constructor
-     * @param {IClassResponse=} [properties] Properties to set
-     */
-    function ClassResponse(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * ClassResponse id.
-     * @member {string} id
-     * @memberof ClassResponse
-     * @instance
-     */
-    ClassResponse.prototype.id = "";
-
-    /**
-     * ClassResponse error.
-     * @member {string} error
-     * @memberof ClassResponse
-     * @instance
-     */
-    ClassResponse.prototype.error = "";
-
-    /**
-     * Creates a new ClassResponse instance using the specified properties.
-     * @function create
-     * @memberof ClassResponse
-     * @static
-     * @param {IClassResponse=} [properties] Properties to set
-     * @returns {ClassResponse} ClassResponse instance
-     */
-    ClassResponse.create = function create(properties) {
-        return new ClassResponse(properties);
-    };
-
-    /**
-     * Encodes the specified ClassResponse message. Does not implicitly {@link ClassResponse.verify|verify} messages.
-     * @function encode
-     * @memberof ClassResponse
-     * @static
-     * @param {IClassResponse} message ClassResponse message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    ClassResponse.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.error != null && Object.hasOwnProperty.call(message, "error"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified ClassResponse message, length delimited. Does not implicitly {@link ClassResponse.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof ClassResponse
-     * @static
-     * @param {IClassResponse} message ClassResponse message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    ClassResponse.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a ClassResponse message from the specified reader or buffer.
-     * @function decode
-     * @memberof ClassResponse
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {ClassResponse} ClassResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    ClassResponse.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ClassResponse();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.id = reader.string();
-                break;
-            case 2:
-                message.error = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a ClassResponse message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof ClassResponse
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {ClassResponse} ClassResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    ClassResponse.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a ClassResponse message.
-     * @function verify
-     * @memberof ClassResponse
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    ClassResponse.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
-        if (message.error != null && message.hasOwnProperty("error"))
-            if (!$util.isString(message.error))
-                return "error: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a ClassResponse message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof ClassResponse
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {ClassResponse} ClassResponse
-     */
-    ClassResponse.fromObject = function fromObject(object) {
-        if (object instanceof $root.ClassResponse)
-            return object;
-        var message = new $root.ClassResponse();
-        if (object.id != null)
-            message.id = String(object.id);
-        if (object.error != null)
-            message.error = String(object.error);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a ClassResponse message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof ClassResponse
-     * @static
-     * @param {ClassResponse} message ClassResponse
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    ClassResponse.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults) {
-            object.id = "";
-            object.error = "";
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        if (message.error != null && message.hasOwnProperty("error"))
-            object.error = message.error;
-        return object;
-    };
-
-    /**
-     * Converts this ClassResponse to JSON.
-     * @function toJSON
-     * @memberof ClassResponse
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    ClassResponse.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return ClassResponse;
-})();
-
 $root.ClassEvent = (function() {
 
     /**
@@ -664,7 +454,7 @@ $root.ClassEvent = (function() {
      * @exports IClassEvent
      * @interface IClassEvent
      * @property {string|null} [id] ClassEvent id
-     * @property {IClassResponse|null} [acknowledge] ClassEvent acknowledge
+     * @property {IClassResponseEvent|null} [actionResponse] ClassEvent actionResponse
      * @property {ISetClassStateEvent|null} [setRoomState] ClassEvent setRoomState
      * @property {IClassEndedEvent|null} [classEnded] ClassEvent classEnded
      * @property {IDeviceConnectedEvent|null} [deviceConnected] ClassEvent deviceConnected
@@ -701,12 +491,12 @@ $root.ClassEvent = (function() {
     ClassEvent.prototype.id = "";
 
     /**
-     * ClassEvent acknowledge.
-     * @member {IClassResponse|null|undefined} acknowledge
+     * ClassEvent actionResponse.
+     * @member {IClassResponseEvent|null|undefined} actionResponse
      * @memberof ClassEvent
      * @instance
      */
-    ClassEvent.prototype.acknowledge = null;
+    ClassEvent.prototype.actionResponse = null;
 
     /**
      * ClassEvent setRoomState.
@@ -793,12 +583,12 @@ $root.ClassEvent = (function() {
 
     /**
      * ClassEvent type.
-     * @member {"acknowledge"|"setRoomState"|"classEnded"|"deviceConnected"|"deviceDisconnected"|"hostChanged"|"contentChanged"|"newChatMessage"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|undefined} type
+     * @member {"actionResponse"|"setRoomState"|"classEnded"|"deviceConnected"|"deviceDisconnected"|"hostChanged"|"contentChanged"|"newChatMessage"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|undefined} type
      * @memberof ClassEvent
      * @instance
      */
     Object.defineProperty(ClassEvent.prototype, "type", {
-        get: $util.oneOfGetter($oneOfFields = ["acknowledge", "setRoomState", "classEnded", "deviceConnected", "deviceDisconnected", "hostChanged", "contentChanged", "newChatMessage", "actvityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll"]),
+        get: $util.oneOfGetter($oneOfFields = ["actionResponse", "setRoomState", "classEnded", "deviceConnected", "deviceDisconnected", "hostChanged", "contentChanged", "newChatMessage", "actvityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -828,8 +618,8 @@ $root.ClassEvent = (function() {
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.acknowledge != null && Object.hasOwnProperty.call(message, "acknowledge"))
-            $root.ClassResponse.encode(message.acknowledge, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.actionResponse != null && Object.hasOwnProperty.call(message, "actionResponse"))
+            $root.ClassResponseEvent.encode(message.actionResponse, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.setRoomState != null && Object.hasOwnProperty.call(message, "setRoomState"))
             $root.SetClassStateEvent.encode(message.setRoomState, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.classEnded != null && Object.hasOwnProperty.call(message, "classEnded"))
@@ -888,7 +678,7 @@ $root.ClassEvent = (function() {
                 message.id = reader.string();
                 break;
             case 2:
-                message.acknowledge = $root.ClassResponse.decode(reader, reader.uint32());
+                message.actionResponse = $root.ClassResponseEvent.decode(reader, reader.uint32());
                 break;
             case 3:
                 message.setRoomState = $root.SetClassStateEvent.decode(reader, reader.uint32());
@@ -959,12 +749,12 @@ $root.ClassEvent = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
-        if (message.acknowledge != null && message.hasOwnProperty("acknowledge")) {
+        if (message.actionResponse != null && message.hasOwnProperty("actionResponse")) {
             properties.type = 1;
             {
-                var error = $root.ClassResponse.verify(message.acknowledge);
+                var error = $root.ClassResponseEvent.verify(message.actionResponse);
                 if (error)
-                    return "acknowledge." + error;
+                    return "actionResponse." + error;
             }
         }
         if (message.setRoomState != null && message.hasOwnProperty("setRoomState")) {
@@ -1084,10 +874,10 @@ $root.ClassEvent = (function() {
         var message = new $root.ClassEvent();
         if (object.id != null)
             message.id = String(object.id);
-        if (object.acknowledge != null) {
-            if (typeof object.acknowledge !== "object")
-                throw TypeError(".ClassEvent.acknowledge: object expected");
-            message.acknowledge = $root.ClassResponse.fromObject(object.acknowledge);
+        if (object.actionResponse != null) {
+            if (typeof object.actionResponse !== "object")
+                throw TypeError(".ClassEvent.actionResponse: object expected");
+            message.actionResponse = $root.ClassResponseEvent.fromObject(object.actionResponse);
         }
         if (object.setRoomState != null) {
             if (typeof object.setRoomState !== "object")
@@ -1159,10 +949,10 @@ $root.ClassEvent = (function() {
             object.id = "";
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
-        if (message.acknowledge != null && message.hasOwnProperty("acknowledge")) {
-            object.acknowledge = $root.ClassResponse.toObject(message.acknowledge, options);
+        if (message.actionResponse != null && message.hasOwnProperty("actionResponse")) {
+            object.actionResponse = $root.ClassResponseEvent.toObject(message.actionResponse, options);
             if (options.oneofs)
-                object.type = "acknowledge";
+                object.type = "actionResponse";
         }
         if (message.setRoomState != null && message.hasOwnProperty("setRoomState")) {
             object.setRoomState = $root.SetClassStateEvent.toObject(message.setRoomState, options);
@@ -2572,6 +2362,216 @@ $root.SendChatMessageRequest = (function() {
     };
 
     return SendChatMessageRequest;
+})();
+
+$root.ClassResponseEvent = (function() {
+
+    /**
+     * Properties of a ClassResponseEvent.
+     * @exports IClassResponseEvent
+     * @interface IClassResponseEvent
+     * @property {string|null} [id] ClassResponseEvent id
+     * @property {string|null} [error] ClassResponseEvent error
+     */
+
+    /**
+     * Constructs a new ClassResponseEvent.
+     * @exports ClassResponseEvent
+     * @classdesc Represents a ClassResponseEvent.
+     * @implements IClassResponseEvent
+     * @constructor
+     * @param {IClassResponseEvent=} [properties] Properties to set
+     */
+    function ClassResponseEvent(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ClassResponseEvent id.
+     * @member {string} id
+     * @memberof ClassResponseEvent
+     * @instance
+     */
+    ClassResponseEvent.prototype.id = "";
+
+    /**
+     * ClassResponseEvent error.
+     * @member {string} error
+     * @memberof ClassResponseEvent
+     * @instance
+     */
+    ClassResponseEvent.prototype.error = "";
+
+    /**
+     * Creates a new ClassResponseEvent instance using the specified properties.
+     * @function create
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {IClassResponseEvent=} [properties] Properties to set
+     * @returns {ClassResponseEvent} ClassResponseEvent instance
+     */
+    ClassResponseEvent.create = function create(properties) {
+        return new ClassResponseEvent(properties);
+    };
+
+    /**
+     * Encodes the specified ClassResponseEvent message. Does not implicitly {@link ClassResponseEvent.verify|verify} messages.
+     * @function encode
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {IClassResponseEvent} message ClassResponseEvent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ClassResponseEvent.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.error != null && Object.hasOwnProperty.call(message, "error"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ClassResponseEvent message, length delimited. Does not implicitly {@link ClassResponseEvent.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {IClassResponseEvent} message ClassResponseEvent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ClassResponseEvent.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ClassResponseEvent message from the specified reader or buffer.
+     * @function decode
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ClassResponseEvent} ClassResponseEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ClassResponseEvent.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ClassResponseEvent();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.error = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ClassResponseEvent message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ClassResponseEvent} ClassResponseEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ClassResponseEvent.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ClassResponseEvent message.
+     * @function verify
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ClassResponseEvent.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.error != null && message.hasOwnProperty("error"))
+            if (!$util.isString(message.error))
+                return "error: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a ClassResponseEvent message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ClassResponseEvent} ClassResponseEvent
+     */
+    ClassResponseEvent.fromObject = function fromObject(object) {
+        if (object instanceof $root.ClassResponseEvent)
+            return object;
+        var message = new $root.ClassResponseEvent();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.error != null)
+            message.error = String(object.error);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ClassResponseEvent message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {ClassResponseEvent} message ClassResponseEvent
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ClassResponseEvent.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.error = "";
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.error != null && message.hasOwnProperty("error"))
+            object.error = message.error;
+        return object;
+    };
+
+    /**
+     * Converts this ClassResponseEvent to JSON.
+     * @function toJSON
+     * @memberof ClassResponseEvent
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ClassResponseEvent.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ClassResponseEvent;
 })();
 
 $root.SetClassStateEvent = (function() {

@@ -1,16 +1,18 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import { ClassState as State, UserID, UserState, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
+import { ClassState, UserID, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
 import { ValueOf } from '../../types';
-declare type Reducer<T> = CaseReducer<State, PayloadAction<T>>;
-export declare const INITIAL_ROOM_STATE: State;
-export declare const classSlice: import("@reduxjs/toolkit").Slice<State, {
-    setState: Reducer<State>;
+declare type Reducer<T = undefined> = CaseReducer<ClassState, PayloadAction<T>>;
+export declare const INITIAL_ROOM_STATE: ClassState;
+export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
+    setState: Reducer<ClassState>;
     endClass: Reducer<undefined>;
-    joinClass: Reducer<{
-        user: UserState;
+    deviceConnect: Reducer<{
+        name: string;
         device: DeviceState;
     }>;
-    leaveClass: Reducer<UserID>;
+    deviceDisconnect: Reducer<{
+        deviceId: DeviceID;
+    }>;
     setHost: Reducer<UserID>;
     setContent: Reducer<Content>;
     addChatMessage: Reducer<ChatMessageState>;
@@ -26,16 +28,17 @@ export declare const classSlice: import("@reduxjs/toolkit").Slice<State, {
         trophy: Trophy;
     }>;
 }, "class">;
-export declare const classReducer: import("redux").Reducer<State, import("redux").AnyAction>;
-export declare type ClassState = ReturnType<typeof classReducer>;
+export declare const classReducer: import("redux").Reducer<ClassState, import("redux").AnyAction>;
 export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions<{
-    setState: Reducer<State>;
+    setState: Reducer<ClassState>;
     endClass: Reducer<undefined>;
-    joinClass: Reducer<{
-        user: UserState;
+    deviceConnect: Reducer<{
+        name: string;
         device: DeviceState;
     }>;
-    leaveClass: Reducer<UserID>;
+    deviceDisconnect: Reducer<{
+        deviceId: DeviceID;
+    }>;
     setHost: Reducer<UserID>;
     setContent: Reducer<Content>;
     addChatMessage: Reducer<ChatMessageState>;

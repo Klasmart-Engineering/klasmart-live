@@ -1,6 +1,9 @@
 export declare type ValueOf<T> = T[keyof T];
 export declare type NewType<T, NewTypeName> = T & {
-    __TYPE__: NewTypeName;
+    /**
+     * This is not available at runtime
+     */
+    __COMPILETIME_TYPE__: NewTypeName;
 };
 export declare const keys: <O>(o: O) => (keyof O)[];
 export declare const values: <O>(o: O) => ValueOf<O>[];

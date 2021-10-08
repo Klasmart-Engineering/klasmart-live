@@ -9,31 +9,31 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-$root.Command = (function() {
+$root.ClassRequest = (function() {
 
     /**
-     * Properties of a Command.
-     * @exports ICommand
-     * @interface ICommand
-     * @property {string|null} [id] Command id
-     * @property {IEndClassCommand|null} [endClass] Command endClass
-     * @property {ISetHostCommand|null} [setHost] Command setHost
-     * @property {ISetContentCommand|null} [setContent] Command setContent
-     * @property {ISetActivityStreamIdCommand|null} [setActvityStreamId] Command setActvityStreamId
-     * @property {IRewardTrophyToUserCommand|null} [rewardTrophyToUser] Command rewardTrophyToUser
-     * @property {IRewardTrophyToAllCommand|null} [rewardTrophyToAll] Command rewardTrophyToAll
-     * @property {ISendChatMessageCommand|null} [sendChatMessage] Command sendChatMessage
+     * Properties of a ClassRequest.
+     * @exports IClassRequest
+     * @interface IClassRequest
+     * @property {string|null} [id] ClassRequest id
+     * @property {IEndClassRequest|null} [endClass] ClassRequest endClass
+     * @property {ISetHostRequest|null} [setHost] ClassRequest setHost
+     * @property {ISetContentRequest|null} [setContent] ClassRequest setContent
+     * @property {ISetActivityStreamIdRequest|null} [setActvityStreamId] ClassRequest setActvityStreamId
+     * @property {IRewardTrophyToUserRequest|null} [rewardTrophyToUser] ClassRequest rewardTrophyToUser
+     * @property {IRewardTrophyToAllRequest|null} [rewardTrophyToAll] ClassRequest rewardTrophyToAll
+     * @property {ISendChatMessageRequest|null} [sendChatMessage] ClassRequest sendChatMessage
      */
 
     /**
-     * Constructs a new Command.
-     * @exports Command
-     * @classdesc Represents a Command.
-     * @implements ICommand
+     * Constructs a new ClassRequest.
+     * @exports ClassRequest
+     * @classdesc Represents a ClassRequest.
+     * @implements IClassRequest
      * @constructor
-     * @param {ICommand=} [properties] Properties to set
+     * @param {IClassRequest=} [properties] Properties to set
      */
-    function Command(properties) {
+    function ClassRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -41,154 +41,154 @@ $root.Command = (function() {
     }
 
     /**
-     * Command id.
+     * ClassRequest id.
      * @member {string} id
-     * @memberof Command
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.id = "";
+    ClassRequest.prototype.id = "";
 
     /**
-     * Command endClass.
-     * @member {IEndClassCommand|null|undefined} endClass
-     * @memberof Command
+     * ClassRequest endClass.
+     * @member {IEndClassRequest|null|undefined} endClass
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.endClass = null;
+    ClassRequest.prototype.endClass = null;
 
     /**
-     * Command setHost.
-     * @member {ISetHostCommand|null|undefined} setHost
-     * @memberof Command
+     * ClassRequest setHost.
+     * @member {ISetHostRequest|null|undefined} setHost
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.setHost = null;
+    ClassRequest.prototype.setHost = null;
 
     /**
-     * Command setContent.
-     * @member {ISetContentCommand|null|undefined} setContent
-     * @memberof Command
+     * ClassRequest setContent.
+     * @member {ISetContentRequest|null|undefined} setContent
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.setContent = null;
+    ClassRequest.prototype.setContent = null;
 
     /**
-     * Command setActvityStreamId.
-     * @member {ISetActivityStreamIdCommand|null|undefined} setActvityStreamId
-     * @memberof Command
+     * ClassRequest setActvityStreamId.
+     * @member {ISetActivityStreamIdRequest|null|undefined} setActvityStreamId
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.setActvityStreamId = null;
+    ClassRequest.prototype.setActvityStreamId = null;
 
     /**
-     * Command rewardTrophyToUser.
-     * @member {IRewardTrophyToUserCommand|null|undefined} rewardTrophyToUser
-     * @memberof Command
+     * ClassRequest rewardTrophyToUser.
+     * @member {IRewardTrophyToUserRequest|null|undefined} rewardTrophyToUser
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.rewardTrophyToUser = null;
+    ClassRequest.prototype.rewardTrophyToUser = null;
 
     /**
-     * Command rewardTrophyToAll.
-     * @member {IRewardTrophyToAllCommand|null|undefined} rewardTrophyToAll
-     * @memberof Command
+     * ClassRequest rewardTrophyToAll.
+     * @member {IRewardTrophyToAllRequest|null|undefined} rewardTrophyToAll
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.rewardTrophyToAll = null;
+    ClassRequest.prototype.rewardTrophyToAll = null;
 
     /**
-     * Command sendChatMessage.
-     * @member {ISendChatMessageCommand|null|undefined} sendChatMessage
-     * @memberof Command
+     * ClassRequest sendChatMessage.
+     * @member {ISendChatMessageRequest|null|undefined} sendChatMessage
+     * @memberof ClassRequest
      * @instance
      */
-    Command.prototype.sendChatMessage = null;
+    ClassRequest.prototype.sendChatMessage = null;
 
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
-     * Command command.
-     * @member {"endClass"|"setHost"|"setContent"|"setActvityStreamId"|"rewardTrophyToUser"|"rewardTrophyToAll"|"sendChatMessage"|undefined} command
-     * @memberof Command
+     * ClassRequest type.
+     * @member {"endClass"|"setHost"|"setContent"|"setActvityStreamId"|"rewardTrophyToUser"|"rewardTrophyToAll"|"sendChatMessage"|undefined} type
+     * @memberof ClassRequest
      * @instance
      */
-    Object.defineProperty(Command.prototype, "command", {
+    Object.defineProperty(ClassRequest.prototype, "type", {
         get: $util.oneOfGetter($oneOfFields = ["endClass", "setHost", "setContent", "setActvityStreamId", "rewardTrophyToUser", "rewardTrophyToAll", "sendChatMessage"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
     /**
-     * Creates a new Command instance using the specified properties.
+     * Creates a new ClassRequest instance using the specified properties.
      * @function create
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
-     * @param {ICommand=} [properties] Properties to set
-     * @returns {Command} Command instance
+     * @param {IClassRequest=} [properties] Properties to set
+     * @returns {ClassRequest} ClassRequest instance
      */
-    Command.create = function create(properties) {
-        return new Command(properties);
+    ClassRequest.create = function create(properties) {
+        return new ClassRequest(properties);
     };
 
     /**
-     * Encodes the specified Command message. Does not implicitly {@link Command.verify|verify} messages.
+     * Encodes the specified ClassRequest message. Does not implicitly {@link ClassRequest.verify|verify} messages.
      * @function encode
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
-     * @param {ICommand} message Command message or plain object to encode
+     * @param {IClassRequest} message ClassRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Command.encode = function encode(message, writer) {
+    ClassRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
         if (message.endClass != null && Object.hasOwnProperty.call(message, "endClass"))
-            $root.EndClassCommand.encode(message.endClass, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            $root.EndClassRequest.encode(message.endClass, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.setHost != null && Object.hasOwnProperty.call(message, "setHost"))
-            $root.SetHostCommand.encode(message.setHost, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            $root.SetHostRequest.encode(message.setHost, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.setContent != null && Object.hasOwnProperty.call(message, "setContent"))
-            $root.SetContentCommand.encode(message.setContent, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            $root.SetContentRequest.encode(message.setContent, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         if (message.setActvityStreamId != null && Object.hasOwnProperty.call(message, "setActvityStreamId"))
-            $root.SetActivityStreamIdCommand.encode(message.setActvityStreamId, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            $root.SetActivityStreamIdRequest.encode(message.setActvityStreamId, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
         if (message.rewardTrophyToUser != null && Object.hasOwnProperty.call(message, "rewardTrophyToUser"))
-            $root.RewardTrophyToUserCommand.encode(message.rewardTrophyToUser, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            $root.RewardTrophyToUserRequest.encode(message.rewardTrophyToUser, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.rewardTrophyToAll != null && Object.hasOwnProperty.call(message, "rewardTrophyToAll"))
-            $root.RewardTrophyToAllCommand.encode(message.rewardTrophyToAll, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            $root.RewardTrophyToAllRequest.encode(message.rewardTrophyToAll, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         if (message.sendChatMessage != null && Object.hasOwnProperty.call(message, "sendChatMessage"))
-            $root.SendChatMessageCommand.encode(message.sendChatMessage, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+            $root.SendChatMessageRequest.encode(message.sendChatMessage, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         return writer;
     };
 
     /**
-     * Encodes the specified Command message, length delimited. Does not implicitly {@link Command.verify|verify} messages.
+     * Encodes the specified ClassRequest message, length delimited. Does not implicitly {@link ClassRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
-     * @param {ICommand} message Command message or plain object to encode
+     * @param {IClassRequest} message ClassRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Command.encodeDelimited = function encodeDelimited(message, writer) {
+    ClassRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a Command message from the specified reader or buffer.
+     * Decodes a ClassRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {Command} Command
+     * @returns {ClassRequest} ClassRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Command.decode = function decode(reader, length) {
+    ClassRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Command();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ClassRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -196,25 +196,25 @@ $root.Command = (function() {
                 message.id = reader.string();
                 break;
             case 2:
-                message.endClass = $root.EndClassCommand.decode(reader, reader.uint32());
+                message.endClass = $root.EndClassRequest.decode(reader, reader.uint32());
                 break;
             case 3:
-                message.setHost = $root.SetHostCommand.decode(reader, reader.uint32());
+                message.setHost = $root.SetHostRequest.decode(reader, reader.uint32());
                 break;
             case 4:
-                message.setContent = $root.SetContentCommand.decode(reader, reader.uint32());
+                message.setContent = $root.SetContentRequest.decode(reader, reader.uint32());
                 break;
             case 5:
-                message.setActvityStreamId = $root.SetActivityStreamIdCommand.decode(reader, reader.uint32());
+                message.setActvityStreamId = $root.SetActivityStreamIdRequest.decode(reader, reader.uint32());
                 break;
             case 6:
-                message.rewardTrophyToUser = $root.RewardTrophyToUserCommand.decode(reader, reader.uint32());
+                message.rewardTrophyToUser = $root.RewardTrophyToUserRequest.decode(reader, reader.uint32());
                 break;
             case 7:
-                message.rewardTrophyToAll = $root.RewardTrophyToAllCommand.decode(reader, reader.uint32());
+                message.rewardTrophyToAll = $root.RewardTrophyToAllRequest.decode(reader, reader.uint32());
                 break;
             case 8:
-                message.sendChatMessage = $root.SendChatMessageCommand.decode(reader, reader.uint32());
+                message.sendChatMessage = $root.SendChatMessageRequest.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -225,30 +225,30 @@ $root.Command = (function() {
     };
 
     /**
-     * Decodes a Command message from the specified reader or buffer, length delimited.
+     * Decodes a ClassRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Command} Command
+     * @returns {ClassRequest} ClassRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Command.decodeDelimited = function decodeDelimited(reader) {
+    ClassRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a Command message.
+     * Verifies a ClassRequest message.
      * @function verify
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Command.verify = function verify(message) {
+    ClassRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         var properties = {};
@@ -256,69 +256,69 @@ $root.Command = (function() {
             if (!$util.isString(message.id))
                 return "id: string expected";
         if (message.endClass != null && message.hasOwnProperty("endClass")) {
-            properties.command = 1;
+            properties.type = 1;
             {
-                var error = $root.EndClassCommand.verify(message.endClass);
+                var error = $root.EndClassRequest.verify(message.endClass);
                 if (error)
                     return "endClass." + error;
             }
         }
         if (message.setHost != null && message.hasOwnProperty("setHost")) {
-            if (properties.command === 1)
-                return "command: multiple values";
-            properties.command = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.SetHostCommand.verify(message.setHost);
+                var error = $root.SetHostRequest.verify(message.setHost);
                 if (error)
                     return "setHost." + error;
             }
         }
         if (message.setContent != null && message.hasOwnProperty("setContent")) {
-            if (properties.command === 1)
-                return "command: multiple values";
-            properties.command = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.SetContentCommand.verify(message.setContent);
+                var error = $root.SetContentRequest.verify(message.setContent);
                 if (error)
                     return "setContent." + error;
             }
         }
         if (message.setActvityStreamId != null && message.hasOwnProperty("setActvityStreamId")) {
-            if (properties.command === 1)
-                return "command: multiple values";
-            properties.command = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.SetActivityStreamIdCommand.verify(message.setActvityStreamId);
+                var error = $root.SetActivityStreamIdRequest.verify(message.setActvityStreamId);
                 if (error)
                     return "setActvityStreamId." + error;
             }
         }
         if (message.rewardTrophyToUser != null && message.hasOwnProperty("rewardTrophyToUser")) {
-            if (properties.command === 1)
-                return "command: multiple values";
-            properties.command = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.RewardTrophyToUserCommand.verify(message.rewardTrophyToUser);
+                var error = $root.RewardTrophyToUserRequest.verify(message.rewardTrophyToUser);
                 if (error)
                     return "rewardTrophyToUser." + error;
             }
         }
         if (message.rewardTrophyToAll != null && message.hasOwnProperty("rewardTrophyToAll")) {
-            if (properties.command === 1)
-                return "command: multiple values";
-            properties.command = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.RewardTrophyToAllCommand.verify(message.rewardTrophyToAll);
+                var error = $root.RewardTrophyToAllRequest.verify(message.rewardTrophyToAll);
                 if (error)
                     return "rewardTrophyToAll." + error;
             }
         }
         if (message.sendChatMessage != null && message.hasOwnProperty("sendChatMessage")) {
-            if (properties.command === 1)
-                return "command: multiple values";
-            properties.command = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.SendChatMessageCommand.verify(message.sendChatMessage);
+                var error = $root.SendChatMessageRequest.verify(message.sendChatMessage);
                 if (error)
                     return "sendChatMessage." + error;
             }
@@ -327,67 +327,67 @@ $root.Command = (function() {
     };
 
     /**
-     * Creates a Command message from a plain object. Also converts values to their respective internal types.
+     * Creates a ClassRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {Command} Command
+     * @returns {ClassRequest} ClassRequest
      */
-    Command.fromObject = function fromObject(object) {
-        if (object instanceof $root.Command)
+    ClassRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.ClassRequest)
             return object;
-        var message = new $root.Command();
+        var message = new $root.ClassRequest();
         if (object.id != null)
             message.id = String(object.id);
         if (object.endClass != null) {
             if (typeof object.endClass !== "object")
-                throw TypeError(".Command.endClass: object expected");
-            message.endClass = $root.EndClassCommand.fromObject(object.endClass);
+                throw TypeError(".ClassRequest.endClass: object expected");
+            message.endClass = $root.EndClassRequest.fromObject(object.endClass);
         }
         if (object.setHost != null) {
             if (typeof object.setHost !== "object")
-                throw TypeError(".Command.setHost: object expected");
-            message.setHost = $root.SetHostCommand.fromObject(object.setHost);
+                throw TypeError(".ClassRequest.setHost: object expected");
+            message.setHost = $root.SetHostRequest.fromObject(object.setHost);
         }
         if (object.setContent != null) {
             if (typeof object.setContent !== "object")
-                throw TypeError(".Command.setContent: object expected");
-            message.setContent = $root.SetContentCommand.fromObject(object.setContent);
+                throw TypeError(".ClassRequest.setContent: object expected");
+            message.setContent = $root.SetContentRequest.fromObject(object.setContent);
         }
         if (object.setActvityStreamId != null) {
             if (typeof object.setActvityStreamId !== "object")
-                throw TypeError(".Command.setActvityStreamId: object expected");
-            message.setActvityStreamId = $root.SetActivityStreamIdCommand.fromObject(object.setActvityStreamId);
+                throw TypeError(".ClassRequest.setActvityStreamId: object expected");
+            message.setActvityStreamId = $root.SetActivityStreamIdRequest.fromObject(object.setActvityStreamId);
         }
         if (object.rewardTrophyToUser != null) {
             if (typeof object.rewardTrophyToUser !== "object")
-                throw TypeError(".Command.rewardTrophyToUser: object expected");
-            message.rewardTrophyToUser = $root.RewardTrophyToUserCommand.fromObject(object.rewardTrophyToUser);
+                throw TypeError(".ClassRequest.rewardTrophyToUser: object expected");
+            message.rewardTrophyToUser = $root.RewardTrophyToUserRequest.fromObject(object.rewardTrophyToUser);
         }
         if (object.rewardTrophyToAll != null) {
             if (typeof object.rewardTrophyToAll !== "object")
-                throw TypeError(".Command.rewardTrophyToAll: object expected");
-            message.rewardTrophyToAll = $root.RewardTrophyToAllCommand.fromObject(object.rewardTrophyToAll);
+                throw TypeError(".ClassRequest.rewardTrophyToAll: object expected");
+            message.rewardTrophyToAll = $root.RewardTrophyToAllRequest.fromObject(object.rewardTrophyToAll);
         }
         if (object.sendChatMessage != null) {
             if (typeof object.sendChatMessage !== "object")
-                throw TypeError(".Command.sendChatMessage: object expected");
-            message.sendChatMessage = $root.SendChatMessageCommand.fromObject(object.sendChatMessage);
+                throw TypeError(".ClassRequest.sendChatMessage: object expected");
+            message.sendChatMessage = $root.SendChatMessageRequest.fromObject(object.sendChatMessage);
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a Command message. Also converts values to other types if specified.
+     * Creates a plain object from a ClassRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof Command
+     * @memberof ClassRequest
      * @static
-     * @param {Command} message Command
+     * @param {ClassRequest} message ClassRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Command.toObject = function toObject(message, options) {
+    ClassRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -396,77 +396,86 @@ $root.Command = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.endClass != null && message.hasOwnProperty("endClass")) {
-            object.endClass = $root.EndClassCommand.toObject(message.endClass, options);
+            object.endClass = $root.EndClassRequest.toObject(message.endClass, options);
             if (options.oneofs)
-                object.command = "endClass";
+                object.type = "endClass";
         }
         if (message.setHost != null && message.hasOwnProperty("setHost")) {
-            object.setHost = $root.SetHostCommand.toObject(message.setHost, options);
+            object.setHost = $root.SetHostRequest.toObject(message.setHost, options);
             if (options.oneofs)
-                object.command = "setHost";
+                object.type = "setHost";
         }
         if (message.setContent != null && message.hasOwnProperty("setContent")) {
-            object.setContent = $root.SetContentCommand.toObject(message.setContent, options);
+            object.setContent = $root.SetContentRequest.toObject(message.setContent, options);
             if (options.oneofs)
-                object.command = "setContent";
+                object.type = "setContent";
         }
         if (message.setActvityStreamId != null && message.hasOwnProperty("setActvityStreamId")) {
-            object.setActvityStreamId = $root.SetActivityStreamIdCommand.toObject(message.setActvityStreamId, options);
+            object.setActvityStreamId = $root.SetActivityStreamIdRequest.toObject(message.setActvityStreamId, options);
             if (options.oneofs)
-                object.command = "setActvityStreamId";
+                object.type = "setActvityStreamId";
         }
         if (message.rewardTrophyToUser != null && message.hasOwnProperty("rewardTrophyToUser")) {
-            object.rewardTrophyToUser = $root.RewardTrophyToUserCommand.toObject(message.rewardTrophyToUser, options);
+            object.rewardTrophyToUser = $root.RewardTrophyToUserRequest.toObject(message.rewardTrophyToUser, options);
             if (options.oneofs)
-                object.command = "rewardTrophyToUser";
+                object.type = "rewardTrophyToUser";
         }
         if (message.rewardTrophyToAll != null && message.hasOwnProperty("rewardTrophyToAll")) {
-            object.rewardTrophyToAll = $root.RewardTrophyToAllCommand.toObject(message.rewardTrophyToAll, options);
+            object.rewardTrophyToAll = $root.RewardTrophyToAllRequest.toObject(message.rewardTrophyToAll, options);
             if (options.oneofs)
-                object.command = "rewardTrophyToAll";
+                object.type = "rewardTrophyToAll";
         }
         if (message.sendChatMessage != null && message.hasOwnProperty("sendChatMessage")) {
-            object.sendChatMessage = $root.SendChatMessageCommand.toObject(message.sendChatMessage, options);
+            object.sendChatMessage = $root.SendChatMessageRequest.toObject(message.sendChatMessage, options);
             if (options.oneofs)
-                object.command = "sendChatMessage";
+                object.type = "sendChatMessage";
         }
         return object;
     };
 
     /**
-     * Converts this Command to JSON.
+     * Converts this ClassRequest to JSON.
      * @function toJSON
-     * @memberof Command
+     * @memberof ClassRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    Command.prototype.toJSON = function toJSON() {
+    ClassRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return Command;
+    return ClassRequest;
 })();
 
-$root.CommandAcknowledgement = (function() {
+$root.ClassEvent = (function() {
 
     /**
-     * Properties of a CommandAcknowledgement.
-     * @exports ICommandAcknowledgement
-     * @interface ICommandAcknowledgement
-     * @property {string|null} [id] CommandAcknowledgement id
-     * @property {string|null} [error] CommandAcknowledgement error
-     * @property {number|null} [code] CommandAcknowledgement code
+     * Properties of a ClassEvent.
+     * @exports IClassEvent
+     * @interface IClassEvent
+     * @property {string|null} [id] ClassEvent id
+     * @property {IClassResponseEvent|null} [actionResponse] ClassEvent actionResponse
+     * @property {ISetClassStateEvent|null} [setRoomState] ClassEvent setRoomState
+     * @property {IClassEndedEvent|null} [classEnded] ClassEvent classEnded
+     * @property {IDeviceConnectedEvent|null} [deviceConnected] ClassEvent deviceConnected
+     * @property {IDeviceDisconnectedEvent|null} [deviceDisconnected] ClassEvent deviceDisconnected
+     * @property {IHostChangedEvent|null} [hostChanged] ClassEvent hostChanged
+     * @property {IContentChangedEvent|null} [contentChanged] ClassEvent contentChanged
+     * @property {INewChatMessageEvent|null} [newChatMessage] ClassEvent newChatMessage
+     * @property {IActivityStreamIdChangedEvent|null} [actvityStreamIdChanged] ClassEvent actvityStreamIdChanged
+     * @property {ITrophyRewardedToUserEvent|null} [trophyRewardedToUser] ClassEvent trophyRewardedToUser
+     * @property {ITrophyRewardedToAllEvent|null} [trophyRewardedToAll] ClassEvent trophyRewardedToAll
      */
 
     /**
-     * Constructs a new CommandAcknowledgement.
-     * @exports CommandAcknowledgement
-     * @classdesc Represents a CommandAcknowledgement.
-     * @implements ICommandAcknowledgement
+     * Constructs a new ClassEvent.
+     * @exports ClassEvent
+     * @classdesc Represents a ClassEvent.
+     * @implements IClassEvent
      * @constructor
-     * @param {ICommandAcknowledgement=} [properties] Properties to set
+     * @param {IClassEvent=} [properties] Properties to set
      */
-    function CommandAcknowledgement(properties) {
+    function ClassEvent(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -474,424 +483,194 @@ $root.CommandAcknowledgement = (function() {
     }
 
     /**
-     * CommandAcknowledgement id.
+     * ClassEvent id.
      * @member {string} id
-     * @memberof CommandAcknowledgement
+     * @memberof ClassEvent
      * @instance
      */
-    CommandAcknowledgement.prototype.id = "";
+    ClassEvent.prototype.id = "";
 
     /**
-     * CommandAcknowledgement error.
-     * @member {string} error
-     * @memberof CommandAcknowledgement
+     * ClassEvent actionResponse.
+     * @member {IClassResponseEvent|null|undefined} actionResponse
+     * @memberof ClassEvent
      * @instance
      */
-    CommandAcknowledgement.prototype.error = "";
+    ClassEvent.prototype.actionResponse = null;
 
     /**
-     * CommandAcknowledgement code.
-     * @member {number} code
-     * @memberof CommandAcknowledgement
-     * @instance
-     */
-    CommandAcknowledgement.prototype.code = 0;
-
-    /**
-     * Creates a new CommandAcknowledgement instance using the specified properties.
-     * @function create
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {ICommandAcknowledgement=} [properties] Properties to set
-     * @returns {CommandAcknowledgement} CommandAcknowledgement instance
-     */
-    CommandAcknowledgement.create = function create(properties) {
-        return new CommandAcknowledgement(properties);
-    };
-
-    /**
-     * Encodes the specified CommandAcknowledgement message. Does not implicitly {@link CommandAcknowledgement.verify|verify} messages.
-     * @function encode
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {ICommandAcknowledgement} message CommandAcknowledgement message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    CommandAcknowledgement.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.error != null && Object.hasOwnProperty.call(message, "error"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
-        if (message.code != null && Object.hasOwnProperty.call(message, "code"))
-            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.code);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified CommandAcknowledgement message, length delimited. Does not implicitly {@link CommandAcknowledgement.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {ICommandAcknowledgement} message CommandAcknowledgement message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    CommandAcknowledgement.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a CommandAcknowledgement message from the specified reader or buffer.
-     * @function decode
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {CommandAcknowledgement} CommandAcknowledgement
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    CommandAcknowledgement.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.CommandAcknowledgement();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.id = reader.string();
-                break;
-            case 2:
-                message.error = reader.string();
-                break;
-            case 3:
-                message.code = reader.uint32();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a CommandAcknowledgement message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {CommandAcknowledgement} CommandAcknowledgement
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    CommandAcknowledgement.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a CommandAcknowledgement message.
-     * @function verify
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    CommandAcknowledgement.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
-        if (message.error != null && message.hasOwnProperty("error"))
-            if (!$util.isString(message.error))
-                return "error: string expected";
-        if (message.code != null && message.hasOwnProperty("code"))
-            if (!$util.isInteger(message.code))
-                return "code: integer expected";
-        return null;
-    };
-
-    /**
-     * Creates a CommandAcknowledgement message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {CommandAcknowledgement} CommandAcknowledgement
-     */
-    CommandAcknowledgement.fromObject = function fromObject(object) {
-        if (object instanceof $root.CommandAcknowledgement)
-            return object;
-        var message = new $root.CommandAcknowledgement();
-        if (object.id != null)
-            message.id = String(object.id);
-        if (object.error != null)
-            message.error = String(object.error);
-        if (object.code != null)
-            message.code = object.code >>> 0;
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a CommandAcknowledgement message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof CommandAcknowledgement
-     * @static
-     * @param {CommandAcknowledgement} message CommandAcknowledgement
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    CommandAcknowledgement.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults) {
-            object.id = "";
-            object.error = "";
-            object.code = 0;
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        if (message.error != null && message.hasOwnProperty("error"))
-            object.error = message.error;
-        if (message.code != null && message.hasOwnProperty("code"))
-            object.code = message.code;
-        return object;
-    };
-
-    /**
-     * Converts this CommandAcknowledgement to JSON.
-     * @function toJSON
-     * @memberof CommandAcknowledgement
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    CommandAcknowledgement.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return CommandAcknowledgement;
-})();
-
-$root.Event = (function() {
-
-    /**
-     * Properties of an Event.
-     * @exports IEvent
-     * @interface IEvent
-     * @property {string|null} [id] Event id
-     * @property {ISetClassStateEvent|null} [setRoomState] Event setRoomState
-     * @property {IClassEndedEvent|null} [classEnded] Event classEnded
-     * @property {IUserJoinedClassEvent|null} [userJoinedClass] Event userJoinedClass
-     * @property {IUserLeftClassEvent|null} [userLeftClass] Event userLeftClass
-     * @property {IHostChangedEvent|null} [hostChanged] Event hostChanged
-     * @property {IContentChangedEvent|null} [contentChanged] Event contentChanged
-     * @property {INewChatMessageEvent|null} [newChatMessage] Event newChatMessage
-     * @property {IActivityStreamIdChangedEvent|null} [actvityStreamIdChanged] Event actvityStreamIdChanged
-     * @property {ITrophyRewardedToUserEvent|null} [trophyRewardedToUser] Event trophyRewardedToUser
-     * @property {ITrophyRewardedToAllEvent|null} [trophyRewardedToAll] Event trophyRewardedToAll
-     */
-
-    /**
-     * Constructs a new Event.
-     * @exports Event
-     * @classdesc Represents an Event.
-     * @implements IEvent
-     * @constructor
-     * @param {IEvent=} [properties] Properties to set
-     */
-    function Event(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * Event id.
-     * @member {string} id
-     * @memberof Event
-     * @instance
-     */
-    Event.prototype.id = "";
-
-    /**
-     * Event setRoomState.
+     * ClassEvent setRoomState.
      * @member {ISetClassStateEvent|null|undefined} setRoomState
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.setRoomState = null;
+    ClassEvent.prototype.setRoomState = null;
 
     /**
-     * Event classEnded.
+     * ClassEvent classEnded.
      * @member {IClassEndedEvent|null|undefined} classEnded
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.classEnded = null;
+    ClassEvent.prototype.classEnded = null;
 
     /**
-     * Event userJoinedClass.
-     * @member {IUserJoinedClassEvent|null|undefined} userJoinedClass
-     * @memberof Event
+     * ClassEvent deviceConnected.
+     * @member {IDeviceConnectedEvent|null|undefined} deviceConnected
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.userJoinedClass = null;
+    ClassEvent.prototype.deviceConnected = null;
 
     /**
-     * Event userLeftClass.
-     * @member {IUserLeftClassEvent|null|undefined} userLeftClass
-     * @memberof Event
+     * ClassEvent deviceDisconnected.
+     * @member {IDeviceDisconnectedEvent|null|undefined} deviceDisconnected
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.userLeftClass = null;
+    ClassEvent.prototype.deviceDisconnected = null;
 
     /**
-     * Event hostChanged.
+     * ClassEvent hostChanged.
      * @member {IHostChangedEvent|null|undefined} hostChanged
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.hostChanged = null;
+    ClassEvent.prototype.hostChanged = null;
 
     /**
-     * Event contentChanged.
+     * ClassEvent contentChanged.
      * @member {IContentChangedEvent|null|undefined} contentChanged
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.contentChanged = null;
+    ClassEvent.prototype.contentChanged = null;
 
     /**
-     * Event newChatMessage.
+     * ClassEvent newChatMessage.
      * @member {INewChatMessageEvent|null|undefined} newChatMessage
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.newChatMessage = null;
+    ClassEvent.prototype.newChatMessage = null;
 
     /**
-     * Event actvityStreamIdChanged.
+     * ClassEvent actvityStreamIdChanged.
      * @member {IActivityStreamIdChangedEvent|null|undefined} actvityStreamIdChanged
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.actvityStreamIdChanged = null;
+    ClassEvent.prototype.actvityStreamIdChanged = null;
 
     /**
-     * Event trophyRewardedToUser.
+     * ClassEvent trophyRewardedToUser.
      * @member {ITrophyRewardedToUserEvent|null|undefined} trophyRewardedToUser
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.trophyRewardedToUser = null;
+    ClassEvent.prototype.trophyRewardedToUser = null;
 
     /**
-     * Event trophyRewardedToAll.
+     * ClassEvent trophyRewardedToAll.
      * @member {ITrophyRewardedToAllEvent|null|undefined} trophyRewardedToAll
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      */
-    Event.prototype.trophyRewardedToAll = null;
+    ClassEvent.prototype.trophyRewardedToAll = null;
 
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
-     * Event event.
-     * @member {"setRoomState"|"classEnded"|"userJoinedClass"|"userLeftClass"|"hostChanged"|"contentChanged"|"newChatMessage"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|undefined} event
-     * @memberof Event
+     * ClassEvent type.
+     * @member {"actionResponse"|"setRoomState"|"classEnded"|"deviceConnected"|"deviceDisconnected"|"hostChanged"|"contentChanged"|"newChatMessage"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|undefined} type
+     * @memberof ClassEvent
      * @instance
      */
-    Object.defineProperty(Event.prototype, "event", {
-        get: $util.oneOfGetter($oneOfFields = ["setRoomState", "classEnded", "userJoinedClass", "userLeftClass", "hostChanged", "contentChanged", "newChatMessage", "actvityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll"]),
+    Object.defineProperty(ClassEvent.prototype, "type", {
+        get: $util.oneOfGetter($oneOfFields = ["actionResponse", "setRoomState", "classEnded", "deviceConnected", "deviceDisconnected", "hostChanged", "contentChanged", "newChatMessage", "actvityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
     /**
-     * Creates a new Event instance using the specified properties.
+     * Creates a new ClassEvent instance using the specified properties.
      * @function create
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
-     * @param {IEvent=} [properties] Properties to set
-     * @returns {Event} Event instance
+     * @param {IClassEvent=} [properties] Properties to set
+     * @returns {ClassEvent} ClassEvent instance
      */
-    Event.create = function create(properties) {
-        return new Event(properties);
+    ClassEvent.create = function create(properties) {
+        return new ClassEvent(properties);
     };
 
     /**
-     * Encodes the specified Event message. Does not implicitly {@link Event.verify|verify} messages.
+     * Encodes the specified ClassEvent message. Does not implicitly {@link ClassEvent.verify|verify} messages.
      * @function encode
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
-     * @param {IEvent} message Event message or plain object to encode
+     * @param {IClassEvent} message ClassEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Event.encode = function encode(message, writer) {
+    ClassEvent.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.actionResponse != null && Object.hasOwnProperty.call(message, "actionResponse"))
+            $root.ClassResponseEvent.encode(message.actionResponse, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.setRoomState != null && Object.hasOwnProperty.call(message, "setRoomState"))
-            $root.SetClassStateEvent.encode(message.setRoomState, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            $root.SetClassStateEvent.encode(message.setRoomState, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.classEnded != null && Object.hasOwnProperty.call(message, "classEnded"))
-            $root.ClassEndedEvent.encode(message.classEnded, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.userJoinedClass != null && Object.hasOwnProperty.call(message, "userJoinedClass"))
-            $root.UserJoinedClassEvent.encode(message.userJoinedClass, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.userLeftClass != null && Object.hasOwnProperty.call(message, "userLeftClass"))
-            $root.UserLeftClassEvent.encode(message.userLeftClass, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            $root.ClassEndedEvent.encode(message.classEnded, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.deviceConnected != null && Object.hasOwnProperty.call(message, "deviceConnected"))
+            $root.DeviceConnectedEvent.encode(message.deviceConnected, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.deviceDisconnected != null && Object.hasOwnProperty.call(message, "deviceDisconnected"))
+            $root.DeviceDisconnectedEvent.encode(message.deviceDisconnected, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.hostChanged != null && Object.hasOwnProperty.call(message, "hostChanged"))
-            $root.HostChangedEvent.encode(message.hostChanged, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            $root.HostChangedEvent.encode(message.hostChanged, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         if (message.contentChanged != null && Object.hasOwnProperty.call(message, "contentChanged"))
-            $root.ContentChangedEvent.encode(message.contentChanged, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            $root.ContentChangedEvent.encode(message.contentChanged, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         if (message.newChatMessage != null && Object.hasOwnProperty.call(message, "newChatMessage"))
-            $root.NewChatMessageEvent.encode(message.newChatMessage, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+            $root.NewChatMessageEvent.encode(message.newChatMessage, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
         if (message.actvityStreamIdChanged != null && Object.hasOwnProperty.call(message, "actvityStreamIdChanged"))
-            $root.ActivityStreamIdChangedEvent.encode(message.actvityStreamIdChanged, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+            $root.ActivityStreamIdChangedEvent.encode(message.actvityStreamIdChanged, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
         if (message.trophyRewardedToUser != null && Object.hasOwnProperty.call(message, "trophyRewardedToUser"))
-            $root.TrophyRewardedToUserEvent.encode(message.trophyRewardedToUser, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
+            $root.TrophyRewardedToUserEvent.encode(message.trophyRewardedToUser, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
         if (message.trophyRewardedToAll != null && Object.hasOwnProperty.call(message, "trophyRewardedToAll"))
-            $root.TrophyRewardedToAllEvent.encode(message.trophyRewardedToAll, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+            $root.TrophyRewardedToAllEvent.encode(message.trophyRewardedToAll, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
         return writer;
     };
 
     /**
-     * Encodes the specified Event message, length delimited. Does not implicitly {@link Event.verify|verify} messages.
+     * Encodes the specified ClassEvent message, length delimited. Does not implicitly {@link ClassEvent.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
-     * @param {IEvent} message Event message or plain object to encode
+     * @param {IClassEvent} message ClassEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Event.encodeDelimited = function encodeDelimited(message, writer) {
+    ClassEvent.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes an Event message from the specified reader or buffer.
+     * Decodes a ClassEvent message from the specified reader or buffer.
      * @function decode
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {Event} Event
+     * @returns {ClassEvent} ClassEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Event.decode = function decode(reader, length) {
+    ClassEvent.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Event();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ClassEvent();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -899,33 +678,36 @@ $root.Event = (function() {
                 message.id = reader.string();
                 break;
             case 2:
-                message.setRoomState = $root.SetClassStateEvent.decode(reader, reader.uint32());
+                message.actionResponse = $root.ClassResponseEvent.decode(reader, reader.uint32());
                 break;
             case 3:
-                message.classEnded = $root.ClassEndedEvent.decode(reader, reader.uint32());
+                message.setRoomState = $root.SetClassStateEvent.decode(reader, reader.uint32());
                 break;
             case 4:
-                message.userJoinedClass = $root.UserJoinedClassEvent.decode(reader, reader.uint32());
+                message.classEnded = $root.ClassEndedEvent.decode(reader, reader.uint32());
                 break;
             case 5:
-                message.userLeftClass = $root.UserLeftClassEvent.decode(reader, reader.uint32());
+                message.deviceConnected = $root.DeviceConnectedEvent.decode(reader, reader.uint32());
                 break;
             case 6:
-                message.hostChanged = $root.HostChangedEvent.decode(reader, reader.uint32());
+                message.deviceDisconnected = $root.DeviceDisconnectedEvent.decode(reader, reader.uint32());
                 break;
             case 7:
-                message.contentChanged = $root.ContentChangedEvent.decode(reader, reader.uint32());
+                message.hostChanged = $root.HostChangedEvent.decode(reader, reader.uint32());
                 break;
             case 8:
-                message.newChatMessage = $root.NewChatMessageEvent.decode(reader, reader.uint32());
+                message.contentChanged = $root.ContentChangedEvent.decode(reader, reader.uint32());
                 break;
             case 9:
-                message.actvityStreamIdChanged = $root.ActivityStreamIdChangedEvent.decode(reader, reader.uint32());
+                message.newChatMessage = $root.NewChatMessageEvent.decode(reader, reader.uint32());
                 break;
             case 10:
-                message.trophyRewardedToUser = $root.TrophyRewardedToUserEvent.decode(reader, reader.uint32());
+                message.actvityStreamIdChanged = $root.ActivityStreamIdChangedEvent.decode(reader, reader.uint32());
                 break;
             case 11:
+                message.trophyRewardedToUser = $root.TrophyRewardedToUserEvent.decode(reader, reader.uint32());
+                break;
+            case 12:
                 message.trophyRewardedToAll = $root.TrophyRewardedToAllEvent.decode(reader, reader.uint32());
                 break;
             default:
@@ -937,38 +719,48 @@ $root.Event = (function() {
     };
 
     /**
-     * Decodes an Event message from the specified reader or buffer, length delimited.
+     * Decodes a ClassEvent message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Event} Event
+     * @returns {ClassEvent} ClassEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Event.decodeDelimited = function decodeDelimited(reader) {
+    ClassEvent.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies an Event message.
+     * Verifies a ClassEvent message.
      * @function verify
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Event.verify = function verify(message) {
+    ClassEvent.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         var properties = {};
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
+        if (message.actionResponse != null && message.hasOwnProperty("actionResponse")) {
+            properties.type = 1;
+            {
+                var error = $root.ClassResponseEvent.verify(message.actionResponse);
+                if (error)
+                    return "actionResponse." + error;
+            }
+        }
         if (message.setRoomState != null && message.hasOwnProperty("setRoomState")) {
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.SetClassStateEvent.verify(message.setRoomState);
                 if (error)
@@ -976,39 +768,39 @@ $root.Event = (function() {
             }
         }
         if (message.classEnded != null && message.hasOwnProperty("classEnded")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.ClassEndedEvent.verify(message.classEnded);
                 if (error)
                     return "classEnded." + error;
             }
         }
-        if (message.userJoinedClass != null && message.hasOwnProperty("userJoinedClass")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+        if (message.deviceConnected != null && message.hasOwnProperty("deviceConnected")) {
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.UserJoinedClassEvent.verify(message.userJoinedClass);
+                var error = $root.DeviceConnectedEvent.verify(message.deviceConnected);
                 if (error)
-                    return "userJoinedClass." + error;
+                    return "deviceConnected." + error;
             }
         }
-        if (message.userLeftClass != null && message.hasOwnProperty("userLeftClass")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+        if (message.deviceDisconnected != null && message.hasOwnProperty("deviceDisconnected")) {
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
-                var error = $root.UserLeftClassEvent.verify(message.userLeftClass);
+                var error = $root.DeviceDisconnectedEvent.verify(message.deviceDisconnected);
                 if (error)
-                    return "userLeftClass." + error;
+                    return "deviceDisconnected." + error;
             }
         }
         if (message.hostChanged != null && message.hasOwnProperty("hostChanged")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.HostChangedEvent.verify(message.hostChanged);
                 if (error)
@@ -1016,9 +808,9 @@ $root.Event = (function() {
             }
         }
         if (message.contentChanged != null && message.hasOwnProperty("contentChanged")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.ContentChangedEvent.verify(message.contentChanged);
                 if (error)
@@ -1026,9 +818,9 @@ $root.Event = (function() {
             }
         }
         if (message.newChatMessage != null && message.hasOwnProperty("newChatMessage")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.NewChatMessageEvent.verify(message.newChatMessage);
                 if (error)
@@ -1036,9 +828,9 @@ $root.Event = (function() {
             }
         }
         if (message.actvityStreamIdChanged != null && message.hasOwnProperty("actvityStreamIdChanged")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.ActivityStreamIdChangedEvent.verify(message.actvityStreamIdChanged);
                 if (error)
@@ -1046,9 +838,9 @@ $root.Event = (function() {
             }
         }
         if (message.trophyRewardedToUser != null && message.hasOwnProperty("trophyRewardedToUser")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.TrophyRewardedToUserEvent.verify(message.trophyRewardedToUser);
                 if (error)
@@ -1056,9 +848,9 @@ $root.Event = (function() {
             }
         }
         if (message.trophyRewardedToAll != null && message.hasOwnProperty("trophyRewardedToAll")) {
-            if (properties.event === 1)
-                return "event: multiple values";
-            properties.event = 1;
+            if (properties.type === 1)
+                return "type: multiple values";
+            properties.type = 1;
             {
                 var error = $root.TrophyRewardedToAllEvent.verify(message.trophyRewardedToAll);
                 if (error)
@@ -1069,82 +861,87 @@ $root.Event = (function() {
     };
 
     /**
-     * Creates an Event message from a plain object. Also converts values to their respective internal types.
+     * Creates a ClassEvent message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {Event} Event
+     * @returns {ClassEvent} ClassEvent
      */
-    Event.fromObject = function fromObject(object) {
-        if (object instanceof $root.Event)
+    ClassEvent.fromObject = function fromObject(object) {
+        if (object instanceof $root.ClassEvent)
             return object;
-        var message = new $root.Event();
+        var message = new $root.ClassEvent();
         if (object.id != null)
             message.id = String(object.id);
+        if (object.actionResponse != null) {
+            if (typeof object.actionResponse !== "object")
+                throw TypeError(".ClassEvent.actionResponse: object expected");
+            message.actionResponse = $root.ClassResponseEvent.fromObject(object.actionResponse);
+        }
         if (object.setRoomState != null) {
             if (typeof object.setRoomState !== "object")
-                throw TypeError(".Event.setRoomState: object expected");
+                throw TypeError(".ClassEvent.setRoomState: object expected");
             message.setRoomState = $root.SetClassStateEvent.fromObject(object.setRoomState);
         }
         if (object.classEnded != null) {
             if (typeof object.classEnded !== "object")
-                throw TypeError(".Event.classEnded: object expected");
+                throw TypeError(".ClassEvent.classEnded: object expected");
             message.classEnded = $root.ClassEndedEvent.fromObject(object.classEnded);
         }
-        if (object.userJoinedClass != null) {
-            if (typeof object.userJoinedClass !== "object")
-                throw TypeError(".Event.userJoinedClass: object expected");
-            message.userJoinedClass = $root.UserJoinedClassEvent.fromObject(object.userJoinedClass);
+        if (object.deviceConnected != null) {
+            if (typeof object.deviceConnected !== "object")
+                throw TypeError(".ClassEvent.deviceConnected: object expected");
+            message.deviceConnected = $root.DeviceConnectedEvent.fromObject(object.deviceConnected);
         }
-        if (object.userLeftClass != null) {
-            if (typeof object.userLeftClass !== "object")
-                throw TypeError(".Event.userLeftClass: object expected");
-            message.userLeftClass = $root.UserLeftClassEvent.fromObject(object.userLeftClass);
+        if (object.deviceDisconnected != null) {
+            if (typeof object.deviceDisconnected !== "object")
+                throw TypeError(".ClassEvent.deviceDisconnected: object expected");
+            message.deviceDisconnected = $root.DeviceDisconnectedEvent.fromObject(object.deviceDisconnected);
         }
         if (object.hostChanged != null) {
             if (typeof object.hostChanged !== "object")
-                throw TypeError(".Event.hostChanged: object expected");
+                throw TypeError(".ClassEvent.hostChanged: object expected");
             message.hostChanged = $root.HostChangedEvent.fromObject(object.hostChanged);
         }
         if (object.contentChanged != null) {
             if (typeof object.contentChanged !== "object")
-                throw TypeError(".Event.contentChanged: object expected");
+                throw TypeError(".ClassEvent.contentChanged: object expected");
             message.contentChanged = $root.ContentChangedEvent.fromObject(object.contentChanged);
         }
         if (object.newChatMessage != null) {
             if (typeof object.newChatMessage !== "object")
-                throw TypeError(".Event.newChatMessage: object expected");
+                throw TypeError(".ClassEvent.newChatMessage: object expected");
             message.newChatMessage = $root.NewChatMessageEvent.fromObject(object.newChatMessage);
         }
         if (object.actvityStreamIdChanged != null) {
             if (typeof object.actvityStreamIdChanged !== "object")
-                throw TypeError(".Event.actvityStreamIdChanged: object expected");
+                throw TypeError(".ClassEvent.actvityStreamIdChanged: object expected");
             message.actvityStreamIdChanged = $root.ActivityStreamIdChangedEvent.fromObject(object.actvityStreamIdChanged);
         }
         if (object.trophyRewardedToUser != null) {
             if (typeof object.trophyRewardedToUser !== "object")
-                throw TypeError(".Event.trophyRewardedToUser: object expected");
+                throw TypeError(".ClassEvent.trophyRewardedToUser: object expected");
             message.trophyRewardedToUser = $root.TrophyRewardedToUserEvent.fromObject(object.trophyRewardedToUser);
         }
         if (object.trophyRewardedToAll != null) {
             if (typeof object.trophyRewardedToAll !== "object")
-                throw TypeError(".Event.trophyRewardedToAll: object expected");
+                throw TypeError(".ClassEvent.trophyRewardedToAll: object expected");
             message.trophyRewardedToAll = $root.TrophyRewardedToAllEvent.fromObject(object.trophyRewardedToAll);
         }
         return message;
     };
 
     /**
-     * Creates a plain object from an Event message. Also converts values to other types if specified.
+     * Creates a plain object from a ClassEvent message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof Event
+     * @memberof ClassEvent
      * @static
-     * @param {Event} message Event
+     * @param {ClassEvent} message ClassEvent
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Event.toObject = function toObject(message, options) {
+    ClassEvent.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -1152,90 +949,95 @@ $root.Event = (function() {
             object.id = "";
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
+        if (message.actionResponse != null && message.hasOwnProperty("actionResponse")) {
+            object.actionResponse = $root.ClassResponseEvent.toObject(message.actionResponse, options);
+            if (options.oneofs)
+                object.type = "actionResponse";
+        }
         if (message.setRoomState != null && message.hasOwnProperty("setRoomState")) {
             object.setRoomState = $root.SetClassStateEvent.toObject(message.setRoomState, options);
             if (options.oneofs)
-                object.event = "setRoomState";
+                object.type = "setRoomState";
         }
         if (message.classEnded != null && message.hasOwnProperty("classEnded")) {
             object.classEnded = $root.ClassEndedEvent.toObject(message.classEnded, options);
             if (options.oneofs)
-                object.event = "classEnded";
+                object.type = "classEnded";
         }
-        if (message.userJoinedClass != null && message.hasOwnProperty("userJoinedClass")) {
-            object.userJoinedClass = $root.UserJoinedClassEvent.toObject(message.userJoinedClass, options);
+        if (message.deviceConnected != null && message.hasOwnProperty("deviceConnected")) {
+            object.deviceConnected = $root.DeviceConnectedEvent.toObject(message.deviceConnected, options);
             if (options.oneofs)
-                object.event = "userJoinedClass";
+                object.type = "deviceConnected";
         }
-        if (message.userLeftClass != null && message.hasOwnProperty("userLeftClass")) {
-            object.userLeftClass = $root.UserLeftClassEvent.toObject(message.userLeftClass, options);
+        if (message.deviceDisconnected != null && message.hasOwnProperty("deviceDisconnected")) {
+            object.deviceDisconnected = $root.DeviceDisconnectedEvent.toObject(message.deviceDisconnected, options);
             if (options.oneofs)
-                object.event = "userLeftClass";
+                object.type = "deviceDisconnected";
         }
         if (message.hostChanged != null && message.hasOwnProperty("hostChanged")) {
             object.hostChanged = $root.HostChangedEvent.toObject(message.hostChanged, options);
             if (options.oneofs)
-                object.event = "hostChanged";
+                object.type = "hostChanged";
         }
         if (message.contentChanged != null && message.hasOwnProperty("contentChanged")) {
             object.contentChanged = $root.ContentChangedEvent.toObject(message.contentChanged, options);
             if (options.oneofs)
-                object.event = "contentChanged";
+                object.type = "contentChanged";
         }
         if (message.newChatMessage != null && message.hasOwnProperty("newChatMessage")) {
             object.newChatMessage = $root.NewChatMessageEvent.toObject(message.newChatMessage, options);
             if (options.oneofs)
-                object.event = "newChatMessage";
+                object.type = "newChatMessage";
         }
         if (message.actvityStreamIdChanged != null && message.hasOwnProperty("actvityStreamIdChanged")) {
             object.actvityStreamIdChanged = $root.ActivityStreamIdChangedEvent.toObject(message.actvityStreamIdChanged, options);
             if (options.oneofs)
-                object.event = "actvityStreamIdChanged";
+                object.type = "actvityStreamIdChanged";
         }
         if (message.trophyRewardedToUser != null && message.hasOwnProperty("trophyRewardedToUser")) {
             object.trophyRewardedToUser = $root.TrophyRewardedToUserEvent.toObject(message.trophyRewardedToUser, options);
             if (options.oneofs)
-                object.event = "trophyRewardedToUser";
+                object.type = "trophyRewardedToUser";
         }
         if (message.trophyRewardedToAll != null && message.hasOwnProperty("trophyRewardedToAll")) {
             object.trophyRewardedToAll = $root.TrophyRewardedToAllEvent.toObject(message.trophyRewardedToAll, options);
             if (options.oneofs)
-                object.event = "trophyRewardedToAll";
+                object.type = "trophyRewardedToAll";
         }
         return object;
     };
 
     /**
-     * Converts this Event to JSON.
+     * Converts this ClassEvent to JSON.
      * @function toJSON
-     * @memberof Event
+     * @memberof ClassEvent
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    Event.prototype.toJSON = function toJSON() {
+    ClassEvent.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return Event;
+    return ClassEvent;
 })();
 
-$root.EndClassCommand = (function() {
+$root.EndClassRequest = (function() {
 
     /**
-     * Properties of an EndClassCommand.
-     * @exports IEndClassCommand
-     * @interface IEndClassCommand
+     * Properties of an EndClassRequest.
+     * @exports IEndClassRequest
+     * @interface IEndClassRequest
      */
 
     /**
-     * Constructs a new EndClassCommand.
-     * @exports EndClassCommand
-     * @classdesc Represents an EndClassCommand.
-     * @implements IEndClassCommand
+     * Constructs a new EndClassRequest.
+     * @exports EndClassRequest
+     * @classdesc Represents an EndClassRequest.
+     * @implements IEndClassRequest
      * @constructor
-     * @param {IEndClassCommand=} [properties] Properties to set
+     * @param {IEndClassRequest=} [properties] Properties to set
      */
-    function EndClassCommand(properties) {
+    function EndClassRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1243,60 +1045,60 @@ $root.EndClassCommand = (function() {
     }
 
     /**
-     * Creates a new EndClassCommand instance using the specified properties.
+     * Creates a new EndClassRequest instance using the specified properties.
      * @function create
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
-     * @param {IEndClassCommand=} [properties] Properties to set
-     * @returns {EndClassCommand} EndClassCommand instance
+     * @param {IEndClassRequest=} [properties] Properties to set
+     * @returns {EndClassRequest} EndClassRequest instance
      */
-    EndClassCommand.create = function create(properties) {
-        return new EndClassCommand(properties);
+    EndClassRequest.create = function create(properties) {
+        return new EndClassRequest(properties);
     };
 
     /**
-     * Encodes the specified EndClassCommand message. Does not implicitly {@link EndClassCommand.verify|verify} messages.
+     * Encodes the specified EndClassRequest message. Does not implicitly {@link EndClassRequest.verify|verify} messages.
      * @function encode
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
-     * @param {IEndClassCommand} message EndClassCommand message or plain object to encode
+     * @param {IEndClassRequest} message EndClassRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    EndClassCommand.encode = function encode(message, writer) {
+    EndClassRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         return writer;
     };
 
     /**
-     * Encodes the specified EndClassCommand message, length delimited. Does not implicitly {@link EndClassCommand.verify|verify} messages.
+     * Encodes the specified EndClassRequest message, length delimited. Does not implicitly {@link EndClassRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
-     * @param {IEndClassCommand} message EndClassCommand message or plain object to encode
+     * @param {IEndClassRequest} message EndClassRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    EndClassCommand.encodeDelimited = function encodeDelimited(message, writer) {
+    EndClassRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes an EndClassCommand message from the specified reader or buffer.
+     * Decodes an EndClassRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {EndClassCommand} EndClassCommand
+     * @returns {EndClassRequest} EndClassRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    EndClassCommand.decode = function decode(reader, length) {
+    EndClassRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.EndClassCommand();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.EndClassRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1309,94 +1111,94 @@ $root.EndClassCommand = (function() {
     };
 
     /**
-     * Decodes an EndClassCommand message from the specified reader or buffer, length delimited.
+     * Decodes an EndClassRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {EndClassCommand} EndClassCommand
+     * @returns {EndClassRequest} EndClassRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    EndClassCommand.decodeDelimited = function decodeDelimited(reader) {
+    EndClassRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies an EndClassCommand message.
+     * Verifies an EndClassRequest message.
      * @function verify
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    EndClassCommand.verify = function verify(message) {
+    EndClassRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         return null;
     };
 
     /**
-     * Creates an EndClassCommand message from a plain object. Also converts values to their respective internal types.
+     * Creates an EndClassRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {EndClassCommand} EndClassCommand
+     * @returns {EndClassRequest} EndClassRequest
      */
-    EndClassCommand.fromObject = function fromObject(object) {
-        if (object instanceof $root.EndClassCommand)
+    EndClassRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.EndClassRequest)
             return object;
-        return new $root.EndClassCommand();
+        return new $root.EndClassRequest();
     };
 
     /**
-     * Creates a plain object from an EndClassCommand message. Also converts values to other types if specified.
+     * Creates a plain object from an EndClassRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @static
-     * @param {EndClassCommand} message EndClassCommand
+     * @param {EndClassRequest} message EndClassRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    EndClassCommand.toObject = function toObject() {
+    EndClassRequest.toObject = function toObject() {
         return {};
     };
 
     /**
-     * Converts this EndClassCommand to JSON.
+     * Converts this EndClassRequest to JSON.
      * @function toJSON
-     * @memberof EndClassCommand
+     * @memberof EndClassRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    EndClassCommand.prototype.toJSON = function toJSON() {
+    EndClassRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return EndClassCommand;
+    return EndClassRequest;
 })();
 
-$root.SetHostCommand = (function() {
+$root.SetHostRequest = (function() {
 
     /**
-     * Properties of a SetHostCommand.
-     * @exports ISetHostCommand
-     * @interface ISetHostCommand
-     * @property {string|null} [hostUserId] SetHostCommand hostUserId
+     * Properties of a SetHostRequest.
+     * @exports ISetHostRequest
+     * @interface ISetHostRequest
+     * @property {string|null} [hostUserId] SetHostRequest hostUserId
      */
 
     /**
-     * Constructs a new SetHostCommand.
-     * @exports SetHostCommand
-     * @classdesc Represents a SetHostCommand.
-     * @implements ISetHostCommand
+     * Constructs a new SetHostRequest.
+     * @exports SetHostRequest
+     * @classdesc Represents a SetHostRequest.
+     * @implements ISetHostRequest
      * @constructor
-     * @param {ISetHostCommand=} [properties] Properties to set
+     * @param {ISetHostRequest=} [properties] Properties to set
      */
-    function SetHostCommand(properties) {
+    function SetHostRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1404,35 +1206,35 @@ $root.SetHostCommand = (function() {
     }
 
     /**
-     * SetHostCommand hostUserId.
+     * SetHostRequest hostUserId.
      * @member {string} hostUserId
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @instance
      */
-    SetHostCommand.prototype.hostUserId = "";
+    SetHostRequest.prototype.hostUserId = "";
 
     /**
-     * Creates a new SetHostCommand instance using the specified properties.
+     * Creates a new SetHostRequest instance using the specified properties.
      * @function create
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
-     * @param {ISetHostCommand=} [properties] Properties to set
-     * @returns {SetHostCommand} SetHostCommand instance
+     * @param {ISetHostRequest=} [properties] Properties to set
+     * @returns {SetHostRequest} SetHostRequest instance
      */
-    SetHostCommand.create = function create(properties) {
-        return new SetHostCommand(properties);
+    SetHostRequest.create = function create(properties) {
+        return new SetHostRequest(properties);
     };
 
     /**
-     * Encodes the specified SetHostCommand message. Does not implicitly {@link SetHostCommand.verify|verify} messages.
+     * Encodes the specified SetHostRequest message. Does not implicitly {@link SetHostRequest.verify|verify} messages.
      * @function encode
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
-     * @param {ISetHostCommand} message SetHostCommand message or plain object to encode
+     * @param {ISetHostRequest} message SetHostRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetHostCommand.encode = function encode(message, writer) {
+    SetHostRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.hostUserId != null && Object.hasOwnProperty.call(message, "hostUserId"))
@@ -1441,33 +1243,33 @@ $root.SetHostCommand = (function() {
     };
 
     /**
-     * Encodes the specified SetHostCommand message, length delimited. Does not implicitly {@link SetHostCommand.verify|verify} messages.
+     * Encodes the specified SetHostRequest message, length delimited. Does not implicitly {@link SetHostRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
-     * @param {ISetHostCommand} message SetHostCommand message or plain object to encode
+     * @param {ISetHostRequest} message SetHostRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetHostCommand.encodeDelimited = function encodeDelimited(message, writer) {
+    SetHostRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a SetHostCommand message from the specified reader or buffer.
+     * Decodes a SetHostRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {SetHostCommand} SetHostCommand
+     * @returns {SetHostRequest} SetHostRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetHostCommand.decode = function decode(reader, length) {
+    SetHostRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetHostCommand();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetHostRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1483,30 +1285,30 @@ $root.SetHostCommand = (function() {
     };
 
     /**
-     * Decodes a SetHostCommand message from the specified reader or buffer, length delimited.
+     * Decodes a SetHostRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SetHostCommand} SetHostCommand
+     * @returns {SetHostRequest} SetHostRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetHostCommand.decodeDelimited = function decodeDelimited(reader) {
+    SetHostRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a SetHostCommand message.
+     * Verifies a SetHostRequest message.
      * @function verify
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    SetHostCommand.verify = function verify(message) {
+    SetHostRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.hostUserId != null && message.hasOwnProperty("hostUserId"))
@@ -1516,32 +1318,32 @@ $root.SetHostCommand = (function() {
     };
 
     /**
-     * Creates a SetHostCommand message from a plain object. Also converts values to their respective internal types.
+     * Creates a SetHostRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {SetHostCommand} SetHostCommand
+     * @returns {SetHostRequest} SetHostRequest
      */
-    SetHostCommand.fromObject = function fromObject(object) {
-        if (object instanceof $root.SetHostCommand)
+    SetHostRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetHostRequest)
             return object;
-        var message = new $root.SetHostCommand();
+        var message = new $root.SetHostRequest();
         if (object.hostUserId != null)
             message.hostUserId = String(object.hostUserId);
         return message;
     };
 
     /**
-     * Creates a plain object from a SetHostCommand message. Also converts values to other types if specified.
+     * Creates a plain object from a SetHostRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @static
-     * @param {SetHostCommand} message SetHostCommand
+     * @param {SetHostRequest} message SetHostRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    SetHostCommand.toObject = function toObject(message, options) {
+    SetHostRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -1553,37 +1355,37 @@ $root.SetHostCommand = (function() {
     };
 
     /**
-     * Converts this SetHostCommand to JSON.
+     * Converts this SetHostRequest to JSON.
      * @function toJSON
-     * @memberof SetHostCommand
+     * @memberof SetHostRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    SetHostCommand.prototype.toJSON = function toJSON() {
+    SetHostRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return SetHostCommand;
+    return SetHostRequest;
 })();
 
-$root.SetContentCommand = (function() {
+$root.SetContentRequest = (function() {
 
     /**
-     * Properties of a SetContentCommand.
-     * @exports ISetContentCommand
-     * @interface ISetContentCommand
-     * @property {IContent|null} [content] SetContentCommand content
+     * Properties of a SetContentRequest.
+     * @exports ISetContentRequest
+     * @interface ISetContentRequest
+     * @property {IContent|null} [content] SetContentRequest content
      */
 
     /**
-     * Constructs a new SetContentCommand.
-     * @exports SetContentCommand
-     * @classdesc Represents a SetContentCommand.
-     * @implements ISetContentCommand
+     * Constructs a new SetContentRequest.
+     * @exports SetContentRequest
+     * @classdesc Represents a SetContentRequest.
+     * @implements ISetContentRequest
      * @constructor
-     * @param {ISetContentCommand=} [properties] Properties to set
+     * @param {ISetContentRequest=} [properties] Properties to set
      */
-    function SetContentCommand(properties) {
+    function SetContentRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1591,35 +1393,35 @@ $root.SetContentCommand = (function() {
     }
 
     /**
-     * SetContentCommand content.
+     * SetContentRequest content.
      * @member {IContent|null|undefined} content
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @instance
      */
-    SetContentCommand.prototype.content = null;
+    SetContentRequest.prototype.content = null;
 
     /**
-     * Creates a new SetContentCommand instance using the specified properties.
+     * Creates a new SetContentRequest instance using the specified properties.
      * @function create
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
-     * @param {ISetContentCommand=} [properties] Properties to set
-     * @returns {SetContentCommand} SetContentCommand instance
+     * @param {ISetContentRequest=} [properties] Properties to set
+     * @returns {SetContentRequest} SetContentRequest instance
      */
-    SetContentCommand.create = function create(properties) {
-        return new SetContentCommand(properties);
+    SetContentRequest.create = function create(properties) {
+        return new SetContentRequest(properties);
     };
 
     /**
-     * Encodes the specified SetContentCommand message. Does not implicitly {@link SetContentCommand.verify|verify} messages.
+     * Encodes the specified SetContentRequest message. Does not implicitly {@link SetContentRequest.verify|verify} messages.
      * @function encode
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
-     * @param {ISetContentCommand} message SetContentCommand message or plain object to encode
+     * @param {ISetContentRequest} message SetContentRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetContentCommand.encode = function encode(message, writer) {
+    SetContentRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.content != null && Object.hasOwnProperty.call(message, "content"))
@@ -1628,33 +1430,33 @@ $root.SetContentCommand = (function() {
     };
 
     /**
-     * Encodes the specified SetContentCommand message, length delimited. Does not implicitly {@link SetContentCommand.verify|verify} messages.
+     * Encodes the specified SetContentRequest message, length delimited. Does not implicitly {@link SetContentRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
-     * @param {ISetContentCommand} message SetContentCommand message or plain object to encode
+     * @param {ISetContentRequest} message SetContentRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetContentCommand.encodeDelimited = function encodeDelimited(message, writer) {
+    SetContentRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a SetContentCommand message from the specified reader or buffer.
+     * Decodes a SetContentRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {SetContentCommand} SetContentCommand
+     * @returns {SetContentRequest} SetContentRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetContentCommand.decode = function decode(reader, length) {
+    SetContentRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetContentCommand();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetContentRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1670,30 +1472,30 @@ $root.SetContentCommand = (function() {
     };
 
     /**
-     * Decodes a SetContentCommand message from the specified reader or buffer, length delimited.
+     * Decodes a SetContentRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SetContentCommand} SetContentCommand
+     * @returns {SetContentRequest} SetContentRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetContentCommand.decodeDelimited = function decodeDelimited(reader) {
+    SetContentRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a SetContentCommand message.
+     * Verifies a SetContentRequest message.
      * @function verify
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    SetContentCommand.verify = function verify(message) {
+    SetContentRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.content != null && message.hasOwnProperty("content")) {
@@ -1705,35 +1507,35 @@ $root.SetContentCommand = (function() {
     };
 
     /**
-     * Creates a SetContentCommand message from a plain object. Also converts values to their respective internal types.
+     * Creates a SetContentRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {SetContentCommand} SetContentCommand
+     * @returns {SetContentRequest} SetContentRequest
      */
-    SetContentCommand.fromObject = function fromObject(object) {
-        if (object instanceof $root.SetContentCommand)
+    SetContentRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetContentRequest)
             return object;
-        var message = new $root.SetContentCommand();
+        var message = new $root.SetContentRequest();
         if (object.content != null) {
             if (typeof object.content !== "object")
-                throw TypeError(".SetContentCommand.content: object expected");
+                throw TypeError(".SetContentRequest.content: object expected");
             message.content = $root.Content.fromObject(object.content);
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a SetContentCommand message. Also converts values to other types if specified.
+     * Creates a plain object from a SetContentRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @static
-     * @param {SetContentCommand} message SetContentCommand
+     * @param {SetContentRequest} message SetContentRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    SetContentCommand.toObject = function toObject(message, options) {
+    SetContentRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -1745,38 +1547,38 @@ $root.SetContentCommand = (function() {
     };
 
     /**
-     * Converts this SetContentCommand to JSON.
+     * Converts this SetContentRequest to JSON.
      * @function toJSON
-     * @memberof SetContentCommand
+     * @memberof SetContentRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    SetContentCommand.prototype.toJSON = function toJSON() {
+    SetContentRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return SetContentCommand;
+    return SetContentRequest;
 })();
 
-$root.SetActivityStreamIdCommand = (function() {
+$root.SetActivityStreamIdRequest = (function() {
 
     /**
-     * Properties of a SetActivityStreamIdCommand.
-     * @exports ISetActivityStreamIdCommand
-     * @interface ISetActivityStreamIdCommand
-     * @property {string|null} [deviceId] SetActivityStreamIdCommand deviceId
-     * @property {string|null} [activityStreamId] SetActivityStreamIdCommand activityStreamId
+     * Properties of a SetActivityStreamIdRequest.
+     * @exports ISetActivityStreamIdRequest
+     * @interface ISetActivityStreamIdRequest
+     * @property {string|null} [deviceId] SetActivityStreamIdRequest deviceId
+     * @property {string|null} [activityStreamId] SetActivityStreamIdRequest activityStreamId
      */
 
     /**
-     * Constructs a new SetActivityStreamIdCommand.
-     * @exports SetActivityStreamIdCommand
-     * @classdesc Represents a SetActivityStreamIdCommand.
-     * @implements ISetActivityStreamIdCommand
+     * Constructs a new SetActivityStreamIdRequest.
+     * @exports SetActivityStreamIdRequest
+     * @classdesc Represents a SetActivityStreamIdRequest.
+     * @implements ISetActivityStreamIdRequest
      * @constructor
-     * @param {ISetActivityStreamIdCommand=} [properties] Properties to set
+     * @param {ISetActivityStreamIdRequest=} [properties] Properties to set
      */
-    function SetActivityStreamIdCommand(properties) {
+    function SetActivityStreamIdRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1784,43 +1586,43 @@ $root.SetActivityStreamIdCommand = (function() {
     }
 
     /**
-     * SetActivityStreamIdCommand deviceId.
+     * SetActivityStreamIdRequest deviceId.
      * @member {string} deviceId
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @instance
      */
-    SetActivityStreamIdCommand.prototype.deviceId = "";
+    SetActivityStreamIdRequest.prototype.deviceId = "";
 
     /**
-     * SetActivityStreamIdCommand activityStreamId.
+     * SetActivityStreamIdRequest activityStreamId.
      * @member {string} activityStreamId
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @instance
      */
-    SetActivityStreamIdCommand.prototype.activityStreamId = "";
+    SetActivityStreamIdRequest.prototype.activityStreamId = "";
 
     /**
-     * Creates a new SetActivityStreamIdCommand instance using the specified properties.
+     * Creates a new SetActivityStreamIdRequest instance using the specified properties.
      * @function create
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
-     * @param {ISetActivityStreamIdCommand=} [properties] Properties to set
-     * @returns {SetActivityStreamIdCommand} SetActivityStreamIdCommand instance
+     * @param {ISetActivityStreamIdRequest=} [properties] Properties to set
+     * @returns {SetActivityStreamIdRequest} SetActivityStreamIdRequest instance
      */
-    SetActivityStreamIdCommand.create = function create(properties) {
-        return new SetActivityStreamIdCommand(properties);
+    SetActivityStreamIdRequest.create = function create(properties) {
+        return new SetActivityStreamIdRequest(properties);
     };
 
     /**
-     * Encodes the specified SetActivityStreamIdCommand message. Does not implicitly {@link SetActivityStreamIdCommand.verify|verify} messages.
+     * Encodes the specified SetActivityStreamIdRequest message. Does not implicitly {@link SetActivityStreamIdRequest.verify|verify} messages.
      * @function encode
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
-     * @param {ISetActivityStreamIdCommand} message SetActivityStreamIdCommand message or plain object to encode
+     * @param {ISetActivityStreamIdRequest} message SetActivityStreamIdRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetActivityStreamIdCommand.encode = function encode(message, writer) {
+    SetActivityStreamIdRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.deviceId != null && Object.hasOwnProperty.call(message, "deviceId"))
@@ -1831,33 +1633,33 @@ $root.SetActivityStreamIdCommand = (function() {
     };
 
     /**
-     * Encodes the specified SetActivityStreamIdCommand message, length delimited. Does not implicitly {@link SetActivityStreamIdCommand.verify|verify} messages.
+     * Encodes the specified SetActivityStreamIdRequest message, length delimited. Does not implicitly {@link SetActivityStreamIdRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
-     * @param {ISetActivityStreamIdCommand} message SetActivityStreamIdCommand message or plain object to encode
+     * @param {ISetActivityStreamIdRequest} message SetActivityStreamIdRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetActivityStreamIdCommand.encodeDelimited = function encodeDelimited(message, writer) {
+    SetActivityStreamIdRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a SetActivityStreamIdCommand message from the specified reader or buffer.
+     * Decodes a SetActivityStreamIdRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {SetActivityStreamIdCommand} SetActivityStreamIdCommand
+     * @returns {SetActivityStreamIdRequest} SetActivityStreamIdRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetActivityStreamIdCommand.decode = function decode(reader, length) {
+    SetActivityStreamIdRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetActivityStreamIdCommand();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetActivityStreamIdRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1876,30 +1678,30 @@ $root.SetActivityStreamIdCommand = (function() {
     };
 
     /**
-     * Decodes a SetActivityStreamIdCommand message from the specified reader or buffer, length delimited.
+     * Decodes a SetActivityStreamIdRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SetActivityStreamIdCommand} SetActivityStreamIdCommand
+     * @returns {SetActivityStreamIdRequest} SetActivityStreamIdRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetActivityStreamIdCommand.decodeDelimited = function decodeDelimited(reader) {
+    SetActivityStreamIdRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a SetActivityStreamIdCommand message.
+     * Verifies a SetActivityStreamIdRequest message.
      * @function verify
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    SetActivityStreamIdCommand.verify = function verify(message) {
+    SetActivityStreamIdRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.deviceId != null && message.hasOwnProperty("deviceId"))
@@ -1912,17 +1714,17 @@ $root.SetActivityStreamIdCommand = (function() {
     };
 
     /**
-     * Creates a SetActivityStreamIdCommand message from a plain object. Also converts values to their respective internal types.
+     * Creates a SetActivityStreamIdRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {SetActivityStreamIdCommand} SetActivityStreamIdCommand
+     * @returns {SetActivityStreamIdRequest} SetActivityStreamIdRequest
      */
-    SetActivityStreamIdCommand.fromObject = function fromObject(object) {
-        if (object instanceof $root.SetActivityStreamIdCommand)
+    SetActivityStreamIdRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.SetActivityStreamIdRequest)
             return object;
-        var message = new $root.SetActivityStreamIdCommand();
+        var message = new $root.SetActivityStreamIdRequest();
         if (object.deviceId != null)
             message.deviceId = String(object.deviceId);
         if (object.activityStreamId != null)
@@ -1931,15 +1733,15 @@ $root.SetActivityStreamIdCommand = (function() {
     };
 
     /**
-     * Creates a plain object from a SetActivityStreamIdCommand message. Also converts values to other types if specified.
+     * Creates a plain object from a SetActivityStreamIdRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @static
-     * @param {SetActivityStreamIdCommand} message SetActivityStreamIdCommand
+     * @param {SetActivityStreamIdRequest} message SetActivityStreamIdRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    SetActivityStreamIdCommand.toObject = function toObject(message, options) {
+    SetActivityStreamIdRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -1955,38 +1757,38 @@ $root.SetActivityStreamIdCommand = (function() {
     };
 
     /**
-     * Converts this SetActivityStreamIdCommand to JSON.
+     * Converts this SetActivityStreamIdRequest to JSON.
      * @function toJSON
-     * @memberof SetActivityStreamIdCommand
+     * @memberof SetActivityStreamIdRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    SetActivityStreamIdCommand.prototype.toJSON = function toJSON() {
+    SetActivityStreamIdRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return SetActivityStreamIdCommand;
+    return SetActivityStreamIdRequest;
 })();
 
-$root.RewardTrophyToUserCommand = (function() {
+$root.RewardTrophyToUserRequest = (function() {
 
     /**
-     * Properties of a RewardTrophyToUserCommand.
-     * @exports IRewardTrophyToUserCommand
-     * @interface IRewardTrophyToUserCommand
-     * @property {string|null} [userId] RewardTrophyToUserCommand userId
-     * @property {ITrophy|null} [trophy] RewardTrophyToUserCommand trophy
+     * Properties of a RewardTrophyToUserRequest.
+     * @exports IRewardTrophyToUserRequest
+     * @interface IRewardTrophyToUserRequest
+     * @property {string|null} [userId] RewardTrophyToUserRequest userId
+     * @property {ITrophy|null} [trophy] RewardTrophyToUserRequest trophy
      */
 
     /**
-     * Constructs a new RewardTrophyToUserCommand.
-     * @exports RewardTrophyToUserCommand
-     * @classdesc Represents a RewardTrophyToUserCommand.
-     * @implements IRewardTrophyToUserCommand
+     * Constructs a new RewardTrophyToUserRequest.
+     * @exports RewardTrophyToUserRequest
+     * @classdesc Represents a RewardTrophyToUserRequest.
+     * @implements IRewardTrophyToUserRequest
      * @constructor
-     * @param {IRewardTrophyToUserCommand=} [properties] Properties to set
+     * @param {IRewardTrophyToUserRequest=} [properties] Properties to set
      */
-    function RewardTrophyToUserCommand(properties) {
+    function RewardTrophyToUserRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1994,43 +1796,43 @@ $root.RewardTrophyToUserCommand = (function() {
     }
 
     /**
-     * RewardTrophyToUserCommand userId.
+     * RewardTrophyToUserRequest userId.
      * @member {string} userId
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @instance
      */
-    RewardTrophyToUserCommand.prototype.userId = "";
+    RewardTrophyToUserRequest.prototype.userId = "";
 
     /**
-     * RewardTrophyToUserCommand trophy.
+     * RewardTrophyToUserRequest trophy.
      * @member {ITrophy|null|undefined} trophy
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @instance
      */
-    RewardTrophyToUserCommand.prototype.trophy = null;
+    RewardTrophyToUserRequest.prototype.trophy = null;
 
     /**
-     * Creates a new RewardTrophyToUserCommand instance using the specified properties.
+     * Creates a new RewardTrophyToUserRequest instance using the specified properties.
      * @function create
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
-     * @param {IRewardTrophyToUserCommand=} [properties] Properties to set
-     * @returns {RewardTrophyToUserCommand} RewardTrophyToUserCommand instance
+     * @param {IRewardTrophyToUserRequest=} [properties] Properties to set
+     * @returns {RewardTrophyToUserRequest} RewardTrophyToUserRequest instance
      */
-    RewardTrophyToUserCommand.create = function create(properties) {
-        return new RewardTrophyToUserCommand(properties);
+    RewardTrophyToUserRequest.create = function create(properties) {
+        return new RewardTrophyToUserRequest(properties);
     };
 
     /**
-     * Encodes the specified RewardTrophyToUserCommand message. Does not implicitly {@link RewardTrophyToUserCommand.verify|verify} messages.
+     * Encodes the specified RewardTrophyToUserRequest message. Does not implicitly {@link RewardTrophyToUserRequest.verify|verify} messages.
      * @function encode
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
-     * @param {IRewardTrophyToUserCommand} message RewardTrophyToUserCommand message or plain object to encode
+     * @param {IRewardTrophyToUserRequest} message RewardTrophyToUserRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RewardTrophyToUserCommand.encode = function encode(message, writer) {
+    RewardTrophyToUserRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
@@ -2041,33 +1843,33 @@ $root.RewardTrophyToUserCommand = (function() {
     };
 
     /**
-     * Encodes the specified RewardTrophyToUserCommand message, length delimited. Does not implicitly {@link RewardTrophyToUserCommand.verify|verify} messages.
+     * Encodes the specified RewardTrophyToUserRequest message, length delimited. Does not implicitly {@link RewardTrophyToUserRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
-     * @param {IRewardTrophyToUserCommand} message RewardTrophyToUserCommand message or plain object to encode
+     * @param {IRewardTrophyToUserRequest} message RewardTrophyToUserRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RewardTrophyToUserCommand.encodeDelimited = function encodeDelimited(message, writer) {
+    RewardTrophyToUserRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a RewardTrophyToUserCommand message from the specified reader or buffer.
+     * Decodes a RewardTrophyToUserRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {RewardTrophyToUserCommand} RewardTrophyToUserCommand
+     * @returns {RewardTrophyToUserRequest} RewardTrophyToUserRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RewardTrophyToUserCommand.decode = function decode(reader, length) {
+    RewardTrophyToUserRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RewardTrophyToUserCommand();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RewardTrophyToUserRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2086,30 +1888,30 @@ $root.RewardTrophyToUserCommand = (function() {
     };
 
     /**
-     * Decodes a RewardTrophyToUserCommand message from the specified reader or buffer, length delimited.
+     * Decodes a RewardTrophyToUserRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {RewardTrophyToUserCommand} RewardTrophyToUserCommand
+     * @returns {RewardTrophyToUserRequest} RewardTrophyToUserRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RewardTrophyToUserCommand.decodeDelimited = function decodeDelimited(reader) {
+    RewardTrophyToUserRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a RewardTrophyToUserCommand message.
+     * Verifies a RewardTrophyToUserRequest message.
      * @function verify
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    RewardTrophyToUserCommand.verify = function verify(message) {
+    RewardTrophyToUserRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.userId != null && message.hasOwnProperty("userId"))
@@ -2124,37 +1926,37 @@ $root.RewardTrophyToUserCommand = (function() {
     };
 
     /**
-     * Creates a RewardTrophyToUserCommand message from a plain object. Also converts values to their respective internal types.
+     * Creates a RewardTrophyToUserRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {RewardTrophyToUserCommand} RewardTrophyToUserCommand
+     * @returns {RewardTrophyToUserRequest} RewardTrophyToUserRequest
      */
-    RewardTrophyToUserCommand.fromObject = function fromObject(object) {
-        if (object instanceof $root.RewardTrophyToUserCommand)
+    RewardTrophyToUserRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.RewardTrophyToUserRequest)
             return object;
-        var message = new $root.RewardTrophyToUserCommand();
+        var message = new $root.RewardTrophyToUserRequest();
         if (object.userId != null)
             message.userId = String(object.userId);
         if (object.trophy != null) {
             if (typeof object.trophy !== "object")
-                throw TypeError(".RewardTrophyToUserCommand.trophy: object expected");
+                throw TypeError(".RewardTrophyToUserRequest.trophy: object expected");
             message.trophy = $root.Trophy.fromObject(object.trophy);
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a RewardTrophyToUserCommand message. Also converts values to other types if specified.
+     * Creates a plain object from a RewardTrophyToUserRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @static
-     * @param {RewardTrophyToUserCommand} message RewardTrophyToUserCommand
+     * @param {RewardTrophyToUserRequest} message RewardTrophyToUserRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    RewardTrophyToUserCommand.toObject = function toObject(message, options) {
+    RewardTrophyToUserRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -2170,37 +1972,37 @@ $root.RewardTrophyToUserCommand = (function() {
     };
 
     /**
-     * Converts this RewardTrophyToUserCommand to JSON.
+     * Converts this RewardTrophyToUserRequest to JSON.
      * @function toJSON
-     * @memberof RewardTrophyToUserCommand
+     * @memberof RewardTrophyToUserRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    RewardTrophyToUserCommand.prototype.toJSON = function toJSON() {
+    RewardTrophyToUserRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return RewardTrophyToUserCommand;
+    return RewardTrophyToUserRequest;
 })();
 
-$root.RewardTrophyToAllCommand = (function() {
+$root.RewardTrophyToAllRequest = (function() {
 
     /**
-     * Properties of a RewardTrophyToAllCommand.
-     * @exports IRewardTrophyToAllCommand
-     * @interface IRewardTrophyToAllCommand
-     * @property {ITrophy|null} [trophy] RewardTrophyToAllCommand trophy
+     * Properties of a RewardTrophyToAllRequest.
+     * @exports IRewardTrophyToAllRequest
+     * @interface IRewardTrophyToAllRequest
+     * @property {ITrophy|null} [trophy] RewardTrophyToAllRequest trophy
      */
 
     /**
-     * Constructs a new RewardTrophyToAllCommand.
-     * @exports RewardTrophyToAllCommand
-     * @classdesc Represents a RewardTrophyToAllCommand.
-     * @implements IRewardTrophyToAllCommand
+     * Constructs a new RewardTrophyToAllRequest.
+     * @exports RewardTrophyToAllRequest
+     * @classdesc Represents a RewardTrophyToAllRequest.
+     * @implements IRewardTrophyToAllRequest
      * @constructor
-     * @param {IRewardTrophyToAllCommand=} [properties] Properties to set
+     * @param {IRewardTrophyToAllRequest=} [properties] Properties to set
      */
-    function RewardTrophyToAllCommand(properties) {
+    function RewardTrophyToAllRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -2208,35 +2010,35 @@ $root.RewardTrophyToAllCommand = (function() {
     }
 
     /**
-     * RewardTrophyToAllCommand trophy.
+     * RewardTrophyToAllRequest trophy.
      * @member {ITrophy|null|undefined} trophy
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @instance
      */
-    RewardTrophyToAllCommand.prototype.trophy = null;
+    RewardTrophyToAllRequest.prototype.trophy = null;
 
     /**
-     * Creates a new RewardTrophyToAllCommand instance using the specified properties.
+     * Creates a new RewardTrophyToAllRequest instance using the specified properties.
      * @function create
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
-     * @param {IRewardTrophyToAllCommand=} [properties] Properties to set
-     * @returns {RewardTrophyToAllCommand} RewardTrophyToAllCommand instance
+     * @param {IRewardTrophyToAllRequest=} [properties] Properties to set
+     * @returns {RewardTrophyToAllRequest} RewardTrophyToAllRequest instance
      */
-    RewardTrophyToAllCommand.create = function create(properties) {
-        return new RewardTrophyToAllCommand(properties);
+    RewardTrophyToAllRequest.create = function create(properties) {
+        return new RewardTrophyToAllRequest(properties);
     };
 
     /**
-     * Encodes the specified RewardTrophyToAllCommand message. Does not implicitly {@link RewardTrophyToAllCommand.verify|verify} messages.
+     * Encodes the specified RewardTrophyToAllRequest message. Does not implicitly {@link RewardTrophyToAllRequest.verify|verify} messages.
      * @function encode
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
-     * @param {IRewardTrophyToAllCommand} message RewardTrophyToAllCommand message or plain object to encode
+     * @param {IRewardTrophyToAllRequest} message RewardTrophyToAllRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RewardTrophyToAllCommand.encode = function encode(message, writer) {
+    RewardTrophyToAllRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.trophy != null && Object.hasOwnProperty.call(message, "trophy"))
@@ -2245,33 +2047,33 @@ $root.RewardTrophyToAllCommand = (function() {
     };
 
     /**
-     * Encodes the specified RewardTrophyToAllCommand message, length delimited. Does not implicitly {@link RewardTrophyToAllCommand.verify|verify} messages.
+     * Encodes the specified RewardTrophyToAllRequest message, length delimited. Does not implicitly {@link RewardTrophyToAllRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
-     * @param {IRewardTrophyToAllCommand} message RewardTrophyToAllCommand message or plain object to encode
+     * @param {IRewardTrophyToAllRequest} message RewardTrophyToAllRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    RewardTrophyToAllCommand.encodeDelimited = function encodeDelimited(message, writer) {
+    RewardTrophyToAllRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a RewardTrophyToAllCommand message from the specified reader or buffer.
+     * Decodes a RewardTrophyToAllRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {RewardTrophyToAllCommand} RewardTrophyToAllCommand
+     * @returns {RewardTrophyToAllRequest} RewardTrophyToAllRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RewardTrophyToAllCommand.decode = function decode(reader, length) {
+    RewardTrophyToAllRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RewardTrophyToAllCommand();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RewardTrophyToAllRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2287,30 +2089,30 @@ $root.RewardTrophyToAllCommand = (function() {
     };
 
     /**
-     * Decodes a RewardTrophyToAllCommand message from the specified reader or buffer, length delimited.
+     * Decodes a RewardTrophyToAllRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {RewardTrophyToAllCommand} RewardTrophyToAllCommand
+     * @returns {RewardTrophyToAllRequest} RewardTrophyToAllRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    RewardTrophyToAllCommand.decodeDelimited = function decodeDelimited(reader) {
+    RewardTrophyToAllRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a RewardTrophyToAllCommand message.
+     * Verifies a RewardTrophyToAllRequest message.
      * @function verify
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    RewardTrophyToAllCommand.verify = function verify(message) {
+    RewardTrophyToAllRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.trophy != null && message.hasOwnProperty("trophy")) {
@@ -2322,35 +2124,35 @@ $root.RewardTrophyToAllCommand = (function() {
     };
 
     /**
-     * Creates a RewardTrophyToAllCommand message from a plain object. Also converts values to their respective internal types.
+     * Creates a RewardTrophyToAllRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {RewardTrophyToAllCommand} RewardTrophyToAllCommand
+     * @returns {RewardTrophyToAllRequest} RewardTrophyToAllRequest
      */
-    RewardTrophyToAllCommand.fromObject = function fromObject(object) {
-        if (object instanceof $root.RewardTrophyToAllCommand)
+    RewardTrophyToAllRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.RewardTrophyToAllRequest)
             return object;
-        var message = new $root.RewardTrophyToAllCommand();
+        var message = new $root.RewardTrophyToAllRequest();
         if (object.trophy != null) {
             if (typeof object.trophy !== "object")
-                throw TypeError(".RewardTrophyToAllCommand.trophy: object expected");
+                throw TypeError(".RewardTrophyToAllRequest.trophy: object expected");
             message.trophy = $root.Trophy.fromObject(object.trophy);
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a RewardTrophyToAllCommand message. Also converts values to other types if specified.
+     * Creates a plain object from a RewardTrophyToAllRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @static
-     * @param {RewardTrophyToAllCommand} message RewardTrophyToAllCommand
+     * @param {RewardTrophyToAllRequest} message RewardTrophyToAllRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    RewardTrophyToAllCommand.toObject = function toObject(message, options) {
+    RewardTrophyToAllRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -2362,37 +2164,37 @@ $root.RewardTrophyToAllCommand = (function() {
     };
 
     /**
-     * Converts this RewardTrophyToAllCommand to JSON.
+     * Converts this RewardTrophyToAllRequest to JSON.
      * @function toJSON
-     * @memberof RewardTrophyToAllCommand
+     * @memberof RewardTrophyToAllRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    RewardTrophyToAllCommand.prototype.toJSON = function toJSON() {
+    RewardTrophyToAllRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return RewardTrophyToAllCommand;
+    return RewardTrophyToAllRequest;
 })();
 
-$root.SendChatMessageCommand = (function() {
+$root.SendChatMessageRequest = (function() {
 
     /**
-     * Properties of a SendChatMessageCommand.
-     * @exports ISendChatMessageCommand
-     * @interface ISendChatMessageCommand
-     * @property {string|null} [message] SendChatMessageCommand message
+     * Properties of a SendChatMessageRequest.
+     * @exports ISendChatMessageRequest
+     * @interface ISendChatMessageRequest
+     * @property {string|null} [message] SendChatMessageRequest message
      */
 
     /**
-     * Constructs a new SendChatMessageCommand.
-     * @exports SendChatMessageCommand
-     * @classdesc Represents a SendChatMessageCommand.
-     * @implements ISendChatMessageCommand
+     * Constructs a new SendChatMessageRequest.
+     * @exports SendChatMessageRequest
+     * @classdesc Represents a SendChatMessageRequest.
+     * @implements ISendChatMessageRequest
      * @constructor
-     * @param {ISendChatMessageCommand=} [properties] Properties to set
+     * @param {ISendChatMessageRequest=} [properties] Properties to set
      */
-    function SendChatMessageCommand(properties) {
+    function SendChatMessageRequest(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -2400,35 +2202,35 @@ $root.SendChatMessageCommand = (function() {
     }
 
     /**
-     * SendChatMessageCommand message.
+     * SendChatMessageRequest message.
      * @member {string} message
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @instance
      */
-    SendChatMessageCommand.prototype.message = "";
+    SendChatMessageRequest.prototype.message = "";
 
     /**
-     * Creates a new SendChatMessageCommand instance using the specified properties.
+     * Creates a new SendChatMessageRequest instance using the specified properties.
      * @function create
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
-     * @param {ISendChatMessageCommand=} [properties] Properties to set
-     * @returns {SendChatMessageCommand} SendChatMessageCommand instance
+     * @param {ISendChatMessageRequest=} [properties] Properties to set
+     * @returns {SendChatMessageRequest} SendChatMessageRequest instance
      */
-    SendChatMessageCommand.create = function create(properties) {
-        return new SendChatMessageCommand(properties);
+    SendChatMessageRequest.create = function create(properties) {
+        return new SendChatMessageRequest(properties);
     };
 
     /**
-     * Encodes the specified SendChatMessageCommand message. Does not implicitly {@link SendChatMessageCommand.verify|verify} messages.
+     * Encodes the specified SendChatMessageRequest message. Does not implicitly {@link SendChatMessageRequest.verify|verify} messages.
      * @function encode
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
-     * @param {ISendChatMessageCommand} message SendChatMessageCommand message or plain object to encode
+     * @param {ISendChatMessageRequest} message SendChatMessageRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SendChatMessageCommand.encode = function encode(message, writer) {
+    SendChatMessageRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.message != null && Object.hasOwnProperty.call(message, "message"))
@@ -2437,33 +2239,33 @@ $root.SendChatMessageCommand = (function() {
     };
 
     /**
-     * Encodes the specified SendChatMessageCommand message, length delimited. Does not implicitly {@link SendChatMessageCommand.verify|verify} messages.
+     * Encodes the specified SendChatMessageRequest message, length delimited. Does not implicitly {@link SendChatMessageRequest.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
-     * @param {ISendChatMessageCommand} message SendChatMessageCommand message or plain object to encode
+     * @param {ISendChatMessageRequest} message SendChatMessageRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SendChatMessageCommand.encodeDelimited = function encodeDelimited(message, writer) {
+    SendChatMessageRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a SendChatMessageCommand message from the specified reader or buffer.
+     * Decodes a SendChatMessageRequest message from the specified reader or buffer.
      * @function decode
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {SendChatMessageCommand} SendChatMessageCommand
+     * @returns {SendChatMessageRequest} SendChatMessageRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SendChatMessageCommand.decode = function decode(reader, length) {
+    SendChatMessageRequest.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SendChatMessageCommand();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SendChatMessageRequest();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2479,30 +2281,30 @@ $root.SendChatMessageCommand = (function() {
     };
 
     /**
-     * Decodes a SendChatMessageCommand message from the specified reader or buffer, length delimited.
+     * Decodes a SendChatMessageRequest message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SendChatMessageCommand} SendChatMessageCommand
+     * @returns {SendChatMessageRequest} SendChatMessageRequest
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SendChatMessageCommand.decodeDelimited = function decodeDelimited(reader) {
+    SendChatMessageRequest.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a SendChatMessageCommand message.
+     * Verifies a SendChatMessageRequest message.
      * @function verify
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    SendChatMessageCommand.verify = function verify(message) {
+    SendChatMessageRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.message != null && message.hasOwnProperty("message"))
@@ -2512,32 +2314,32 @@ $root.SendChatMessageCommand = (function() {
     };
 
     /**
-     * Creates a SendChatMessageCommand message from a plain object. Also converts values to their respective internal types.
+     * Creates a SendChatMessageRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {SendChatMessageCommand} SendChatMessageCommand
+     * @returns {SendChatMessageRequest} SendChatMessageRequest
      */
-    SendChatMessageCommand.fromObject = function fromObject(object) {
-        if (object instanceof $root.SendChatMessageCommand)
+    SendChatMessageRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.SendChatMessageRequest)
             return object;
-        var message = new $root.SendChatMessageCommand();
+        var message = new $root.SendChatMessageRequest();
         if (object.message != null)
             message.message = String(object.message);
         return message;
     };
 
     /**
-     * Creates a plain object from a SendChatMessageCommand message. Also converts values to other types if specified.
+     * Creates a plain object from a SendChatMessageRequest message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @static
-     * @param {SendChatMessageCommand} message SendChatMessageCommand
+     * @param {SendChatMessageRequest} message SendChatMessageRequest
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    SendChatMessageCommand.toObject = function toObject(message, options) {
+    SendChatMessageRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -2549,17 +2351,227 @@ $root.SendChatMessageCommand = (function() {
     };
 
     /**
-     * Converts this SendChatMessageCommand to JSON.
+     * Converts this SendChatMessageRequest to JSON.
      * @function toJSON
-     * @memberof SendChatMessageCommand
+     * @memberof SendChatMessageRequest
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    SendChatMessageCommand.prototype.toJSON = function toJSON() {
+    SendChatMessageRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return SendChatMessageCommand;
+    return SendChatMessageRequest;
+})();
+
+$root.ClassResponseEvent = (function() {
+
+    /**
+     * Properties of a ClassResponseEvent.
+     * @exports IClassResponseEvent
+     * @interface IClassResponseEvent
+     * @property {string|null} [id] ClassResponseEvent id
+     * @property {string|null} [error] ClassResponseEvent error
+     */
+
+    /**
+     * Constructs a new ClassResponseEvent.
+     * @exports ClassResponseEvent
+     * @classdesc Represents a ClassResponseEvent.
+     * @implements IClassResponseEvent
+     * @constructor
+     * @param {IClassResponseEvent=} [properties] Properties to set
+     */
+    function ClassResponseEvent(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ClassResponseEvent id.
+     * @member {string} id
+     * @memberof ClassResponseEvent
+     * @instance
+     */
+    ClassResponseEvent.prototype.id = "";
+
+    /**
+     * ClassResponseEvent error.
+     * @member {string} error
+     * @memberof ClassResponseEvent
+     * @instance
+     */
+    ClassResponseEvent.prototype.error = "";
+
+    /**
+     * Creates a new ClassResponseEvent instance using the specified properties.
+     * @function create
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {IClassResponseEvent=} [properties] Properties to set
+     * @returns {ClassResponseEvent} ClassResponseEvent instance
+     */
+    ClassResponseEvent.create = function create(properties) {
+        return new ClassResponseEvent(properties);
+    };
+
+    /**
+     * Encodes the specified ClassResponseEvent message. Does not implicitly {@link ClassResponseEvent.verify|verify} messages.
+     * @function encode
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {IClassResponseEvent} message ClassResponseEvent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ClassResponseEvent.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.error != null && Object.hasOwnProperty.call(message, "error"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ClassResponseEvent message, length delimited. Does not implicitly {@link ClassResponseEvent.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {IClassResponseEvent} message ClassResponseEvent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ClassResponseEvent.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ClassResponseEvent message from the specified reader or buffer.
+     * @function decode
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ClassResponseEvent} ClassResponseEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ClassResponseEvent.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ClassResponseEvent();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.error = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ClassResponseEvent message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ClassResponseEvent} ClassResponseEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ClassResponseEvent.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ClassResponseEvent message.
+     * @function verify
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ClassResponseEvent.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.error != null && message.hasOwnProperty("error"))
+            if (!$util.isString(message.error))
+                return "error: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a ClassResponseEvent message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ClassResponseEvent} ClassResponseEvent
+     */
+    ClassResponseEvent.fromObject = function fromObject(object) {
+        if (object instanceof $root.ClassResponseEvent)
+            return object;
+        var message = new $root.ClassResponseEvent();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.error != null)
+            message.error = String(object.error);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ClassResponseEvent message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ClassResponseEvent
+     * @static
+     * @param {ClassResponseEvent} message ClassResponseEvent
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ClassResponseEvent.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.error = "";
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.error != null && message.hasOwnProperty("error"))
+            object.error = message.error;
+        return object;
+    };
+
+    /**
+     * Converts this ClassResponseEvent to JSON.
+     * @function toJSON
+     * @memberof ClassResponseEvent
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ClassResponseEvent.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ClassResponseEvent;
 })();
 
 $root.SetClassStateEvent = (function() {
@@ -2955,25 +2967,25 @@ $root.ClassEndedEvent = (function() {
     return ClassEndedEvent;
 })();
 
-$root.UserJoinedClassEvent = (function() {
+$root.DeviceConnectedEvent = (function() {
 
     /**
-     * Properties of a UserJoinedClassEvent.
-     * @exports IUserJoinedClassEvent
-     * @interface IUserJoinedClassEvent
-     * @property {IUser|null} [user] UserJoinedClassEvent user
-     * @property {IDevice|null} [device] UserJoinedClassEvent device
+     * Properties of a DeviceConnectedEvent.
+     * @exports IDeviceConnectedEvent
+     * @interface IDeviceConnectedEvent
+     * @property {string|null} [name] DeviceConnectedEvent name
+     * @property {IDevice|null} [device] DeviceConnectedEvent device
      */
 
     /**
-     * Constructs a new UserJoinedClassEvent.
-     * @exports UserJoinedClassEvent
-     * @classdesc Represents a UserJoinedClassEvent.
-     * @implements IUserJoinedClassEvent
+     * Constructs a new DeviceConnectedEvent.
+     * @exports DeviceConnectedEvent
+     * @classdesc Represents a DeviceConnectedEvent.
+     * @implements IDeviceConnectedEvent
      * @constructor
-     * @param {IUserJoinedClassEvent=} [properties] Properties to set
+     * @param {IDeviceConnectedEvent=} [properties] Properties to set
      */
-    function UserJoinedClassEvent(properties) {
+    function DeviceConnectedEvent(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -2981,85 +2993,85 @@ $root.UserJoinedClassEvent = (function() {
     }
 
     /**
-     * UserJoinedClassEvent user.
-     * @member {IUser|null|undefined} user
-     * @memberof UserJoinedClassEvent
+     * DeviceConnectedEvent name.
+     * @member {string} name
+     * @memberof DeviceConnectedEvent
      * @instance
      */
-    UserJoinedClassEvent.prototype.user = null;
+    DeviceConnectedEvent.prototype.name = "";
 
     /**
-     * UserJoinedClassEvent device.
+     * DeviceConnectedEvent device.
      * @member {IDevice|null|undefined} device
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @instance
      */
-    UserJoinedClassEvent.prototype.device = null;
+    DeviceConnectedEvent.prototype.device = null;
 
     /**
-     * Creates a new UserJoinedClassEvent instance using the specified properties.
+     * Creates a new DeviceConnectedEvent instance using the specified properties.
      * @function create
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
-     * @param {IUserJoinedClassEvent=} [properties] Properties to set
-     * @returns {UserJoinedClassEvent} UserJoinedClassEvent instance
+     * @param {IDeviceConnectedEvent=} [properties] Properties to set
+     * @returns {DeviceConnectedEvent} DeviceConnectedEvent instance
      */
-    UserJoinedClassEvent.create = function create(properties) {
-        return new UserJoinedClassEvent(properties);
+    DeviceConnectedEvent.create = function create(properties) {
+        return new DeviceConnectedEvent(properties);
     };
 
     /**
-     * Encodes the specified UserJoinedClassEvent message. Does not implicitly {@link UserJoinedClassEvent.verify|verify} messages.
+     * Encodes the specified DeviceConnectedEvent message. Does not implicitly {@link DeviceConnectedEvent.verify|verify} messages.
      * @function encode
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
-     * @param {IUserJoinedClassEvent} message UserJoinedClassEvent message or plain object to encode
+     * @param {IDeviceConnectedEvent} message DeviceConnectedEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserJoinedClassEvent.encode = function encode(message, writer) {
+    DeviceConnectedEvent.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.user != null && Object.hasOwnProperty.call(message, "user"))
-            $root.User.encode(message.user, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
         if (message.device != null && Object.hasOwnProperty.call(message, "device"))
             $root.Device.encode(message.device, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
     /**
-     * Encodes the specified UserJoinedClassEvent message, length delimited. Does not implicitly {@link UserJoinedClassEvent.verify|verify} messages.
+     * Encodes the specified DeviceConnectedEvent message, length delimited. Does not implicitly {@link DeviceConnectedEvent.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
-     * @param {IUserJoinedClassEvent} message UserJoinedClassEvent message or plain object to encode
+     * @param {IDeviceConnectedEvent} message DeviceConnectedEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserJoinedClassEvent.encodeDelimited = function encodeDelimited(message, writer) {
+    DeviceConnectedEvent.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a UserJoinedClassEvent message from the specified reader or buffer.
+     * Decodes a DeviceConnectedEvent message from the specified reader or buffer.
      * @function decode
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {UserJoinedClassEvent} UserJoinedClassEvent
+     * @returns {DeviceConnectedEvent} DeviceConnectedEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserJoinedClassEvent.decode = function decode(reader, length) {
+    DeviceConnectedEvent.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserJoinedClassEvent();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.DeviceConnectedEvent();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.user = $root.User.decode(reader, reader.uint32());
+                message.name = reader.string();
                 break;
             case 2:
                 message.device = $root.Device.decode(reader, reader.uint32());
@@ -3073,37 +3085,35 @@ $root.UserJoinedClassEvent = (function() {
     };
 
     /**
-     * Decodes a UserJoinedClassEvent message from the specified reader or buffer, length delimited.
+     * Decodes a DeviceConnectedEvent message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UserJoinedClassEvent} UserJoinedClassEvent
+     * @returns {DeviceConnectedEvent} DeviceConnectedEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserJoinedClassEvent.decodeDelimited = function decodeDelimited(reader) {
+    DeviceConnectedEvent.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a UserJoinedClassEvent message.
+     * Verifies a DeviceConnectedEvent message.
      * @function verify
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    UserJoinedClassEvent.verify = function verify(message) {
+    DeviceConnectedEvent.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.user != null && message.hasOwnProperty("user")) {
-            var error = $root.User.verify(message.user);
-            if (error)
-                return "user." + error;
-        }
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
         if (message.device != null && message.hasOwnProperty("device")) {
             var error = $root.Device.verify(message.device);
             if (error)
@@ -3113,86 +3123,83 @@ $root.UserJoinedClassEvent = (function() {
     };
 
     /**
-     * Creates a UserJoinedClassEvent message from a plain object. Also converts values to their respective internal types.
+     * Creates a DeviceConnectedEvent message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {UserJoinedClassEvent} UserJoinedClassEvent
+     * @returns {DeviceConnectedEvent} DeviceConnectedEvent
      */
-    UserJoinedClassEvent.fromObject = function fromObject(object) {
-        if (object instanceof $root.UserJoinedClassEvent)
+    DeviceConnectedEvent.fromObject = function fromObject(object) {
+        if (object instanceof $root.DeviceConnectedEvent)
             return object;
-        var message = new $root.UserJoinedClassEvent();
-        if (object.user != null) {
-            if (typeof object.user !== "object")
-                throw TypeError(".UserJoinedClassEvent.user: object expected");
-            message.user = $root.User.fromObject(object.user);
-        }
+        var message = new $root.DeviceConnectedEvent();
+        if (object.name != null)
+            message.name = String(object.name);
         if (object.device != null) {
             if (typeof object.device !== "object")
-                throw TypeError(".UserJoinedClassEvent.device: object expected");
+                throw TypeError(".DeviceConnectedEvent.device: object expected");
             message.device = $root.Device.fromObject(object.device);
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a UserJoinedClassEvent message. Also converts values to other types if specified.
+     * Creates a plain object from a DeviceConnectedEvent message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @static
-     * @param {UserJoinedClassEvent} message UserJoinedClassEvent
+     * @param {DeviceConnectedEvent} message DeviceConnectedEvent
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    UserJoinedClassEvent.toObject = function toObject(message, options) {
+    DeviceConnectedEvent.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
         if (options.defaults) {
-            object.user = null;
+            object.name = "";
             object.device = null;
         }
-        if (message.user != null && message.hasOwnProperty("user"))
-            object.user = $root.User.toObject(message.user, options);
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
         if (message.device != null && message.hasOwnProperty("device"))
             object.device = $root.Device.toObject(message.device, options);
         return object;
     };
 
     /**
-     * Converts this UserJoinedClassEvent to JSON.
+     * Converts this DeviceConnectedEvent to JSON.
      * @function toJSON
-     * @memberof UserJoinedClassEvent
+     * @memberof DeviceConnectedEvent
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    UserJoinedClassEvent.prototype.toJSON = function toJSON() {
+    DeviceConnectedEvent.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return UserJoinedClassEvent;
+    return DeviceConnectedEvent;
 })();
 
-$root.UserLeftClassEvent = (function() {
+$root.DeviceDisconnectedEvent = (function() {
 
     /**
-     * Properties of a UserLeftClassEvent.
-     * @exports IUserLeftClassEvent
-     * @interface IUserLeftClassEvent
-     * @property {string|null} [userId] UserLeftClassEvent userId
+     * Properties of a DeviceDisconnectedEvent.
+     * @exports IDeviceDisconnectedEvent
+     * @interface IDeviceDisconnectedEvent
+     * @property {string|null} [deviceId] DeviceDisconnectedEvent deviceId
      */
 
     /**
-     * Constructs a new UserLeftClassEvent.
-     * @exports UserLeftClassEvent
-     * @classdesc Represents a UserLeftClassEvent.
-     * @implements IUserLeftClassEvent
+     * Constructs a new DeviceDisconnectedEvent.
+     * @exports DeviceDisconnectedEvent
+     * @classdesc Represents a DeviceDisconnectedEvent.
+     * @implements IDeviceDisconnectedEvent
      * @constructor
-     * @param {IUserLeftClassEvent=} [properties] Properties to set
+     * @param {IDeviceDisconnectedEvent=} [properties] Properties to set
      */
-    function UserLeftClassEvent(properties) {
+    function DeviceDisconnectedEvent(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -3200,75 +3207,75 @@ $root.UserLeftClassEvent = (function() {
     }
 
     /**
-     * UserLeftClassEvent userId.
-     * @member {string} userId
-     * @memberof UserLeftClassEvent
+     * DeviceDisconnectedEvent deviceId.
+     * @member {string} deviceId
+     * @memberof DeviceDisconnectedEvent
      * @instance
      */
-    UserLeftClassEvent.prototype.userId = "";
+    DeviceDisconnectedEvent.prototype.deviceId = "";
 
     /**
-     * Creates a new UserLeftClassEvent instance using the specified properties.
+     * Creates a new DeviceDisconnectedEvent instance using the specified properties.
      * @function create
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
-     * @param {IUserLeftClassEvent=} [properties] Properties to set
-     * @returns {UserLeftClassEvent} UserLeftClassEvent instance
+     * @param {IDeviceDisconnectedEvent=} [properties] Properties to set
+     * @returns {DeviceDisconnectedEvent} DeviceDisconnectedEvent instance
      */
-    UserLeftClassEvent.create = function create(properties) {
-        return new UserLeftClassEvent(properties);
+    DeviceDisconnectedEvent.create = function create(properties) {
+        return new DeviceDisconnectedEvent(properties);
     };
 
     /**
-     * Encodes the specified UserLeftClassEvent message. Does not implicitly {@link UserLeftClassEvent.verify|verify} messages.
+     * Encodes the specified DeviceDisconnectedEvent message. Does not implicitly {@link DeviceDisconnectedEvent.verify|verify} messages.
      * @function encode
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
-     * @param {IUserLeftClassEvent} message UserLeftClassEvent message or plain object to encode
+     * @param {IDeviceDisconnectedEvent} message DeviceDisconnectedEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserLeftClassEvent.encode = function encode(message, writer) {
+    DeviceDisconnectedEvent.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
+        if (message.deviceId != null && Object.hasOwnProperty.call(message, "deviceId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.deviceId);
         return writer;
     };
 
     /**
-     * Encodes the specified UserLeftClassEvent message, length delimited. Does not implicitly {@link UserLeftClassEvent.verify|verify} messages.
+     * Encodes the specified DeviceDisconnectedEvent message, length delimited. Does not implicitly {@link DeviceDisconnectedEvent.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
-     * @param {IUserLeftClassEvent} message UserLeftClassEvent message or plain object to encode
+     * @param {IDeviceDisconnectedEvent} message DeviceDisconnectedEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserLeftClassEvent.encodeDelimited = function encodeDelimited(message, writer) {
+    DeviceDisconnectedEvent.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a UserLeftClassEvent message from the specified reader or buffer.
+     * Decodes a DeviceDisconnectedEvent message from the specified reader or buffer.
      * @function decode
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {UserLeftClassEvent} UserLeftClassEvent
+     * @returns {DeviceDisconnectedEvent} DeviceDisconnectedEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserLeftClassEvent.decode = function decode(reader, length) {
+    DeviceDisconnectedEvent.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserLeftClassEvent();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.DeviceDisconnectedEvent();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.userId = reader.string();
+                message.deviceId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3279,87 +3286,87 @@ $root.UserLeftClassEvent = (function() {
     };
 
     /**
-     * Decodes a UserLeftClassEvent message from the specified reader or buffer, length delimited.
+     * Decodes a DeviceDisconnectedEvent message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UserLeftClassEvent} UserLeftClassEvent
+     * @returns {DeviceDisconnectedEvent} DeviceDisconnectedEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserLeftClassEvent.decodeDelimited = function decodeDelimited(reader) {
+    DeviceDisconnectedEvent.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a UserLeftClassEvent message.
+     * Verifies a DeviceDisconnectedEvent message.
      * @function verify
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    UserLeftClassEvent.verify = function verify(message) {
+    DeviceDisconnectedEvent.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            if (!$util.isString(message.deviceId))
+                return "deviceId: string expected";
         return null;
     };
 
     /**
-     * Creates a UserLeftClassEvent message from a plain object. Also converts values to their respective internal types.
+     * Creates a DeviceDisconnectedEvent message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {UserLeftClassEvent} UserLeftClassEvent
+     * @returns {DeviceDisconnectedEvent} DeviceDisconnectedEvent
      */
-    UserLeftClassEvent.fromObject = function fromObject(object) {
-        if (object instanceof $root.UserLeftClassEvent)
+    DeviceDisconnectedEvent.fromObject = function fromObject(object) {
+        if (object instanceof $root.DeviceDisconnectedEvent)
             return object;
-        var message = new $root.UserLeftClassEvent();
-        if (object.userId != null)
-            message.userId = String(object.userId);
+        var message = new $root.DeviceDisconnectedEvent();
+        if (object.deviceId != null)
+            message.deviceId = String(object.deviceId);
         return message;
     };
 
     /**
-     * Creates a plain object from a UserLeftClassEvent message. Also converts values to other types if specified.
+     * Creates a plain object from a DeviceDisconnectedEvent message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @static
-     * @param {UserLeftClassEvent} message UserLeftClassEvent
+     * @param {DeviceDisconnectedEvent} message DeviceDisconnectedEvent
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    UserLeftClassEvent.toObject = function toObject(message, options) {
+    DeviceDisconnectedEvent.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
         if (options.defaults)
-            object.userId = "";
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+            object.deviceId = "";
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            object.deviceId = message.deviceId;
         return object;
     };
 
     /**
-     * Converts this UserLeftClassEvent to JSON.
+     * Converts this DeviceDisconnectedEvent to JSON.
      * @function toJSON
-     * @memberof UserLeftClassEvent
+     * @memberof DeviceDisconnectedEvent
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    UserLeftClassEvent.prototype.toJSON = function toJSON() {
+    DeviceDisconnectedEvent.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return UserLeftClassEvent;
+    return DeviceDisconnectedEvent;
 })();
 
 $root.HostChangedEvent = (function() {
@@ -4983,6 +4990,7 @@ $root.User = (function() {
      * @property {string|null} [id] User id
      * @property {string|null} [name] User name
      * @property {Array.<ITrophy>|null} [trophies] User trophies
+     * @property {Array.<string>|null} [deviceIds] User deviceIds
      */
 
     /**
@@ -4995,6 +5003,7 @@ $root.User = (function() {
      */
     function User(properties) {
         this.trophies = [];
+        this.deviceIds = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -5024,6 +5033,14 @@ $root.User = (function() {
      * @instance
      */
     User.prototype.trophies = $util.emptyArray;
+
+    /**
+     * User deviceIds.
+     * @member {Array.<string>} deviceIds
+     * @memberof User
+     * @instance
+     */
+    User.prototype.deviceIds = $util.emptyArray;
 
     /**
      * Creates a new User instance using the specified properties.
@@ -5056,6 +5073,9 @@ $root.User = (function() {
         if (message.trophies != null && message.trophies.length)
             for (var i = 0; i < message.trophies.length; ++i)
                 $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.deviceIds != null && message.deviceIds.length)
+            for (var i = 0; i < message.deviceIds.length; ++i)
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.deviceIds[i]);
         return writer;
     };
 
@@ -5100,6 +5120,11 @@ $root.User = (function() {
                 if (!(message.trophies && message.trophies.length))
                     message.trophies = [];
                 message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
+                break;
+            case 4:
+                if (!(message.deviceIds && message.deviceIds.length))
+                    message.deviceIds = [];
+                message.deviceIds.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5151,6 +5176,13 @@ $root.User = (function() {
                     return "trophies." + error;
             }
         }
+        if (message.deviceIds != null && message.hasOwnProperty("deviceIds")) {
+            if (!Array.isArray(message.deviceIds))
+                return "deviceIds: array expected";
+            for (var i = 0; i < message.deviceIds.length; ++i)
+                if (!$util.isString(message.deviceIds[i]))
+                    return "deviceIds: string[] expected";
+        }
         return null;
     };
 
@@ -5180,6 +5212,13 @@ $root.User = (function() {
                 message.trophies[i] = $root.Trophy.fromObject(object.trophies[i]);
             }
         }
+        if (object.deviceIds) {
+            if (!Array.isArray(object.deviceIds))
+                throw TypeError(".User.deviceIds: array expected");
+            message.deviceIds = [];
+            for (var i = 0; i < object.deviceIds.length; ++i)
+                message.deviceIds[i] = String(object.deviceIds[i]);
+        }
         return message;
     };
 
@@ -5196,8 +5235,10 @@ $root.User = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
+        if (options.arrays || options.defaults) {
             object.trophies = [];
+            object.deviceIds = [];
+        }
         if (options.defaults) {
             object.id = "";
             object.name = "";
@@ -5210,6 +5251,11 @@ $root.User = (function() {
             object.trophies = [];
             for (var j = 0; j < message.trophies.length; ++j)
                 object.trophies[j] = $root.Trophy.toObject(message.trophies[j], options);
+        }
+        if (message.deviceIds && message.deviceIds.length) {
+            object.deviceIds = [];
+            for (var j = 0; j < message.deviceIds.length; ++j)
+                object.deviceIds[j] = message.deviceIds[j];
         }
         return object;
     };
@@ -5459,6 +5505,7 @@ $root.Device = (function() {
      * @exports IDevice
      * @interface IDevice
      * @property {string|null} [id] Device id
+     * @property {string|null} [userId] Device userId
      * @property {string|null} [activityStreamId] Device activityStreamId
      * @property {Array.<string>|null} [webRtcStreamIds] Device webRtcStreamIds
      */
@@ -5486,6 +5533,14 @@ $root.Device = (function() {
      * @instance
      */
     Device.prototype.id = "";
+
+    /**
+     * Device userId.
+     * @member {string} userId
+     * @memberof Device
+     * @instance
+     */
+    Device.prototype.userId = "";
 
     /**
      * Device activityStreamId.
@@ -5529,11 +5584,13 @@ $root.Device = (function() {
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
         if (message.activityStreamId != null && Object.hasOwnProperty.call(message, "activityStreamId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.activityStreamId);
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.activityStreamId);
         if (message.webRtcStreamIds != null && message.webRtcStreamIds.length)
             for (var i = 0; i < message.webRtcStreamIds.length; ++i)
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.webRtcStreamIds[i]);
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.webRtcStreamIds[i]);
         return writer;
     };
 
@@ -5572,9 +5629,12 @@ $root.Device = (function() {
                 message.id = reader.string();
                 break;
             case 2:
-                message.activityStreamId = reader.string();
+                message.userId = reader.string();
                 break;
             case 3:
+                message.activityStreamId = reader.string();
+                break;
+            case 4:
                 if (!(message.webRtcStreamIds && message.webRtcStreamIds.length))
                     message.webRtcStreamIds = [];
                 message.webRtcStreamIds.push(reader.string());
@@ -5617,6 +5677,9 @@ $root.Device = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            if (!$util.isString(message.userId))
+                return "userId: string expected";
         if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
             if (!$util.isString(message.activityStreamId))
                 return "activityStreamId: string expected";
@@ -5644,6 +5707,8 @@ $root.Device = (function() {
         var message = new $root.Device();
         if (object.id != null)
             message.id = String(object.id);
+        if (object.userId != null)
+            message.userId = String(object.userId);
         if (object.activityStreamId != null)
             message.activityStreamId = String(object.activityStreamId);
         if (object.webRtcStreamIds) {
@@ -5673,10 +5738,13 @@ $root.Device = (function() {
             object.webRtcStreamIds = [];
         if (options.defaults) {
             object.id = "";
+            object.userId = "";
             object.activityStreamId = "";
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            object.userId = message.userId;
         if (message.activityStreamId != null && message.hasOwnProperty("activityStreamId"))
             object.activityStreamId = message.activityStreamId;
         if (message.webRtcStreamIds && message.webRtcStreamIds.length) {
@@ -5709,7 +5777,7 @@ $root.ChatMessage = (function() {
      * @interface IChatMessage
      * @property {string|null} [userId] ChatMessage userId
      * @property {number|Long|null} [timestamp] ChatMessage timestamp
-     * @property {Array.<ITrophy>|null} [trophies] ChatMessage trophies
+     * @property {string|null} [text] ChatMessage text
      */
 
     /**
@@ -5721,7 +5789,6 @@ $root.ChatMessage = (function() {
      * @param {IChatMessage=} [properties] Properties to set
      */
     function ChatMessage(properties) {
-        this.trophies = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -5745,12 +5812,12 @@ $root.ChatMessage = (function() {
     ChatMessage.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
     /**
-     * ChatMessage trophies.
-     * @member {Array.<ITrophy>} trophies
+     * ChatMessage text.
+     * @member {string} text
      * @memberof ChatMessage
      * @instance
      */
-    ChatMessage.prototype.trophies = $util.emptyArray;
+    ChatMessage.prototype.text = "";
 
     /**
      * Creates a new ChatMessage instance using the specified properties.
@@ -5780,9 +5847,8 @@ $root.ChatMessage = (function() {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
         if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
             writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.timestamp);
-        if (message.trophies != null && message.trophies.length)
-            for (var i = 0; i < message.trophies.length; ++i)
-                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.text);
         return writer;
     };
 
@@ -5824,9 +5890,7 @@ $root.ChatMessage = (function() {
                 message.timestamp = reader.uint64();
                 break;
             case 3:
-                if (!(message.trophies && message.trophies.length))
-                    message.trophies = [];
-                message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
+                message.text = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5869,15 +5933,9 @@ $root.ChatMessage = (function() {
         if (message.timestamp != null && message.hasOwnProperty("timestamp"))
             if (!$util.isInteger(message.timestamp) && !(message.timestamp && $util.isInteger(message.timestamp.low) && $util.isInteger(message.timestamp.high)))
                 return "timestamp: integer|Long expected";
-        if (message.trophies != null && message.hasOwnProperty("trophies")) {
-            if (!Array.isArray(message.trophies))
-                return "trophies: array expected";
-            for (var i = 0; i < message.trophies.length; ++i) {
-                var error = $root.Trophy.verify(message.trophies[i]);
-                if (error)
-                    return "trophies." + error;
-            }
-        }
+        if (message.text != null && message.hasOwnProperty("text"))
+            if (!$util.isString(message.text))
+                return "text: string expected";
         return null;
     };
 
@@ -5904,16 +5962,8 @@ $root.ChatMessage = (function() {
                 message.timestamp = object.timestamp;
             else if (typeof object.timestamp === "object")
                 message.timestamp = new $util.LongBits(object.timestamp.low >>> 0, object.timestamp.high >>> 0).toNumber(true);
-        if (object.trophies) {
-            if (!Array.isArray(object.trophies))
-                throw TypeError(".ChatMessage.trophies: array expected");
-            message.trophies = [];
-            for (var i = 0; i < object.trophies.length; ++i) {
-                if (typeof object.trophies[i] !== "object")
-                    throw TypeError(".ChatMessage.trophies: object expected");
-                message.trophies[i] = $root.Trophy.fromObject(object.trophies[i]);
-            }
-        }
+        if (object.text != null)
+            message.text = String(object.text);
         return message;
     };
 
@@ -5930,8 +5980,6 @@ $root.ChatMessage = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
-            object.trophies = [];
         if (options.defaults) {
             object.userId = "";
             if ($util.Long) {
@@ -5939,6 +5987,7 @@ $root.ChatMessage = (function() {
                 object.timestamp = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.timestamp = options.longs === String ? "0" : 0;
+            object.text = "";
         }
         if (message.userId != null && message.hasOwnProperty("userId"))
             object.userId = message.userId;
@@ -5947,11 +5996,8 @@ $root.ChatMessage = (function() {
                 object.timestamp = options.longs === String ? String(message.timestamp) : message.timestamp;
             else
                 object.timestamp = options.longs === String ? $util.Long.prototype.toString.call(message.timestamp) : options.longs === Number ? new $util.LongBits(message.timestamp.low >>> 0, message.timestamp.high >>> 0).toNumber(true) : message.timestamp;
-        if (message.trophies && message.trophies.length) {
-            object.trophies = [];
-            for (var j = 0; j < message.trophies.length; ++j)
-                object.trophies[j] = $root.Trophy.toObject(message.trophies[j], options);
-        }
+        if (message.text != null && message.hasOwnProperty("text"))
+            object.text = message.text;
         return object;
     };
 
