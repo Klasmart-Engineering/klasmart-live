@@ -14,9 +14,9 @@ zone_id = '867a0bd8cc67b876b85a1571bc31620a'
 [env.james.vars]
   # Changes here must be mirrored in cloudflare-env.d.ts
 ENVIRONMENT = "dev"
-JKWS_URL = "https://kidsloop.cloudflareaccess.com/cdn-cgi/access/certs"
-JKWS_ISSUER = "https://kidsloop.cloudflareaccess.com"
-JKWS_AUDIENCE = "af975841f98ad87e83fad10ef8ae56876e43309cea67e04a4722feb99faec1cc"
+JWKS_URL = "https://kidsloop.cloudflareaccess.com/cdn-cgi/access/certs"
+JWKS_ISSUER = "https://kidsloop.cloudflareaccess.com"
+JWKS_AUDIENCE = "af975841f98ad87e83fad10ef8ae56876e43309cea67e04a4722feb99faec1cc"
 
 [env.james.durable_objects]
 bindings = [

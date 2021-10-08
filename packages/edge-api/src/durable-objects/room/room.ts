@@ -6,40 +6,61 @@ import { authenticate } from '../../utils/auth';
 import { isError } from '../../utils/result';
 import { nanoid } from 'nanoid';
 import { ClassRequest } from 'kidsloop-live-state/dist/protobuf';
+import { Client } from 'kidsloop-live-state';
+import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 
+const createFanOutMiddleware = (room: Room): Middleware<Dispatch> => {
+  const fanOutMiddleware: Middleware<Dispatch> = () => (next) => (action) => {
+    if (Date.now() - room.lastFanOut < 750) {
+      if (room.fanOutDebounceTimeout !== undefined)
+        clearTimeout(room.fanOutDebounceTimeout);
+    }
+    room.triggerFanOut();
+    next(action);
+  };
+  return fanOutMiddleware;
+};
 
 export class Room implements DurableObject {
 
-  private clients: Map<string, CloudflareWebsocket>;
+  private clients = new Map<string, CloudflareWebsocket>();
+  private store: EnhancedStore
 
   public constructor(
     private readonly state: DurableObjectState,
     private readonly env: CloudflareEnvironment,
     private readonly DEBUG = env.ENVIRONMENT === 'dev',
-    private readonly JWKS_URL = env.JKWS_URL,
-    private readonly jwtOptions = {
-      issuer: env.JKWS_ISSUER,
-      audience: env.JKWS_AUDIENCE,
-    },
   ) {
-    this.clients = new Map();
+    this.store = configureStore( {
+      reducer: Client.classReducer,
+      middleware: [
+        createFanOutMiddleware(this)
+      ],
+    });
   }
 
   public async fetch(request: Request): Promise<Response> {
     const { headers } = request;
     try {
       if (headers.get('Upgrade') !== 'websocket') {
-        if(this.DEBUG) { return json(this, 200, 2); }
+        if (this.DEBUG) { return json(this, 200, 2); }
         return statusText(400, 'Please connect to this endpoint via websocket');
       }
 
-      // const authenticationResult = await authenticate(request, this.JWKS_URL, this.jwtOptions);
-      // if(isError(authenticationResult)) { return authenticationResult.payload; }
-      // const context = authenticationResult.payload;
+      const authenticationResult = await authenticate(
+        request,
+        this.env.JWKS_URL,
+        {
+          issuer: this.env.JWKS_ISSUER,
+          audience: this.env.JWKS_AUDIENCE,
+        }
+      );
+      if (isError(authenticationResult)) { return authenticationResult.payload; }
+      const context = authenticationResult.payload;
 
       const protocol = request.headers.get('Sec-WebSocket-Protocol');
       const { response, ws } = websocketUpgrade(protocol);
-      
+
       this.setupWebsocket(ws);
       return response;
     } catch (e) {
@@ -51,9 +72,12 @@ export class Room implements DurableObject {
     const id = nanoid();
     this.clients.set(id, ws);
     ws.addEventListener('close', () => this.onWsClose(ws, id));
-    ws.addEventListener('message', ({data}) => this.onWsMessage(ws, id, data));
+    ws.addEventListener('message', ({ data }) => this.onWsMessage(ws, id, data));
     ws.addEventListener('error', () => this.onWsError(ws, id));
     ws.accept();
+    // DeviceConnect
+    // this.store.dispatch()
+
   }
 
   private onWsMessage(ws: CloudflareWebsocket, id: string, data: ArrayBuffer | string) {
@@ -75,11 +99,15 @@ export class Room implements DurableObject {
   private onWsClose(ws: CloudflareWebsocket, id: string) {
     console.log('ws closed: ' + id);
     this.clients.delete(id);
+    // DisconnectDevice
+    // this.store.dispatch()
   }
 
   private onWsError(ws: CloudflareWebsocket, id: string) {
     console.log('ws errored: ' + id);
     this.clients.delete(id);
+    // DisconnectDevice
+    // this.store.dispatch()
   }
 
 }
