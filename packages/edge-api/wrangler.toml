@@ -3,26 +3,27 @@ type = "javascript"
 workers_dev = false
 vars = { ENVIRONMENT = "unknown" }
 
-[env.dev]
+[env.james]
 account_id = "a511cc00f4a8396e83a447e33044aaa4"
 routes = [
-  'live.kidsloop.dev/h5p/*',
-  'live.kidsloop.dev/api/*'
+  'live-james.kidsloop.dev/h5p/*',
+  'live-james.kidsloop.dev/api/*'
 ]
 zone_id = '867a0bd8cc67b876b85a1571bc31620a'
 
-[env.dev.vars]
+[env.james.vars]
+  # Changes here must be mirrored in cloudflare-env.d.ts
 ENVIRONMENT = "dev"
 JKWS_URL = "https://kidsloop.cloudflareaccess.com/cdn-cgi/access/certs"
 JKWS_ISSUER = "https://kidsloop.cloudflareaccess.com"
 JKWS_AUDIENCE = "af975841f98ad87e83fad10ef8ae56876e43309cea67e04a4722feb99faec1cc"
 
-[env.dev.durable_objects]
+[env.james.durable_objects]
 bindings = [
   # Changes here must be mirrored in cloudflare-env.d.ts
-  { name = "activity", class_name = "ActivityStream" },
+  # { name = "activity", class_name = "ActivityStream" },
   { name = "room", class_name = "Room" },
-  { name = "wstest", class_name = "WebsocketTest" },
+  # { name = "wstest", class_name = "WebsocketTest" },
 ]
 
 [build]

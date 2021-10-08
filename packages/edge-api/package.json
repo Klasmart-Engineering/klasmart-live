@@ -47,6 +47,7 @@
     "jose-browser-runtime": "^3.15.5",
     "kidsloop-live-state": "file:../state",
     "kidsloop-page-stream": "file:../page-stream",
+    "nanoid": "^3.1.29",
     "redux": "^4.1.1",
     "redux-immutable": "^4.0.0",
     "whatwg-mimetype": "^2.3.0"
