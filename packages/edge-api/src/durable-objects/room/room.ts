@@ -5,9 +5,9 @@ import { websocketUpgrade } from '../../responses/websocket';
 import { authenticate } from '../../utils/auth';
 import { isError } from '../../utils/result';
 import { nanoid } from 'nanoid';
-import { ClassRequest } from 'kidsloop-live-state/dist/protobuf';
+import { ClassRequest, IClassEvent, RewardTrophyToUserRequest, SendChatMessageRequest, SetActivityStreamIdRequest, SetContentRequest, SetHostRequest } from 'kidsloop-live-state/dist/protobuf';
 import { Client } from 'kidsloop-live-state';
-import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
+import { configureStore, Dispatch, EnhancedStore, Middleware } from '@reduxjs/toolkit';
 
 const createFanOutMiddleware = (room: Room): Middleware<Dispatch> => {
   const fanOutMiddleware: Middleware<Dispatch> = () => (next) => (action) => {
@@ -15,13 +15,16 @@ const createFanOutMiddleware = (room: Room): Middleware<Dispatch> => {
       if (room.fanOutDebounceTimeout !== undefined)
         clearTimeout(room.fanOutDebounceTimeout);
     }
-    room.triggerFanOut();
+    // room.triggerFanOut();
     next(action);
   };
   return fanOutMiddleware;
 };
 
 export class Room implements DurableObject {
+
+  public fanOutDebounceTimeout: number | undefined = undefined;
+  public lastFanOut = Date.now();
 
   private clients = new Map<string, CloudflareWebsocket>();
   private store: EnhancedStore
@@ -86,14 +89,8 @@ export class Room implements DurableObject {
       this.onWsClose(ws, id);
       return;
     }
-
-    const request = ClassRequest.decode(new Uint8Array(data));
-    switch (request.type) {
-      case undefined:
-        console.log('request has no type. this should never happen');
-        return;
-      // other cases...
-    }
+    const requestWrapper = ClassRequest.decode(new Uint8Array(data));
+    // this.store.dispatch()
   }
 
   private onWsClose(ws: CloudflareWebsocket, id: string) {
