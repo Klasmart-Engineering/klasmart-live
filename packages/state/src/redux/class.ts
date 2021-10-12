@@ -1,7 +1,7 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WritableDraft } from 'immer/dist/internal';
-import { ContentType, ClassState, UserID, Content, ChatMessageState, newUserId, newTimestamp, DeviceID, ActivityStreamID, DeviceState, Trophy, newDeviceId, UserState } from '../../models';
-import { keys, ValueOf } from '../../types';
+import { ContentType, ClassState, UserID, Content, ChatMessageState, newTimestamp, DeviceID, ActivityStreamID, DeviceState, Trophy, UserState, UserRole } from '../models';
+import { keys, ValueOf } from '../types';
 
 type Reducer<T=undefined> = CaseReducer<ClassState, PayloadAction<T>>;
 
@@ -12,8 +12,8 @@ export const INITIAL_ROOM_STATE: ClassState = {
   content: {
     type: ContentType.Blank,
   },
-  hostUserId: newUserId(),
-  classEndTime: newTimestamp(),
+  hostUserId: undefined,
+  classEndTime: undefined,
 };
 
 const setState: Reducer<ClassState> = (state, action) => {
@@ -24,11 +24,11 @@ const endClass: Reducer = (state) => {
   state.classEndTime = newTimestamp(Date.now());
 };
 
-const deviceConnect: Reducer<{name: string, device: DeviceState}> = (
+const deviceConnect: Reducer<{name: string, device: DeviceState, role: UserRole}> = (
   state,
   action
 ) => {
-  const { name, device } = action.payload;
+  const { name, device, role } = action.payload;
   //Device
   state.devices[device.id] = device;
   //User
@@ -39,6 +39,7 @@ const deviceConnect: Reducer<{name: string, device: DeviceState}> = (
     state.users[userId] = {
       id: userId,
       name,
+      role,
       deviceIds: [device.id],
       trophies: [],
     };

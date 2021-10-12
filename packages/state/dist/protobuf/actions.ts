@@ -1,6 +1,6 @@
 import { IActivityStreamIdChangedEvent, IClassEndedEvent, IContentChangedEvent, IDeviceConnectedEvent, IDeviceDisconnectedEvent, IHostChangedEvent, INewChatMessageEvent, ISetClassStateEvent, ITrophyRewardedToAllEvent, ITrophyRewardedToUserEvent } from '.';
-import { classActions } from '../client';
-import { newActivityStreamId, newDeviceId, newUserId } from '../models';
+import { newActivityStreamId, newDeviceId, newUserId, newUserRole } from '../models';
+import { classActions } from '../redux/class';
 import { validateChatMessage, validateContent, validateDevice, validateState, validateTrophy } from './state';
 
 export function actvityStreamIdChangedAction(event: IActivityStreamIdChangedEvent): ReturnType<typeof classActions.setActivityStreamId> | undefined {
@@ -29,6 +29,7 @@ export function contentChangedAction(event: IContentChangedEvent): ReturnType<ty
 
 export function deviceConnectedAction(event: IDeviceConnectedEvent): ReturnType<typeof classActions.deviceConnect> | undefined {
     if(!event.name) { console.error('IDeviceConnectedEvent is missing name'); return; }
+    if(!event.role) { console.error('IDeviceConnectedEvent is missing role'); return; }
     if(!event.device) { console.error('IDeviceConnectedEvent is missing device'); return; }
     
     const device = validateDevice(event.device);
@@ -36,6 +37,7 @@ export function deviceConnectedAction(event: IDeviceConnectedEvent): ReturnType<
 
     return classActions.deviceConnect({
         name: event.name,
+        role: newUserRole(event.role),
         device,
     });
 }

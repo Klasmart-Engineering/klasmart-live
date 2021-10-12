@@ -1,10 +1,9 @@
-export { ConnectionStatus } from './client/network';
+export * as pb from './protobuf';
 
-export * as Server from './server';
-export * as Client from './client';
+export * from './models';
+
 export { NetworkContext } from './react/context';
 export { NetworkProvider } from './react/provider';
-
 export { SendChatMessageHook, useSendChatMessage } from './react/hooks/actions/useSendChatMessage';
 export { JoinClassHook, useJoinClass } from './react/hooks/actions/useJoinClass';
 export { LeaveClassHook, useLeaveClass } from './react/hooks/actions/useLeaveClass';
@@ -13,15 +12,15 @@ export { SetContentHook, useSetContent } from './react/hooks/actions/useSetConte
 export { ConnectionState, useConnectionState } from './react/hooks/data/useConnectionState';
 export { useMessages } from './react/hooks/data/useMessages';
 
-export type ID = string;
+export { ClassAction, classReducer } from './redux/class';
 
-export interface Context {
-  userId: ID;
-  isTeacher: boolean;
-  name: string;
-}
+import { combineReducers } from 'redux';
+import { NetworkAction, networkReducer } from './redux/network';
+import { ClassAction, classReducer } from './redux/class';
 
-export type ContextPayload<T> = {
-  context: Context;
-  payload: T;
-};
+export const reducer = combineReducers({
+  network: networkReducer,
+  room: classReducer,
+});
+export type State = ReturnType<typeof reducer> 
+export type Action =  NetworkAction | ClassAction

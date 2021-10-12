@@ -42,22 +42,26 @@ export enum ContentType {
 }
 
 export type UserID = NewType<string, 'UserID'>;
-export const newUserId = (value?: string): UserID => (value || '') as UserID;
+export const newUserId = (value: string): UserID => value as UserID;
 
 export type DeviceID = NewType<string, 'DeviceID'>
-export const newDeviceId = (value?: string): DeviceID => (value || '') as DeviceID;
+export const newDeviceId = (value: string): DeviceID => value as DeviceID;
 
 export type ActivityStreamID = NewType<string, 'ActivityStreamID'>
-export const newActivityStreamId = (value?: string): ActivityStreamID => (value || '') as ActivityStreamID;
+export const newActivityStreamId = (value: string): ActivityStreamID => value as ActivityStreamID;
 
 export type WebRTCStreamID = NewType<string, 'WebRTCStreamID'>
-export const newWebRtcStreamId = (value?: string): WebRTCStreamID => (value || '') as WebRTCStreamID;
+export const newWebRtcStreamId = (value: string): WebRTCStreamID => value as WebRTCStreamID;
 
 export type Timestamp = NewType<number, 'Timestamp'>
 export const newTimestamp = (value?: number): Timestamp => (value || Date.now()) as Timestamp;
 
 export type TrophyType = NewType<string, 'TrophyType'>
-export const newTrophyType = (value?: string): TrophyType => (value || '') as TrophyType;
+export const newTrophyType = (value: string): TrophyType => value as TrophyType;
+
+export type UserRole = NewType<string, 'UserRole'>
+export const newUserRole = (role: string): UserRole => role as UserRole;
+
 
 
 // Class State
@@ -72,9 +76,11 @@ export interface Trophy {
   type: TrophyType
 }
 
+
 export interface UserState {
   id: UserID
   name: string
+  role: UserRole
   trophies: Trophy[]
   deviceIds: DeviceID[] 
 }
@@ -98,22 +104,13 @@ export interface ClassState {
 
   chatMessages: ChatMessageState[]
   content: Content
-  hostUserId: UserID
+  hostUserId?: UserID
   classEndTime?: Timestamp
-}
-
-export interface Session {
-  id: string,
-  name: string,
-  streamId: string
-  isTeacher: boolean
-  isHost: boolean
-  joinedAt: number
 }
 
 export interface ChatMessageNotification {
   id: string
-  session: Session
+  user: UserState
   message: string
 }
 
@@ -137,8 +134,8 @@ export interface WhiteboardStateOut { }
 export interface WhiteboardEventOut { }
 export interface ClassNotification {
   chatMessage: ChatMessageNotification
-  join: Session
-  leave: Session
+  join: DeviceState
+  leave: DeviceState
   content: ContentNotification
   trophy: TrophyNotification
 

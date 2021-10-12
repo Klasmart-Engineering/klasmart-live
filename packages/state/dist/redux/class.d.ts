@@ -1,6 +1,6 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import { ClassState, UserID, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy } from '../../models';
-import { ValueOf } from '../../types';
+import { ClassState, UserID, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy, UserRole } from '../models';
+import { ValueOf } from '../types';
 declare type Reducer<T = undefined> = CaseReducer<ClassState, PayloadAction<T>>;
 export declare const INITIAL_ROOM_STATE: ClassState;
 export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
@@ -9,6 +9,7 @@ export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
     deviceConnect: Reducer<{
         name: string;
         device: DeviceState;
+        role: UserRole;
     }>;
     deviceDisconnect: Reducer<{
         deviceId: DeviceID;
@@ -35,6 +36,7 @@ export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions
     deviceConnect: Reducer<{
         name: string;
         device: DeviceState;
+        role: UserRole;
     }>;
     deviceDisconnect: Reducer<{
         deviceId: DeviceID;
@@ -56,4 +58,4 @@ export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions
 }>;
 export declare type ClassAction = ReturnType<ValueOf<typeof classActions>>;
 export {};
-//# sourceMappingURL=index.d.ts.map
+//# sourceMappingURL=class.d.ts.map

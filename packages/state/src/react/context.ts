@@ -1,5 +1,5 @@
 import React from 'react';
-import { Network } from '../client/network';
+import { Network } from '../network';
 
 export const NetworkContext = React.createContext<Network>(null as any);
 NetworkContext.displayName = 'KidsloopLiveNetwork';

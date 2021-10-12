@@ -1,4 +1,4 @@
-import { ConnectionStatus } from '../../../client/network';
+import { ConnectionStatus } from '../../../redux/network';
 export interface ConnectionState {
     connectionStatus: ConnectionStatus;
     connectionError: boolean;

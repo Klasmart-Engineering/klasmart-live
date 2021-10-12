@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { DefaultRootState } from 'react-redux';
-import { State } from '../client';
+import { State } from '../redux';
 export interface NetworkProviderProps {
     children?: ReactNode;
     selector: (state: DefaultRootState) => State;

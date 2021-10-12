@@ -2,24 +2,12 @@ import { debugResponse } from '../../responses/debug';
 import { json } from '../../responses/json';
 import { statusText } from '../../responses/statusText';
 import { websocketUpgrade } from '../../responses/websocket';
-import { authenticate } from '../../utils/auth';
+import { authenticate, Context } from '../../utils/auth';
 import { isError } from '../../utils/result';
 import { nanoid } from 'nanoid';
-import { ClassRequest, IClassEvent, RewardTrophyToUserRequest, SendChatMessageRequest, SetActivityStreamIdRequest, SetContentRequest, SetHostRequest } from 'kidsloop-live-state/dist/protobuf';
-import { Client } from 'kidsloop-live-state';
-import { configureStore, Dispatch, EnhancedStore, Middleware } from '@reduxjs/toolkit';
-
-const createFanOutMiddleware = (room: Room): Middleware<Dispatch> => {
-  const fanOutMiddleware: Middleware<Dispatch> = () => (next) => (action) => {
-    if (Date.now() - room.lastFanOut < 750) {
-      if (room.fanOutDebounceTimeout !== undefined)
-        clearTimeout(room.fanOutDebounceTimeout);
-    }
-    // room.triggerFanOut();
-    next(action);
-  };
-  return fanOutMiddleware;
-};
+import { classReducer, newDeviceId, pb } from 'kidsloop-live-state';
+import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
+import { ClassMessage } from 'kidsloop-live-state/dist/protobuf';
 
 export class Room implements DurableObject {
 
@@ -35,10 +23,8 @@ export class Room implements DurableObject {
     private readonly DEBUG = env.ENVIRONMENT === 'dev',
   ) {
     this.store = configureStore( {
-      reducer: Client.classReducer,
-      middleware: [
-        createFanOutMiddleware(this)
-      ],
+      reducer: classReducer,
+      middleware: [],
     });
   }
 
@@ -64,23 +50,31 @@ export class Room implements DurableObject {
       const protocol = request.headers.get('Sec-WebSocket-Protocol');
       const { response, ws } = websocketUpgrade(protocol);
 
-      this.setupWebsocket(ws);
+      this.setupWebsocket(ws, context);
       return response;
     } catch (e) {
       return debugResponse(headers, e, this.DEBUG);
     }
   }
 
-  private setupWebsocket(ws: CloudflareWebsocket) {
-    const id = nanoid();
-    this.clients.set(id, ws);
-    ws.addEventListener('close', () => this.onWsClose(ws, id));
-    ws.addEventListener('message', ({ data }) => this.onWsMessage(ws, id, data));
-    ws.addEventListener('error', () => this.onWsError(ws, id));
-    ws.accept();
-    // DeviceConnect
-    // this.store.dispatch()
+  private setupWebsocket(ws: CloudflareWebsocket, context: Context) {
+    const deviceId = newDeviceId(nanoid());
+    this.clients.set(deviceId, ws);
 
+    ws.addEventListener('close', () => this.onWsClose(ws, deviceId));
+    ws.addEventListener('message', ({ data }) => this.onWsMessage(ws, deviceId, data));
+    ws.addEventListener('error', () => this.onWsError(ws, deviceId));
+    ws.accept();
+
+    const connectEvent: pb.IDeviceConnectedEvent = {
+      name: context.name,
+      role: context.role,
+      device: {
+        id: deviceId,
+        userId: context.userId,
+      }
+    };
+    // this.store.dispatch()
   }
 
   private onWsMessage(ws: CloudflareWebsocket, id: string, data: ArrayBuffer | string) {
@@ -89,7 +83,7 @@ export class Room implements DurableObject {
       this.onWsClose(ws, id);
       return;
     }
-    const requestWrapper = ClassRequest.decode(new Uint8Array(data));
+    const requestWrapper = ClassMessage.decode(new Uint8Array(data));
     // this.store.dispatch()
   }
 
@@ -105,6 +99,10 @@ export class Room implements DurableObject {
     this.clients.delete(id);
     // DisconnectDevice
     // this.store.dispatch()
+  }
+
+  private broadcast() {
+    throw new Error('Not implemented');
   }
 
 }
