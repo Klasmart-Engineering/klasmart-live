@@ -1,14 +1,14 @@
-import { combineReducers, createAction, createReducer, Dispatch } from '@reduxjs/toolkit';
+import { Dispatch } from '@reduxjs/toolkit';
 import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { Action, State } from './redux';
-import { NewType, ValueOf } from './types';
-import { ClassRequest, IClassRequest, IActivityStreamIdChangedEvent, ITrophyRewardedToUserEvent, ITrophyRewardedToAllEvent, ISetClassStateEvent, INewChatMessageEvent, IHostChangedEvent, IDeviceDisconnectedEvent, IDeviceConnectedEvent, IContentChangedEvent, IClassEndedEvent, ClassMessage, IClassResponse } from './protobuf';
-import { actvityStreamIdChangedAction, classEndedAction, contentChangedAction, deviceConnectedAction, deviceDisconnectedAction, hostChangedAction, messageToClassAction, newChatMessageAction, setRoomStateAction, trophyRewardedToAllAction, trophyRewardedToUserAction } from './protobuf/actions';
+import { Action, State } from '.';
+import { NewType } from './types';
+import { ClassRequest, IClassRequest, ClassMessage, IClassResponse } from './protobuf';
+import { messageToClassAction } from './protobuf/actions';
 import { EventEmitter } from 'eventemitter3';
 import { ConnectionStatus, setConnectionError, setConnectionStatus } from './redux/network';
 
-type RequestID = NewType<string, 'RequestID'>
+export type RequestID = NewType<string, 'RequestID'>
 export const newRequestId = (value: string): RequestID => value as RequestID;
 
 interface NetworkPromise {

@@ -1,5 +1,4 @@
 export * as pb from './protobuf';
-export * from './protobuf/events';
 export * from './protobuf/actions';
 
 export * from './react/hooks/actions/useJoinClass';

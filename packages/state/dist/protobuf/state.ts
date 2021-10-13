@@ -1,4 +1,4 @@
-import { ContentType as PBContentType, IChatMessage, IClassState, IContent, IDevice, ITrophy } from '.';
+import { IChatMessage, IClassState, IContent, IDevice, ITrophy } from '.';
 import { Content, ContentType, newDeviceId, DeviceState, Trophy, TrophyType, newUserId, newWebRtcStreamId, newActivityStreamId, newTimestamp, ChatMessageState, ClassState } from '../models';
 
 
@@ -14,28 +14,13 @@ export function validateChatMessage({text,timestamp,userId}: IChatMessage): Chat
     };
 }
 
-export function validateContentType(content: PBContentType): ContentType | undefined {
-    switch (content) {
-        case PBContentType.Activity:
-            return ContentType.Activity;
-        case PBContentType.Audio:
-            return ContentType.Audio;
-        case PBContentType.Blank:
-            return ContentType.Blank;
-        case PBContentType.Camera:
-            return ContentType.Camera;
-        case PBContentType.Image:
-            return ContentType.Image;
-        case PBContentType.Screen:
-            return ContentType.Screen;
-        case PBContentType.Stream:
-            return ContentType.Stream;
-        case PBContentType.Video:
-            return ContentType.Video;
-        default:
-            console.error('Unkown ContentType');
-            return undefined;
-    }
+export function validateContentType(content: string): ContentType | undefined {
+    // In the case that string is not a member of the enum,
+    // this function will return undefined
+    // Due to casting content to 'as keyof typeof ContentType'
+    // the contentType variable has been explicitly defined as Optional
+    const contentType: ContentType | undefined = ContentType[content as keyof typeof ContentType];
+    return contentType;
 }
 
 export function validateContent(content: IContent): Content | undefined {
@@ -43,7 +28,7 @@ export function validateContent(content: IContent): Content | undefined {
     if (!content.contentLocation) { console.error('IContent is missing type'); return; }
 
     const type = validateContentType(content.type);
-    if(!type) { return; }
+    if(!type) { console.error(`IContent has an invalid type '${content.type}'`); return; }
     const contentLocation = content.contentLocation;
     return { type, contentLocation };
 }

@@ -1,8 +1,8 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { DefaultRootState } from 'react-redux';
-import { Action, State } from './redux';
+import { Action, State } from '.';
 import { NewType } from './types';
-declare type RequestID = NewType<string, 'RequestID'>;
+export declare type RequestID = NewType<string, 'RequestID'>;
 export declare const newRequestId: (value: string) => RequestID;
 export declare class Network {
     readonly dispatch: Dispatch<Action>;
@@ -20,5 +20,4 @@ export declare class Network {
     private resetKeepAliveTimeout;
     private sendKeepAlive;
 }
-export {};
 //# sourceMappingURL=network.d.ts.map

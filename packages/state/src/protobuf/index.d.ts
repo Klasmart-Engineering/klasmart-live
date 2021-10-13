@@ -2475,7 +2475,7 @@ export class ChatMessage implements IChatMessage {
 export interface IContent {
 
     /** Content type */
-    type?: (ContentType|null);
+    type?: (string|null);
 
     /** Content contentLocation */
     contentLocation?: (string|null);
@@ -2491,7 +2491,7 @@ export class Content implements IContent {
     constructor(properties?: IContent);
 
     /** Content type. */
-    public type: ContentType;
+    public type: string;
 
     /** Content contentLocation. */
     public contentLocation: string;
@@ -2565,16 +2565,4 @@ export class Content implements IContent {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
-}
-
-/** ContentType enum. */
-export enum ContentType {
-    Blank = 0,
-    Stream = 1,
-    Activity = 2,
-    Video = 3,
-    Audio = 4,
-    Image = 5,
-    Camera = 6,
-    Screen = 7
 }

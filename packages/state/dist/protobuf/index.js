@@ -5991,7 +5991,7 @@ $root.Content = (function() {
      * Properties of a Content.
      * @exports IContent
      * @interface IContent
-     * @property {ContentType|null} [type] Content type
+     * @property {string|null} [type] Content type
      * @property {string|null} [contentLocation] Content contentLocation
      */
 
@@ -6012,11 +6012,11 @@ $root.Content = (function() {
 
     /**
      * Content type.
-     * @member {ContentType} type
+     * @member {string} type
      * @memberof Content
      * @instance
      */
-    Content.prototype.type = 0;
+    Content.prototype.type = "";
 
     /**
      * Content contentLocation.
@@ -6051,7 +6051,7 @@ $root.Content = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.type != null && Object.hasOwnProperty.call(message, "type"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.type);
         if (message.contentLocation != null && Object.hasOwnProperty.call(message, "contentLocation"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.contentLocation);
         return writer;
@@ -6089,7 +6089,7 @@ $root.Content = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.type = reader.int32();
+                message.type = reader.string();
                 break;
             case 2:
                 message.contentLocation = reader.string();
@@ -6130,19 +6130,8 @@ $root.Content = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.type != null && message.hasOwnProperty("type"))
-            switch (message.type) {
-            default:
-                return "type: enum value expected";
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-                break;
-            }
+            if (!$util.isString(message.type))
+                return "type: string expected";
         if (message.contentLocation != null && message.hasOwnProperty("contentLocation"))
             if (!$util.isString(message.contentLocation))
                 return "contentLocation: string expected";
@@ -6161,40 +6150,8 @@ $root.Content = (function() {
         if (object instanceof $root.Content)
             return object;
         var message = new $root.Content();
-        switch (object.type) {
-        case "Blank":
-        case 0:
-            message.type = 0;
-            break;
-        case "Stream":
-        case 1:
-            message.type = 1;
-            break;
-        case "Activity":
-        case 2:
-            message.type = 2;
-            break;
-        case "Video":
-        case 3:
-            message.type = 3;
-            break;
-        case "Audio":
-        case 4:
-            message.type = 4;
-            break;
-        case "Image":
-        case 5:
-            message.type = 5;
-            break;
-        case "Camera":
-        case 6:
-            message.type = 6;
-            break;
-        case "Screen":
-        case 7:
-            message.type = 7;
-            break;
-        }
+        if (object.type != null)
+            message.type = String(object.type);
         if (object.contentLocation != null)
             message.contentLocation = String(object.contentLocation);
         return message;
@@ -6214,11 +6171,11 @@ $root.Content = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.type = options.enums === String ? "Blank" : 0;
+            object.type = "";
             object.contentLocation = "";
         }
         if (message.type != null && message.hasOwnProperty("type"))
-            object.type = options.enums === String ? $root.ContentType[message.type] : message.type;
+            object.type = message.type;
         if (message.contentLocation != null && message.hasOwnProperty("contentLocation"))
             object.contentLocation = message.contentLocation;
         return object;
@@ -6236,32 +6193,6 @@ $root.Content = (function() {
     };
 
     return Content;
-})();
-
-/**
- * ContentType enum.
- * @exports ContentType
- * @enum {number}
- * @property {number} Blank=0 Blank value
- * @property {number} Stream=1 Stream value
- * @property {number} Activity=2 Activity value
- * @property {number} Video=3 Video value
- * @property {number} Audio=4 Audio value
- * @property {number} Image=5 Image value
- * @property {number} Camera=6 Camera value
- * @property {number} Screen=7 Screen value
- */
-$root.ContentType = (function() {
-    var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "Blank"] = 0;
-    values[valuesById[1] = "Stream"] = 1;
-    values[valuesById[2] = "Activity"] = 2;
-    values[valuesById[3] = "Video"] = 3;
-    values[valuesById[4] = "Audio"] = 4;
-    values[valuesById[5] = "Image"] = 5;
-    values[valuesById[6] = "Camera"] = 6;
-    values[valuesById[7] = "Screen"] = 7;
-    return values;
 })();
 
 module.exports = $root;

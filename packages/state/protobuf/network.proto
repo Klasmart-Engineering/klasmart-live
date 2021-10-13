@@ -159,19 +159,8 @@ message ChatMessage {
 }
 
 message Content {
-    ContentType type = 1;
+    string type = 1;
     string content_location = 2;
-}
-
-enum ContentType {
-    Blank = 0;
-    Stream = 1; // Consume a DOM (Activity) stream
-    Activity = 2; //Produce a DOM (Activity) Stream
-    Video = 3;
-    Audio = 4;
-    Image = 5;
-    Camera = 6;
-    Screen = 7;
 }
 
 /* ======= END DATA ======= */

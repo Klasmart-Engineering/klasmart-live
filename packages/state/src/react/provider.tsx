@@ -1,7 +1,7 @@
 import React, { FC, useMemo, ReactNode } from 'react';
 import { DefaultRootState, useDispatch } from 'react-redux';
+import { State } from '..';
 import { Network } from '../network';
-import { State } from '../redux';
 import NetworkContext from './context';
 
 

@@ -4,10 +4,12 @@ import { statusText } from '../../responses/statusText';
 import { websocketUpgrade } from '../../responses/websocket';
 import { authenticate, Context } from '../../utils/auth';
 import { isError } from '../../utils/result';
-import { nanoid } from 'nanoid';
-import { ClassAction, classReducer, ClassState, convertCommandToEvent, DeviceID, messageToClassAction, newDeviceId, pb } from 'kidsloop-live-state';
+import { Action, ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, newDeviceId, pb, UserID } from 'kidsloop-live-state';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
+import { User } from 'kidsloop-live-state/dist/protobuf';
 
+let nextDeviceId = 1;
+const generateDeviceId = () => newDeviceId(`${nextDeviceId++}`);
 export class Room implements DurableObject {
 
   private clients = new Map<DeviceID, CloudflareWebsocket>();
@@ -18,7 +20,7 @@ export class Room implements DurableObject {
     private readonly env: CloudflareEnvironment,
     private readonly DEBUG = env.ENVIRONMENT === 'dev',
   ) {
-    this.store = configureStore<ClassState, ClassAction>( {
+    this.store = configureStore<ClassState, ClassAction>({
       reducer: classReducer,
     });
   }
@@ -53,7 +55,7 @@ export class Room implements DurableObject {
   }
 
   private setupWebsocket(ws: CloudflareWebsocket, context: Context) {
-    const deviceId = newDeviceId(nanoid());
+    const deviceId = generateDeviceId();
     this.clients.set(deviceId, ws);
 
     ws.addEventListener('close', () => this.onWsClose(ws, deviceId));
@@ -61,82 +63,165 @@ export class Room implements DurableObject {
     ws.addEventListener('error', () => this.onWsError(ws, deviceId));
     ws.accept();
 
-    const event: pb.IDeviceConnectedEvent = {
-      name: context.name,
-      role: context.role,
-      device: {
-        id: deviceId,
-        userId: context.userId,
+    const state = this.store.getState();
+    const stateMessage = pb.ClassMessage.encode({ setRoomState: { state } }).finish();
+    ws.send(stateMessage);
+
+    this.dispatchAndBroadcast({
+      deviceConnected: {
+        name: context.name,
+        role: context.role,
+        device: {
+          id: deviceId,
+          userId: context.userId,
+        }
       }
-    };
-    const message: pb.IClassMessage = {deviceConnected: event};
-    const action = messageToClassAction(message);
-    if (!action) {
-      console.log('parsing message into redux action failed');
-      return;
-    }
-    this.store.dispatch(action);
-    this.broadcast(message);
+    });
   }
 
   private onWsMessage(ws: CloudflareWebsocket, data: ArrayBuffer | string, deviceId: DeviceID, context: Context) {
     if (!(data instanceof ArrayBuffer)) {
-      console.log('recieved non ArrayBuffer data: ' + data);
-      this.onWsClose(ws, deviceId);
+      console.log(`recieved non ArrayBuffer data: ${data}`);
+      ws.close(4400, 'binary messages only');
       return;
     }
+
     const request = pb.ClassRequest.decode(new Uint8Array(data));
-    const message = convertCommandToEvent(request, context.userId, deviceId);
-    if (!message) {
-      console.log('parsing request into message failed');
-      return;
+    const { requestId } = request;
+    let error: string | undefined;
+    let message: pb.IClassMessage | undefined;
+
+
+    const state = this.store.getState();
+    if(allowed(request, state, deviceId)) {
+      message = convertCommandToEvent(request, context.userId, deviceId);
+    } else {
+      error = 'Not allowed';
     }
-    const action = messageToClassAction(message);
-    if (!action) {
-      console.log('parsing message into redux action failed');
-      return;
-    }
-    this.store.dispatch(action);
-    this.broadcast(message);
+
+    const response = pb.ClassMessage.encode({
+      ...message,
+      response: {
+        id: requestId,
+        error,
+      },
+    }).finish();
+    ws.send(response);
+
+    if (!message) { console.log('parsing request into message failed'); return; }
+    this.dispatchAndBroadcast(message, deviceId);
   }
 
   private onWsClose(ws: CloudflareWebsocket, deviceId: DeviceID) {
-    console.log('ws closed: ' + deviceId);
+    console.log(`ws closed: ${deviceId}`);
     this.clients.delete(deviceId);
-    const event: pb.IDeviceDisconnectedEvent = {
-      deviceId: deviceId,
-    };
-    const message: pb.IClassMessage = {deviceDisconnected: event};
-    const action = messageToClassAction(message);
-    if (!action) {
-      console.log('parsing message into redux action failed');
-      return;
-    }
-    this.store.dispatch(action);
-    this.broadcast(message);
+    this.dispatchAndBroadcast({ deviceDisconnected: { deviceId } });
   }
+
 
   private onWsError(ws: CloudflareWebsocket, deviceId: DeviceID) {
-    console.log('ws errored: ' + deviceId);
+    console.log(`websocket Error on device(${deviceId})`);
+    ws.close();
     this.clients.delete(deviceId);
-    const event: pb.IDeviceDisconnectedEvent = {
-      deviceId: deviceId,
-    };
-    const message: pb.IClassMessage = {deviceDisconnected: event};
-    const action = messageToClassAction(message);
-    if (!action) {
-      console.log('parsing message into redux action failed');
-      return;
-    }
-    this.store.dispatch(action);
-    this.broadcast(message);
+    this.dispatchAndBroadcast({ deviceDisconnected: { deviceId } });
   }
 
-  private broadcast(message: pb.IClassMessage) {
-    [...this.clients.values()].forEach((client) => {
-      const bytes = pb.ClassMessage.encode(message).finish();
-      client.send(bytes);
+  // This function should be atomic,
+  // State replication messages and state updates must be processed in the same order.
+  private dispatchAndBroadcast(message: pb.IClassMessage, skipDeviceId?: DeviceID) {
+    const action = messageToClassAction(message);
+    if (!action) { console.log('parsing message into redux action failed'); return; }
+    this.store.dispatch(action);
+
+    const broadcastData = pb.ClassMessage.encode(message).finish();
+    this.clients.forEach((ws, deviceId) => {
+      if(deviceId === skipDeviceId) { return; }
+      try {
+        ws.send(broadcastData);
+      } catch (e) {
+        ws.close(4500, 'ws send failure');
+      }
     });
   }
+}
 
+const convertCommandToEvent = (requestProperties: pb.IClassRequest, userId: UserID, deviceId: DeviceID): pb.IClassMessage | undefined => {
+  const request = pb.ClassRequest.create(requestProperties);
+  if (!request.command) {
+    console.log('request has no command. this should never happen');
+    return;
+  }
+
+  if (request.endClass) {
+    return {
+      classEnded: {
+        timestamp: Date.now(),
+      }
+    };
+  } else if (request.setHost) {
+    return {
+      hostChanged: {
+        ...request.setHost,
+      }
+    };
+  } else if (request.setContent) {
+    return {
+      contentChanged: {
+        ...request.setContent,
+      }
+    };
+  } else if (request.sendChatMessage) {
+    return {
+      newChatMessage: {
+        chatMessage: {
+          ...request.sendChatMessage,
+          timestamp: Date.now(),
+          userId,
+        },
+      }
+    };
+  } else if (request.setActvityStreamId) {
+    return {
+      actvityStreamIdChanged: {
+        deviceId,
+        ...request.setActvityStreamId,
+      }
+    };
+  } else if (request.rewardTrophyToUser) {
+    return {
+      trophyRewardedToUser: {
+        ...request.rewardTrophyToUser
+      }
+    };
+  } else if (request.rewardTrophyToAll) {
+    return {
+      trophyRewardedToAll: {
+        ...request.rewardTrophyToAll
+      }
+    };
+  } else {
+    console.error('Network Message and ClassRequest are out of sync. It is likely that the application must be updated to a newer protocol version');
+    return;
+  }
+};
+
+function allowed(request: pb.ClassRequest, state: ClassState, deviceId: DeviceID): boolean {
+  
+  const device = state.devices[deviceId];
+  const user = state.users[device.userId];
+
+  switch(request.command) {
+    case 'endClass':
+    case 'setContent':
+    case 'rewardTrophyToAll':
+    case 'rewardTrophyToUser':
+    case 'setHost':
+      return state.hostUserId === user.id;
+    case 'setActvityStreamId':
+    case 'sendChatMessage':
+      return true;
+    default:
+      console.error(`Rejecting unknown command type '${request.command}'`);
+      return false;
+  }
 }
