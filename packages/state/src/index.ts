@@ -1,26 +1,30 @@
 export * as pb from './protobuf';
+export * from './protobuf/events';
+export * from './protobuf/actions';
+
+export * from './react/hooks/actions/useJoinClass';
+export * from './react/hooks/actions/useLeaveClass';
+export * from './react/hooks/actions/useSendChatMessage';
+export * from './react/hooks/actions/useSetContent';
+
+export * from './react/hooks/data/useConnectionState';
+export * from './react/hooks/data/useMessages';
+
+export * from './react/context';
+export * from './react/provider';
+
+export * from './redux/class';
+export * from './redux/network';
 
 export * from './models';
 
-export { NetworkContext } from './react/context';
-export { NetworkProvider } from './react/provider';
-export { SendChatMessageHook, useSendChatMessage } from './react/hooks/actions/useSendChatMessage';
-export { JoinClassHook, useJoinClass } from './react/hooks/actions/useJoinClass';
-export { LeaveClassHook, useLeaveClass } from './react/hooks/actions/useLeaveClass';
-export { SetContentHook, useSetContent } from './react/hooks/actions/useSetContent';
-
-export { ConnectionState, useConnectionState } from './react/hooks/data/useConnectionState';
-export { useMessages } from './react/hooks/data/useMessages';
-
-export { ClassAction, classReducer } from './redux/class';
-
 import { combineReducers } from 'redux';
-import { NetworkAction, networkReducer } from './redux/network';
 import { ClassAction, classReducer } from './redux/class';
+import { NetworkAction, networkReducer } from './redux/network';
 
 export const reducer = combineReducers({
+  class: classReducer,
   network: networkReducer,
-  room: classReducer,
 });
 export type State = ReturnType<typeof reducer> 
-export type Action =  NetworkAction | ClassAction
+export type Action =  ClassAction | NetworkAction

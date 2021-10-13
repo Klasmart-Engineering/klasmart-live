@@ -1,7 +1,42 @@
-import { IActivityStreamIdChangedEvent, IClassEndedEvent, IContentChangedEvent, IDeviceConnectedEvent, IDeviceDisconnectedEvent, IHostChangedEvent, INewChatMessageEvent, ISetClassStateEvent, ITrophyRewardedToAllEvent, ITrophyRewardedToUserEvent } from '.';
+import { IActivityStreamIdChangedEvent, IClassEndedEvent, IClassMessage, IContentChangedEvent, IDeviceConnectedEvent, IDeviceDisconnectedEvent, IHostChangedEvent, INewChatMessageEvent, ISetClassStateEvent, ITrophyRewardedToAllEvent, ITrophyRewardedToUserEvent } from '.';
 import { newActivityStreamId, newDeviceId, newUserId, newUserRole } from '../models';
-import { classActions } from '../redux/class';
+import { ClassAction, classActions } from '../redux/class';
 import { validateChatMessage, validateContent, validateDevice, validateState, validateTrophy } from './state';
+
+
+export function messageToClassAction(message: IClassMessage): ClassAction | undefined {
+    if(message.actvityStreamIdChanged) {
+        return actvityStreamIdChangedAction(message.actvityStreamIdChanged);
+    }
+    if(message.classEnded) {
+        return classEndedAction(message.classEnded);
+    }
+    if(message.contentChanged) {
+        return contentChangedAction(message.contentChanged);
+    }
+    if(message.deviceConnected) {
+        return deviceConnectedAction(message.deviceConnected);
+    }
+    if(message.deviceDisconnected) {
+        return deviceDisconnectedAction(message.deviceDisconnected);
+    }
+    if(message.hostChanged) {
+        return hostChangedAction(message.hostChanged);
+    }
+    if(message.newChatMessage) {
+        return newChatMessageAction(message.newChatMessage);
+    }
+    if(message.setRoomState) {
+        return setRoomStateAction(message.setRoomState);
+    }
+    if(message.trophyRewardedToAll) {
+        return trophyRewardedToAllAction(message.trophyRewardedToAll);
+    }
+    if(message.trophyRewardedToUser) {
+        return trophyRewardedToUserAction(message.trophyRewardedToUser);
+    }
+    return undefined;
+}
 
 export function actvityStreamIdChangedAction(event: IActivityStreamIdChangedEvent): ReturnType<typeof classActions.setActivityStreamId> | undefined {
     if(!event.deviceId) { console.error('IActivityStreamIdChangedEvent missing deviceId'); return; }

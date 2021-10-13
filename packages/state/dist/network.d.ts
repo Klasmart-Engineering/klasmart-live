@@ -17,17 +17,6 @@ export declare class Network {
     private send;
     private onNetworkMessage;
     private handleRequestPromise;
-    private dispatchEvent;
-    private actvityStreamIdChanged;
-    private classEnded;
-    private contentChanged;
-    private deviceConnected;
-    private deviceDisconnected;
-    private hostChanged;
-    private newChatMessage;
-    private setRoomState;
-    private trophyRewardedToAll;
-    private trophyRewardedToUser;
     private resetKeepAliveTimeout;
     private sendKeepAlive;
 }
