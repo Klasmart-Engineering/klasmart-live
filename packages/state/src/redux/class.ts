@@ -2,6 +2,7 @@ import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WritableDraft } from 'immer/dist/internal';
 import { ContentType, ClassState, UserID, Content, ChatMessageState, newTimestamp, DeviceID, ActivityStreamID, DeviceState, Trophy, UserState, UserRole } from '../models';
 import { keys, ValueOf } from '../types';
+import { isAllowedToBecomeHost } from './authorization';
 
 type Reducer<T=undefined> = CaseReducer<ClassState, PayloadAction<T>>;
 
@@ -44,6 +45,9 @@ const deviceConnect: Reducer<{name: string, device: DeviceState, role: UserRole}
       trophies: [],
     };
   }
+  if(!state.hostUserId && isAllowedToBecomeHost(role)) {
+    state.hostUserId = userId;
+  }
 
 };
 
@@ -58,6 +62,22 @@ const deviceDisconnect: Reducer<{deviceId: DeviceID}> = (
   const user = state.users[device.userId] as WritableDraft<UserState> | undefined;
   if(!user) { return; }
   user.deviceIds = user.deviceIds.filter((id) => id !== deviceId);
+
+  if(state.hostUserId === user.id) {
+    state.hostUserId = undefined;
+    const userIds = Object.keys(state.users) as UserID[];
+    // userIds.sort(); sort may be unecessary
+    // It ensures deterministic evaluation on all clients, regardless of the keys array ordering
+    // Which could be affected by serialization and deserialization during network messages
+    userIds.sort();
+    for(const userId of userIds) {
+      const user = state.users[userId];
+      if(isAllowedToBecomeHost(user.role)) {
+        state.hostUserId = user.id;
+        break;
+      }
+    }
+  }
 };
 
 const setHost: Reducer<UserID> = (state, action) => {
