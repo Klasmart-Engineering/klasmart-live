@@ -2,17 +2,17 @@ import { debugResponse } from '../../responses/debug';
 import { json } from '../../responses/json';
 import { statusText } from '../../responses/statusText';
 import { websocketUpgrade } from '../../responses/websocket';
-import { authenticate, Context } from '../../utils/auth';
-import { isError } from '../../utils/result';
-import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, newDeviceId, pb, UserID } from 'kidsloop-live-state';
+import { authenticate, Context } from './authentication';
+import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, pb, UserID } from 'kidsloop-live-state';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
-import { idGenerator } from '../../utils/utils';
-
-const generateDeviceId = idGenerator(newDeviceId);
+import { Client } from './client';
+import { isError } from './result';
+import { isAuthorized } from './authorization';
+import { requestToMessage } from './requestToMessage';
 
 export class Room implements DurableObject {
 
-  private clients = new Map<DeviceID, CloudflareWebsocket>();
+  private clients = new Set<Client>();
   private store: EnhancedStore<ClassState, ClassAction>;
 
   public constructor(
@@ -46,52 +46,46 @@ export class Room implements DurableObject {
 
       const protocol = request.headers.get('Sec-WebSocket-Protocol');
       const { response, ws } = websocketUpgrade(protocol);
-
-      this.setupWebsocket(ws, context);
+      this.addClient(ws, context);
       return response;
     } catch (e) {
       return debugResponse(headers, e, this.DEBUG);
     }
   }
 
-  private setupWebsocket(ws: CloudflareWebsocket, context: Context) {
-    const deviceId = generateDeviceId();
-    this.clients.set(deviceId, ws);
+  private addClient(ws: CloudflareWebsocket, context: Context) {
+    const client = new Client(ws);
+    this.clients.add(client);
 
-    ws.addEventListener('message', ({ data }) => this.onWsMessage(ws, data, deviceId, context));
-    ws.addEventListener('close', () => this.onWsClose(ws, deviceId));
-    ws.addEventListener('error', () => this.onWsError(ws, deviceId));
-    ws.accept();
+    client.onRequest = (request: pb.ClassRequest) => this.onClientRequest(client, request, context);
+    client.onTerminate = (client:Client) => this.onClientTermination(client),
 
-    const state = this.store.getState();
-    this.send(ws, { setRoomState: { state } });
+    // Update state with new user
     this.dispatchAndBroadcastOthers(
       {
         deviceConnected: {
           name: context.name,
           role: context.role,
           device: {
-            id: deviceId,
+            id: client.deviceId,
             userId: context.userId,
           }
         }
       },
-      deviceId
+      client.deviceId,
     );
+
+    // Send updated state to user
+    const state = this.store.getState();
+    client.send({ setRoomState: { state } });
   }
 
-  private onWsMessage(ws: CloudflareWebsocket, data: ArrayBuffer | string, deviceId: DeviceID, context: Context) {
-    if (!(data instanceof ArrayBuffer)) {
-      console.log(`recieved non ArrayBuffer data: ${data}`);
-      ws.close(4400, 'binary messages only');
-      return;
-    }
-
-    const request = pb.ClassRequest.decode(new Uint8Array(data));
+  private onClientRequest(client: Client, request: pb.ClassRequest, context: Context) {
+    const { deviceId } = client;
     const { requestId } = request;
 
-    if(!allowed(request, this.store.getState(), deviceId)) {
-      this.send(ws, {
+    if(!isAuthorized(request, this.store.getState(), deviceId)) {
+      client.send({
         response: {
           id: requestId,
           error: 'Not allowed',
@@ -100,10 +94,10 @@ export class Room implements DurableObject {
       return;
     }
 
-    const message = convertCommandToEvent(request, context.userId, deviceId);
+    const message = requestToMessage(request, context.userId, deviceId);
     if (!message) { console.log('parsing request into message failed'); return; }
 
-    this.send(ws, {
+    client.send({
       ...message,
       response: {
         id: requestId,
@@ -112,127 +106,23 @@ export class Room implements DurableObject {
     this.dispatchAndBroadcastOthers(message, deviceId);
   }
 
-  private onWsClose(ws: CloudflareWebsocket, deviceId: DeviceID) {
-    console.log(`ws closed: ${deviceId}`);
-    this.clients.delete(deviceId);
-    this.dispatchAndBroadcastOthers({ deviceDisconnected: { deviceId } }, deviceId);
-  }
-
-  private onWsError(ws: CloudflareWebsocket, deviceId: DeviceID) {
-    console.log(`websocket Error on device(${deviceId})`);
-    ws.close();
-    this.clients.delete(deviceId);
+  private onClientTermination(client: Client) {
+    const { deviceId } = client;
+    this.clients.delete(client);
     this.dispatchAndBroadcastOthers({ deviceDisconnected: { deviceId } }, deviceId);
   }
 
   // These broadcast functions should be atomic,
   // State replication messages and state updates must be processed in the same order.
-  private dispatchAndBroadcast(message: pb.IClassMessage) {
-    this.dispatch(message);
-    this.clients.forEach((ws) => {
-      this.send(ws, message);
-    });
-  }
   private dispatchAndBroadcastOthers(message: pb.IClassMessage, skipDeviceId: DeviceID) {
-    this.dispatch(message);
-    this.clients.forEach((ws, deviceId) => {
-      if(deviceId === skipDeviceId) { return; }
-        this.send(ws, message);
-    });
-  }
-
-  private send(ws: CloudflareWebsocket, message: pb.IClassMessage) {
-    try {
-      ws.send(pb.ClassMessage.encode(message).finish());
-    } catch (e) {
-      ws.close(4500, 'ws send failure');
-    }
-  }
-
-  private dispatch(message: pb.IClassMessage) {
     const action = messageToClassAction(message);
     if (!action) { console.log('parsing message into redux action failed'); return; }
     this.store.dispatch(action);
-  }
-}
 
-const convertCommandToEvent = (requestProperties: pb.IClassRequest, userId: UserID, deviceId: DeviceID): pb.IClassMessage | undefined => {
-  const request = pb.ClassRequest.create(requestProperties);
-  if (!request.command) {
-    console.log('request has no command. this should never happen');
-    return;
-  }
-
-  if (request.endClass) {
-    return {
-      classEnded: {
-        timestamp: Date.now(),
-      }
-    };
-  } else if (request.setHost) {
-    return {
-      hostChanged: {
-        ...request.setHost,
-      }
-    };
-  } else if (request.setContent) {
-    return {
-      contentChanged: {
-        ...request.setContent,
-      }
-    };
-  } else if (request.sendChatMessage) {
-    return {
-      newChatMessage: {
-        chatMessage: {
-          ...request.sendChatMessage,
-          timestamp: Date.now(),
-          userId,
-        },
-      }
-    };
-  } else if (request.setActvityStreamId) {
-    return {
-      actvityStreamIdChanged: {
-        deviceId,
-        ...request.setActvityStreamId,
-      }
-    };
-  } else if (request.rewardTrophyToUser) {
-    return {
-      trophyRewardedToUser: {
-        ...request.rewardTrophyToUser
-      }
-    };
-  } else if (request.rewardTrophyToAll) {
-    return {
-      trophyRewardedToAll: {
-        ...request.rewardTrophyToAll
-      }
-    };
-  } else {
-    console.error('Network Message and ClassRequest are out of sync. It is likely that the application must be updated to a newer protocol version');
-    return;
-  }
-};
-
-function allowed(request: pb.ClassRequest, state: ClassState, deviceId: DeviceID): boolean {
-  
-  const device = state.devices[deviceId];
-  const user = state.users[device.userId];
-
-  switch(request.command) {
-    case 'endClass':
-    case 'setContent':
-    case 'rewardTrophyToAll':
-    case 'rewardTrophyToUser':
-    case 'setHost':
-      return state.hostUserId === user.id;
-    case 'setActvityStreamId':
-    case 'sendChatMessage':
-      return true;
-    default:
-      console.error(`Rejecting unknown command type '${request.command}'`);
-      return false;
+    const bytes = pb.ClassMessage.encode(message).finish();
+    this.clients.forEach((client) => {
+      if(client.deviceId === skipDeviceId) { return; }
+      client.send(bytes);
+    });
   }
 }
