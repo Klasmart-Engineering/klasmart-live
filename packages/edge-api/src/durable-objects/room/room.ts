@@ -4,12 +4,12 @@ import { statusText } from '../../responses/statusText';
 import { websocketUpgrade } from '../../responses/websocket';
 import { authenticate, Context } from '../../utils/auth';
 import { isError } from '../../utils/result';
-import { Action, ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, newDeviceId, pb, UserID } from 'kidsloop-live-state';
+import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, newDeviceId, pb, UserID } from 'kidsloop-live-state';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
-import { User } from 'kidsloop-live-state/dist/protobuf';
+import { idGenerator } from '../../utils/utils';
 
-let nextDeviceId = 1;
-const generateDeviceId = () => newDeviceId(`${nextDeviceId++}`);
+const generateDeviceId = idGenerator(newDeviceId);
+
 export class Room implements DurableObject {
 
   private clients = new Map<DeviceID, CloudflareWebsocket>();
@@ -58,25 +58,26 @@ export class Room implements DurableObject {
     const deviceId = generateDeviceId();
     this.clients.set(deviceId, ws);
 
-    ws.addEventListener('close', () => this.onWsClose(ws, deviceId));
     ws.addEventListener('message', ({ data }) => this.onWsMessage(ws, data, deviceId, context));
+    ws.addEventListener('close', () => this.onWsClose(ws, deviceId));
     ws.addEventListener('error', () => this.onWsError(ws, deviceId));
     ws.accept();
 
     const state = this.store.getState();
-    const stateMessage = pb.ClassMessage.encode({ setRoomState: { state } }).finish();
-    ws.send(stateMessage);
-
-    this.dispatchAndBroadcast({
-      deviceConnected: {
-        name: context.name,
-        role: context.role,
-        device: {
-          id: deviceId,
-          userId: context.userId,
+    this.send(ws, { setRoomState: { state } });
+    this.dispatchAndBroadcastOthers(
+      {
+        deviceConnected: {
+          name: context.name,
+          role: context.role,
+          device: {
+            id: deviceId,
+            userId: context.userId,
+          }
         }
-      }
-    });
+      },
+      deviceId
+    );
   }
 
   private onWsMessage(ws: CloudflareWebsocket, data: ArrayBuffer | string, deviceId: DeviceID, context: Context) {
@@ -88,60 +89,70 @@ export class Room implements DurableObject {
 
     const request = pb.ClassRequest.decode(new Uint8Array(data));
     const { requestId } = request;
-    let error: string | undefined;
-    let message: pb.IClassMessage | undefined;
 
-
-    const state = this.store.getState();
-    if(allowed(request, state, deviceId)) {
-      message = convertCommandToEvent(request, context.userId, deviceId);
-    } else {
-      error = 'Not allowed';
+    if(!allowed(request, this.store.getState(), deviceId)) {
+      this.send(ws, {
+        response: {
+          id: requestId,
+          error: 'Not allowed',
+        },
+      });
+      return;
     }
 
-    const response = pb.ClassMessage.encode({
+    const message = convertCommandToEvent(request, context.userId, deviceId);
+    if (!message) { console.log('parsing request into message failed'); return; }
+
+    this.send(ws, {
       ...message,
       response: {
         id: requestId,
-        error,
       },
-    }).finish();
-    ws.send(response);
-
-    if (!message) { console.log('parsing request into message failed'); return; }
-    this.dispatchAndBroadcast(message, deviceId);
+    });
+    this.dispatchAndBroadcastOthers(message, deviceId);
   }
 
   private onWsClose(ws: CloudflareWebsocket, deviceId: DeviceID) {
     console.log(`ws closed: ${deviceId}`);
     this.clients.delete(deviceId);
-    this.dispatchAndBroadcast({ deviceDisconnected: { deviceId } });
+    this.dispatchAndBroadcastOthers({ deviceDisconnected: { deviceId } }, deviceId);
   }
-
 
   private onWsError(ws: CloudflareWebsocket, deviceId: DeviceID) {
     console.log(`websocket Error on device(${deviceId})`);
     ws.close();
     this.clients.delete(deviceId);
-    this.dispatchAndBroadcast({ deviceDisconnected: { deviceId } });
+    this.dispatchAndBroadcastOthers({ deviceDisconnected: { deviceId } }, deviceId);
   }
 
-  // This function should be atomic,
+  // These broadcast functions should be atomic,
   // State replication messages and state updates must be processed in the same order.
-  private dispatchAndBroadcast(message: pb.IClassMessage, skipDeviceId?: DeviceID) {
+  private dispatchAndBroadcast(message: pb.IClassMessage) {
+    this.dispatch(message);
+    this.clients.forEach((ws) => {
+      this.send(ws, message);
+    });
+  }
+  private dispatchAndBroadcastOthers(message: pb.IClassMessage, skipDeviceId: DeviceID) {
+    this.dispatch(message);
+    this.clients.forEach((ws, deviceId) => {
+      if(deviceId === skipDeviceId) { return; }
+        this.send(ws, message);
+    });
+  }
+
+  private send(ws: CloudflareWebsocket, message: pb.IClassMessage) {
+    try {
+      ws.send(pb.ClassMessage.encode(message).finish());
+    } catch (e) {
+      ws.close(4500, 'ws send failure');
+    }
+  }
+
+  private dispatch(message: pb.IClassMessage) {
     const action = messageToClassAction(message);
     if (!action) { console.log('parsing message into redux action failed'); return; }
     this.store.dispatch(action);
-
-    const broadcastData = pb.ClassMessage.encode(message).finish();
-    this.clients.forEach((ws, deviceId) => {
-      if(deviceId === skipDeviceId) { return; }
-      try {
-        ws.send(broadcastData);
-      } catch (e) {
-        ws.close(4500, 'ws send failure');
-      }
-    });
   }
 }
 
