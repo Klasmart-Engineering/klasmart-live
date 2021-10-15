@@ -61,7 +61,7 @@ export class Network {
         (await this.ws)?.close(200, reason);
     }
 
-    private async send(command: IClassRequest): Promise<void> {
+    public async send(command: IClassRequest): Promise<void> {
         if (!this.ws) {
             throw Error('websocket has not been initialised');
         }

@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
-import NetworkContext from '../../context';
+import { useState } from 'react';
+import { useNetwork } from '../useNetwork';
 
 export interface SendChatMessageHook {
     sendChatMessage: (message: string) => Promise<void>
@@ -9,7 +9,7 @@ export interface SendChatMessageHook {
 };
 
 export function useSendChatMessage(): SendChatMessageHook {
-    const network = useContext(NetworkContext);
+    const network = useNetwork();
     const [result, setResult] = useState(false);
     const [error, setError] = useState<unknown>();
     const [loading, setLoading] = useState(false);
@@ -17,7 +17,11 @@ export function useSendChatMessage(): SendChatMessageHook {
     const sendChatMessage = async (message: string) => {
         try {
             setLoading(true);
-            // await network.send();
+            await network.send({
+                sendChatMessage: {
+                    text: message
+                }
+            });
             setResult(true);
         } catch(e) {
             setError(e);

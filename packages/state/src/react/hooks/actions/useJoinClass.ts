@@ -14,7 +14,7 @@ export function useJoinClass(): JoinClassHook {
     const [error, setError] = useState<unknown>();
     const [loading, setLoading] = useState(false);
 
-    const joinClass = async (url:string) => {
+    const joinClass = async (url: string) => {
         try {
             setLoading(true);
             await network.initWs(url);
