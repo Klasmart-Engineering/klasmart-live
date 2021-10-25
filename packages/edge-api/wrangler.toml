@@ -16,14 +16,11 @@ zone_id = '867a0bd8cc67b876b85a1571bc31620a'
 ENVIRONMENT = "dev"
 JWKS_URL = "https://kidsloop.cloudflareaccess.com/cdn-cgi/access/certs"
 JWKS_ISSUER = "https://kidsloop.cloudflareaccess.com"
-JWKS_AUDIENCE = "af975841f98ad87e83fad10ef8ae56876e43309cea67e04a4722feb99faec1cc"
+JWKS_AUDIENCE = "bb5cf47f145f400f32a5a5c53388f5e28701780b0d93b8b97fbdbd6f66e189fd"
 
 [env.james.durable_objects]
 bindings = [
-  # Changes here must be mirrored in cloudflare-env.d.ts
-  # { name = "activity", class_name = "ActivityStream" },
   { name = "room", class_name = "Room" },
-  # { name = "wstest", class_name = "WebsocketTest" },
 ]
 
 [build]
