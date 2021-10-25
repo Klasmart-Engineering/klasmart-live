@@ -22,4 +22,4 @@ export declare const reducer: import("redux").Reducer<import("redux").CombinedSt
 }>, import("redux").AnyAction>;
 export declare type State = ReturnType<typeof reducer>;
 export declare type Action = ClassAction | NetworkAction;
-//# sourceMappingURL=index.d.ts.map
+//# sourceMappingURL=ui.d.ts.map

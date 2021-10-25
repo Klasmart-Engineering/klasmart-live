@@ -1,2 +1,3 @@
-export declare function useNetwork(): import("../../network").Network;
+import { Network } from '../../network';
+export declare function useNetwork(): Network;
 //# sourceMappingURL=useNetwork.d.ts.map

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { ChatMessageState } from '../../..';
+import { ChatMessageState } from '../../../ui';
 import { useNetwork } from '../useNetwork';
 
 export function useMessages(): ChatMessageState[] {

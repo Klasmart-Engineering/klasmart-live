@@ -11,18 +11,35 @@ const packageJson = require('./package.json');
 
 export default [
   {
-    input: 'src/index.ts',
+    input: 'src/ui.ts',
     output: [
       {
-        file: packageJson.main,
-        format: 'cjs',
-        sourcemap: true
-      },
-      {
-        file: packageJson.module,
+        file: packageJson.exports['./ui'],
         format: 'esm',
         sourcemap: true
-      }
+      },
+    ],
+    plugins: [
+      peerDepsExternal(),
+      typescript({ tsconfig: './tsconfig.json' }),
+      resolve({ browser: true }),
+      commonjs(),
+      terser(),
+      copy({
+        targets: [
+          { src: 'src/protobuf', dest: 'dist' },
+        ]
+      })
+    ],
+  },
+  {
+    input: 'src/server.ts',
+    output: [
+      {
+        file: packageJson.exports['./server'],
+        format: 'esm',
+        sourcemap: true
+      },
     ],
     plugins: [
       peerDepsExternal(),

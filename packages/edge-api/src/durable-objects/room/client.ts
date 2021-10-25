@@ -1,4 +1,4 @@
-import { newDeviceId, pb } from 'kidsloop-live-state';
+import { newDeviceId, pb } from 'kidsloop-live-state/server';
 import { idGenerator } from './idGenerator';
 
 export class Client {

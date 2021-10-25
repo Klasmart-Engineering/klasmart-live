@@ -1,4 +1,4 @@
-import { DeviceID, pb, UserID } from 'kidsloop-live-state';
+import { DeviceID, pb, UserID } from 'kidsloop-live-state/server';
 
 export const requestToMessage = (requestProperties: pb.IClassRequest, userId: UserID, deviceId: DeviceID): pb.IClassMessage | undefined => {
     const request = pb.ClassRequest.create(requestProperties);

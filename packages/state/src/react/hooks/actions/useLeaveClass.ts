@@ -18,7 +18,7 @@ export function useLeaveClass(): LeaveClassHook {
     const leaveClass = async (reason?: string) => {
         try {
             setLoading(true);
-            await network.close(reason);
+            await network.close(4200, reason);
             setResult(true);
         } catch(e) {
             setError(e);

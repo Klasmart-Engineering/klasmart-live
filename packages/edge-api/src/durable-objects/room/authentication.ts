@@ -1,4 +1,4 @@
-import { newUserId, newUserRole, UserID, UserRole } from 'kidsloop-live-state';
+import { newUserId, newUserRole, UserID, UserRole } from 'kidsloop-live-state/server';
 import { statusText } from '../../responses/statusText';
 import { error, isError, ok, Result } from './result';
 import { parse as parseCookies } from 'cookie';

@@ -2,13 +2,26 @@
   "name": "kidsloop-live-state",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
+  "main": "dist/ui.js",
+  "types": "dist/ui.d.ts",
+  "type": "module",
+  "exports": {
+    "./ui": "./dist/ui.js",
+    "./server": "./dist/server.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*"
+      ]
+    }
+  },
   "files": [
-    "dist"
+    "dist/**/*.d.ts",
+    "dist/**/*.js"
   ],
   "scripts": {
-    "build": "rm -rf dist && mkdir -p src/protobuf && npm run protobuf && rollup -c",
+    "build": "rimraf dist && mkdir -p src/protobuf && npm run protobuf && rollup -c",
     "protobuf": "npm run protobuf-js && npm run protobuf-ts",
     "protobuf-js": "pbjs -w commonjs -t static-module -o src/protobuf/index.js protobuf/network.proto;",
     "protobuf-ts": "pbts -o src/protobuf/index.d.ts src/protobuf/index.js",
@@ -49,6 +62,7 @@
     "jest": "^27.0.6",
     "prettier": "2.2.1",
     "protobufjs": "^6.11.2",
+    "rimraf": "^3.0.2",
     "rollup": "^2.56.3",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",

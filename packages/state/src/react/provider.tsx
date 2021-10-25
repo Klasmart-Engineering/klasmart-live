@@ -1,6 +1,6 @@
 import React, { FC, useMemo, ReactNode } from 'react';
 import { DefaultRootState, useDispatch } from 'react-redux';
-import { State } from '..';
+import { State } from '../ui';
 import { Network } from '../network';
 import NetworkContext from './context';
 

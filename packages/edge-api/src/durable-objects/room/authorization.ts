@@ -1,4 +1,4 @@
-import { ClassState, DeviceID, pb } from 'kidsloop-live-state';
+import { ClassState, DeviceID, pb } from 'kidsloop-live-state/server';
 
 export function isAuthorized(request: pb.ClassRequest, state: ClassState, deviceId: DeviceID): boolean {
   

@@ -3,7 +3,7 @@ import { json } from '../../responses/json';
 import { statusText } from '../../responses/statusText';
 import { websocketUpgrade } from '../../responses/websocket';
 import { authenticate, Context } from './authentication';
-import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, pb, UserID } from 'kidsloop-live-state';
+import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, newUserId, newUserRole, pb } from 'kidsloop-live-state/server';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { Client } from './client';
 import { isError } from './result';
