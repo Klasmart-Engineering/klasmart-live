@@ -16,5 +16,5 @@ export const values = <O>(o: O): (ValueOf<O>)[] => {
 };
 
 export const entries = <O>(o: O): ([keyof O, ValueOf<O>])[] => {
-  return Object.values(o) as ([keyof O, ValueOf<O>])[];
+  return Object.entries(o) as ([keyof O, ValueOf<O>])[];
 };
