@@ -20,12 +20,13 @@ export class Client {
     private readonly ws: CloudflareWebsocket,
   ) {
     ws.addEventListener('message', ({ data }) => {
-      this.resetNetworkTimeout();
+      this.resetNetworkRecieveTimeout();
       if (!(data instanceof ArrayBuffer)) {
         console.log(`recieved non ArrayBuffer data: ${data}`);
         this.terminate(4400, 'binary messages only');
         return;
       }
+      if(data.byteLength <= 0) { return; }
       if (!this.onRequest) { return; }
       try {
         const request = pb.ClassRequest.decode(new Uint8Array(data));
@@ -35,10 +36,11 @@ export class Client {
         this.terminate(4400, 'malformed message');
       }
     });
-    ws.addEventListener('close', () => this.terminate());
-    ws.addEventListener('error', () => this.terminate());
+    ws.addEventListener('close', (e) => this.terminate(4200, `Closed(${e.code}, ${e.reason}, ${e.wasClean})`));
+    ws.addEventListener('error', (e) => this.terminate(4500, `Websocket error: ${e}`));
     ws.accept();
-    this.resetNetworkTimeout();
+    this.resetNetworkSendTimeout();
+    this.resetNetworkRecieveTimeout();
   }
 
   public send(message: pb.IClassMessage | Uint8Array): void {
@@ -47,8 +49,7 @@ export class Client {
         ? message
         : pb.ClassMessage.encode(message).finish();
       this.ws.send(bytes);
-      if (this.keepAliveTimeoutReference) { clearTimeout(this.keepAliveTimeoutReference); }
-      setTimeout(() => this.send(new Uint8Array(0)), this.sendKeepAliveMessageInterval);
+      this.resetNetworkSendTimeout();
     } catch (e) {
       this.terminate(4500, 'ws send failure');
     }
@@ -57,7 +58,7 @@ export class Client {
   public terminate(code?: number, reason?: string): void {
     if (this.hasTerminated) { return; }
     this.hasTerminated = true;
-
+    
     console.log(`Disconnecting client(${this.deviceId}) with code(${code}): ${reason}`);
     if (this.onTerminate) { this.onTerminate(this); };
     try {
@@ -67,9 +68,13 @@ export class Client {
     } catch (e) { }
   }
 
-  private resetNetworkTimeout(): void {
+  private resetNetworkRecieveTimeout(): void {
     // Enable this when the client implments sending keep alive messages 
-    // if(this.recieveTimeoutReference !== undefined) { clearTimeout(this.recieveTimeoutReference); }
-    // this.recieveTimeoutReference = setTimeout(() => this.terminate(4400,'timeout'), this.recieveMessageTimeoutTime);
+    if(this.recieveTimeoutReference !== undefined) { clearTimeout(this.recieveTimeoutReference); }
+    this.recieveTimeoutReference = setTimeout(() => this.terminate(4400,'timeout'), this.recieveMessageTimeoutTime);
+  }
+  private resetNetworkSendTimeout(): void {
+    if (this.keepAliveTimeoutReference) { clearTimeout(this.keepAliveTimeoutReference); }
+    setTimeout(() => this.send(new Uint8Array(0)), this.sendKeepAliveMessageInterval);
   }
 }
