@@ -4,7 +4,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "cz": "cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "redis": "docker run -p 6379:6379 redis"
   },
   "config": {
     "commitizen": {
