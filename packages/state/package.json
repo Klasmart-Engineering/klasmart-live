@@ -31,9 +31,14 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "react": ">=16.13.1",
-    "react-dom": ">=16.13.1",
-    "react-redux": ">=7.2.2"
+    "@types/react": "^16.8.6 || ^17.0.0",
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
