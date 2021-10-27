@@ -136,8 +136,9 @@ message ClassState {
 message User {
     string id = 1;
     string name = 2;
-    repeated Trophy trophies = 3;
+    string role = 3;
     repeated string device_ids = 4;
+    repeated Trophy trophies = 5;
 }
 
 message Trophy {

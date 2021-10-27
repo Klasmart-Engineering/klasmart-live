@@ -2066,11 +2066,14 @@ export interface IUser {
     /** User name */
     name?: (string|null);
 
-    /** User trophies */
-    trophies?: (ITrophy[]|null);
+    /** User role */
+    role?: (string|null);
 
     /** User deviceIds */
     deviceIds?: (string[]|null);
+
+    /** User trophies */
+    trophies?: (ITrophy[]|null);
 }
 
 /** Represents a User. */
@@ -2088,11 +2091,14 @@ export class User implements IUser {
     /** User name. */
     public name: string;
 
-    /** User trophies. */
-    public trophies: ITrophy[];
+    /** User role. */
+    public role: string;
 
     /** User deviceIds. */
     public deviceIds: string[];
+
+    /** User trophies. */
+    public trophies: ITrophy[];
 
     /**
      * Creates a new User instance using the specified properties.

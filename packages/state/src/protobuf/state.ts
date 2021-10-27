@@ -1,5 +1,5 @@
-import { IChatMessage, IClassState, IContent, IDevice, ITrophy } from '.';
-import { Content, ContentType, newDeviceId, DeviceState, Trophy, TrophyType, newUserId, newWebRtcStreamId, newActivityStreamId, newTimestamp, ChatMessageState, ClassState } from '../models';
+import { IChatMessage, IClassState, IContent, IDevice, ITrophy, IUser } from '.';
+import { Content, ContentType, newDeviceId, DeviceState, Trophy, TrophyType, newUserId, newWebRtcStreamId, newActivityStreamId, newTimestamp, ChatMessageState, ClassState, DeviceID, UserState, newUserRole, UserID } from '../models';
 
 
 export function validateChatMessage({text,timestamp,userId}: IChatMessage): ChatMessageState | undefined {
@@ -33,19 +33,103 @@ export function validateContent(content: IContent): Content | undefined {
     return { type, contentLocation };
 }
 
+/**
+ * This function attempts to return a valid ClassState
+ * In the case that it recieves an invalid state it prints an error describing the error
+ * and then attempts to let provide a sensible default to allow the user to proceed despite the malformed state message
+ * 
+ * @param classState 
+ * @returns 
+ */
 export function validateState(classState: IClassState): ClassState | undefined {
-    throw new Error('Not implemented');
-    // if (!classState.chatMessages) { console.error('IClassState is missing chatMessages'); return; }
     
-    // const chatMessages: ChatMessage[] = classState.chatMessages.flatMap((m) => {
-    //     const chatMessage = validateChatMessage(m);
-    //     return chatMessage ? chatMessages : [];
-    // });
+    const chatMessages: ChatMessageState[] = []
+    if(classState.chatMessages) {
+        classState.chatMessages.forEach((m) => {
+            const validChatMessage = validateChatMessage(m);
+            if(!validChatMessage) { console.error(`IClassState has an invalid chatMessage`); return; }
+            chatMessages.push(validChatMessage)
+        })
+    } else {
+        console.error(`IClassState is missing chatMessages`);
+    }
+
+    let content = { type: ContentType.Blank }
+    if(classState.content) {
+        const validContent = validateContent(classState.content) 
+        if(validContent) {
+            content = validContent 
+        } else {
+            console.error(`IClassState has an invalid content`);
+        }
+    } else {
+        console.error(`IClassState is missing content`);
+    }
+
+    const devices: Record<DeviceID, DeviceState> = {}
+    if (classState.devices) {
+        Object.values(classState.devices).forEach((device) => {
+            const validatedDevice = validateDevice(device)
+            if(!validatedDevice) { console.error(`IClassState has invalid device`); return; }
+            devices[validatedDevice.id] = validatedDevice
+        });
+    } else {
+        console.error('IClassState is missing devices');
+    }
 
 
-    // return {
-    //      chatMessages,
-    // };
+    const users: Record<UserID, UserState> = {}
+    if (classState.users) {
+        Object.values(classState.users).forEach((user) => {
+            const validUser = validateUser(user)
+            if(!validUser) { console.error(`IClassState has invalid user`); return; }
+            const priorDeviceCount = validUser.deviceIds.length
+            validUser.deviceIds = validUser.deviceIds.filter((deviceId) => (deviceId in devices))
+            if(validUser.deviceIds.length !== priorDeviceCount) { console.error("Removed unknown DeviceID from IUser"); }
+            users[validUser.id] = validUser 
+        });
+    } else {
+        console.error('IClassState is missing users');
+    }
+
+
+    for(const device of Object.values(devices)) {
+        if(!(device.userId in users)) {
+            console.error(`Device(${device.id}) references unknown User(${device.userId})`)
+        }
+    }
+    
+    const classEndTime = classState.classEndedTime ? newTimestamp(classState.classEndedTime) : undefined
+    const hostUserId = classState.hostUserId ? newUserId(classState.hostUserId) : undefined
+    return {
+         chatMessages,
+         content,
+         devices,
+         users,
+         classEndTime,
+         hostUserId,
+    };
+}
+
+export function validateUser(user: IUser): UserState | undefined {
+    if(!user.id) { console.error('IUser is missing id'); return; }
+    if(!user.deviceIds) { console.error('IUser is missing deviceIds'); return; }
+    if(!user.name) { console.error('IUser is missing name'); return; }
+    if(!user.role) { console.error('IUser is missing role'); return; }
+
+    const trophies: Trophy[] = []
+    for(const trophy of trophies) {
+        const validTrophy = validateTrophy(trophy)
+        if(validTrophy) { trophies.push(validTrophy) }
+    }
+
+    return {
+        id: newUserId(user.id),
+        deviceIds: user.deviceIds.map((id) => newDeviceId(id)),
+        name: user.name,
+        role: newUserRole(user.role),
+        trophies,
+    };
 }
 
 export function validateDevice({id, activityStreamId, userId, webRtcStreamIds}: IDevice): DeviceState | undefined {

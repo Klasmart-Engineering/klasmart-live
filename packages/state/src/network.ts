@@ -107,6 +107,7 @@ export class Network {
             this.dispatch(action);
             this.emitter.emit(message.event || 'unknownAction', action);
         } catch (e) {
+            console.error(e)
             ws.close(4400, 'Parse error');
         }
     }

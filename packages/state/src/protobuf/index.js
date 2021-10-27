@@ -4959,8 +4959,9 @@ $root.User = (function() {
      * @interface IUser
      * @property {string|null} [id] User id
      * @property {string|null} [name] User name
-     * @property {Array.<ITrophy>|null} [trophies] User trophies
+     * @property {string|null} [role] User role
      * @property {Array.<string>|null} [deviceIds] User deviceIds
+     * @property {Array.<ITrophy>|null} [trophies] User trophies
      */
 
     /**
@@ -4972,8 +4973,8 @@ $root.User = (function() {
      * @param {IUser=} [properties] Properties to set
      */
     function User(properties) {
-        this.trophies = [];
         this.deviceIds = [];
+        this.trophies = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -4997,12 +4998,12 @@ $root.User = (function() {
     User.prototype.name = "";
 
     /**
-     * User trophies.
-     * @member {Array.<ITrophy>} trophies
+     * User role.
+     * @member {string} role
      * @memberof User
      * @instance
      */
-    User.prototype.trophies = $util.emptyArray;
+    User.prototype.role = "";
 
     /**
      * User deviceIds.
@@ -5011,6 +5012,14 @@ $root.User = (function() {
      * @instance
      */
     User.prototype.deviceIds = $util.emptyArray;
+
+    /**
+     * User trophies.
+     * @member {Array.<ITrophy>} trophies
+     * @memberof User
+     * @instance
+     */
+    User.prototype.trophies = $util.emptyArray;
 
     /**
      * Creates a new User instance using the specified properties.
@@ -5040,12 +5049,14 @@ $root.User = (function() {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
         if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-        if (message.trophies != null && message.trophies.length)
-            for (var i = 0; i < message.trophies.length; ++i)
-                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.role != null && Object.hasOwnProperty.call(message, "role"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.role);
         if (message.deviceIds != null && message.deviceIds.length)
             for (var i = 0; i < message.deviceIds.length; ++i)
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.deviceIds[i]);
+        if (message.trophies != null && message.trophies.length)
+            for (var i = 0; i < message.trophies.length; ++i)
+                $root.Trophy.encode(message.trophies[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
         return writer;
     };
 
@@ -5087,14 +5098,17 @@ $root.User = (function() {
                 message.name = reader.string();
                 break;
             case 3:
-                if (!(message.trophies && message.trophies.length))
-                    message.trophies = [];
-                message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
+                message.role = reader.string();
                 break;
             case 4:
                 if (!(message.deviceIds && message.deviceIds.length))
                     message.deviceIds = [];
                 message.deviceIds.push(reader.string());
+                break;
+            case 5:
+                if (!(message.trophies && message.trophies.length))
+                    message.trophies = [];
+                message.trophies.push($root.Trophy.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5137,6 +5151,16 @@ $root.User = (function() {
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
+        if (message.role != null && message.hasOwnProperty("role"))
+            if (!$util.isString(message.role))
+                return "role: string expected";
+        if (message.deviceIds != null && message.hasOwnProperty("deviceIds")) {
+            if (!Array.isArray(message.deviceIds))
+                return "deviceIds: array expected";
+            for (var i = 0; i < message.deviceIds.length; ++i)
+                if (!$util.isString(message.deviceIds[i]))
+                    return "deviceIds: string[] expected";
+        }
         if (message.trophies != null && message.hasOwnProperty("trophies")) {
             if (!Array.isArray(message.trophies))
                 return "trophies: array expected";
@@ -5145,13 +5169,6 @@ $root.User = (function() {
                 if (error)
                     return "trophies." + error;
             }
-        }
-        if (message.deviceIds != null && message.hasOwnProperty("deviceIds")) {
-            if (!Array.isArray(message.deviceIds))
-                return "deviceIds: array expected";
-            for (var i = 0; i < message.deviceIds.length; ++i)
-                if (!$util.isString(message.deviceIds[i]))
-                    return "deviceIds: string[] expected";
         }
         return null;
     };
@@ -5172,6 +5189,15 @@ $root.User = (function() {
             message.id = String(object.id);
         if (object.name != null)
             message.name = String(object.name);
+        if (object.role != null)
+            message.role = String(object.role);
+        if (object.deviceIds) {
+            if (!Array.isArray(object.deviceIds))
+                throw TypeError(".User.deviceIds: array expected");
+            message.deviceIds = [];
+            for (var i = 0; i < object.deviceIds.length; ++i)
+                message.deviceIds[i] = String(object.deviceIds[i]);
+        }
         if (object.trophies) {
             if (!Array.isArray(object.trophies))
                 throw TypeError(".User.trophies: array expected");
@@ -5181,13 +5207,6 @@ $root.User = (function() {
                     throw TypeError(".User.trophies: object expected");
                 message.trophies[i] = $root.Trophy.fromObject(object.trophies[i]);
             }
-        }
-        if (object.deviceIds) {
-            if (!Array.isArray(object.deviceIds))
-                throw TypeError(".User.deviceIds: array expected");
-            message.deviceIds = [];
-            for (var i = 0; i < object.deviceIds.length; ++i)
-                message.deviceIds[i] = String(object.deviceIds[i]);
         }
         return message;
     };
@@ -5206,26 +5225,29 @@ $root.User = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults) {
-            object.trophies = [];
             object.deviceIds = [];
+            object.trophies = [];
         }
         if (options.defaults) {
             object.id = "";
             object.name = "";
+            object.role = "";
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
-        if (message.trophies && message.trophies.length) {
-            object.trophies = [];
-            for (var j = 0; j < message.trophies.length; ++j)
-                object.trophies[j] = $root.Trophy.toObject(message.trophies[j], options);
-        }
+        if (message.role != null && message.hasOwnProperty("role"))
+            object.role = message.role;
         if (message.deviceIds && message.deviceIds.length) {
             object.deviceIds = [];
             for (var j = 0; j < message.deviceIds.length; ++j)
                 object.deviceIds[j] = message.deviceIds[j];
+        }
+        if (message.trophies && message.trophies.length) {
+            object.trophies = [];
+            for (var j = 0; j < message.trophies.length; ++j)
+                object.trophies[j] = $root.Trophy.toObject(message.trophies[j], options);
         }
         return object;
     };
