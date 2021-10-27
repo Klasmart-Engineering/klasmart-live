@@ -3,7 +3,7 @@ import { json } from '../../responses/json';
 import { statusText } from '../../responses/statusText';
 import { websocketUpgrade } from '../../responses/websocket';
 import { authenticate, Context } from './authentication';
-import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, newUserId, newUserRole, pb } from 'kidsloop-live-state/server';
+import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, pb } from 'kidsloop-live-state/server';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { Client } from './client';
 import { isError } from './result';
@@ -16,9 +16,12 @@ export class Room implements DurableObject {
   private store: EnhancedStore<ClassState, ClassAction>;
 
   public constructor(
+    /* eslint-disable no-unused-vars */
     private readonly state: DurableObjectState,
     private readonly env: CloudflareEnvironment,
     private readonly DEBUG = env.ENVIRONMENT === 'dev',
+    private readonly id = state.id.toString(),
+    /* eslint-enable no-unused-vars */
   ) {
     this.store = configureStore<ClassState, ClassAction>({
       reducer: classReducer,
@@ -29,7 +32,10 @@ export class Room implements DurableObject {
     const { headers } = request;
     try {
       if (headers.get('Upgrade') !== 'websocket') {
-        if (this.DEBUG) { return json(this, 200, 2); }
+        if (this.DEBUG) {
+          const state = this.store.getState();
+          return json({this: this, state}, 200, 2); 
+        }
         return statusText(400, 'Please connect to this endpoint via websocket');
       }
 
