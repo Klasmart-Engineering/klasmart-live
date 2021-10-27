@@ -5,7 +5,7 @@ declare global {
     accept(): unknown;
     addEventListener(
       event: 'close',
-      callbackFunction: (code?: number, reason?: string) => unknown
+      callbackFunction: (event: CloseEvent) => unknown
     ): unknown;
     addEventListener(
       event: 'error',
@@ -13,7 +13,7 @@ declare global {
     ): unknown;
     addEventListener(
       event: 'message',
-      callbackFunction: (event: { data: any }) => unknown
+      callbackFunction: (event: { data: ArrayBuffer | string }) => unknown
     ): unknown;
 
     /**
