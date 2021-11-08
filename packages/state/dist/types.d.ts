@@ -3,7 +3,7 @@ export declare type NewType<T, NewTypeName> = T & {
     /**
      * This is not available at runtime
      */
-    __COMPILETIME_TYPE__: NewTypeName;
+    readonly __COMPILETIME_TYPE__: NewTypeName;
 };
 export declare const keys: <O>(o: O) => (keyof O)[];
 export declare const values: <O>(o: O) => ValueOf<O>[];

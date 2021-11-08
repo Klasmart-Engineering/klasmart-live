@@ -1,1 +1,1 @@
-{"version":3,"file":"useNetwork.d.ts","sourceRoot":"","sources":["../../src/react/hooks/useNetwork.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,OAAO,EAAE,MAAM,eAAe,CAAC;AAGxC,wBAAgB,UAAU,IAAI,OAAO,CAEpC"}
+{"version":3,"file":"useNetwork.d.ts","sourceRoot":"","sources":["../../src/react/hooks/useNetwork.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,OAAO,EAAE,MAAM,eAAe,CAAC;AAKxC,wBAAgB,UAAU,IAAI,OAAO,CAEpC;AAED,wBAAgB,eAAe;;;;;;GAG9B"}
