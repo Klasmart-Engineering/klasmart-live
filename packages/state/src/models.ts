@@ -54,7 +54,7 @@ export type WebRTCStreamID = NewType<string, 'WebRTCStreamID'>
 export const newWebRtcStreamId = (value: string): WebRTCStreamID => value as WebRTCStreamID;
 
 export type Timestamp = NewType<number, 'Timestamp'>
-export const newTimestamp = (value?: number): Timestamp => (value || Date.now()) as Timestamp;
+export const newTimestamp = (value: number): Timestamp => value as Timestamp;
 
 export type TrophyType = NewType<string, 'TrophyType'>
 export const newTrophyType = (value: string): TrophyType => value as TrophyType;
