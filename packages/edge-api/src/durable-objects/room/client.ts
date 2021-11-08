@@ -78,6 +78,6 @@ export class Client {
   }
   private resetNetworkSendTimeout(): void {
     if (this.keepAliveTimeoutReference) { clearTimeout(this.keepAliveTimeoutReference); }
-    setTimeout(() => this.send(new Uint8Array(0)), this.sendKeepAliveMessageInterval);
+    this.keepAliveTimeoutReference = setTimeout(() => this.send(new Uint8Array(0)), this.sendKeepAliveMessageInterval);
   }
 }

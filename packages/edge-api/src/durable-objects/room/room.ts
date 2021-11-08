@@ -3,7 +3,7 @@ import { json } from '../../responses/json';
 import { statusText } from '../../responses/statusText';
 import { websocketUpgrade } from '../../responses/websocket';
 import { authenticate, Context } from './authentication';
-import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, pb } from 'kidsloop-live-state/server';
+import { ClassAction, classReducer, ClassState, DeviceID, messageToClassAction, newUserId, pb, roles } from 'kidsloop-live-state/server';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import { Client } from './client';
 import { isError } from './result';
@@ -14,6 +14,7 @@ export class Room implements DurableObject {
 
   private clients = new Set<Client>();
   private store: EnhancedStore<ClassState, ClassAction>;
+  private userCounter = 0
 
   public constructor(
     /* eslint-disable no-unused-vars */
@@ -39,16 +40,16 @@ export class Room implements DurableObject {
         return statusText(400, 'Please connect to this endpoint via websocket');
       }
 
-      const authenticationResult = await authenticate(
-        request,
-        this.env.JWKS_URL,
-        {
-          issuer: this.env.JWKS_ISSUER,
-          audience: this.env.JWKS_AUDIENCE,
-        }
-      );
-      if (isError(authenticationResult)) { return authenticationResult.payload; }
-      const context = authenticationResult.payload;
+      // const authenticationResult = await authenticate(
+      //   request,
+      //   this.env.JWKS_URL,
+      //   {
+      //     issuer: this.env.JWKS_ISSUER,
+      //     audience: this.env.JWKS_AUDIENCE,
+      //   }
+      // );
+      // if (isError(authenticationResult)) { return authenticationResult.payload; }
+      const context= developmentContext(`developer${this.userCounter++}`); //authenticationResult.payload
 
       const protocol = request.headers.get('Sec-WebSocket-Protocol');
       const { response, ws } = websocketUpgrade(protocol);
@@ -137,4 +138,13 @@ export class Room implements DurableObject {
       client.send(bytes);
     });
   }
+}
+
+
+function developmentContext(name: string): Context {
+  return  {
+    name,
+    role: Math.random() > 0.1 ? roles.Student : roles.Teacher,
+    userId: newUserId(name),
+  };
 }
