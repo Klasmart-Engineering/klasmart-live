@@ -89,19 +89,21 @@ export class Room implements DurableObject {
   private onClientRequest(client: Client, request: pb.ClassRequest, context: Context) {
     const { deviceId } = client;
     const { requestId } = request;
-
-    if(!isAuthorized(request, this.store.getState(), deviceId)) {
-      client.send({
-        response: {
-          id: requestId,
-          error: 'Not allowed',
-        },
-      });
-      return;
-    }
+    console.log('1');
+    // if(!isAuthorized(request, this.store.getState(), deviceId)) {
+    //   client.send({
+    //     response: {
+    //       id: requestId,
+    //       error: 'Not allowed',
+    //     },
+    //   });
+    //   return;
+    // }
+    console.log('2');
 
     const message = requestToMessage(request, context.userId, deviceId);
     if (!message) { console.log('parsing request into message failed'); return; }
+    console.log('3');
 
     client.send({
       ...message,
@@ -109,7 +111,11 @@ export class Room implements DurableObject {
         id: requestId,
       },
     });
+    console.log('4');
+
     this.dispatchAndBroadcastOthers(message, deviceId);
+    console.log('5');
+
   }
 
   private onClientTermination(client: Client) {

@@ -29,7 +29,7 @@ export class Network {
     constructor(
         /* eslint-disable no-unused-vars */
         public readonly dispatch: Dispatch<Action>,
-        public readonly selector: (s: DefaultRootState) => State,
+        public readonly selector: (s: unknown) => State,
         private ws?: Promise<WebSocket>,
         /* eslint-enable no-unused-vars */
     ) { }

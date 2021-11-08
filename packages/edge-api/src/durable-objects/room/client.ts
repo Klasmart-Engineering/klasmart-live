@@ -28,12 +28,15 @@ export class Client {
       }
       if(data.byteLength <= 0) { return; }
       if (!this.onRequest) { return; }
+      let request;
       try {
-        const request = pb.ClassRequest.decode(new Uint8Array(data));
-        this.onRequest(request);
+        request = pb.ClassRequest.decode(new Uint8Array(data));
+        console.log(JSON.stringify(request));
       } catch (e) {
-        // This message (most likely) wasn't encoded with protocol buffers
         this.terminate(4400, 'malformed message');
+      }
+      if (request) {
+        this.onRequest(request);
       }
     });
     ws.addEventListener('close', (e) => this.terminate(4200, `Closed(${e.code}, ${e.reason}, ${e.wasClean})`));

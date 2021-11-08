@@ -1,5 +1,6 @@
 import { IChatMessage, IClassState, IContent, IDevice, ITrophy, IUser } from '.';
 import { Content, ContentType, newDeviceId, DeviceState, Trophy, TrophyType, newUserId, newWebRtcStreamId, newActivityStreamId, newTimestamp, ChatMessageState, ClassState, DeviceID, UserState, newUserRole, UserID } from '../models';
+import { values } from '../types';
 
 
 export function validateChatMessage({text,timestamp,userId}: IChatMessage): ChatMessageState | undefined {
@@ -93,8 +94,8 @@ export function validateState(classState: IClassState): ClassState | undefined {
     }
 
 
-    for(const device of Object.values(devices)) {
-        if(!(device.userId in users)) {
+    for(const device of values(devices)) {
+        if(!users.hasOwnProperty(device.userId)) {
             console.error(`Device(${device.id}) references unknown User(${device.userId})`)
         }
     }
