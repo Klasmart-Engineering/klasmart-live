@@ -14,13 +14,11 @@ export function useSendChatMessage(): SendChatMessageHook {
     const [error, setError] = useState<unknown>();
     const [loading, setLoading] = useState(false);
 
-    const sendChatMessage = async (message: string) => {
+    const sendChatMessage = async (text: string) => {
         try {
             setLoading(true);
             await network.send({
-                sendChatMessage: {
-                    text: message
-                }
+                sendChatMessage: { text }
             });
             setResult(true);
         } catch(e) {
