@@ -8,12 +8,15 @@ export * from './react/hooks/actions/useSetContent';
 
 export * from './react/hooks/data/useConnectionState';
 export * from './react/hooks/data/useMessages';
+export * from './react/hooks/data/useUser';
 
 export * from './react/context';
 export * from './react/provider';
 
 export * from './redux/class';
 export * from './redux/network';
+
+export * from './roles';
 
 export * from './models';
 

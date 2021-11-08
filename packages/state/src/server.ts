@@ -4,6 +4,8 @@ export * from './protobuf/actions';
 export * from './redux/class';
 export * from './redux/network';
 
+export * from './roles';
+
 export * from './models';
 
 import { combineReducers } from 'redux';

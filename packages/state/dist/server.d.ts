@@ -2,6 +2,7 @@ export * as pb from './protobuf';
 export * from './protobuf/actions';
 export * from './redux/class';
 export * from './redux/network';
+export * from './roles';
 export * from './models';
 import { ClassAction } from './redux/class';
 import { NetworkAction } from './redux/network';
