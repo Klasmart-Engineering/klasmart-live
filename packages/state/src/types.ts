@@ -4,7 +4,7 @@ export type NewType<T, NewTypeName> = T & {
   /**
    * This is not available at runtime
    */
-  __COMPILETIME_TYPE__: NewTypeName
+  readonly __COMPILETIME_TYPE__: NewTypeName
 };
 
 export const keys = <O>(o: O): (keyof O)[] => {
