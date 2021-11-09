@@ -1,5 +1,5 @@
 import { IActivityStreamIdChangedEvent, IClassEndedEvent, IClassMessage, IContentChangedEvent, IDeviceConnectedEvent, IDeviceDisconnectedEvent, IHostChangedEvent, INewChatMessageEvent, ISetClassStateEvent, ITrophyRewardedToAllEvent, ITrophyRewardedToUserEvent } from '.';
-import { newActivityStreamId, newDeviceId, newUserId, newUserRole } from '../models';
+import { newActivityStreamId, newDeviceId, newTimestamp, newUserId, newUserRole } from '../models';
 import { ClassAction, classActions } from '../redux/class';
 import { validateChatMessage, validateContent, validateDevice, validateState, validateTrophy } from './state';
 
@@ -49,8 +49,9 @@ export function actvityStreamIdChangedAction(event: IActivityStreamIdChangedEven
 }
 
 export function classEndedAction(event: IClassEndedEvent): ReturnType<typeof classActions.endClass> | undefined {
-    //TODO: Utilize event.timestamp
-    return classActions.endClass();
+    if(!event.timestamp) { console.error('IClassEndedEvent is missing timestamp'); return; }
+    const timestamp = newTimestamp(event.timestamp)
+    return classActions.endClass({timestamp});
 }
 
 export function contentChangedAction(event: IContentChangedEvent): ReturnType<typeof classActions.setContent> | undefined {

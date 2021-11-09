@@ -1,7 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { DefaultRootState } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { Action, State } from './ui';
+import { Action, ClassActionType, ClassActionTypeToPayload, State } from './ui';
 import { NewType } from './types';
 import { ClassRequest, IClassRequest, ClassMessage, IClassResponse } from './protobuf';
 import { messageToClassAction } from './protobuf/actions';
@@ -15,6 +14,7 @@ interface NetworkPromise {
     resolve: () => unknown,
     reject: (reason?: string) => unknown
 }
+
 export class Network {
     private actionEmitter = new EventEmitter();
     // Maintains a map of promises to be resolved/rejected on receipt of a future network message

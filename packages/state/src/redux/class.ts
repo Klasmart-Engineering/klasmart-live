@@ -1,10 +1,10 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WritableDraft } from 'immer/dist/internal';
-import { ContentType, ClassState, UserID, Content, ChatMessageState, newTimestamp, DeviceID, ActivityStreamID, DeviceState, Trophy, UserState, UserRole } from '../models';
-import { keys, ValueOf } from '../types';
+import { ContentType, ClassState, UserID, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy, UserState, UserRole, Timestamp } from '../models';
+import { ValueOf, values } from '../types';
 import { isAllowedToBecomeHost } from './authorization';
 
-type Reducer<T=undefined> = CaseReducer<ClassState, PayloadAction<T>>;
+type Reducer<P = void, T extends string = string> = CaseReducer<ClassState, PayloadAction<P, T>>;
 
 export const INITIAL_ROOM_STATE: ClassState = {
   users: {},
@@ -17,12 +17,12 @@ export const INITIAL_ROOM_STATE: ClassState = {
   classEndTime: undefined,
 };
 
-const setState: Reducer<ClassState> = (state, action) => {
+const setState: Reducer<ClassState> = (_state, action) => {
   return action.payload;
 };
 
-const endClass: Reducer = (state) => {
-  state.classEndTime = newTimestamp(Date.now());
+const endClass: Reducer<{ timestamp: Timestamp }> = (state, action) => {
+  state.classEndTime = action.payload.timestamp;
 };
 
 const deviceConnect: Reducer<{name: string, device: DeviceState, role: UserRole}> = (
@@ -34,8 +34,9 @@ const deviceConnect: Reducer<{name: string, device: DeviceState, role: UserRole}
   state.devices[device.id] = device;
   //User
   const userId = device.userId;
-  if(userId in state.users) {
-    state.users[userId].deviceIds.push(device.id);
+  const user = state.users[userId]
+  if(user) {
+    user.deviceIds.push(device.id);
   } else {
     state.users[userId] = {
       id: userId,
@@ -72,7 +73,7 @@ const deviceDisconnect: Reducer<{deviceId: DeviceID}> = (
     userIds.sort();
     for(const userId of userIds) {
       const user = state.users[userId];
-      if(isAllowedToBecomeHost(user.role)) {
+      if(user && isAllowedToBecomeHost(user.role)) {
         state.hostUserId = user.id;
         break;
       }
@@ -101,7 +102,9 @@ const setActivityStreamId: Reducer<{deviceId: DeviceID, activityStreamId: Activi
   action
 ) => {
   const { deviceId, activityStreamId } = action.payload;
-  state.devices[deviceId].activityStreamID = activityStreamId;
+  const device = state.devices[deviceId]
+  if(!device) { return } 
+  device.activityStreamID = activityStreamId;
 };
 
 const rewardTrophyToUser: Reducer<{userId: UserID, trophy: Trophy}> = (
@@ -109,7 +112,7 @@ const rewardTrophyToUser: Reducer<{userId: UserID, trophy: Trophy}> = (
   action
 ) => {
   const { userId, trophy } = action.payload;
-  state.users[userId].trophies.push(trophy);
+  state.users[userId]?.trophies.push(trophy);
 };
 
 const rewardTrophyToAll: Reducer<{trophy: Trophy}> = (
@@ -117,10 +120,9 @@ const rewardTrophyToAll: Reducer<{trophy: Trophy}> = (
   action
 ) => {
   const { trophy } = action.payload;
-  keys(state.users).forEach((id) => {
-    state.users[id].trophies.push(trophy);
-  });
+  values(state.users).forEach(user => user.trophies.push(trophy))
 };
+
 
 export const classSlice = createSlice({
   name: 'class',
