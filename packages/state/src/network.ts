@@ -16,7 +16,7 @@ interface NetworkPromise {
     reject: (reason?: string) => unknown
 }
 export class Network {
-    private emitter = new EventEmitter();
+    private actionEmitter = new EventEmitter();
     // Maintains a map of promises to be resolved/rejected on receipt of a future network message
     private pendingRequests = new Map<RequestID, NetworkPromise>()
 
@@ -33,6 +33,13 @@ export class Network {
         private ws?: Promise<WebSocket>,
         /* eslint-enable no-unused-vars */
     ) { }
+
+    public onAction<T extends ClassActionType = ClassActionType>(actionType: T, f: (payload: ClassActionTypeToPayload[T]) => unknown) {
+        this.actionEmitter.addListener(actionType, f)
+        return () => {
+          this.actionEmitter.removeListener(actionType, f)
+        }
+    }
 
     public async initWs(url: string): Promise<WebSocket> {
         if (this.ws) { return this.ws; }
@@ -105,7 +112,7 @@ export class Network {
             const action = messageToClassAction(message);
             if (!action) { return; }
             this.dispatch(action);
-            this.emitter.emit(message.event || 'unknownAction', action);
+            this.actionEmitter.emit(action.type, action.payload);
         } catch (e) {
             console.error(e)
             ws.close(4400, 'Parse error');

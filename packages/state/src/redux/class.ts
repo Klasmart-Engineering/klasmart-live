@@ -141,4 +141,9 @@ export const classSlice = createSlice({
 
 export const classReducer = classSlice.reducer;
 export const classActions = classSlice.actions;
+export type ClassActionType = keyof typeof classActions 
 export type ClassAction = ReturnType<ValueOf<typeof classActions>>
+
+export type ClassActionTypeToPayload = {
+  [K in keyof typeof classActions]: ReturnType<typeof classActions[K]>["payload"]; 
+}

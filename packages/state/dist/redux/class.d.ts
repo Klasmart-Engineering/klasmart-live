@@ -56,6 +56,10 @@ export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions
         trophy: Trophy;
     }>;
 }>;
+export declare type ClassActionType = keyof typeof classActions;
 export declare type ClassAction = ReturnType<ValueOf<typeof classActions>>;
+export declare type ClassActionTypeToPayload = {
+    [K in keyof typeof classActions]: ReturnType<typeof classActions[K]>["payload"];
+};
 export {};
 //# sourceMappingURL=class.d.ts.map
