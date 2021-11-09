@@ -1,118 +1,102 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
+import { useAsyncCallback } from "react-async-hook";
 import { ActivityStreamID, Content, TrophyType, UserID } from "../../models";
 import { IClassRequest } from "../../protobuf";
 import NetworkContext from "../context";
 
+export function useJoinClass() {
+  const network = useContext(NetworkContext);
+  const initWs = (url: string) => network.initWs(url);
+  const { execute: joinClass, status } = useAsyncCallback(initWs, {
+    onError: (e) => console.error(e),
+  });
+  return { joinClass, status };
+}
+
+export function useLeaveClass() {
+  const network = useContext(NetworkContext);
+  const close = (reason?: string) => network.close(4200, reason);
+  const { execute: leaveClass, status } = useAsyncCallback(close);
+  return { leaveClass, status };
+}
 
 export function useEndClass() {
-    const { action, status } = useNetworkAction();
-    return {
-        endClass: () => action({ endClass: {} }), 
-        status
-    };
-};
+  const { execute, status } = useNetworkAction(() => ({ endClass: {} }));
+  return { endClass: execute, status };
+}
 
 export function useRewardTrophyToAll() {
-    const { action, status } = useNetworkAction();
-    return {
-        rewardTrophyToAll: (type: TrophyType) => action({
-            rewardTrophyToAll: {
-                trophy: {
-                    // TODO: Should this be set by the server?
-                    timestamp: Date.now(),
-                    type,
-                }
-            }
-        }), 
-        status
-    };
-};
+  const { execute, status } = useNetworkAction((type: TrophyType) => ({
+    rewardTrophyToAll: {
+      trophy: {
+        // TODO: Should this be set by the server?
+        timestamp: Date.now(),
+        type,
+      },
+    },
+  }));
+  return { rewardTrophyToAll: execute, status };
+}
 
-export function rewardTrophyToUser() {
-    const { action, status } = useNetworkAction();
-    return {
-        rewardTrophyToAll: (userId: UserID, type: TrophyType) => action({
-            rewardTrophyToUser: {
-                userId,
-                trophy: {
-                    // TODO: Should this be set by the server?
-                    timestamp: Date.now(),
-                    type,
-                }
-            }
-        }), 
-        status
-    };
-};
-
+export function useRewardTrophyToUser() {
+  const { execute, status } = useNetworkAction(
+    (userId: UserID, type: TrophyType) => ({
+      rewardTrophyToUser: {
+        userId,
+        trophy: {
+          // TODO: Should this be set by the server?
+          timestamp: Date.now(),
+          type,
+        },
+      },
+    })
+  );
+  return { rewardTrophyToUser: execute, status };
+}
 
 export function useSendChatMessage() {
-    const { action, status } = useNetworkAction();
-    return {
-        sendChatMessage: (text: string) => action({ sendChatMessage: { text } }), 
-        status
-    };
-};
+  const { execute, status } = useNetworkAction((text: string) => ({
+    sendChatMessage: {
+      text,
+    },
+  }));
+  return { sendChatMessage: execute, status };
+}
 
-
-export function useSetActivityStreamId() {
-    const { action, status } = useNetworkAction();
-    return {
-        setActivityStreamId: (activityStreamId: ActivityStreamID) => action({
-            setActvityStreamId: {
-                activityStreamId
-            }
-        }), 
-        status
-    };
-};
+export function useSetActvityStreamId() {
+  const { execute, status } = useNetworkAction(
+    (activityStreamId: ActivityStreamID) => ({
+      setActvityStreamId: {
+        activityStreamId,
+      },
+    })
+  );
+  return { setActvityStreamId: execute, status };
+}
 
 export function useSetContent() {
-    const { action, status } = useNetworkAction();
-    return {
-        setContent: (content: Content) => action({
-            setContent: {
-                content,
-            }
-        }), 
-        status
-    };
-};
+  const { execute, status } = useNetworkAction((content: Content) => ({
+    setContent: {
+      content,
+    },
+  }));
+  return { setContent: execute, status };
+}
 
 export function useSetHost() {
-    const { action, status } = useNetworkAction();
-    return {
-        setHost: (hostUserId: UserID) => action({
-            setHost: {
-                hostUserId, 
-            }
-        }), 
-        status
-    };
-};
+  const { execute, status } = useNetworkAction((hostUserId: UserID) => ({
+    setHost: { hostUserId },
+  }));
+  return { setHost: execute, status };
+}
 
-export type ActionStatus = "pending" | "success" | "failure"
-
-export function useNetworkAction() {
-    const network = useContext(NetworkContext);
-    // const mutex = useRef(false)
-    const [status, setStatus] = useState<ActionStatus>("pending");
-  
-    const action = (request: IClassRequest) => {
-      // if (mutex.current) { return }
-      // mutex.current = true;
-  
-      setStatus("pending");
-      network.send(request)
-        .then(() => setStatus("success"))
-        .catch((e) => {
-          console.error(e);
-          setStatus("failure");
-        })
-        // .finally(() => mutex.current = false)
-    };
-  
-    return { action, status };
-
-  }
-  
+function useNetworkAction<Args extends any[] = any[]>(
+  buildRequest: (...args: Args) => IClassRequest
+) {
+  const network = useContext(NetworkContext);
+  const sendRequest = async (...args: Args) => {
+    const request = buildRequest(...args);
+    network.send(request);
+  };
+  return useAsyncCallback(sendRequest);
+}
