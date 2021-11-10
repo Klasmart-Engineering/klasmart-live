@@ -68,7 +68,6 @@ export class Network {
                 this.dispatch(setConnectionError(true));
             });
             ws.addEventListener('message', (e) => {
-                console.log('message', e);
                 this.onNetworkMessage(ws, e.data);
             });
         });

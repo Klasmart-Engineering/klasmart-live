@@ -1,8 +1,3 @@
-export declare function useNetworkState(): import("redux").CombinedState<{
-    class: import("../../models").ClassState;
-    network: import("redux").CombinedState<{
-        connectionStatus: import("../../ui").ConnectionStatus;
-        connectionError: boolean;
-    }>;
-}>;
+import { Network } from '../../network';
+export declare function useNetworkState<T = unknown>(selector: (state: ReturnType<Network["selector"]>) => T): T;
 //# sourceMappingURL=state.d.ts.map
