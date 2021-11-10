@@ -1,1 +1,1 @@
-{"version":3,"file":"state.d.ts","sourceRoot":"","sources":["../../src/react/hooks/state.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,OAAO,EAAE,MAAM,eAAe,CAAC;AAExC,wBAAgB,eAAe,CAAC,CAAC,GAAC,OAAO,EAAE,QAAQ,EAAE,CAAC,KAAK,EAAE,UAAU,CAAC,OAAO,CAAC,UAAU,CAAC,CAAC,KAAK,CAAC,KAGjG"}
+{"version":3,"file":"state.d.ts","sourceRoot":"","sources":["../../src/react/hooks/state.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,KAAK,EAAE,MAAM,qBAAqB,CAAC;AAE5C,wBAAgB,eAAe,CAAC,CAAC,GAAC,OAAO,EAAE,QAAQ,EAAE,CAAC,KAAK,EAAE,KAAK,KAAK,CAAC,KAGvE"}

@@ -1,6 +1,6 @@
-import { Dispatch } from '@reduxjs/toolkit';
+import { Dispatch, Store } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
-import { Action, ClassActionType, ClassActionTypeToPayload, State } from './ui';
+import { Action, ClassActionType, ClassActionTypeToPayload, classSliceActionPrefix, NetworkHandlerCallback, State } from './ui';
 import { NewType } from './types';
 import { ClassRequest, IClassRequest, ClassMessage, IClassResponse } from './protobuf';
 import { messageToClassAction } from './protobuf/actions';
@@ -15,7 +15,7 @@ interface NetworkPromise {
     reject: (reason?: string) => unknown
 }
 
-export class Network {
+export class Network<ApplicationState=unknown> {
     private actionEmitter = new EventEmitter();
     // Maintains a map of promises to be resolved/rejected on receipt of a future network message
     private pendingRequests = new Map<RequestID, NetworkPromise>()
@@ -28,31 +28,33 @@ export class Network {
 
     constructor(
         /* eslint-disable no-unused-vars */
-        public readonly dispatch: Dispatch<Action>,
-        public readonly selector: (s: unknown) => State,
+        public readonly store: Store<ApplicationState, Action>,
+        public readonly selector: (s: ApplicationState) => State,
         private ws?: Promise<WebSocket>,
         /* eslint-enable no-unused-vars */
     ) { }
 
-    public onAction<T extends ClassActionType = ClassActionType>(actionType: T, f: (payload: ClassActionTypeToPayload[T]) => unknown) {
-        this.actionEmitter.addListener(actionType, f)
+    public onClassAction<T extends ClassActionType = ClassActionType>(actionType: T, f: NetworkHandlerCallback<T>) {
+        // TODO: This event mapping is highly specific to the class slice, how to accomodate additional reducers/slices
+        const event = `${classSliceActionPrefix}/${actionType}`
+        this.actionEmitter.addListener(event, f)
         return () => {
-          this.actionEmitter.removeListener(actionType, f)
+          this.actionEmitter.removeListener(event, f)
         }
     }
 
     public async initWs(url: string): Promise<WebSocket> {
         if (this.ws) { return this.ws; }
         this.ws = new Promise<WebSocket>((resolve, reject) => {
-            this.dispatch(setConnectionStatus(ConnectionStatus.Connecting));
+            this.store.dispatch(setConnectionStatus(ConnectionStatus.Connecting));
 
             const ws = new WebSocket(url, ['live']);
             ws.binaryType = 'arraybuffer';
             ws.addEventListener('open', (e) => {
                 console.log('open', e);
                 resolve(ws);
-                this.dispatch(setConnectionError(false));
-                this.dispatch(setConnectionStatus(ConnectionStatus.Connected));
+                this.store.dispatch(setConnectionError(false));
+                this.store.dispatch(setConnectionStatus(ConnectionStatus.Connected));
                 this.resetNetworkSendTimeout();
                 this.resetNetworkRecieveTimeout();
             });
@@ -60,12 +62,12 @@ export class Network {
                 console.log('close', e);
                 this.ws = undefined;
                 reject(e);
-                this.dispatch(setConnectionStatus(ConnectionStatus.Disconnected));
+                this.store.dispatch(setConnectionStatus(ConnectionStatus.Disconnected));
             });
             ws.addEventListener('error', (e) => {
                 console.log('error', e);
                 reject(e);
-                this.dispatch(setConnectionError(true));
+                this.store.dispatch(setConnectionError(true));
             });
             ws.addEventListener('message', (e) => {
                 this.onNetworkMessage(ws, e.data);
@@ -110,8 +112,9 @@ export class Network {
             if (message.response) { this.handleRequestPromise(message.response); }
             const action = messageToClassAction(message);
             if (!action) { return; }
-            this.dispatch(action);
-            this.actionEmitter.emit(action.type, action.payload);
+            this.store.dispatch(action);
+            const state = this.selector(this.store.getState())
+            this.actionEmitter.emit(action.type, action.payload, state);
         } catch (e) {
             console.error(e)
             ws.close(4400, 'Parse error');

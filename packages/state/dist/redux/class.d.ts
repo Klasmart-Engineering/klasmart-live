@@ -3,6 +3,7 @@ import { ClassState, UserID, Content, ChatMessageState, DeviceID, ActivityStream
 import { ValueOf } from '../types';
 declare type Reducer<P = void, T extends string = string> = CaseReducer<ClassState, PayloadAction<P, T>>;
 export declare const INITIAL_ROOM_STATE: ClassState;
+export declare const classSliceActionPrefix = "class";
 export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
     setState: Reducer<ClassState, string>;
     endClass: Reducer<{

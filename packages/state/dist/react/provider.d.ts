@@ -1,8 +1,8 @@
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import { State } from "../ui";
-export interface NetworkProviderProps {
+export interface NetworkProviderProps<ApplicationState = unknown> {
     children?: ReactNode;
-    selector: (state: unknown) => State;
+    selector: (state: ApplicationState) => State;
 }
-export declare const NetworkProvider: FC<NetworkProviderProps>;
+export declare function NetworkProvider<ApplicationState = unknown>({ children, selector, }: NetworkProviderProps<ApplicationState>): JSX.Element;
 //# sourceMappingURL=provider.d.ts.map

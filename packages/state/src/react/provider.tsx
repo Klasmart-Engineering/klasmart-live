@@ -1,22 +1,22 @@
 import React, { FC, useMemo, ReactNode } from "react";
-import { useDispatch } from "react-redux";
-import { State } from "../ui";
+import { useStore } from "react-redux";
+import { Action, State } from "../ui";
 import { Network } from "../network";
 import NetworkContext from "./context";
 
-export interface NetworkProviderProps {
+export interface NetworkProviderProps<ApplicationState=unknown> {
   children?: ReactNode;
-  selector: (state: unknown) => State;
+  selector: (state: ApplicationState) => State;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const NetworkProvider: FC<NetworkProviderProps> = ({
+export function NetworkProvider<ApplicationState=unknown>({
   children,
   selector,
-}) => {
-  const dispatch = useDispatch();
-  const value = useMemo(() => new Network(dispatch, selector), []);
+}:NetworkProviderProps<ApplicationState>) {
+  const store = useStore<ApplicationState,Action>();
+  const value = useMemo(() => new Network(store, selector), [store, selector]);
   return (
-    <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>
+    <NetworkContext.Provider value={value as Network<unknown>}>{children}</NetworkContext.Provider>
   );
 };

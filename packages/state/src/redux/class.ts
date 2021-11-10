@@ -124,8 +124,9 @@ const rewardTrophyToAll: Reducer<{trophy: Trophy}> = (
 };
 
 
+export const classSliceActionPrefix = "class"
 export const classSlice = createSlice({
-  name: 'class',
+  name: classSliceActionPrefix,
   initialState: INITIAL_ROOM_STATE,
   reducers: {
     setState,
