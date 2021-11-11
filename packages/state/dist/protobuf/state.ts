@@ -137,7 +137,7 @@ export function validateDevice({id, activityStreamId, userId, webRtcStreamIds}: 
     if(!id) { console.error('IDevice is missing id'); return; }
     if(!userId) { console.error('IDevice is missing userId'); return; }
     return {
-        id: newDeviceId(userId),
+        id: newDeviceId(id),
         userId: newUserId(userId),
         activityStreamID: activityStreamId ? newActivityStreamId(activityStreamId) : undefined,
         webRTCStreamIDs: webRtcStreamIds?.map((id) => newWebRtcStreamId(id)) || []
