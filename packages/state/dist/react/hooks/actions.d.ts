@@ -1,4 +1,4 @@
-import { ActivityStreamID, Content, TrophyType, UserID } from "../../models";
+import { ActivityStreamID, Content, DeviceID, TrophyType, UserID } from "../../models";
 export declare function useJoinClass(): {
     joinClass: (url: string) => Promise<WebSocket>;
     status: import("react-async-hook").AsyncStateStatus;
@@ -32,7 +32,7 @@ export declare function useSetContent(): {
     status: import("react-async-hook").AsyncStateStatus;
 };
 export declare function useSetHost(): {
-    setHost: (hostUserId: UserID) => Promise<void>;
+    setHost: (hostDeviceId: DeviceID) => Promise<void>;
     status: import("react-async-hook").AsyncStateStatus;
 };
 //# sourceMappingURL=actions.d.ts.map

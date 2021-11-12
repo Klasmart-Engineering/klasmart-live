@@ -1,4 +1,5 @@
 import { newDeviceId, pb } from 'kidsloop-live-state/server';
+import { Context } from './authentication';
 import { idGenerator } from './idGenerator';
 
 export class Client {
@@ -17,7 +18,10 @@ export class Client {
   private sendKeepAliveMessageInterval = 1000
 
   constructor(
+    /* eslint-disable no-unused-vars */
     private readonly ws: CloudflareWebsocket,
+    public readonly context: Context,
+    /* eslint-enable no-unused-vars */
   ) {
     ws.addEventListener('message', ({ data }) => {
       this.resetNetworkRecieveTimeout();

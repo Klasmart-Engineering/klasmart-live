@@ -59,13 +59,13 @@ export async function authenticate(request: Request, JWKSUrl?: string, options?:
   try {
     const { payload } = await jwtVerify(jwt, jwks, options);
 
-    if (typeof payload.email !== 'string') {
+    if (typeof payload['email'] !== 'string') {
       return error(statusText(400));
     }
 
     return ok({
       userId: newUserId(payload.sub || 'unknown-user'),
-      name: payload.email || 'anonymous',
+      name: payload['email'] || 'anonymous',
       role: newUserRole('Student'),
     });
   } catch (e) {

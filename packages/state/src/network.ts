@@ -1,6 +1,6 @@
-import { Dispatch, Store } from '@reduxjs/toolkit';
+import { Store } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
-import { Action, ClassActionType, ClassActionTypeToPayload, classSliceActionPrefix, NetworkHandlerCallback, State } from './ui';
+import { Action, ClassActionType, classSliceActionPrefix, NetworkHandlerCallback, State } from './ui';
 import { NewType } from './types';
 import { ClassRequest, IClassRequest, ClassMessage, IClassResponse } from './protobuf';
 import { messageToClassAction } from './protobuf/actions';

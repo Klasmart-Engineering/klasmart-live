@@ -5,7 +5,10 @@ declare type Reducer<P = void, T extends string = string> = CaseReducer<ClassSta
 export declare const INITIAL_ROOM_STATE: ClassState;
 export declare const classSliceActionPrefix = "class";
 export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
-    setState: Reducer<ClassState, string>;
+    join: Reducer<{
+        state: ClassState;
+        deviceId: DeviceID;
+    }, string>;
     endClass: Reducer<{
         timestamp: Timestamp;
     }, string>;
@@ -17,7 +20,7 @@ export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
     deviceDisconnect: Reducer<{
         deviceId: DeviceID;
     }, string>;
-    setHost: Reducer<UserID, string>;
+    setHost: Reducer<DeviceID, string>;
     setContent: Reducer<Content, string>;
     addChatMessage: Reducer<ChatMessageState, string>;
     setActivityStreamId: Reducer<{
@@ -34,7 +37,10 @@ export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
 }, "class">;
 export declare const classReducer: import("redux").Reducer<ClassState, import("redux").AnyAction>;
 export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions<{
-    setState: Reducer<ClassState, string>;
+    join: Reducer<{
+        state: ClassState;
+        deviceId: DeviceID;
+    }, string>;
     endClass: Reducer<{
         timestamp: Timestamp;
     }, string>;
@@ -46,7 +52,7 @@ export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions
     deviceDisconnect: Reducer<{
         deviceId: DeviceID;
     }, string>;
-    setHost: Reducer<UserID, string>;
+    setHost: Reducer<DeviceID, string>;
     setContent: Reducer<Content, string>;
     addChatMessage: Reducer<ChatMessageState, string>;
     setActivityStreamId: Reducer<{

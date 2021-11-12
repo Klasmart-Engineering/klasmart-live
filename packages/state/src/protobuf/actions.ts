@@ -1,4 +1,4 @@
-import { IActivityStreamIdChangedEvent, IClassEndedEvent, IClassMessage, IContentChangedEvent, IDeviceConnectedEvent, IDeviceDisconnectedEvent, IHostChangedEvent, INewChatMessageEvent, ISetClassStateEvent, ITrophyRewardedToAllEvent, ITrophyRewardedToUserEvent } from '.';
+import { IActivityStreamIdChangedEvent, IClassEndedEvent, IClassMessage, IContentChangedEvent, IDeviceConnectedEvent, IDeviceDisconnectedEvent, IHostChangedEvent, IJoinEvent, INewChatMessageEvent, ITrophyRewardedToAllEvent, ITrophyRewardedToUserEvent } from '.';
 import { newActivityStreamId, newDeviceId, newTimestamp, newUserId, newUserRole } from '../models';
 import { ClassAction, classActions } from '../redux/class';
 import { validateChatMessage, validateContent, validateDevice, validateState, validateTrophy } from './state';
@@ -26,8 +26,8 @@ export function messageToClassAction(message: IClassMessage): ClassAction | unde
     if(message.newChatMessage) {
         return newChatMessageAction(message.newChatMessage);
     }
-    if(message.setRoomState) {
-        return setRoomStateAction(message.setRoomState);
+    if(message.joinEvent) {
+        return joinAction(message.joinEvent);
     }
     if(message.trophyRewardedToAll) {
         return trophyRewardedToAllAction(message.trophyRewardedToAll);
@@ -87,11 +87,11 @@ export function deviceDisconnectedAction({deviceId}: IDeviceDisconnectedEvent): 
 }
 
 export function hostChangedAction(event: IHostChangedEvent): ReturnType<typeof classActions.setHost> | undefined {
-    if(!event.hostUserId) { console.error('IHostChangedEvent is missing hostUserId'); return; }
+    if(!event.hostDeviceId) { console.error('IHostChangedEvent is missing hostDeviceId'); return; }
 
-    const hostUserId = newUserId(event.hostUserId);
+    const hostDeviceId = newDeviceId(event.hostDeviceId);
 
-    return classActions.setHost(hostUserId);
+    return classActions.setHost(hostDeviceId);
 }
 
 export function newChatMessageAction(event: INewChatMessageEvent): ReturnType<typeof classActions.addChatMessage> | undefined {
@@ -103,11 +103,15 @@ export function newChatMessageAction(event: INewChatMessageEvent): ReturnType<ty
     return classActions.addChatMessage(chatMessage);    
 }
 
-export function setRoomStateAction(event: ISetClassStateEvent): ReturnType<typeof classActions.setState> | undefined {
+export function joinAction(event: IJoinEvent): ReturnType<typeof classActions.join> | undefined {
     if(!event.state) { console.error('ISetClassStateEvent is missing state'); return; }
+    if(!event.deviceId) { console.error('ISetClassStateEvent is missing deviceId'); return; }
     const state = validateState(event.state);
     if(!state) { return; }
-    return classActions.setState(state);
+    return classActions.join({
+        state,
+        deviceId: newDeviceId(event.deviceId),
+    });
 }
 
 export function trophyRewardedToAllAction(event: ITrophyRewardedToAllEvent): ReturnType<typeof classActions.rewardTrophyToAll> | undefined {

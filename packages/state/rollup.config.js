@@ -25,11 +25,6 @@ export default [
       resolve({ browser: true }),
       commonjs(),
       terser(),
-      copy({
-        targets: [
-          { src: 'src/protobuf', dest: 'dist' },
-        ]
-      })
     ],
   },
   {

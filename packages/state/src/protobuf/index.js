@@ -664,7 +664,7 @@ $root.ClassMessage = (function() {
      * @exports IClassMessage
      * @interface IClassMessage
      * @property {IClassResponse|null} [response] ClassMessage response
-     * @property {ISetClassStateEvent|null} [setRoomState] ClassMessage setRoomState
+     * @property {IJoinEvent|null} [joinEvent] ClassMessage joinEvent
      * @property {IDeviceConnectedEvent|null} [deviceConnected] ClassMessage deviceConnected
      * @property {IDeviceDisconnectedEvent|null} [deviceDisconnected] ClassMessage deviceDisconnected
      * @property {IClassEndedEvent|null} [classEnded] ClassMessage classEnded
@@ -700,12 +700,12 @@ $root.ClassMessage = (function() {
     ClassMessage.prototype.response = null;
 
     /**
-     * ClassMessage setRoomState.
-     * @member {ISetClassStateEvent|null|undefined} setRoomState
+     * ClassMessage joinEvent.
+     * @member {IJoinEvent|null|undefined} joinEvent
      * @memberof ClassMessage
      * @instance
      */
-    ClassMessage.prototype.setRoomState = null;
+    ClassMessage.prototype.joinEvent = null;
 
     /**
      * ClassMessage deviceConnected.
@@ -784,12 +784,12 @@ $root.ClassMessage = (function() {
 
     /**
      * ClassMessage event.
-     * @member {"setRoomState"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage"|undefined} event
+     * @member {"joinEvent"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage"|undefined} event
      * @memberof ClassMessage
      * @instance
      */
     Object.defineProperty(ClassMessage.prototype, "event", {
-        get: $util.oneOfGetter($oneOfFields = ["setRoomState", "deviceConnected", "deviceDisconnected", "classEnded", "hostChanged", "contentChanged", "actvityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll", "newChatMessage"]),
+        get: $util.oneOfGetter($oneOfFields = ["joinEvent", "deviceConnected", "deviceDisconnected", "classEnded", "hostChanged", "contentChanged", "actvityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll", "newChatMessage"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -819,8 +819,8 @@ $root.ClassMessage = (function() {
             writer = $Writer.create();
         if (message.response != null && Object.hasOwnProperty.call(message, "response"))
             $root.ClassResponse.encode(message.response, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.setRoomState != null && Object.hasOwnProperty.call(message, "setRoomState"))
-            $root.SetClassStateEvent.encode(message.setRoomState, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.joinEvent != null && Object.hasOwnProperty.call(message, "joinEvent"))
+            $root.JoinEvent.encode(message.joinEvent, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.deviceConnected != null && Object.hasOwnProperty.call(message, "deviceConnected"))
             $root.DeviceConnectedEvent.encode(message.deviceConnected, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         if (message.deviceDisconnected != null && Object.hasOwnProperty.call(message, "deviceDisconnected"))
@@ -877,7 +877,7 @@ $root.ClassMessage = (function() {
                 message.response = $root.ClassResponse.decode(reader, reader.uint32());
                 break;
             case 3:
-                message.setRoomState = $root.SetClassStateEvent.decode(reader, reader.uint32());
+                message.joinEvent = $root.JoinEvent.decode(reader, reader.uint32());
                 break;
             case 4:
                 message.deviceConnected = $root.DeviceConnectedEvent.decode(reader, reader.uint32());
@@ -947,12 +947,12 @@ $root.ClassMessage = (function() {
             if (error)
                 return "response." + error;
         }
-        if (message.setRoomState != null && message.hasOwnProperty("setRoomState")) {
+        if (message.joinEvent != null && message.hasOwnProperty("joinEvent")) {
             properties.event = 1;
             {
-                var error = $root.SetClassStateEvent.verify(message.setRoomState);
+                var error = $root.JoinEvent.verify(message.joinEvent);
                 if (error)
-                    return "setRoomState." + error;
+                    return "joinEvent." + error;
             }
         }
         if (message.deviceConnected != null && message.hasOwnProperty("deviceConnected")) {
@@ -1065,10 +1065,10 @@ $root.ClassMessage = (function() {
                 throw TypeError(".ClassMessage.response: object expected");
             message.response = $root.ClassResponse.fromObject(object.response);
         }
-        if (object.setRoomState != null) {
-            if (typeof object.setRoomState !== "object")
-                throw TypeError(".ClassMessage.setRoomState: object expected");
-            message.setRoomState = $root.SetClassStateEvent.fromObject(object.setRoomState);
+        if (object.joinEvent != null) {
+            if (typeof object.joinEvent !== "object")
+                throw TypeError(".ClassMessage.joinEvent: object expected");
+            message.joinEvent = $root.JoinEvent.fromObject(object.joinEvent);
         }
         if (object.deviceConnected != null) {
             if (typeof object.deviceConnected !== "object")
@@ -1135,10 +1135,10 @@ $root.ClassMessage = (function() {
             object.response = null;
         if (message.response != null && message.hasOwnProperty("response"))
             object.response = $root.ClassResponse.toObject(message.response, options);
-        if (message.setRoomState != null && message.hasOwnProperty("setRoomState")) {
-            object.setRoomState = $root.SetClassStateEvent.toObject(message.setRoomState, options);
+        if (message.joinEvent != null && message.hasOwnProperty("joinEvent")) {
+            object.joinEvent = $root.JoinEvent.toObject(message.joinEvent, options);
             if (options.oneofs)
-                object.event = "setRoomState";
+                object.event = "joinEvent";
         }
         if (message.deviceConnected != null && message.hasOwnProperty("deviceConnected")) {
             object.deviceConnected = $root.DeviceConnectedEvent.toObject(message.deviceConnected, options);
@@ -1368,7 +1368,7 @@ $root.SetHostCommand = (function() {
      * Properties of a SetHostCommand.
      * @exports ISetHostCommand
      * @interface ISetHostCommand
-     * @property {string|null} [hostUserId] SetHostCommand hostUserId
+     * @property {string|null} [hostDeviceId] SetHostCommand hostDeviceId
      */
 
     /**
@@ -1387,12 +1387,12 @@ $root.SetHostCommand = (function() {
     }
 
     /**
-     * SetHostCommand hostUserId.
-     * @member {string} hostUserId
+     * SetHostCommand hostDeviceId.
+     * @member {string} hostDeviceId
      * @memberof SetHostCommand
      * @instance
      */
-    SetHostCommand.prototype.hostUserId = "";
+    SetHostCommand.prototype.hostDeviceId = "";
 
     /**
      * Creates a new SetHostCommand instance using the specified properties.
@@ -1418,8 +1418,8 @@ $root.SetHostCommand = (function() {
     SetHostCommand.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.hostUserId != null && Object.hasOwnProperty.call(message, "hostUserId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.hostUserId);
+        if (message.hostDeviceId != null && Object.hasOwnProperty.call(message, "hostDeviceId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.hostDeviceId);
         return writer;
     };
 
@@ -1455,7 +1455,7 @@ $root.SetHostCommand = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.hostUserId = reader.string();
+                message.hostDeviceId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -1492,9 +1492,9 @@ $root.SetHostCommand = (function() {
     SetHostCommand.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.hostUserId != null && message.hasOwnProperty("hostUserId"))
-            if (!$util.isString(message.hostUserId))
-                return "hostUserId: string expected";
+        if (message.hostDeviceId != null && message.hasOwnProperty("hostDeviceId"))
+            if (!$util.isString(message.hostDeviceId))
+                return "hostDeviceId: string expected";
         return null;
     };
 
@@ -1510,8 +1510,8 @@ $root.SetHostCommand = (function() {
         if (object instanceof $root.SetHostCommand)
             return object;
         var message = new $root.SetHostCommand();
-        if (object.hostUserId != null)
-            message.hostUserId = String(object.hostUserId);
+        if (object.hostDeviceId != null)
+            message.hostDeviceId = String(object.hostDeviceId);
         return message;
     };
 
@@ -1529,9 +1529,9 @@ $root.SetHostCommand = (function() {
             options = {};
         var object = {};
         if (options.defaults)
-            object.hostUserId = "";
-        if (message.hostUserId != null && message.hasOwnProperty("hostUserId"))
-            object.hostUserId = message.hostUserId;
+            object.hostDeviceId = "";
+        if (message.hostDeviceId != null && message.hasOwnProperty("hostDeviceId"))
+            object.hostDeviceId = message.hostDeviceId;
         return object;
     };
 
@@ -2522,24 +2522,25 @@ $root.SendChatMessageCommand = (function() {
     return SendChatMessageCommand;
 })();
 
-$root.SetClassStateEvent = (function() {
+$root.JoinEvent = (function() {
 
     /**
-     * Properties of a SetClassStateEvent.
-     * @exports ISetClassStateEvent
-     * @interface ISetClassStateEvent
-     * @property {IClassState|null} [state] SetClassStateEvent state
+     * Properties of a JoinEvent.
+     * @exports IJoinEvent
+     * @interface IJoinEvent
+     * @property {IClassState|null} [state] JoinEvent state
+     * @property {string|null} [deviceId] JoinEvent deviceId
      */
 
     /**
-     * Constructs a new SetClassStateEvent.
-     * @exports SetClassStateEvent
-     * @classdesc Represents a SetClassStateEvent.
-     * @implements ISetClassStateEvent
+     * Constructs a new JoinEvent.
+     * @exports JoinEvent
+     * @classdesc Represents a JoinEvent.
+     * @implements IJoinEvent
      * @constructor
-     * @param {ISetClassStateEvent=} [properties] Properties to set
+     * @param {IJoinEvent=} [properties] Properties to set
      */
-    function SetClassStateEvent(properties) {
+    function JoinEvent(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -2547,75 +2548,88 @@ $root.SetClassStateEvent = (function() {
     }
 
     /**
-     * SetClassStateEvent state.
+     * JoinEvent state.
      * @member {IClassState|null|undefined} state
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @instance
      */
-    SetClassStateEvent.prototype.state = null;
+    JoinEvent.prototype.state = null;
 
     /**
-     * Creates a new SetClassStateEvent instance using the specified properties.
-     * @function create
-     * @memberof SetClassStateEvent
-     * @static
-     * @param {ISetClassStateEvent=} [properties] Properties to set
-     * @returns {SetClassStateEvent} SetClassStateEvent instance
+     * JoinEvent deviceId.
+     * @member {string} deviceId
+     * @memberof JoinEvent
+     * @instance
      */
-    SetClassStateEvent.create = function create(properties) {
-        return new SetClassStateEvent(properties);
+    JoinEvent.prototype.deviceId = "";
+
+    /**
+     * Creates a new JoinEvent instance using the specified properties.
+     * @function create
+     * @memberof JoinEvent
+     * @static
+     * @param {IJoinEvent=} [properties] Properties to set
+     * @returns {JoinEvent} JoinEvent instance
+     */
+    JoinEvent.create = function create(properties) {
+        return new JoinEvent(properties);
     };
 
     /**
-     * Encodes the specified SetClassStateEvent message. Does not implicitly {@link SetClassStateEvent.verify|verify} messages.
+     * Encodes the specified JoinEvent message. Does not implicitly {@link JoinEvent.verify|verify} messages.
      * @function encode
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @static
-     * @param {ISetClassStateEvent} message SetClassStateEvent message or plain object to encode
+     * @param {IJoinEvent} message JoinEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetClassStateEvent.encode = function encode(message, writer) {
+    JoinEvent.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.state != null && Object.hasOwnProperty.call(message, "state"))
             $root.ClassState.encode(message.state, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.deviceId != null && Object.hasOwnProperty.call(message, "deviceId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.deviceId);
         return writer;
     };
 
     /**
-     * Encodes the specified SetClassStateEvent message, length delimited. Does not implicitly {@link SetClassStateEvent.verify|verify} messages.
+     * Encodes the specified JoinEvent message, length delimited. Does not implicitly {@link JoinEvent.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @static
-     * @param {ISetClassStateEvent} message SetClassStateEvent message or plain object to encode
+     * @param {IJoinEvent} message JoinEvent message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    SetClassStateEvent.encodeDelimited = function encodeDelimited(message, writer) {
+    JoinEvent.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a SetClassStateEvent message from the specified reader or buffer.
+     * Decodes a JoinEvent message from the specified reader or buffer.
      * @function decode
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {SetClassStateEvent} SetClassStateEvent
+     * @returns {JoinEvent} JoinEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetClassStateEvent.decode = function decode(reader, length) {
+    JoinEvent.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SetClassStateEvent();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.JoinEvent();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
                 message.state = $root.ClassState.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.deviceId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2626,30 +2640,30 @@ $root.SetClassStateEvent = (function() {
     };
 
     /**
-     * Decodes a SetClassStateEvent message from the specified reader or buffer, length delimited.
+     * Decodes a JoinEvent message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SetClassStateEvent} SetClassStateEvent
+     * @returns {JoinEvent} JoinEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    SetClassStateEvent.decodeDelimited = function decodeDelimited(reader) {
+    JoinEvent.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a SetClassStateEvent message.
+     * Verifies a JoinEvent message.
      * @function verify
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    SetClassStateEvent.verify = function verify(message) {
+    JoinEvent.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.state != null && message.hasOwnProperty("state")) {
@@ -2657,61 +2671,70 @@ $root.SetClassStateEvent = (function() {
             if (error)
                 return "state." + error;
         }
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            if (!$util.isString(message.deviceId))
+                return "deviceId: string expected";
         return null;
     };
 
     /**
-     * Creates a SetClassStateEvent message from a plain object. Also converts values to their respective internal types.
+     * Creates a JoinEvent message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {SetClassStateEvent} SetClassStateEvent
+     * @returns {JoinEvent} JoinEvent
      */
-    SetClassStateEvent.fromObject = function fromObject(object) {
-        if (object instanceof $root.SetClassStateEvent)
+    JoinEvent.fromObject = function fromObject(object) {
+        if (object instanceof $root.JoinEvent)
             return object;
-        var message = new $root.SetClassStateEvent();
+        var message = new $root.JoinEvent();
         if (object.state != null) {
             if (typeof object.state !== "object")
-                throw TypeError(".SetClassStateEvent.state: object expected");
+                throw TypeError(".JoinEvent.state: object expected");
             message.state = $root.ClassState.fromObject(object.state);
         }
+        if (object.deviceId != null)
+            message.deviceId = String(object.deviceId);
         return message;
     };
 
     /**
-     * Creates a plain object from a SetClassStateEvent message. Also converts values to other types if specified.
+     * Creates a plain object from a JoinEvent message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @static
-     * @param {SetClassStateEvent} message SetClassStateEvent
+     * @param {JoinEvent} message JoinEvent
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    SetClassStateEvent.toObject = function toObject(message, options) {
+    JoinEvent.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults)
+        if (options.defaults) {
             object.state = null;
+            object.deviceId = "";
+        }
         if (message.state != null && message.hasOwnProperty("state"))
             object.state = $root.ClassState.toObject(message.state, options);
+        if (message.deviceId != null && message.hasOwnProperty("deviceId"))
+            object.deviceId = message.deviceId;
         return object;
     };
 
     /**
-     * Converts this SetClassStateEvent to JSON.
+     * Converts this JoinEvent to JSON.
      * @function toJSON
-     * @memberof SetClassStateEvent
+     * @memberof JoinEvent
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    SetClassStateEvent.prototype.toJSON = function toJSON() {
+    JoinEvent.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return SetClassStateEvent;
+    return JoinEvent;
 })();
 
 $root.ClassEndedEvent = (function() {
@@ -3345,7 +3368,7 @@ $root.HostChangedEvent = (function() {
      * Properties of a HostChangedEvent.
      * @exports IHostChangedEvent
      * @interface IHostChangedEvent
-     * @property {string|null} [hostUserId] HostChangedEvent hostUserId
+     * @property {string|null} [hostDeviceId] HostChangedEvent hostDeviceId
      */
 
     /**
@@ -3364,12 +3387,12 @@ $root.HostChangedEvent = (function() {
     }
 
     /**
-     * HostChangedEvent hostUserId.
-     * @member {string} hostUserId
+     * HostChangedEvent hostDeviceId.
+     * @member {string} hostDeviceId
      * @memberof HostChangedEvent
      * @instance
      */
-    HostChangedEvent.prototype.hostUserId = "";
+    HostChangedEvent.prototype.hostDeviceId = "";
 
     /**
      * Creates a new HostChangedEvent instance using the specified properties.
@@ -3395,8 +3418,8 @@ $root.HostChangedEvent = (function() {
     HostChangedEvent.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.hostUserId != null && Object.hasOwnProperty.call(message, "hostUserId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.hostUserId);
+        if (message.hostDeviceId != null && Object.hasOwnProperty.call(message, "hostDeviceId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.hostDeviceId);
         return writer;
     };
 
@@ -3432,7 +3455,7 @@ $root.HostChangedEvent = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.hostUserId = reader.string();
+                message.hostDeviceId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3469,9 +3492,9 @@ $root.HostChangedEvent = (function() {
     HostChangedEvent.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.hostUserId != null && message.hasOwnProperty("hostUserId"))
-            if (!$util.isString(message.hostUserId))
-                return "hostUserId: string expected";
+        if (message.hostDeviceId != null && message.hasOwnProperty("hostDeviceId"))
+            if (!$util.isString(message.hostDeviceId))
+                return "hostDeviceId: string expected";
         return null;
     };
 
@@ -3487,8 +3510,8 @@ $root.HostChangedEvent = (function() {
         if (object instanceof $root.HostChangedEvent)
             return object;
         var message = new $root.HostChangedEvent();
-        if (object.hostUserId != null)
-            message.hostUserId = String(object.hostUserId);
+        if (object.hostDeviceId != null)
+            message.hostDeviceId = String(object.hostDeviceId);
         return message;
     };
 
@@ -3506,9 +3529,9 @@ $root.HostChangedEvent = (function() {
             options = {};
         var object = {};
         if (options.defaults)
-            object.hostUserId = "";
-        if (message.hostUserId != null && message.hasOwnProperty("hostUserId"))
-            object.hostUserId = message.hostUserId;
+            object.hostDeviceId = "";
+        if (message.hostDeviceId != null && message.hasOwnProperty("hostDeviceId"))
+            object.hostDeviceId = message.hostDeviceId;
         return object;
     };
 
@@ -4537,7 +4560,7 @@ $root.ClassState = (function() {
      * @property {Object.<string,IDevice>|null} [devices] ClassState devices
      * @property {Array.<IChatMessage>|null} [chatMessages] ClassState chatMessages
      * @property {IContent|null} [content] ClassState content
-     * @property {string|null} [hostUserId] ClassState hostUserId
+     * @property {string|null} [hostDeviceId] ClassState hostDeviceId
      * @property {number|Long|null} [classEndedTime] ClassState classEndedTime
      */
 
@@ -4592,12 +4615,12 @@ $root.ClassState = (function() {
     ClassState.prototype.content = null;
 
     /**
-     * ClassState hostUserId.
-     * @member {string} hostUserId
+     * ClassState hostDeviceId.
+     * @member {string} hostDeviceId
      * @memberof ClassState
      * @instance
      */
-    ClassState.prototype.hostUserId = "";
+    ClassState.prototype.hostDeviceId = "";
 
     /**
      * ClassState classEndedTime.
@@ -4646,8 +4669,8 @@ $root.ClassState = (function() {
                 $root.ChatMessage.encode(message.chatMessages[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.content != null && Object.hasOwnProperty.call(message, "content"))
             $root.Content.encode(message.content, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.hostUserId != null && Object.hasOwnProperty.call(message, "hostUserId"))
-            writer.uint32(/* id 5, wireType 2 =*/42).string(message.hostUserId);
+        if (message.hostDeviceId != null && Object.hasOwnProperty.call(message, "hostDeviceId"))
+            writer.uint32(/* id 5, wireType 2 =*/42).string(message.hostDeviceId);
         if (message.classEndedTime != null && Object.hasOwnProperty.call(message, "classEndedTime"))
             writer.uint32(/* id 6, wireType 0 =*/48).uint64(message.classEndedTime);
         return writer;
@@ -4737,7 +4760,7 @@ $root.ClassState = (function() {
                 message.content = $root.Content.decode(reader, reader.uint32());
                 break;
             case 5:
-                message.hostUserId = reader.string();
+                message.hostDeviceId = reader.string();
                 break;
             case 6:
                 message.classEndedTime = reader.uint64();
@@ -4811,9 +4834,9 @@ $root.ClassState = (function() {
             if (error)
                 return "content." + error;
         }
-        if (message.hostUserId != null && message.hasOwnProperty("hostUserId"))
-            if (!$util.isString(message.hostUserId))
-                return "hostUserId: string expected";
+        if (message.hostDeviceId != null && message.hasOwnProperty("hostDeviceId"))
+            if (!$util.isString(message.hostDeviceId))
+                return "hostDeviceId: string expected";
         if (message.classEndedTime != null && message.hasOwnProperty("classEndedTime"))
             if (!$util.isInteger(message.classEndedTime) && !(message.classEndedTime && $util.isInteger(message.classEndedTime.low) && $util.isInteger(message.classEndedTime.high)))
                 return "classEndedTime: integer|Long expected";
@@ -4867,8 +4890,8 @@ $root.ClassState = (function() {
                 throw TypeError(".ClassState.content: object expected");
             message.content = $root.Content.fromObject(object.content);
         }
-        if (object.hostUserId != null)
-            message.hostUserId = String(object.hostUserId);
+        if (object.hostDeviceId != null)
+            message.hostDeviceId = String(object.hostDeviceId);
         if (object.classEndedTime != null)
             if ($util.Long)
                 (message.classEndedTime = $util.Long.fromValue(object.classEndedTime)).unsigned = true;
@@ -4902,7 +4925,7 @@ $root.ClassState = (function() {
         }
         if (options.defaults) {
             object.content = null;
-            object.hostUserId = "";
+            object.hostDeviceId = "";
             if ($util.Long) {
                 var long = new $util.Long(0, 0, true);
                 object.classEndedTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -4927,8 +4950,8 @@ $root.ClassState = (function() {
         }
         if (message.content != null && message.hasOwnProperty("content"))
             object.content = $root.Content.toObject(message.content, options);
-        if (message.hostUserId != null && message.hasOwnProperty("hostUserId"))
-            object.hostUserId = message.hostUserId;
+        if (message.hostDeviceId != null && message.hasOwnProperty("hostDeviceId"))
+            object.hostDeviceId = message.hostDeviceId;
         if (message.classEndedTime != null && message.hasOwnProperty("classEndedTime"))
             if (typeof message.classEndedTime === "number")
                 object.classEndedTime = options.longs === String ? String(message.classEndedTime) : message.classEndedTime;

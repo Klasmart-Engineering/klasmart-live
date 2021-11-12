@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useAsyncCallback } from "react-async-hook";
-import { ActivityStreamID, Content, TrophyType, UserID } from "../../models";
+import { ActivityStreamID, Content, DeviceID, TrophyType, UserID } from "../../models";
 import { IClassRequest } from "../../protobuf";
 import NetworkContext from "../context";
 
@@ -84,8 +84,8 @@ export function useSetContent() {
 }
 
 export function useSetHost() {
-  const { execute, status } = useNetworkAction((hostUserId: UserID) => ({
-    setHost: { hostUserId },
+  const { execute, status } = useNetworkAction((hostDeviceId: DeviceID) => ({
+    setHost: { hostDeviceId },
   }));
   return { setHost: execute, status };
 }

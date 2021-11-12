@@ -5,6 +5,7 @@ export declare const reducer: import("redux").Reducer<import("redux").CombinedSt
     network: import("redux").CombinedState<{
         connectionStatus: import("./network").ConnectionStatus;
         connectionError: boolean;
+        myDeviceId: import("../models").DeviceID | null;
     }>;
 }>, import("redux").AnyAction>;
 export declare type State = ReturnType<typeof reducer>;

@@ -100,15 +100,13 @@ export function validateState(classState: IClassState): ClassState | undefined {
         }
     }
     
-    const classEndTime = classState.classEndedTime ? newTimestamp(classState.classEndedTime) : undefined
-    const hostUserId = classState.hostUserId ? newUserId(classState.hostUserId) : undefined
     return {
          chatMessages,
          content,
          devices,
          users,
-         classEndTime,
-         hostUserId,
+         classEndTime: classState.classEndedTime ? newTimestamp(classState.classEndedTime) : undefined,
+         hostDeviceId: classState.hostDeviceId ? newDeviceId(classState.hostDeviceId) : undefined,
     };
 }
 

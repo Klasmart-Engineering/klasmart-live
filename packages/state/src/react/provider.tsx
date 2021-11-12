@@ -1,4 +1,4 @@
-import React, { FC, useMemo, ReactNode } from "react";
+import React, { useMemo, ReactNode } from "react";
 import { useStore } from "react-redux";
 import { Action, State } from "../ui";
 import { Network } from "../network";

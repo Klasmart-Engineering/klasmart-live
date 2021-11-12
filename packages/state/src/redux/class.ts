@@ -1,6 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WritableDraft } from 'immer/dist/internal';
-import { ContentType, ClassState, UserID, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy, UserState, UserRole, Timestamp } from '../models';
+import { ContentType, ClassState, UserID, Content, ChatMessageState, DeviceID, ActivityStreamID, DeviceState, Trophy, UserRole, Timestamp } from '../models';
 import { ValueOf, values } from '../types';
 import { isAllowedToBecomeHost } from './authorization';
 
@@ -13,13 +13,11 @@ export const INITIAL_ROOM_STATE: ClassState = {
   content: {
     type: ContentType.Blank,
   },
-  hostUserId: undefined,
+  hostDeviceId: undefined,
   classEndTime: undefined,
 };
 
-const setState: Reducer<ClassState> = (_state, action) => {
-  return action.payload;
-};
+const join: Reducer<{state: ClassState, deviceId: DeviceID}> = (_state, action) => action.payload.state;
 
 const endClass: Reducer<{ timestamp: Timestamp }> = (state, action) => {
   state.classEndTime = action.payload.timestamp;
@@ -46,8 +44,8 @@ const deviceConnect: Reducer<{name: string, device: DeviceState, role: UserRole}
       trophies: [],
     };
   }
-  if(!state.hostUserId && isAllowedToBecomeHost(role)) {
-    state.hostUserId = userId;
+  if(!state.hostDeviceId && isAllowedToBecomeHost(role)) {
+    state.hostDeviceId = device.id;
   }
 
 };
@@ -60,12 +58,9 @@ const deviceDisconnect: Reducer<{deviceId: DeviceID}> = (
   const device = state.devices[deviceId] as WritableDraft<DeviceState> | undefined;
   delete state.devices[deviceId];
   if(!device) { return; }
-  const user = state.users[device.userId] as WritableDraft<UserState> | undefined;
-  if(!user) { return; }
-  user.deviceIds = user.deviceIds.filter((id) => id !== deviceId);
 
-  if(state.hostUserId === user.id) {
-    state.hostUserId = undefined;
+  if(state.hostDeviceId === device.id) {
+    state.hostDeviceId = undefined;
     const userIds = Object.keys(state.users) as UserID[];
     // userIds.sort(); sort may be unecessary
     // It ensures deterministic evaluation on all clients, regardless of the keys array ordering
@@ -73,16 +68,19 @@ const deviceDisconnect: Reducer<{deviceId: DeviceID}> = (
     userIds.sort();
     for(const userId of userIds) {
       const user = state.users[userId];
-      if(user && isAllowedToBecomeHost(user.role)) {
-        state.hostUserId = user.id;
+      if(!user) { continue }
+      const deviceId = user.deviceIds[0]
+      if(!deviceId) {continue }
+      if(isAllowedToBecomeHost(user.role)) {
+        state.hostDeviceId = deviceId;
         break;
       }
     }
   }
 };
 
-const setHost: Reducer<UserID> = (state, action) => {
-  state.hostUserId = action.payload;
+const setHost: Reducer<DeviceID> = (state, action) => {
+  state.hostDeviceId = action.payload;
 };
 
 const setContent: Reducer<Content> = (state, action) => {
@@ -129,7 +127,7 @@ export const classSlice = createSlice({
   name: classSliceActionPrefix,
   initialState: INITIAL_ROOM_STATE,
   reducers: {
-    setState,
+    join,
     endClass,
     deviceConnect,
     deviceDisconnect, 

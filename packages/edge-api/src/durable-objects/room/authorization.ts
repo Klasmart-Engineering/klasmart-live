@@ -1,9 +1,14 @@
 import { ClassState, DeviceID, pb } from 'kidsloop-live-state/server';
+import { Context } from './authentication';
 
-export function isAuthorized(request: pb.ClassRequest, state: ClassState, deviceId: DeviceID): boolean {
-  
-    const device = state.devices[deviceId];
-    const user = state.users[device.userId];
+export function isAuthorized(
+    request: pb.ClassRequest,
+    state: ClassState,
+    context: Context,
+    deviceId: DeviceID,
+  ): boolean {
+    const deivce = state.devices[deviceId];
+    const user = state.users[context.userId];
   
     switch(request.command) {
       case 'endClass':
@@ -11,7 +16,8 @@ export function isAuthorized(request: pb.ClassRequest, state: ClassState, device
       case 'rewardTrophyToAll':
       case 'rewardTrophyToUser':
       case 'setHost':
-        return state.hostUserId === user.id;
+        if(!deivce) { return false; }
+        return state.hostDeviceId === deivce.id;
       case 'setActvityStreamId':
       case 'sendChatMessage':
         return true;

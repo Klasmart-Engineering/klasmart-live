@@ -74,7 +74,7 @@ export interface ClassState {
     devices: Record<DeviceID, DeviceState>;
     chatMessages: ChatMessageState[];
     content: Content;
-    hostUserId?: UserID;
+    hostDeviceId?: DeviceID;
     classEndTime?: Timestamp;
 }
 export interface ChatMessageNotification {

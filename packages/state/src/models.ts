@@ -104,7 +104,7 @@ export interface ClassState {
 
   chatMessages: ChatMessageState[]
   content: Content
-  hostUserId?: UserID
+  hostDeviceId?: DeviceID
   classEndTime?: Timestamp
 }
 

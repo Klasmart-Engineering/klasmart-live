@@ -236,8 +236,8 @@ export interface IClassMessage {
     /** ClassMessage response */
     response?: (IClassResponse|null);
 
-    /** ClassMessage setRoomState */
-    setRoomState?: (ISetClassStateEvent|null);
+    /** ClassMessage joinEvent */
+    joinEvent?: (IJoinEvent|null);
 
     /** ClassMessage deviceConnected */
     deviceConnected?: (IDeviceConnectedEvent|null);
@@ -279,8 +279,8 @@ export class ClassMessage implements IClassMessage {
     /** ClassMessage response. */
     public response?: (IClassResponse|null);
 
-    /** ClassMessage setRoomState. */
-    public setRoomState?: (ISetClassStateEvent|null);
+    /** ClassMessage joinEvent. */
+    public joinEvent?: (IJoinEvent|null);
 
     /** ClassMessage deviceConnected. */
     public deviceConnected?: (IDeviceConnectedEvent|null);
@@ -310,7 +310,7 @@ export class ClassMessage implements IClassMessage {
     public newChatMessage?: (INewChatMessageEvent|null);
 
     /** ClassMessage event. */
-    public event?: ("setRoomState"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage");
+    public event?: ("joinEvent"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage");
 
     /**
      * Creates a new ClassMessage instance using the specified properties.
@@ -470,8 +470,8 @@ export class EndClassCommand implements IEndClassCommand {
 /** Properties of a SetHostCommand. */
 export interface ISetHostCommand {
 
-    /** SetHostCommand hostUserId */
-    hostUserId?: (string|null);
+    /** SetHostCommand hostDeviceId */
+    hostDeviceId?: (string|null);
 }
 
 /** Represents a SetHostCommand. */
@@ -483,8 +483,8 @@ export class SetHostCommand implements ISetHostCommand {
      */
     constructor(properties?: ISetHostCommand);
 
-    /** SetHostCommand hostUserId. */
-    public hostUserId: string;
+    /** SetHostCommand hostDeviceId. */
+    public hostDeviceId: string;
 
     /**
      * Creates a new SetHostCommand instance using the specified properties.
@@ -1013,91 +1013,97 @@ export class SendChatMessageCommand implements ISendChatMessageCommand {
     public toJSON(): { [k: string]: any };
 }
 
-/** Properties of a SetClassStateEvent. */
-export interface ISetClassStateEvent {
+/** Properties of a JoinEvent. */
+export interface IJoinEvent {
 
-    /** SetClassStateEvent state */
+    /** JoinEvent state */
     state?: (IClassState|null);
+
+    /** JoinEvent deviceId */
+    deviceId?: (string|null);
 }
 
-/** Represents a SetClassStateEvent. */
-export class SetClassStateEvent implements ISetClassStateEvent {
+/** Represents a JoinEvent. */
+export class JoinEvent implements IJoinEvent {
 
     /**
-     * Constructs a new SetClassStateEvent.
+     * Constructs a new JoinEvent.
      * @param [properties] Properties to set
      */
-    constructor(properties?: ISetClassStateEvent);
+    constructor(properties?: IJoinEvent);
 
-    /** SetClassStateEvent state. */
+    /** JoinEvent state. */
     public state?: (IClassState|null);
 
+    /** JoinEvent deviceId. */
+    public deviceId: string;
+
     /**
-     * Creates a new SetClassStateEvent instance using the specified properties.
+     * Creates a new JoinEvent instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns SetClassStateEvent instance
+     * @returns JoinEvent instance
      */
-    public static create(properties?: ISetClassStateEvent): SetClassStateEvent;
+    public static create(properties?: IJoinEvent): JoinEvent;
 
     /**
-     * Encodes the specified SetClassStateEvent message. Does not implicitly {@link SetClassStateEvent.verify|verify} messages.
-     * @param message SetClassStateEvent message or plain object to encode
+     * Encodes the specified JoinEvent message. Does not implicitly {@link JoinEvent.verify|verify} messages.
+     * @param message JoinEvent message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: ISetClassStateEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IJoinEvent, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified SetClassStateEvent message, length delimited. Does not implicitly {@link SetClassStateEvent.verify|verify} messages.
-     * @param message SetClassStateEvent message or plain object to encode
+     * Encodes the specified JoinEvent message, length delimited. Does not implicitly {@link JoinEvent.verify|verify} messages.
+     * @param message JoinEvent message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: ISetClassStateEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IJoinEvent, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a SetClassStateEvent message from the specified reader or buffer.
+     * Decodes a JoinEvent message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns SetClassStateEvent
+     * @returns JoinEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SetClassStateEvent;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): JoinEvent;
 
     /**
-     * Decodes a SetClassStateEvent message from the specified reader or buffer, length delimited.
+     * Decodes a JoinEvent message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns SetClassStateEvent
+     * @returns JoinEvent
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SetClassStateEvent;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): JoinEvent;
 
     /**
-     * Verifies a SetClassStateEvent message.
+     * Verifies a JoinEvent message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a SetClassStateEvent message from a plain object. Also converts values to their respective internal types.
+     * Creates a JoinEvent message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns SetClassStateEvent
+     * @returns JoinEvent
      */
-    public static fromObject(object: { [k: string]: any }): SetClassStateEvent;
+    public static fromObject(object: { [k: string]: any }): JoinEvent;
 
     /**
-     * Creates a plain object from a SetClassStateEvent message. Also converts values to other types if specified.
-     * @param message SetClassStateEvent
+     * Creates a plain object from a JoinEvent message. Also converts values to other types if specified.
+     * @param message JoinEvent
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: SetClassStateEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: JoinEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this SetClassStateEvent to JSON.
+     * Converts this JoinEvent to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -1388,8 +1394,8 @@ export class DeviceDisconnectedEvent implements IDeviceDisconnectedEvent {
 /** Properties of a HostChangedEvent. */
 export interface IHostChangedEvent {
 
-    /** HostChangedEvent hostUserId */
-    hostUserId?: (string|null);
+    /** HostChangedEvent hostDeviceId */
+    hostDeviceId?: (string|null);
 }
 
 /** Represents a HostChangedEvent. */
@@ -1401,8 +1407,8 @@ export class HostChangedEvent implements IHostChangedEvent {
      */
     constructor(properties?: IHostChangedEvent);
 
-    /** HostChangedEvent hostUserId. */
-    public hostUserId: string;
+    /** HostChangedEvent hostDeviceId. */
+    public hostDeviceId: string;
 
     /**
      * Creates a new HostChangedEvent instance using the specified properties.
@@ -1952,8 +1958,8 @@ export interface IClassState {
     /** ClassState content */
     content?: (IContent|null);
 
-    /** ClassState hostUserId */
-    hostUserId?: (string|null);
+    /** ClassState hostDeviceId */
+    hostDeviceId?: (string|null);
 
     /** ClassState classEndedTime */
     classEndedTime?: (number|Long|null);
@@ -1980,8 +1986,8 @@ export class ClassState implements IClassState {
     /** ClassState content. */
     public content?: (IContent|null);
 
-    /** ClassState hostUserId. */
-    public hostUserId: string;
+    /** ClassState hostDeviceId. */
+    public hostDeviceId: string;
 
     /** ClassState classEndedTime. */
     public classEndedTime: (number|Long);

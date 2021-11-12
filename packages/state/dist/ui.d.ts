@@ -1,4 +1,3 @@
-export * as pb from './protobuf';
 export * from './protobuf/actions';
 export * from './react/hooks/actions';
 export * from './react/hooks/state';

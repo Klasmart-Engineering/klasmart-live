@@ -61,50 +61,49 @@ export class Room implements DurableObject {
   }
 
   private addClient(ws: CloudflareWebsocket, context: Context) {
-    const client = new Client(ws);
+    const client = new Client(ws, context);
+    const { name, role, userId } = context;
+    const { deviceId } = client;
     this.clients.add(client);
 
-    client.onRequest = (request: pb.ClassRequest) => this.onClientRequest(client, request, context);
+    client.onRequest = (request: pb.ClassRequest) => this.onClientRequest(client, request);
     client.onTerminate = (client:Client) => this.onClientTermination(client),
 
     // Update state with new user
     this.dispatchAndBroadcastOthers(
       {
         deviceConnected: {
-          name: context.name,
-          role: context.role,
+          name,
+          role,
           device: {
-            id: client.deviceId,
-            userId: context.userId,
+            id: deviceId,
+            userId,
           }
         }
       },
-      client.deviceId,
+      deviceId,
     );
 
     // Send updated state to user
     const state = this.store.getState();
-    client.send({ setRoomState: { state } });
+    client.send({ joinEvent: { state, deviceId } });
   }
 
-  private onClientRequest(client: Client, request: pb.ClassRequest, context: Context) {
-    const { deviceId } = client;
+  private onClientRequest(client: Client, request: pb.ClassRequest) {
+    const { deviceId, context } = client;
     const { requestId } = request;
-    console.log('1');
-    // if(!isAuthorized(request, this.store.getState(), deviceId)) {
-    //   client.send({
-    //     response: {
-    //       id: requestId,
-    //       error: 'Not allowed',
-    //     },
-    //   });
-    //   return;
-    // }
-    console.log('2');
+    if(!isAuthorized(request, this.store.getState(), context, deviceId)) {
+      client.send({
+        response: {
+          id: requestId,
+          error: 'Not allowed',
+        },
+      });
+      return;
+    }
 
     const message = requestToMessage(request, context.userId, deviceId);
     if (!message) { console.log('parsing request into message failed'); return; }
-    console.log('3');
 
     client.send({
       ...message,
@@ -112,10 +111,8 @@ export class Room implements DurableObject {
         id: requestId,
       },
     });
-    console.log('4');
 
     this.dispatchAndBroadcastOthers(message, deviceId);
-    console.log('5');
 
   }
 

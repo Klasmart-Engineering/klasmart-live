@@ -23,7 +23,7 @@ message ClassMessage {
     ClassResponse response = 1;
     
     oneof event {
-        SetClassStateEvent set_room_state = 3;
+        JoinEvent join_event = 3;
         
         DeviceConnectedEvent device_connected = 4;
         DeviceDisconnectedEvent device_disconnected = 5;
@@ -43,7 +43,7 @@ message ClassMessage {
 message EndClassCommand {}
 
 message SetHostCommand {
-    string host_user_id = 1;
+    string host_device_id = 1;
 }
 
 message SetContentCommand {
@@ -73,8 +73,9 @@ message SendChatMessageCommand {
 
 /* ======= EVENTS ======= */
 
-message SetClassStateEvent {
+message JoinEvent {
     ClassState state = 1;
+    string device_id = 2;
 }
 
 message ClassEndedEvent {
@@ -92,7 +93,7 @@ message DeviceDisconnectedEvent {
 }
 
 message HostChangedEvent {
-    string host_user_id = 1;
+    string host_device_id = 1;
 }
 
 message ContentChangedEvent {
@@ -129,7 +130,7 @@ message ClassState {
     map<string, Device> devices = 2;
     repeated ChatMessage chat_messages = 3;
     Content content = 4;
-    string host_user_id = 5;
+    string host_device_id = 5;
     uint64 class_ended_time = 6; 
 }
 
