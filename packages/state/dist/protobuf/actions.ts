@@ -3,6 +3,7 @@ import { newActivityStreamId, newDeviceId, newTimestamp, newUserId, newUserRole 
 import { ClassAction, classActions } from '../redux/class';
 import { validateChatMessage, validateContent, validateDevice, validateState, validateTrophy } from './state';
 
+
 export function messageToClassAction(message: IClassMessage): ClassAction | undefined {
     if(message.actvityStreamIdChanged) {
         return actvityStreamIdChangedAction(message.actvityStreamIdChanged);
@@ -105,10 +106,8 @@ export function newChatMessageAction(event: INewChatMessageEvent): ReturnType<ty
 export function joinAction(event: IJoinEvent): ReturnType<typeof classActions.join> | undefined {
     if(!event.state) { console.error('IJoinEvent is missing state'); return; }
     if(!event.deviceId) { console.error('IJoinEvent is missing deviceId'); return; }
-
     const state = validateState(event.state);
     if(!state) { return; }
-    
     return classActions.join({
         state,
         deviceId: newDeviceId(event.deviceId),

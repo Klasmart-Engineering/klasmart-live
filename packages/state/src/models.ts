@@ -60,7 +60,7 @@ export type TrophyType = NewType<string, 'TrophyType'>
 export const newTrophyType = (value: string): TrophyType => value as TrophyType;
 
 export type UserRole = NewType<string, 'UserRole'>
-export const newUserRole = (role: string): UserRole => role as UserRole;
+export const newUserRole = (role: string): UserRole => role.toLowerCase() as UserRole;
 
 
 
