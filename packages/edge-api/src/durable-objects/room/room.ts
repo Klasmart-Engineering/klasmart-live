@@ -14,7 +14,6 @@ export class Room implements DurableObject {
 
   private clients = new Set<Client>();
   private store: EnhancedStore<ClassState, ClassAction>;
-  private userCounter = 0
 
   public constructor(
     /* eslint-disable no-unused-vars */
@@ -49,7 +48,7 @@ export class Room implements DurableObject {
       //   }
       // );
       // if (isError(authenticationResult)) { return authenticationResult.payload; }
-      const context= developmentContext(`developer${this.userCounter++}`); //authenticationResult.payload
+      const context= developmentContext(); //authenticationResult.payload
 
       const protocol = request.headers.get('Sec-WebSocket-Protocol');
       const { response, ws } = websocketUpgrade(protocol);
@@ -138,10 +137,13 @@ export class Room implements DurableObject {
 }
 
 
-function developmentContext(name: string): Context {
+let userCounter = 0;
+function developmentContext(): Context {
+  const role = (userCounter % 3) === 0 ? roles.Teacher : roles.Student;
+  const name = `${role} #${userCounter++}`;
   return  {
     name,
-    role: Math.random() > 0.1 ? roles.Student : roles.Teacher,
+    role,
     userId: newUserId(name),
   };
 }
