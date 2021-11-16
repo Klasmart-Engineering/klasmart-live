@@ -12,6 +12,7 @@ export const INITIAL_ROOM_STATE: ClassState = {
   chatMessages: [],
   content: {
     type: ContentType.Blank,
+    contentLocation: "",
   },
   hostDeviceId: undefined,
   classEndTime: undefined,
@@ -101,7 +102,7 @@ const setActivityStreamId: Reducer<{deviceId: DeviceID, activityStreamId: Activi
 ) => {
   const { deviceId, activityStreamId } = action.payload;
   const device = state.devices[deviceId]
-  if(!device) { return } 
+  if(!device) { return }
   device.activityStreamID = activityStreamId;
 };
 
@@ -130,7 +131,7 @@ export const classSlice = createSlice({
     join,
     endClass,
     deviceConnect,
-    deviceDisconnect, 
+    deviceDisconnect,
     setHost,
     setContent,
     addChatMessage,
@@ -142,9 +143,9 @@ export const classSlice = createSlice({
 
 export const classReducer = classSlice.reducer;
 export const classActions = classSlice.actions;
-export type ClassActionType = keyof typeof classActions 
+export type ClassActionType = keyof typeof classActions
 export type ClassAction = ReturnType<ValueOf<typeof classActions>>
 
 export type ClassActionTypeToPayload = {
-  [K in keyof typeof classActions]: ReturnType<typeof classActions[K]>["payload"]; 
+  [K in keyof typeof classActions]: ReturnType<typeof classActions[K]>["payload"];
 }

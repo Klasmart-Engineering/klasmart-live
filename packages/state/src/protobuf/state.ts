@@ -38,12 +38,12 @@ export function validateContent(content: IContent): Content | undefined {
  * This function attempts to return a valid ClassState
  * In the case that it recieves an invalid state it prints an error describing the error
  * and then attempts to let provide a sensible default to allow the user to proceed despite the malformed state message
- * 
- * @param classState 
- * @returns 
+ *
+ * @param classState
+ * @returns
  */
 export function validateState(classState: IClassState): ClassState | undefined {
-    
+
     const chatMessages: ChatMessageState[] = []
     if(classState.chatMessages) {
         classState.chatMessages.forEach((m) => {
@@ -55,11 +55,11 @@ export function validateState(classState: IClassState): ClassState | undefined {
         console.error(`IClassState is missing chatMessages`);
     }
 
-    let content = { type: ContentType.Blank }
+    let content = { type: ContentType.Blank, contentLocation: "" }
     if(classState.content) {
-        const validContent = validateContent(classState.content) 
+        const validContent = validateContent(classState.content)
         if(validContent) {
-            content = validContent 
+            content = validContent
         } else {
             console.error(`IClassState has an invalid content`);
         }
@@ -87,7 +87,7 @@ export function validateState(classState: IClassState): ClassState | undefined {
             const priorDeviceCount = validUser.deviceIds.length
             validUser.deviceIds = validUser.deviceIds.filter((deviceId) => (deviceId in devices))
             if(validUser.deviceIds.length !== priorDeviceCount) { console.error("Removed unknown DeviceID from IUser"); }
-            users[validUser.id] = validUser 
+            users[validUser.id] = validUser
         });
     } else {
         console.error('IClassState is missing users');
@@ -99,7 +99,7 @@ export function validateState(classState: IClassState): ClassState | undefined {
             console.error(`Device(${device.id}) references unknown User(${device.userId})`)
         }
     }
-    
+
     return {
          chatMessages,
          content,

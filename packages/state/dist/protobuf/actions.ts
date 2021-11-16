@@ -104,8 +104,8 @@ export function newChatMessageAction(event: INewChatMessageEvent): ReturnType<ty
 }
 
 export function joinAction(event: IJoinEvent): ReturnType<typeof classActions.join> | undefined {
-    if(!event.state) { console.error('IJoinEvent is missing state'); return; }
-    if(!event.deviceId) { console.error('IJoinEvent is missing deviceId'); return; }
+    if(!event.state) { console.error('ISetClassStateEvent is missing state'); return; }
+    if(!event.deviceId) { console.error('ISetClassStateEvent is missing deviceId'); return; }
     const state = validateState(event.state);
     if(!state) { return; }
     return classActions.join({

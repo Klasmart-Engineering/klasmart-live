@@ -45,7 +45,7 @@ export declare type UserRole = NewType<string, 'UserRole'>;
 export declare const newUserRole: (role: string) => UserRole;
 export interface Content {
     type: ContentType;
-    contentLocation?: string;
+    contentLocation: string;
 }
 export interface Trophy {
     timestamp: Timestamp;

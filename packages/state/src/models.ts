@@ -33,7 +33,7 @@ export enum ContentType {
   Stream = 'Stream', // Consume a DOM (Activity) stream
   // URLs
   Activity = 'Activity', //Produce a DOM (Activity) Stream
-  Video = 'Video', // 
+  Video = 'Video', //
   Audio = 'Audio',
   Image = 'Image',
   //WebRTC Stream IDs
@@ -68,7 +68,7 @@ export const newUserRole = (role: string): UserRole => role.toLowerCase() as Use
 // Change to Union
 export interface Content {
   type: ContentType
-  contentLocation?: string
+  contentLocation: string
 }
 
 export interface Trophy {
@@ -82,7 +82,7 @@ export interface UserState {
   name: string
   role: UserRole
   trophies: Trophy[]
-  deviceIds: DeviceID[] 
+  deviceIds: DeviceID[]
 }
 
 export interface DeviceState {
