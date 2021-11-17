@@ -96,7 +96,7 @@ const addChatMessage: Reducer<ChatMessageState> = (
   state.chatMessages.push(chatMessage);
 };
 
-const setActivityStreamId: Reducer<{deviceId: DeviceID, activityStreamId: ActivityStreamID}> = (
+const setActivityStreamId: Reducer<{deviceId: DeviceID, activityStreamId?: ActivityStreamID}> = (
   state,
   action
 ) => {

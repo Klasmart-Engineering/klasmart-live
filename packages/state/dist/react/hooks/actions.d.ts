@@ -23,8 +23,8 @@ export declare function useSendChatMessage(): {
     sendChatMessage: (text: string) => Promise<void>;
     status: import("react-async-hook").AsyncStateStatus;
 };
-export declare function useSetActvityStreamId(): {
-    setActvityStreamId: (activityStreamId: ActivityStreamID) => Promise<void>;
+export declare function useSetActivityStreamId(): {
+    setActivityStreamId: (activityStreamId: ActivityStreamID) => Promise<void>;
     status: import("react-async-hook").AsyncStateStatus;
 };
 export declare function useSetContent(): {

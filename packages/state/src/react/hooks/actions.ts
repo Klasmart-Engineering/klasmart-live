@@ -63,15 +63,15 @@ export function useSendChatMessage() {
   return { sendChatMessage: execute, status };
 }
 
-export function useSetActvityStreamId() {
+export function useSetActivityStreamId() {
   const { execute, status } = useNetworkAction(
     (activityStreamId: ActivityStreamID) => ({
-      setActvityStreamId: {
+      setActivityStreamId: {
         activityStreamId,
       },
     })
   );
-  return { setActvityStreamId: execute, status };
+  return { setActivityStreamId: execute, status };
 }
 
 export function useSetContent() {

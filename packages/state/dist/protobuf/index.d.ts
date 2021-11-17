@@ -14,8 +14,8 @@ export interface IClassRequest {
     /** ClassRequest setContent */
     setContent?: (ISetContentCommand|null);
 
-    /** ClassRequest setActvityStreamId */
-    setActvityStreamId?: (ISetActivityStreamIdCommand|null);
+    /** ClassRequest setActivityStreamId */
+    setActivityStreamId?: (ISetActivityStreamIdCommand|null);
 
     /** ClassRequest rewardTrophyToUser */
     rewardTrophyToUser?: (IRewardTrophyToUserCommand|null);
@@ -48,8 +48,8 @@ export class ClassRequest implements IClassRequest {
     /** ClassRequest setContent. */
     public setContent?: (ISetContentCommand|null);
 
-    /** ClassRequest setActvityStreamId. */
-    public setActvityStreamId?: (ISetActivityStreamIdCommand|null);
+    /** ClassRequest setActivityStreamId. */
+    public setActivityStreamId?: (ISetActivityStreamIdCommand|null);
 
     /** ClassRequest rewardTrophyToUser. */
     public rewardTrophyToUser?: (IRewardTrophyToUserCommand|null);
@@ -61,7 +61,7 @@ export class ClassRequest implements IClassRequest {
     public sendChatMessage?: (ISendChatMessageCommand|null);
 
     /** ClassRequest command. */
-    public command?: ("endClass"|"setHost"|"setContent"|"setActvityStreamId"|"rewardTrophyToUser"|"rewardTrophyToAll"|"sendChatMessage");
+    public command?: ("endClass"|"setHost"|"setContent"|"setActivityStreamId"|"rewardTrophyToUser"|"rewardTrophyToAll"|"sendChatMessage");
 
     /**
      * Creates a new ClassRequest instance using the specified properties.
@@ -254,8 +254,8 @@ export interface IClassMessage {
     /** ClassMessage contentChanged */
     contentChanged?: (IContentChangedEvent|null);
 
-    /** ClassMessage actvityStreamIdChanged */
-    actvityStreamIdChanged?: (IActivityStreamIdChangedEvent|null);
+    /** ClassMessage activityStreamIdChanged */
+    activityStreamIdChanged?: (IActivityStreamIdChangedEvent|null);
 
     /** ClassMessage trophyRewardedToUser */
     trophyRewardedToUser?: (ITrophyRewardedToUserEvent|null);
@@ -297,8 +297,8 @@ export class ClassMessage implements IClassMessage {
     /** ClassMessage contentChanged. */
     public contentChanged?: (IContentChangedEvent|null);
 
-    /** ClassMessage actvityStreamIdChanged. */
-    public actvityStreamIdChanged?: (IActivityStreamIdChangedEvent|null);
+    /** ClassMessage activityStreamIdChanged. */
+    public activityStreamIdChanged?: (IActivityStreamIdChangedEvent|null);
 
     /** ClassMessage trophyRewardedToUser. */
     public trophyRewardedToUser?: (ITrophyRewardedToUserEvent|null);
@@ -310,7 +310,7 @@ export class ClassMessage implements IClassMessage {
     public newChatMessage?: (INewChatMessageEvent|null);
 
     /** ClassMessage event. */
-    public event?: ("joinEvent"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage");
+    public event?: ("joinEvent"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"activityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage");
 
     /**
      * Creates a new ClassMessage instance using the specified properties.

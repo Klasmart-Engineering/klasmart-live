@@ -1,7 +1,7 @@
 import { IActivityStreamIdChangedEvent, IClassEndedEvent, IClassMessage, IContentChangedEvent, IDeviceConnectedEvent, IDeviceDisconnectedEvent, IHostChangedEvent, IJoinEvent, INewChatMessageEvent, ITrophyRewardedToAllEvent, ITrophyRewardedToUserEvent } from '.';
 import { ClassAction, classActions } from '../redux/class';
 export declare function messageToClassAction(message: IClassMessage): ClassAction | undefined;
-export declare function actvityStreamIdChangedAction(event: IActivityStreamIdChangedEvent): ReturnType<typeof classActions.setActivityStreamId> | undefined;
+export declare function activityStreamIdChangedAction(event: IActivityStreamIdChangedEvent): ReturnType<typeof classActions.setActivityStreamId> | undefined;
 export declare function classEndedAction(event: IClassEndedEvent): ReturnType<typeof classActions.endClass> | undefined;
 export declare function contentChangedAction(event: IContentChangedEvent): ReturnType<typeof classActions.setContent> | undefined;
 export declare function deviceConnectedAction(event: IDeviceConnectedEvent): ReturnType<typeof classActions.deviceConnect> | undefined;

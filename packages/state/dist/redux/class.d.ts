@@ -25,7 +25,7 @@ export declare const classSlice: import("@reduxjs/toolkit").Slice<ClassState, {
     addChatMessage: Reducer<ChatMessageState, string>;
     setActivityStreamId: Reducer<{
         deviceId: DeviceID;
-        activityStreamId: ActivityStreamID;
+        activityStreamId?: ActivityStreamID | undefined;
     }, string>;
     rewardTrophyToUser: Reducer<{
         userId: UserID;
@@ -57,7 +57,7 @@ export declare const classActions: import("@reduxjs/toolkit").CaseReducerActions
     addChatMessage: Reducer<ChatMessageState, string>;
     setActivityStreamId: Reducer<{
         deviceId: DeviceID;
-        activityStreamId: ActivityStreamID;
+        activityStreamId?: ActivityStreamID | undefined;
     }, string>;
     rewardTrophyToUser: Reducer<{
         userId: UserID;

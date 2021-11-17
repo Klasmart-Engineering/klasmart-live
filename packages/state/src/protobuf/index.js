@@ -19,7 +19,7 @@ $root.ClassRequest = (function() {
      * @property {IEndClassCommand|null} [endClass] ClassRequest endClass
      * @property {ISetHostCommand|null} [setHost] ClassRequest setHost
      * @property {ISetContentCommand|null} [setContent] ClassRequest setContent
-     * @property {ISetActivityStreamIdCommand|null} [setActvityStreamId] ClassRequest setActvityStreamId
+     * @property {ISetActivityStreamIdCommand|null} [setActivityStreamId] ClassRequest setActivityStreamId
      * @property {IRewardTrophyToUserCommand|null} [rewardTrophyToUser] ClassRequest rewardTrophyToUser
      * @property {IRewardTrophyToAllCommand|null} [rewardTrophyToAll] ClassRequest rewardTrophyToAll
      * @property {ISendChatMessageCommand|null} [sendChatMessage] ClassRequest sendChatMessage
@@ -73,12 +73,12 @@ $root.ClassRequest = (function() {
     ClassRequest.prototype.setContent = null;
 
     /**
-     * ClassRequest setActvityStreamId.
-     * @member {ISetActivityStreamIdCommand|null|undefined} setActvityStreamId
+     * ClassRequest setActivityStreamId.
+     * @member {ISetActivityStreamIdCommand|null|undefined} setActivityStreamId
      * @memberof ClassRequest
      * @instance
      */
-    ClassRequest.prototype.setActvityStreamId = null;
+    ClassRequest.prototype.setActivityStreamId = null;
 
     /**
      * ClassRequest rewardTrophyToUser.
@@ -109,12 +109,12 @@ $root.ClassRequest = (function() {
 
     /**
      * ClassRequest command.
-     * @member {"endClass"|"setHost"|"setContent"|"setActvityStreamId"|"rewardTrophyToUser"|"rewardTrophyToAll"|"sendChatMessage"|undefined} command
+     * @member {"endClass"|"setHost"|"setContent"|"setActivityStreamId"|"rewardTrophyToUser"|"rewardTrophyToAll"|"sendChatMessage"|undefined} command
      * @memberof ClassRequest
      * @instance
      */
     Object.defineProperty(ClassRequest.prototype, "command", {
-        get: $util.oneOfGetter($oneOfFields = ["endClass", "setHost", "setContent", "setActvityStreamId", "rewardTrophyToUser", "rewardTrophyToAll", "sendChatMessage"]),
+        get: $util.oneOfGetter($oneOfFields = ["endClass", "setHost", "setContent", "setActivityStreamId", "rewardTrophyToUser", "rewardTrophyToAll", "sendChatMessage"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -150,8 +150,8 @@ $root.ClassRequest = (function() {
             $root.SetHostCommand.encode(message.setHost, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         if (message.setContent != null && Object.hasOwnProperty.call(message, "setContent"))
             $root.SetContentCommand.encode(message.setContent, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-        if (message.setActvityStreamId != null && Object.hasOwnProperty.call(message, "setActvityStreamId"))
-            $root.SetActivityStreamIdCommand.encode(message.setActvityStreamId, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+        if (message.setActivityStreamId != null && Object.hasOwnProperty.call(message, "setActivityStreamId"))
+            $root.SetActivityStreamIdCommand.encode(message.setActivityStreamId, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
         if (message.rewardTrophyToUser != null && Object.hasOwnProperty.call(message, "rewardTrophyToUser"))
             $root.RewardTrophyToUserCommand.encode(message.rewardTrophyToUser, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
         if (message.rewardTrophyToAll != null && Object.hasOwnProperty.call(message, "rewardTrophyToAll"))
@@ -205,7 +205,7 @@ $root.ClassRequest = (function() {
                 message.setContent = $root.SetContentCommand.decode(reader, reader.uint32());
                 break;
             case 9:
-                message.setActvityStreamId = $root.SetActivityStreamIdCommand.decode(reader, reader.uint32());
+                message.setActivityStreamId = $root.SetActivityStreamIdCommand.decode(reader, reader.uint32());
                 break;
             case 10:
                 message.rewardTrophyToUser = $root.RewardTrophyToUserCommand.decode(reader, reader.uint32());
@@ -283,14 +283,14 @@ $root.ClassRequest = (function() {
                     return "setContent." + error;
             }
         }
-        if (message.setActvityStreamId != null && message.hasOwnProperty("setActvityStreamId")) {
+        if (message.setActivityStreamId != null && message.hasOwnProperty("setActivityStreamId")) {
             if (properties.command === 1)
                 return "command: multiple values";
             properties.command = 1;
             {
-                var error = $root.SetActivityStreamIdCommand.verify(message.setActvityStreamId);
+                var error = $root.SetActivityStreamIdCommand.verify(message.setActivityStreamId);
                 if (error)
-                    return "setActvityStreamId." + error;
+                    return "setActivityStreamId." + error;
             }
         }
         if (message.rewardTrophyToUser != null && message.hasOwnProperty("rewardTrophyToUser")) {
@@ -355,10 +355,10 @@ $root.ClassRequest = (function() {
                 throw TypeError(".ClassRequest.setContent: object expected");
             message.setContent = $root.SetContentCommand.fromObject(object.setContent);
         }
-        if (object.setActvityStreamId != null) {
-            if (typeof object.setActvityStreamId !== "object")
-                throw TypeError(".ClassRequest.setActvityStreamId: object expected");
-            message.setActvityStreamId = $root.SetActivityStreamIdCommand.fromObject(object.setActvityStreamId);
+        if (object.setActivityStreamId != null) {
+            if (typeof object.setActivityStreamId !== "object")
+                throw TypeError(".ClassRequest.setActivityStreamId: object expected");
+            message.setActivityStreamId = $root.SetActivityStreamIdCommand.fromObject(object.setActivityStreamId);
         }
         if (object.rewardTrophyToUser != null) {
             if (typeof object.rewardTrophyToUser !== "object")
@@ -410,10 +410,10 @@ $root.ClassRequest = (function() {
             if (options.oneofs)
                 object.command = "setContent";
         }
-        if (message.setActvityStreamId != null && message.hasOwnProperty("setActvityStreamId")) {
-            object.setActvityStreamId = $root.SetActivityStreamIdCommand.toObject(message.setActvityStreamId, options);
+        if (message.setActivityStreamId != null && message.hasOwnProperty("setActivityStreamId")) {
+            object.setActivityStreamId = $root.SetActivityStreamIdCommand.toObject(message.setActivityStreamId, options);
             if (options.oneofs)
-                object.command = "setActvityStreamId";
+                object.command = "setActivityStreamId";
         }
         if (message.rewardTrophyToUser != null && message.hasOwnProperty("rewardTrophyToUser")) {
             object.rewardTrophyToUser = $root.RewardTrophyToUserCommand.toObject(message.rewardTrophyToUser, options);
@@ -670,7 +670,7 @@ $root.ClassMessage = (function() {
      * @property {IClassEndedEvent|null} [classEnded] ClassMessage classEnded
      * @property {IHostChangedEvent|null} [hostChanged] ClassMessage hostChanged
      * @property {IContentChangedEvent|null} [contentChanged] ClassMessage contentChanged
-     * @property {IActivityStreamIdChangedEvent|null} [actvityStreamIdChanged] ClassMessage actvityStreamIdChanged
+     * @property {IActivityStreamIdChangedEvent|null} [activityStreamIdChanged] ClassMessage activityStreamIdChanged
      * @property {ITrophyRewardedToUserEvent|null} [trophyRewardedToUser] ClassMessage trophyRewardedToUser
      * @property {ITrophyRewardedToAllEvent|null} [trophyRewardedToAll] ClassMessage trophyRewardedToAll
      * @property {INewChatMessageEvent|null} [newChatMessage] ClassMessage newChatMessage
@@ -748,12 +748,12 @@ $root.ClassMessage = (function() {
     ClassMessage.prototype.contentChanged = null;
 
     /**
-     * ClassMessage actvityStreamIdChanged.
-     * @member {IActivityStreamIdChangedEvent|null|undefined} actvityStreamIdChanged
+     * ClassMessage activityStreamIdChanged.
+     * @member {IActivityStreamIdChangedEvent|null|undefined} activityStreamIdChanged
      * @memberof ClassMessage
      * @instance
      */
-    ClassMessage.prototype.actvityStreamIdChanged = null;
+    ClassMessage.prototype.activityStreamIdChanged = null;
 
     /**
      * ClassMessage trophyRewardedToUser.
@@ -784,12 +784,12 @@ $root.ClassMessage = (function() {
 
     /**
      * ClassMessage event.
-     * @member {"joinEvent"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"actvityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage"|undefined} event
+     * @member {"joinEvent"|"deviceConnected"|"deviceDisconnected"|"classEnded"|"hostChanged"|"contentChanged"|"activityStreamIdChanged"|"trophyRewardedToUser"|"trophyRewardedToAll"|"newChatMessage"|undefined} event
      * @memberof ClassMessage
      * @instance
      */
     Object.defineProperty(ClassMessage.prototype, "event", {
-        get: $util.oneOfGetter($oneOfFields = ["joinEvent", "deviceConnected", "deviceDisconnected", "classEnded", "hostChanged", "contentChanged", "actvityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll", "newChatMessage"]),
+        get: $util.oneOfGetter($oneOfFields = ["joinEvent", "deviceConnected", "deviceDisconnected", "classEnded", "hostChanged", "contentChanged", "activityStreamIdChanged", "trophyRewardedToUser", "trophyRewardedToAll", "newChatMessage"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -831,8 +831,8 @@ $root.ClassMessage = (function() {
             $root.HostChangedEvent.encode(message.hostChanged, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         if (message.contentChanged != null && Object.hasOwnProperty.call(message, "contentChanged"))
             $root.ContentChangedEvent.encode(message.contentChanged, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-        if (message.actvityStreamIdChanged != null && Object.hasOwnProperty.call(message, "actvityStreamIdChanged"))
-            $root.ActivityStreamIdChangedEvent.encode(message.actvityStreamIdChanged, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+        if (message.activityStreamIdChanged != null && Object.hasOwnProperty.call(message, "activityStreamIdChanged"))
+            $root.ActivityStreamIdChangedEvent.encode(message.activityStreamIdChanged, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
         if (message.trophyRewardedToUser != null && Object.hasOwnProperty.call(message, "trophyRewardedToUser"))
             $root.TrophyRewardedToUserEvent.encode(message.trophyRewardedToUser, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
         if (message.trophyRewardedToAll != null && Object.hasOwnProperty.call(message, "trophyRewardedToAll"))
@@ -895,7 +895,7 @@ $root.ClassMessage = (function() {
                 message.contentChanged = $root.ContentChangedEvent.decode(reader, reader.uint32());
                 break;
             case 9:
-                message.actvityStreamIdChanged = $root.ActivityStreamIdChangedEvent.decode(reader, reader.uint32());
+                message.activityStreamIdChanged = $root.ActivityStreamIdChangedEvent.decode(reader, reader.uint32());
                 break;
             case 10:
                 message.trophyRewardedToUser = $root.TrophyRewardedToUserEvent.decode(reader, reader.uint32());
@@ -1005,14 +1005,14 @@ $root.ClassMessage = (function() {
                     return "contentChanged." + error;
             }
         }
-        if (message.actvityStreamIdChanged != null && message.hasOwnProperty("actvityStreamIdChanged")) {
+        if (message.activityStreamIdChanged != null && message.hasOwnProperty("activityStreamIdChanged")) {
             if (properties.event === 1)
                 return "event: multiple values";
             properties.event = 1;
             {
-                var error = $root.ActivityStreamIdChangedEvent.verify(message.actvityStreamIdChanged);
+                var error = $root.ActivityStreamIdChangedEvent.verify(message.activityStreamIdChanged);
                 if (error)
-                    return "actvityStreamIdChanged." + error;
+                    return "activityStreamIdChanged." + error;
             }
         }
         if (message.trophyRewardedToUser != null && message.hasOwnProperty("trophyRewardedToUser")) {
@@ -1095,10 +1095,10 @@ $root.ClassMessage = (function() {
                 throw TypeError(".ClassMessage.contentChanged: object expected");
             message.contentChanged = $root.ContentChangedEvent.fromObject(object.contentChanged);
         }
-        if (object.actvityStreamIdChanged != null) {
-            if (typeof object.actvityStreamIdChanged !== "object")
-                throw TypeError(".ClassMessage.actvityStreamIdChanged: object expected");
-            message.actvityStreamIdChanged = $root.ActivityStreamIdChangedEvent.fromObject(object.actvityStreamIdChanged);
+        if (object.activityStreamIdChanged != null) {
+            if (typeof object.activityStreamIdChanged !== "object")
+                throw TypeError(".ClassMessage.activityStreamIdChanged: object expected");
+            message.activityStreamIdChanged = $root.ActivityStreamIdChangedEvent.fromObject(object.activityStreamIdChanged);
         }
         if (object.trophyRewardedToUser != null) {
             if (typeof object.trophyRewardedToUser !== "object")
@@ -1165,10 +1165,10 @@ $root.ClassMessage = (function() {
             if (options.oneofs)
                 object.event = "contentChanged";
         }
-        if (message.actvityStreamIdChanged != null && message.hasOwnProperty("actvityStreamIdChanged")) {
-            object.actvityStreamIdChanged = $root.ActivityStreamIdChangedEvent.toObject(message.actvityStreamIdChanged, options);
+        if (message.activityStreamIdChanged != null && message.hasOwnProperty("activityStreamIdChanged")) {
+            object.activityStreamIdChanged = $root.ActivityStreamIdChangedEvent.toObject(message.activityStreamIdChanged, options);
             if (options.oneofs)
-                object.event = "actvityStreamIdChanged";
+                object.event = "activityStreamIdChanged";
         }
         if (message.trophyRewardedToUser != null && message.hasOwnProperty("trophyRewardedToUser")) {
             object.trophyRewardedToUser = $root.TrophyRewardedToUserEvent.toObject(message.trophyRewardedToUser, options);

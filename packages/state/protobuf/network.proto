@@ -6,7 +6,7 @@ message ClassRequest {
         EndClassCommand end_class = 6;
         SetHostCommand set_host = 7;
         SetContentCommand set_content = 8;
-        SetActivityStreamIdCommand set_actvity_stream_id = 9;
+        SetActivityStreamIdCommand set_activity_stream_id = 9;
         RewardTrophyToUserCommand reward_trophy_to_user = 10;
         RewardTrophyToAllCommand reward_trophy_to_all = 11;
         SendChatMessageCommand send_chat_message = 12;
@@ -31,7 +31,7 @@ message ClassMessage {
         ClassEndedEvent class_ended = 6;
         HostChangedEvent host_changed = 7;
         ContentChangedEvent content_changed = 8;
-        ActivityStreamIdChangedEvent actvity_stream_id_changed = 9;
+        ActivityStreamIdChangedEvent activity_stream_id_changed = 9;
         TrophyRewardedToUserEvent trophy_rewarded_to_user = 10;
         TrophyRewardedToAllEvent trophy_rewarded_to_all = 11;
         NewChatMessageEvent new_chat_message = 12;

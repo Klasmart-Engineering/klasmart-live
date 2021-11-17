@@ -35,11 +35,11 @@ export const requestToMessage = (requestProperties: pb.IClassRequest, userId: Us
           },
         }
       };
-    } else if (request.setActvityStreamId) {
+    } else if (request.setActivityStreamId) {
       return {
-        actvityStreamIdChanged: {
+        activityStreamIdChanged: {
           deviceId,
-          ...request.setActvityStreamId,
+          ...request.setActivityStreamId,
         }
       };
     } else if (request.rewardTrophyToUser) {

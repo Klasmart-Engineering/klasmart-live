@@ -5,8 +5,8 @@ import { validateChatMessage, validateContent, validateDevice, validateState, va
 
 
 export function messageToClassAction(message: IClassMessage): ClassAction | undefined {
-    if(message.actvityStreamIdChanged) {
-        return actvityStreamIdChangedAction(message.actvityStreamIdChanged);
+    if(message.activityStreamIdChanged) {
+        return activityStreamIdChangedAction(message.activityStreamIdChanged);
     }
     if(message.classEnded) {
         return classEndedAction(message.classEnded);
@@ -38,13 +38,12 @@ export function messageToClassAction(message: IClassMessage): ClassAction | unde
     return undefined;
 }
 
-export function actvityStreamIdChangedAction(event: IActivityStreamIdChangedEvent): ReturnType<typeof classActions.setActivityStreamId> | undefined {
+export function activityStreamIdChangedAction(event: IActivityStreamIdChangedEvent): ReturnType<typeof classActions.setActivityStreamId> | undefined {
     if(!event.deviceId) { console.error('IActivityStreamIdChangedEvent missing deviceId'); return; }
-    if(!event.activityStreamId) { console.error('IActivityStreamIdChangedEvent missing activityStreamId'); return; }
     
     return classActions.setActivityStreamId({
         deviceId: newDeviceId(event.deviceId),
-        activityStreamId: newActivityStreamId(event.activityStreamId),
+        activityStreamId: event.activityStreamId ? newActivityStreamId(event.activityStreamId) : undefined,
     });    
 }
 
