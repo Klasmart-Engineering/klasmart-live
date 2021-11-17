@@ -65,7 +65,7 @@ export function useSendChatMessage() {
 
 export function useSetActivityStreamId() {
   const { execute, status } = useNetworkAction(
-    (activityStreamId: ActivityStreamID) => ({
+    (activityStreamId?: ActivityStreamID) => ({
       setActivityStreamId: {
         activityStreamId,
       },
