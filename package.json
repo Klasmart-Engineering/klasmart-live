@@ -1,6 +1,22 @@
 {
   "name": "kidsloop-live",
-  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./ui": "./packages/state/dist/ui.js",
+    "./server": "./packages/state/dist/server.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./packages/state/dist/*"
+      ]
+    }
+  },
+  "files": [
+    "./packages/state/dist/**/*.d.ts",
+    "./packages/state/dist/dist/**/*.js"
+  ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "cz": "cz",
