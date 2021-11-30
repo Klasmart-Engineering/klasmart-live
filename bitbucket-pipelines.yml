@@ -25,6 +25,8 @@ pipelines:
           script:
             - cd packages/edge-site/
             - npm ci
+            - cp packages/page-stream/dist/report.js packages/edge-site/public/
+            - cp packages/page-stream/dist/review.js packages/edge-site/public/
             - npm run build-static
             - ./node_modules/.bin/wrangler publish --env dev
           caches:
