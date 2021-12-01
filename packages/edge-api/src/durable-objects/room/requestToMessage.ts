@@ -45,13 +45,22 @@ export const requestToMessage = (requestProperties: pb.IClassRequest, userId: Us
     } else if (request.rewardTrophyToUser) {
       return {
         trophyRewardedToUser: {
-          ...request.rewardTrophyToUser
+          trophy: {
+            timestamp: Date.now(),
+            fromUserId: userId,
+            type: request.rewardTrophyToUser.trophyType,
+          },
+          toUserId: request.rewardTrophyToUser.toUserId,
         }
       };
     } else if (request.rewardTrophyToAll) {
       return {
         trophyRewardedToAll: {
-          ...request.rewardTrophyToAll
+          trophy: {
+            timestamp: Date.now(),
+            fromUserId: userId,
+            type: request.rewardTrophyToAll.trophyType,
+          },
         }
       };
     } else {
