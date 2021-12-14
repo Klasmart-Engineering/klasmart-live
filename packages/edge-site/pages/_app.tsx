@@ -5,8 +5,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import { AppProps } from 'next/app';
 import { Container } from '@material-ui/core';
+import { WebRtcProvider, reducer } from 'kidsloop-live-state/ui';
 import { Provider } from 'react-redux';
-import { store } from '../src/store';
+import { createStore } from '@reduxjs/toolkit';
+
+const store = createStore(reducer);
 
 function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -16,20 +19,22 @@ function App({ Component, pageProps }: AppProps) {
     }
   }, []);
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Kidsloop Test PoC</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <CssBaseline />
-          <Container maxWidth="lg">
-            <Component {...pageProps} />
-          </Container>
-        </Provider>
-      </ThemeProvider>
-    </React.Fragment>
+      <Provider store={store} >
+        <WebRtcProvider selector={s=>s as any} getSfuUrl={() => new URL('ws://localhost:8080/')} >
+          <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <Container maxWidth="lg">
+                  <Component {...pageProps} />
+              </Container>
+          </ThemeProvider>
+        </WebRtcProvider >
+      </Provider>
+    </>
   );
 }
 
