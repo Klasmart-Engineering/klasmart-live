@@ -1,37 +1,19 @@
-import { ProducerID, SfuID } from 'kidsloop-live-state/network/sfu';
-import {useCamera, useGloballyPauseMediaStream, useLocallyPauseMediaTrack, useMediaTrackIsPaused, useWebRtcState, WebRtcContext} from 'kidsloop-live-state/ui';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import {useAsync, UseAsyncReturn} from 'react-async-hook';
+import { TrackLocation, useCamera, useMicrophone, useStream, useTrack } from 'kidsloop-live-state/ui';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function Video(): JSX.Element {
-  const camera = useCamera();
-  const webrtc = useContext(WebRtcContext);
-  const [sendingTracks, setSendingTracks] = useState<Promise<[SfuID, ProducerID, MediaStreamTrack]>[]>([]);
-  const [trackIds, setTrackIds] = useState<ProducerID[]>([]);
-  const send = () => {
-    if(!camera.result) { return [];}
-    setTrackIds([]);
-    const tracks = camera.result.getTracks();
-    const sfuId = 'test-sfu' as SfuID;
-    const trackPromises = tracks.map(async t => {
-      const producer = await webrtc.sendTrack(sfuId, t);
-      setTrackIds((trackIds) => [...trackIds, producer.id as ProducerID]);
-      return [
-        sfuId,
-        producer.id,
-        producer.track,
-      ] as [SfuID, ProducerID, MediaStreamTrack];
-    });
-    setSendingTracks(trackPromises);
+  const [idsText, setIdsText] = useState<string>();
+  const [streams, setStreams] = useState<Array<{audio: TrackLocation, video: TrackLocation}>>([]);
+  const addStream = () => {
+    try {
+      const input = JSON.parse(idsText);
+      if (!input || typeof input !== 'object') { return; }
+      const {audio, video} = input;
+      if (typeof audio !== 'object') { return; }
+      if (typeof video !== 'object') { return; }
+      setStreams((ids) => [...ids, {audio, video}]);
+    } catch {/* Ignore */}
   };
-  const [idsText, setIdsText] = useState('Paste IDs here');
-  const ids = useMemo(() => {
-    try{
-      return JSON.parse(idsText);
-    } catch {
-      return undefined;
-    }
-  }, [idsText]);
 
   return (
     <div
@@ -43,74 +25,68 @@ export default function Video(): JSX.Element {
         textAlign: 'center',
       }}
     >
+      <MyCamera />
       <h1>
         Kidsloop Live
       </h1>
-      <button onClick={() => camera.execute()} disabled={camera.loading}>Get Camera</button>
-      <button onClick={() => camera.result && send()} disabled={!camera.result && !!sendingTracks}>Send Camera</button>
-      <AsyncViewMediaStream media={camera} />
-      {
-        sendingTracks.map((t,i) => <Async key={i} promise={t} element={([sfuId, producerId, t]) => <Track sfuId={sfuId} producerId={producerId} track={t}/>}/>)
-      }
-      <textarea value={JSON.stringify(trackIds)} readOnly/>
-      <textarea value={idsText} onChange={e => setIdsText(e.target.value)}/>
-      {
-        ids instanceof Array && ids.every(id => typeof id === 'string')
-          ? <WebRtcMediaStream ids={ids}/>
-          : <>Invalid Ids: {JSON.stringify(ids)}</>
-      }
+      <textarea defaultValue='Paste IDs here' value={idsText} onChange={e => setIdsText(e.target.value)} />
+      <button onClick={addStream}>Add</button>
+      {streams.map(({audio, video}, i) => <WebRtcMediaStream key={i} audio={audio} video={video} />)}
     </div>
   );
 }
 
-function WebRtcMediaStream({ids}:{ids: ProducerID[]}) {
-  const webrtc = useContext(WebRtcContext);
-  const mediaStream = useMemo(() => new MediaStream(), []);
-  const trackPromises = useMemo(() => 
-    ids.map(id => [
-      'test-sfu' as SfuID,
-      id,
-      webrtc.getTrack('test-sfu' as SfuID, id)
-    ] as [SfuID, ProducerID, Promise<MediaStreamTrack>])
-  , ids);
-  useEffect(() => {
-    trackPromises.map(([,,trackPromise]) => 
-      trackPromise.then(t => {
-        mediaStream.addTrack(t);
-        t.addEventListener('ended', () => mediaStream.removeTrack(t));
-      })
-    );
-  },trackPromises);
+function MyCamera() {
+  const camera = useCamera();
+  const microphone = useMicrophone();
+
+  const toggleCamera = () => (camera.isSending ? camera.stop : camera.start).execute();
+  const toggleMicrophone = () => (microphone.isSending ? microphone.stop : microphone.start).execute();
+
+  return <div>
+    <ViewMediaStream mediaStream={camera.stream} />
+    <div>
+      <button onClick={toggleCamera} >{camera.isSending ? '🎥' : 'X'}</button>
+      {
+          camera.paused && <>
+            <span>{camera.paused.localPause ? '⏸️' : '▶️'}</span>
+            <span>{camera.paused.globalPause ? '🚫' : '⭕'}</span>
+          </>
+      }
+    </div>
+    <div>
+      <button onClick={toggleMicrophone}>{microphone.isSending ? '📞': 'X'}</button>
+      {
+        microphone.paused && <>
+            <span>{microphone.paused.localPause ? '⏸️' : '▶️'}</span>
+            <span>{microphone.paused.globalPause ? '🚫' : '⭕'}</span>
+        </>
+      }
+    </div>
+    <textarea value={JSON.stringify({ video: camera.location, audio: microphone.location })} readOnly />
+  </div>;
+}
+
+
+function WebRtcMediaStream({ audio, video }: { audio?: TrackLocation, video?: TrackLocation }) {
+  const mediaStream = useStream(audio, video);
   return <>
-    <ViewMediaStream mediaStream={mediaStream}/>
-    {
-      trackPromises.map(([sfuId,producerId, t]) => <Async
-          key={`${sfuId}-${producerId}`}
-          promise={t} 
-          element={track => <Track sfuId={sfuId} producerId={producerId} track={track}/>} 
-        />
-      )
-    }
+    <ViewMediaStream mediaStream={mediaStream} />
+    <Track location={video} />
+    <Track location={audio} />
   </>;
 }
 
-
-function AsyncViewMediaStream({media}:{media: UseAsyncReturn<MediaStream>}) {
-  if(media.error) { return <div>Unable to get media: {media.error.toString()}</div>; }
-  if(!media.result || media.loading) { return <div>Waiting for media</div>; }
-  
-  return <ViewMediaStream mediaStream={media.result}/>;
-}
-
-function ViewMediaStream({mediaStream}: {mediaStream: MediaStream}) {
+function ViewMediaStream({ mediaStream }: { mediaStream: MediaStream }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  console.log(mediaStream);
   useEffect(() => {
-    if(!videoRef.current) { return; }
+    if (!videoRef.current) { return; }
     videoRef.current.srcObject = mediaStream;
   }, [mediaStream, videoRef.current]);
   return <video
     ref={videoRef}
+    width="50%"
+    height="50%"
     autoPlay
     muted
     style={{
@@ -119,41 +95,28 @@ function ViewMediaStream({mediaStream}: {mediaStream: MediaStream}) {
   />;
 }
 
-function Async<T>({promise,element}:{promise: Promise<T>, element: (t: T) => JSX.Element}) {
-  const {loading, result, error} = useAsync(() => promise, []);
-  if(loading) {return <>Loading...</>;}
-  if(error) {return <>Error...</>;}
-  return element(result);
-}
+function Track({ location }: { location: TrackLocation }) {
+  const {
+    track,
+    paused,
+    localPause,
+    globalPause,
+  } = useTrack(location);
 
-function Track({sfuId, producerId, track}:{sfuId: SfuID, producerId: ProducerID, track: MediaStreamTrack}) {
-  const {globalPause,  localPause} = useWebRtcState(s => s.webrtc.sfus[sfuId]?.tracks[producerId]);
-  const locallyPause = useLocallyPauseMediaTrack();
-  const localToggle = () => {
-    if(locallyPause.loading) {return;}
-    locallyPause.execute(sfuId, producerId, !localPause);
-  };
-  const globallyPause = useGloballyPauseMediaStream();
-  const globalToggle = () => {
-    if(globallyPause.loading) {return;}
-    globallyPause.execute(sfuId, producerId, !globalPause);
-  };
+  const toggleLocal = useCallback(() => localPause.execute(!paused?.localPause), [paused?.localPause]);
+  const toggleGlobal = useCallback(() => globalPause.execute(!paused?.globalPause), [paused?.globalPause]);
 
-
-    return <div>
-      {track.kind === 'audio' ? '📞' : '🎥' }
-      <span onClick={localToggle}>
-        {locallyPause.loading
-          ? '🔁' 
-          : (localPause ? '⏸️' : '▶️') 
-        }
-      </span>
-      <span onClick={globalToggle}>
-        {globallyPause.loading
-          ? '🔁' 
-          : (globalPause ? '🚫' : '⭕') 
-        }
-      </span>
-    </div>;
-
+  return <div>
+    {
+      !track.result
+        ? (track.loading ? '🔁' : 'X')
+        : (track.result.kind === 'audio' ? '📞' : '🎥')
+    }
+    <span onClick={toggleLocal}>
+      {localPause.loading ? '🔁' : (paused?.localPause ? '⏸️' : '▶️')}
+    </span>
+    <span onClick={toggleGlobal}>
+      {globalPause.loading ? '🔁' : (paused?.globalPause ? '🚫' : '⭕')}
+    </span>
+  </div>;
 }
