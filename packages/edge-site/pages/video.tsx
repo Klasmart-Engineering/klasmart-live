@@ -40,26 +40,26 @@ function MyCamera() {
   const camera = useCamera();
   const microphone = useMicrophone();
 
-  const toggleCamera = () => (camera.isSending ? camera.stop : camera.start).execute();
-  const toggleMicrophone = () => (microphone.isSending ? microphone.stop : microphone.start).execute();
+  const toggleCamera = () => (camera.paused.locally ? camera.start : camera.stop).execute();
+  const toggleMicrophone = () => (microphone.paused.locally ? microphone.start : microphone.stop).execute();
 
   return <div>
     <ViewMediaStream mediaStream={camera.stream} />
     <div>
-      <button onClick={toggleCamera} >{camera.isSending ? '🎥' : 'X'}</button>
+      <button onClick={toggleCamera} >{camera.paused.locally ? '🎥' : 'X'}</button>
       {
           camera.paused && <>
-            <span>{camera.paused.localPause ? '⏸️' : '▶️'}</span>
-            <span>{camera.paused.globalPause ? '🚫' : '⭕'}</span>
+            <span>{camera.paused.locally ? '⏸️' : '▶️'}</span>
+            <span>{camera.paused.atBroadcast ? '🚫' : '⭕'}</span>
           </>
       }
     </div>
     <div>
-      <button onClick={toggleMicrophone}>{microphone.isSending ? '📞': 'X'}</button>
+      <button onClick={toggleMicrophone}>{microphone.paused.locally ? '📞': 'X'}</button>
       {
         microphone.paused && <>
-            <span>{microphone.paused.localPause ? '⏸️' : '▶️'}</span>
-            <span>{microphone.paused.globalPause ? '🚫' : '⭕'}</span>
+            <span>{microphone.paused.locally ? '⏸️' : '▶️'}</span>
+            <span>{microphone.paused.atBroadcast ? '🚫' : '⭕'}</span>
         </>
       }
     </div>
@@ -96,27 +96,20 @@ function ViewMediaStream({ mediaStream }: { mediaStream: MediaStream }) {
 }
 
 function Track({ location }: { location: TrackLocation }) {
-  const {
-    track,
-    paused,
-    localPause,
-    globalPause,
-  } = useTrack(location);
+  const track = useTrack(location);
 
-  const toggleLocal = useCallback(() => localPause.execute(!paused?.localPause), [paused?.localPause]);
-  const toggleGlobal = useCallback(() => globalPause.execute(!paused?.globalPause), [paused?.globalPause]);
+  const toggleLocal = useCallback(() => (track.pause.locally ? track.start : track.stop).execute(), []);
+  const toggleGlobal = useCallback(() => track.globalPause.execute(!track.pause.atBroadcast), []);
 
   return <div>
-    {
-      !track.result
-        ? (track.loading ? '🔁' : 'X')
-        : (track.result.kind === 'audio' ? '📞' : '🎥')
-    }
+    {track.kind === 'audio' ? '📞' : undefined}
+    {track.kind === 'video' ? '🎥' : undefined}
+    {!track.kind ? 'X' : undefined}
     <span onClick={toggleLocal}>
-      {localPause.loading ? '🔁' : (paused?.localPause ? '⏸️' : '▶️')}
+      {track.pause.locally === undefined ? '🔁' : (track.pause.locally ? '⏸️' : '▶️')}
     </span>
     <span onClick={toggleGlobal}>
-      {globalPause.loading ? '🔁' : (paused?.globalPause ? '🚫' : '⭕')}
+      {track.pause.atBroadcast === undefined ? '🔁' : (track.pause.atBroadcast ? '🚫' : '⭕')}
     </span>
   </div>;
 }
