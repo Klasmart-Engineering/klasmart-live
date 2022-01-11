@@ -1,6 +1,12 @@
 import { TrackLocation, useCamera, useMicrophone, useStream, useTrack } from 'kidsloop-live-state/ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+export async function getInitialProps() {
+  return { props: { } };
+}
+
+
+
 export default function Video(): JSX.Element {
   const [idsText, setIdsText] = useState<string>();
   const [streams, setStreams] = useState<Array<{audio: TrackLocation, video: TrackLocation}>>([]);
@@ -40,13 +46,13 @@ function MyCamera() {
   const camera = useCamera();
   const microphone = useMicrophone();
 
-  const toggleCamera = () => (camera.paused.locally ? camera.start : camera.stop).execute();
-  const toggleMicrophone = () => (microphone.paused.locally ? microphone.start : microphone.stop).execute();
+  const toggleCamera = () => (camera.paused.locally !== true ? camera.start : camera.stop).execute();
+  const toggleMicrophone = () => (microphone.paused.locally !== true ? microphone.start : microphone.stop).execute();
 
   return <div>
     <ViewMediaStream mediaStream={camera.stream} />
     <div>
-      <button onClick={toggleCamera} >{camera.paused.locally ? '🎥' : 'X'}</button>
+      <button onClick={toggleCamera} >{camera.paused.locally !== undefined ? '🎥' : 'X'}</button>
       {
           camera.paused && <>
             <span>{camera.paused.locally ? '⏸️' : '▶️'}</span>
@@ -55,7 +61,7 @@ function MyCamera() {
       }
     </div>
     <div>
-      <button onClick={toggleMicrophone}>{microphone.paused.locally ? '📞': 'X'}</button>
+      <button onClick={toggleMicrophone}>{microphone.paused.locally !== undefined ? '📞': 'X'}</button>
       {
         microphone.paused && <>
             <span>{microphone.paused.locally ? '⏸️' : '▶️'}</span>
@@ -64,6 +70,7 @@ function MyCamera() {
       }
     </div>
     <textarea value={JSON.stringify({ video: camera.location, audio: microphone.location })} readOnly />
+    <textarea value={JSON.stringify({ camera, microphone }, undefined, 2)} readOnly />
   </div>;
 }
 
@@ -98,18 +105,14 @@ function ViewMediaStream({ mediaStream }: { mediaStream: MediaStream }) {
 function Track({ location }: { location: TrackLocation }) {
   const track = useTrack(location);
 
-  const toggleLocal = useCallback(() => (track.pause.locally ? track.start : track.stop).execute(), []);
-  const toggleGlobal = useCallback(() => track.globalPause.execute(!track.pause.atBroadcast), []);
-
   return <div>
+    {!track.kind ? '?' : undefined}
     {track.kind === 'audio' ? '📞' : undefined}
     {track.kind === 'video' ? '🎥' : undefined}
-    {!track.kind ? 'X' : undefined}
-    <span onClick={toggleLocal}>
-      {track.pause.locally === undefined ? '🔁' : (track.pause.locally ? '⏸️' : '▶️')}
-    </span>
-    <span onClick={toggleGlobal}>
-      {track.pause.atBroadcast === undefined ? '🔁' : (track.pause.atBroadcast ? '🚫' : '⭕')}
-    </span>
+    <button onClick={() => track.start.execute()}>Start</button>
+    <button onClick={() => track.stop.execute()}>Stop</button>
+    <button onClick={() => track.globalPause.execute(true)}>Global Pause</button>
+    <button onClick={() => track.globalPause.execute(false)}>Global Resume</button>
+    <textarea value={JSON.stringify({ track }, undefined, 2)} readOnly />
   </div>;
 }
