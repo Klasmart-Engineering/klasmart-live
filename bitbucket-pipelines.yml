@@ -1,10 +1,23 @@
+definitions:
+  steps:
+    - step: &slack-notification
+        name: Slack Notification
+        script:
+          - pipe: atlassian/slack-notify:1.0.1
+            variables:
+              WEBHOOK_URL: ''
+              MESSAGE: '($BITBUCKET_COMMIT) for "$BITBUCKET_BRANCH"'
+    - step: &git-secrets-scan
+        name: Atlassian Security Secrets Scan
+        script:
+          - pipe: atlassian/git-secrets-scan:0.5.1
+
 pipelines:
   branches:
     main:
-      - step: &step-secret-check
-          name: Atlassian Security Secrets Scan
-          script:
-            - pipe: atlassian/git-secrets-scan:0.5.1
+      - step: *git-secrets-scan
+    loadtest:
+      - step: *git-secrets-scan
   custom:
     deploy-live-kidsloop-dev-api:
       - step: &step-deploy-live-kidsloop-dev-api
