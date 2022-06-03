@@ -16,7 +16,7 @@
     "src/*.{js,ts}": "eslint"
   },
   "dependencies": {
-    "protobufjs": "^6.11.2",
+    "protobufjs": "^6.11.3",
     "rrweb": "^1.0.2"
   },
   "devDependencies": {
