@@ -44,7 +44,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "cookie": "^0.4.1",
     "immer": "^9.0.6",
-    "jose-browser-runtime": "^3.15.5",
+    "jose-browser-runtime": "^3.20.4",
     "kidsloop-live-state": "file:../state",
     "kidsloop-page-stream": "file:../page-stream",
     "nanoid": "^3.1.29",
