@@ -16,7 +16,7 @@
     "kidsloop-live-serialization": "file:../serialization",
     "kidsloop-live-state": "file:../state",
     "nanoid": "^3.1.25",
-    "next": "^11.0.0",
+    "next": "^13.0.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.4",
